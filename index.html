@@ -240,7 +240,7 @@ body.reading .reading-bar{display:flex}
 .reading-bar .progress > i{display:block;height:100%;width:0;background:var(--accent);transition:width .1s}
 @media (min-width:640px){.scroll{padding:22px 22px 22px}}
 
-/* === Badge generico (schede, ripasso, preview) === */
+/* === Badge generico === */
 .badge{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
 
 /* === Schede === */
@@ -259,18 +259,50 @@ body.reading .reading-bar{display:flex}
 #cardEditFront{min-height:70px}
 #cardEditBack{min-height:90px}
 
-/* === Ripasso === */
+/* === Ripasso MCQ === */
 .review-progress{text-align:center;font-size:.85rem;color:var(--ink-3);margin-bottom:12px;font-weight:600;font-variant-numeric:tabular-nums}
-.review-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:var(--shadow);min-height:220px;display:flex;flex-direction:column;margin-bottom:16px}
+.review-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;box-shadow:var(--shadow);min-height:120px;display:flex;flex-direction:column;margin-bottom:16px}
 .review-head{margin-bottom:12px;display:flex;align-items:center;gap:8px}
 .review-front{font-size:1.08rem;line-height:1.6;font-family:Georgia,serif;flex:1;white-space:pre-wrap}
-.review-back{margin-top:16px;padding-top:16px;border-top:1px dashed var(--border-2);font-size:1rem;color:var(--accent);font-weight:600;font-family:Georgia,serif;white-space:pre-wrap}
-.review-grades{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.review-grades button{padding:14px 6px;font-size:.8rem;border-radius:12px;font-weight:600}
+
+.mcq-options{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.mcq-option{
+  padding:14px 16px;border-radius:12px;
+  border:1.5px solid var(--border);background:var(--surface);
+  text-align:left;font-family:inherit;font-size:.92rem;line-height:1.5;
+  font-weight:500;color:var(--ink);
+  transition:all .15s;cursor:pointer;
+  white-space:pre-wrap;
+}
+.mcq-option:not(:disabled):active{transform:scale(.99)}
+.mcq-option:not(:disabled):hover{border-color:var(--border-2)}
+.mcq-option.correct{
+  border-color:#3b8f4b;
+  background:color-mix(in srgb,#3b8f4b 15%,var(--surface));
+  color:#2f7d3f;font-weight:600;
+}
+.mcq-option.wrong{
+  border-color:var(--danger);
+  background:color-mix(in srgb,var(--danger) 12%,var(--surface));
+  color:var(--danger);
+  text-decoration:line-through;text-decoration-thickness:1px;opacity:.85;
+}
+.mcq-option.dim{opacity:.4}
+.mcq-option:disabled{cursor:default}
+.mcq-feedback{text-align:center;font-weight:700;font-size:1rem;margin:14px 0}
+.mcq-feedback.ok{color:#3b8f4b}
+.mcq-feedback.ko{color:var(--danger)}
+
+.review-back-inline{
+  margin-top:16px;padding-top:16px;
+  border-top:1px dashed var(--border-2);
+  font-size:1rem;color:var(--accent);font-weight:600;
+  font-family:Georgia,serif;white-space:pre-wrap;
+}
+.review-grades-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.review-grades-2 button{padding:14px 8px;font-size:.85rem;border-radius:12px;font-weight:600}
 .grade-again{background:color-mix(in srgb,var(--danger) 15%,var(--surface));color:var(--danger);border:1px solid color-mix(in srgb,var(--danger) 25%,transparent)}
-.grade-hard{background:color-mix(in srgb,#d68e00 15%,var(--surface));color:#b87300;border:1px solid color-mix(in srgb,#d68e00 25%,transparent)}
 .grade-good{background:color-mix(in srgb,#3b8f4b 15%,var(--surface));color:#3b8f4b;border:1px solid color-mix(in srgb,#3b8f4b 25%,transparent)}
-.grade-easy{background:color-mix(in srgb,var(--ai) 15%,var(--surface));color:var(--ai);border:1px solid color-mix(in srgb,var(--ai) 25%,transparent)}
 
 /* === Nota === */
 #modalNote textarea.input-name{min-height:110px;resize:vertical;font-family:inherit;line-height:1.5}
@@ -1462,7 +1494,7 @@ function confirmCardGeneration() {
 }
 
 /* ============================================================
-   MODULO RIPASSO (v2 — SM-2 semplificato)
+   MODULO RIPASSO (v2 — SM-2 semplificato, MCQ con distrattori smart)
    ============================================================ */
 const REVIEW_KEY = 'annota.review.v2';
 let reviewState = {};
@@ -1512,9 +1544,109 @@ function reviewStats() {
   return { total: cards.length, newCards, dueNow, scheduled };
 }
 
+/* ---------- Utility per distrattori smart ---------- */
+const SIM_STOPWORDS = new Set([
+  'il','lo','la','i','gli','le','un','uno','una','di','a','da','in','con','su','per','tra','fra',
+  'e','ed','o','od','ma','che','chi','cui','non','più','anche','come','dove','quando','perché',
+  'questo','questa','questi','queste','quello','quella','quelli','quelle','del','dello','della',
+  'dei','degli','delle','al','allo','alla','ai','agli','alle','dal','dallo','dalla','dai','dagli',
+  'dalle','nel','nello','nella','nei','negli','nelle','sul','sullo','sulla','sui','sugli','sulle',
+  'the','a','an','and','or','of','to','in','on','at','for','with','by','from','as','is','are',
+  'was','were','be','been','being','that','this','these','those','it','its','their','there','then',
+  'than','but','not','no','so','very','also','just','only','can','could','will','would','should',
+  'may','might','must','do','does','did','done','have','has','had','having','about','after','before',
+  'during','between','into','through','over','under','above','below','again','further','once','here',
+  'der','die','das','den','dem','des','ein','eine','einen','einem','eines','einer','und','oder',
+  'aber','denn','weil','wenn','als','wie','dass','ob','für','mit','von','zu','aus','bei','nach',
+  'über','unter','zwischen','durch','gegen','ohne','um','an','auf','vor','hinter','neben','ist',
+  'sind','war','waren','sein','haben','hat','hatte','hatten','wird','werden','wurde','wurden',
+  'les','des','du','de','dans','avec','pour','qui','que','sont','était','cette','leur','aussi',
+  'très','déjà','entre','pendant','depuis','vers','ainsi','el','los','las','pero','porque','para',
+  'muy','más','también','según','desde','hasta','aunque','cual','durante','sin','sobre','bajo','hacia'
+]);
+
+function tokensForSim(s) {
+  const tokens = (String(s).toLowerCase().match(/\p{L}+/gu) || []);
+  return new Set(tokens.filter(w => w.length > 3 && !SIM_STOPWORDS.has(w)));
+}
+
+function similarityScore(a, b) {
+  const sa = tokensForSim(a);
+  const sb = tokensForSim(b);
+  if (!sa.size || !sb.size) return 0;
+  let inter = 0;
+  for (const w of sa) if (sb.has(w)) inter++;
+  return inter / Math.min(sa.size, sb.size);
+}
+
+function shuffleArr(a) {
+  const arr = a.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function buildMCQ(card) {
+  if (card.type !== 'def' && card.type !== 'fact') return null;
+  const correct = card.back;
+  const pool = [];
+
+  const sameDoc = cards.filter(c =>
+    c.id !== card.id && c.type === card.type &&
+    c.docKey === card.docKey && c.back !== correct
+  );
+  pool.push(...sameDoc.map(c => c.back));
+
+  const sameAll = cards.filter(c =>
+    c.id !== card.id && c.type === card.type && c.back !== correct
+  );
+  pool.push(...sameAll.map(c => c.back));
+
+  if (card.type === 'fact') {
+    const ym = correct.match(/\b(1\d{3}|20\d{2})\b/);
+    if (ym) {
+      const y = parseInt(ym[1], 10);
+      const offsets = [-1, 1, -2, 2, -3, 3, -5, 5, -7, 7, -10, 10, -17, 17, -25, 25];
+      for (const off of offsets) {
+        const ny = y + off;
+        if (ny >= 1000 && ny <= 2099) {
+          pool.push(correct.replace(new RegExp('\\b' + y + '\\b'), String(ny)));
+        }
+      }
+    }
+  }
+
+  // Dedup
+  const seen = new Set([correct.trim()]);
+  const distractors = [];
+  for (const d of pool) {
+    const t = (d || '').trim();
+    if (!t || seen.has(t)) continue;
+    seen.add(t);
+    distractors.push(d);
+  }
+
+  if (distractors.length < 3) return null;
+
+  // Smart selection: ordina per similarità lessicale con la risposta corretta
+  const scored = distractors.map(d => ({ d, score: similarityScore(correct, d) }));
+  scored.sort((a, b) => b.score - a.score);
+
+  // Prendi i top 6 (i più plausibili), mescola, scegli 3
+  const topK = Math.min(6, scored.length);
+  const candidatePool = scored.slice(0, topK).map(x => x.d);
+  const chosen = shuffleArr(candidatePool).slice(0, 3);
+
+  const options = shuffleArr([correct, ...chosen]);
+  return { options, correctIndex: options.indexOf(correct) };
+}
+
 const reviewUI = {
   queue: [], idx: 0, revealed: false,
-  done: 0, correct: 0, startTime: 0, requeueCount: 0
+  done: 0, correct: 0, startTime: 0, requeueCount: 0,
+  mcq: null, mcqForIdx: -1, selectedIndex: -1
 };
 
 function startReviewSession(scope) {
@@ -1543,11 +1675,15 @@ function startReviewSession(scope) {
   reviewUI.correct = 0;
   reviewUI.startTime = Date.now();
   reviewUI.requeueCount = 0;
+  reviewUI.mcq = null;
+  reviewUI.mcqForIdx = -1;
+  reviewUI.selectedIndex = -1;
   renderReviewCard();
 }
 
 function renderReviewCard() {
   const box = $('reviewContent');
+
   if (reviewUI.idx >= reviewUI.queue.length) {
     const elapsed = Math.round((Date.now() - reviewUI.startTime) / 1000);
     const acc = reviewUI.done > 0 ? Math.round(100 * reviewUI.correct / reviewUI.done) : 0;
@@ -1560,10 +1696,56 @@ function renderReviewCard() {
     $('btnNewSession').addEventListener('click', () => startReviewSession('all'));
     return;
   }
+
   const card = reviewUI.queue[reviewUI.idx];
   const r = reviewState[card.id];
   const prevInfo = r && r.reps > 0 ? `ripetuta ${r.reps}×` : 'prima volta';
-  const srcDoc = card.docTitle && card.docTitle.length > 40 ? card.docTitle.slice(0, 40) + '…' : (card.docTitle || '');
+  const srcDoc = card.docTitle && card.docTitle.length > 40
+    ? card.docTitle.slice(0, 40) + '…' : (card.docTitle || '');
+
+  // Rigenera MCQ solo quando cambia la scheda corrente
+  if (reviewUI.mcqForIdx !== reviewUI.idx) {
+    reviewUI.mcq = buildMCQ(card);
+    reviewUI.mcqForIdx = reviewUI.idx;
+    reviewUI.selectedIndex = -1;
+    reviewUI.revealed = false;
+  }
+
+  const usingMCQ = !!reviewUI.mcq;
+  let bodyHTML = '';
+
+  if (usingMCQ) {
+    const { options, correctIndex } = reviewUI.mcq;
+    const answered = reviewUI.selectedIndex >= 0;
+
+    bodyHTML = `<div class="mcq-options">
+      ${options.map((opt, i) => {
+        let cls = 'mcq-option';
+        if (answered) {
+          if (i === correctIndex) cls += ' correct';
+          else if (i === reviewUI.selectedIndex) cls += ' wrong';
+          else cls += ' dim';
+        }
+        return `<button class="${cls}" data-opt="${i}" ${answered ? 'disabled' : ''}>${escapeHTML(opt)}</button>`;
+      }).join('')}
+    </div>`;
+
+    if (answered) {
+      const wasCorrect = reviewUI.selectedIndex === correctIndex;
+      bodyHTML += `<div class="mcq-feedback ${wasCorrect ? 'ok' : 'ko'}">
+        ${wasCorrect ? '✓ Corretto' : '✗ Sbagliato'}
+      </div>
+      <button class="btn primary" id="btnContinue" style="width:100%">Continua</button>`;
+    }
+  } else {
+    bodyHTML = reviewUI.revealed
+      ? `<div class="review-back-inline">${escapeHTML(card.back)}</div>
+         <div class="review-grades-2">
+           <button class="grade-again" data-g="0">Non lo sapevo</button>
+           <button class="grade-good" data-g="4">Lo sapevo</button>
+         </div>`
+      : `<button class="btn primary" id="btnReveal" style="width:100%">Mostra risposta</button>`;
+  }
 
   box.innerHTML = `
     <div class="review-progress">
@@ -1576,36 +1758,59 @@ function renderReviewCard() {
         <span class="card-due">${prevInfo}</span>
       </div>
       <div class="review-front">${escapeHTML(card.front)}</div>
-      ${reviewUI.revealed ? `<div class="review-back">${escapeHTML(card.back)}</div>` : ''}
     </div>
     ${card.docTitle ? `<div style="text-align:center;font-size:.75rem;color:var(--ink-3);margin-bottom:12px">da: ${escapeHTML(srcDoc)}</div>` : ''}
-    ${!reviewUI.revealed
-      ? `<button class="btn primary" id="btnReveal" style="width:100%">Mostra risposta</button>`
-      : `<div class="review-grades">
-          <button class="grade-again" data-g="0">Ancora</button>
-          <button class="grade-hard" data-g="3">Difficile</button>
-          <button class="grade-good" data-g="4">Bene</button>
-          <button class="grade-easy" data-g="5">Facile</button>
-        </div>`}`;
-  if (!reviewUI.revealed) {
-    $('btnReveal').addEventListener('click', () => { reviewUI.revealed = true; renderReviewCard(); vibrate(5); });
-  } else {
-    box.querySelectorAll('.review-grades button').forEach(b => {
-      b.addEventListener('click', () => {
-        const g = parseInt(b.dataset.g, 10);
-        const result = gradeCard(card.id, g);
-        reviewUI.done++;
-        if (g >= 3) reviewUI.correct++;
-        if (result === 'requeue') {
-          reviewUI.queue.push(card);
-          reviewUI.requeueCount++;
-        }
-        reviewUI.idx++;
-        reviewUI.revealed = false;
-        renderReviewCard();
-        vibrate(8);
+    ${bodyHTML}`;
+
+  if (usingMCQ) {
+    const answered = reviewUI.selectedIndex >= 0;
+    if (!answered) {
+      box.querySelectorAll('.mcq-option').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = parseInt(btn.dataset.opt, 10);
+          reviewUI.selectedIndex = idx;
+          const wasCorrect = idx === reviewUI.mcq.correctIndex;
+          reviewUI.done++;
+          if (wasCorrect) reviewUI.correct++;
+          const result = gradeCard(card.id, wasCorrect ? 4 : 0);
+          if (result === 'requeue') {
+            reviewUI.queue.push(card);
+            reviewUI.requeueCount++;
+          }
+          vibrate(wasCorrect ? 8 : 20);
+          renderReviewCard();
+        });
       });
-    });
+    } else {
+      $('btnContinue').addEventListener('click', () => {
+        reviewUI.idx++;
+        renderReviewCard();
+      });
+    }
+  } else {
+    if (!reviewUI.revealed) {
+      $('btnReveal').addEventListener('click', () => {
+        reviewUI.revealed = true;
+        renderReviewCard();
+        vibrate(5);
+      });
+    } else {
+      box.querySelectorAll('.review-grades-2 button').forEach(b => {
+        b.addEventListener('click', () => {
+          const g = parseInt(b.dataset.g, 10);
+          const result = gradeCard(card.id, g);
+          reviewUI.done++;
+          if (g >= 3) reviewUI.correct++;
+          if (result === 'requeue') {
+            reviewUI.queue.push(card);
+            reviewUI.requeueCount++;
+          }
+          reviewUI.idx++;
+          renderReviewCard();
+          vibrate(8);
+        });
+      });
+    }
   }
 }
 
