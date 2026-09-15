@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" id="metaStatusBar" content="default">
 <meta name="apple-mobile-web-app-title" content="ANNOTT">
-<title>ANNOTT</title>
+<title>ANNOTT · lettura strutturata</title>
 <style>
 :root{
   color-scheme: light;
@@ -445,51 +445,51 @@ function toast(msg, ms = 2000) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   TEMA — fix per aggiornamento istantaneo della status bar
+   TEMA — gestione realistica per iOS
+   
+   LIMITE TECNICO APPLE: in una PWA installata su iOS, la status bar
+   viene letta una sola volta al lancio. Non è modificabile a runtime
+   da JS né da meta tag. Quindi:
+   - In PWA: il tema dell'app segue il sistema operativo all'avvio,
+     per essere coerente con la status bar.
+   - In Safari normale: il theme-color funziona dinamicamente.
    ═══════════════════════════════════════════════════════════════════ */
 
 const THEME_BG = { light: '#f6f3ee', dark: '#14110f' };
 
+function isStandalonePWA() {
+  return window.navigator.standalone === true ||
+         window.matchMedia('(display-mode: standalone)').matches;
+}
+
+function syncWithSystem() {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
 function applyThemeToMeta(t) {
-  const isDark = t === 'dark';
-  const bg = isDark ? THEME_BG.dark : THEME_BG.light;
-
-  // 1. Rimuovi TUTTI i meta theme-color esistenti (compresi quelli con media query).
-  //    Safari iOS è più reattivo se il meta viene ricreato invece che modificato.
-  document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.remove());
-
-  // 2. Crea un nuovo meta theme-color.
-  const meta = document.createElement('meta');
-  meta.name = 'theme-color';
-  meta.id = 'metaThemeColor';
-  meta.content = bg;
-  document.head.appendChild(meta);
-
-  // 3. Status bar per PWA installate su iOS.
-  const sb = document.getElementById('metaStatusBar');
-  if (sb) sb.setAttribute('content', isDark ? 'black' : 'default');
-
-  // 4. Ridondanza: forza il color-scheme inline sull'elemento html.
-  //    Questo aiuta Safari a sincronizzare la chrome del browser con il contenuto.
-  document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+  const bg = t === 'dark' ? THEME_BG.dark : THEME_BG.light;
+  let meta = document.getElementById('metaThemeColor');
+  if (!meta) meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', bg);
 }
 
 function setTheme(t) {
-  // ORDINE FONDAMENTALE:
-  // 1) Aggiorna PRIMA il meta (Safari processa il meta in modo asincrono).
-  applyThemeToMeta(t);
-  // 2) Poi cambia il tema visivo via data-theme (che scatena il repaint CSS).
+  // 1. Tema visivo dell'app (agisce istantaneamente sul repaint)
   document.documentElement.dataset.theme = t;
-  // 3) Salva la preferenza.
+  // 2. color-scheme inline (aiuta Safari a sincronizzare la chrome in Safari normale)
+  document.documentElement.style.colorScheme = t;
+  // 3. theme-color meta (utile solo in Safari normale, non in PWA)
+  applyThemeToMeta(t);
+  // 4. Persisti la preferenza
   try { localStorage.setItem(THEME_KEY, t); } catch {}
 }
 
 const LANG_PROFILES = {
   it:{ name:'Italiano', words:'il lo la i gli le un uno una e ed o od ma però perciò in con su per tra fra da di al allo alla ai agli alle del dello della dei degli delle nel nello nella nei negli nelle sul sullo sulla sui sugli sulle dal dallo dalla dai dagli dalle questo questa questi queste quello quella quelli quelle che chi cui non più anche solo come dove quando perché essere avere sono è era fu sia stata stato stati state viene venga fatto fare può devono deve loro lei lui noi voi egli ella essi esse' },
   en:{ name:'English', words:'the a an and or but of in on at to for from by with as is are was were be been being this that these those it its he she they them him her his hers their theirs we us our ours you your yours i me my mine not no so very more most much many few some any all every each both either neither one two who whom whose which what where when why how if then else than too also just only can could will would shall should may might must do does did done have has had having about after before during between into through over under above below again further once here there' },
-  fr:{ name:'Français', words:'le la les un une des du de d et ou mais donc or ni car que qui quoi dont où quand comment pourquoi si comme plus moins très trop peu beaucoup tout toute tous toutes ce cet cette ces celui celle ceux celles il elle ils elles nous vous je tu on se son sa ses leur leurs mon ma mes ton ta tes notre nos votre vos est sont était étaient être avoir a ont avait avaient fait faire peut peuvent doit doivent aussi encore déjà toujours jamais même autre autres bien' },
+  fr:{ name:'Français', words:'le la les un une des du de d et ou mais donc or ni car que qui quoi dont où quand comment pourquoi si comme plus moins très trop peu beaucoup tout toute tous toutes ce cet cette ces celui celle ceux celles il elle ils elles haben nous vous je tu on se son wird sa ses leur leurs mon ma mes ton ta tes notre nos votre vos est sont était étaient être avoir a ont avait avaient fait faire peut peuvent doit doivent aussi encore déjà toujours jamais même autre autres bien' },
   es:{ name:'Español', words:'el la los las un una unos unas de del y o pero porque por para con sin en a al sobre bajo entre hasta desde que quien cuyo como cuando donde si no más menos muy mucho poco todo toda todos todas este esta estos estas ese esa esos esas aquel aquella aquellos aquellas yo tú él ella nosotros vosotros ellos ellas me te se nos os le les lo mi tu su mis tus sus es son era fueron ser estar haber ha han había habían hace hacer puede pueden debe deben también aún ya siempre nunca mismo otra otro bien' },
-  de:{ name:'Deutsch', words:'der die das den dem des ein eine einen einem eines einer und oder aber denn weil wenn als wie dass ob für mit von zu aus bei nach über unter zwischen durch gegen ohne um in an auf vor hinter neben ist sind war waren sein haben hat hatte hatten haben wird werden wurde wurden kann können muss müssen soll sollen darf dürfen auch noch schon immer nie sehr mehr weniger viel wenig alle alle jeder jede jedes diese dieser dieses jener jene man nicht doch nur selbst' },
+  de:{ name:'Deutsch', words:'der die das den dem des ein eine einen einem eines einer und oder aber denn weil wenn als wie dass ob für mit von zu aus bei nach über unter zwischen durch gegen ohne um in an auf vor hinter neben ist sind war waren sein haben hat hatte hatten werden wurde wurden kann können muss müssen soll sollen darf dürfen auch noch schon immer nie sehr mehr weniger viel wenig alle alle jeder jede jedes diese dieser dieses jener jene man nicht doch nur selbst' },
   pt:{ name:'Português', words:'o a os as um uma uns umas de do da dos das e ou mas porque por para com sem em no na nos nas ao aos à às pelo pela pelos pelas que quem cujo como quando onde se não mais menos muito pouco todo toda todos todas este esta estes estas esse essa esses essas aquele aquela aqueles aquelas eu tu ele ela nós vós eles elas me te se nos vos lhe lhes é são era foram ser estar haver há houve tinha tem fazer pode podem deve devem também ainda já sempre nunca mesmo outro outra bem' },
   nl:{ name:'Nederlands', words:'de het een en of maar want omdat als dan dat die deze dit van voor met door naar bij uit over onder tussen tegen zonder om in op aan is zijn was waren hebben heeft had kan kunnen moet moeten zal zullen ook nog al altijd nooit zeer meer minder veel weinig alle elk ieder niet toch alleen zelf' },
   ru:{ name:'Русский', words:'и в во не что он на я с со как а то все она так его но да ты к у же вы за бы по только ее мне было вот от меня еще нет о из ему теперь когда даже ну вдруг ли если уже или ни быть был него до вас опять уж вам ведь там потом себя ничего ей может они тут где есть надо ней для мы тебя их чем была сам чтоб без будто чего раз тоже себе под будет ж тогда кто этот того потому этого какой совсем ним здесь этом один почти мой тем чтобы нее сейчас были куда зачем всех никогда можно при наконец два об другой хоть после над больше тот через эти нас про всего них какая много разве три эту моя впрочем хорошо свою этой перед иногда лучше чуть том нельзя такой им более всегда конечно всю между' }
@@ -1794,6 +1794,11 @@ function bindEvents() {
   $('btnTheme').addEventListener('click', () => {
     const cur = document.documentElement.dataset.theme;
     setTheme(cur === 'dark' ? 'light' : 'dark');
+    // In PWA iOS la status bar non può essere aggiornata dinamicamente.
+    // Avvisiamo l'utente che si adeguerà alla prossima apertura.
+    if (isStandalonePWA()) {
+      toast('Tema aggiornato. La status bar si adegua alla prossima apertura.', 2800);
+    }
     vibrate(5);
   });
   $('btnShare').addEventListener('click', shareOrExport);
@@ -1941,11 +1946,13 @@ function bindEvents() {
   $('libSearch').addEventListener('input', e => renderLibrary(e.target.value));
   $('scrollAnnotate').addEventListener('scroll', updateReadProgress, { passive: true });
 
-  if (!localStorage.getItem(THEME_KEY)) {
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      if (!localStorage.getItem(THEME_KEY)) setTheme(e.matches ? 'dark' : 'light');
-    });
-  }
+  // Segue i cambi di tema del sistema operativo.
+  // In PWA seguiamo sempre il sistema. In Safari, solo se l'utente non ha mai scelto manualmente.
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    if (isStandalonePWA() || !localStorage.getItem(THEME_KEY)) {
+      setTheme(e.matches ? 'dark' : 'light');
+    }
+  });
 }
 
 function runStatOnly() {
@@ -1962,9 +1969,17 @@ function runStatOnly() {
 }
 
 function init() {
-  const savedTheme = localStorage.getItem(THEME_KEY);
-  if (savedTheme) setTheme(savedTheme);
-  else setTheme(window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  // Scelta del tema iniziale:
+  // - In PWA iOS: segui SEMPRE il sistema operativo, per essere coerente con la status bar.
+  //   La preferenza salvata è ignorata, perché comunque la status bar seguirà il sistema.
+  // - In Safari normale: rispetta la preferenza salvata, altrimenti segui il sistema.
+  let initialTheme;
+  if (isStandalonePWA()) {
+    initialTheme = syncWithSystem();
+  } else {
+    initialTheme = localStorage.getItem(THEME_KEY) || syncWithSystem();
+  }
+  setTheme(initialTheme);
 
   let restored = false;
   try {
