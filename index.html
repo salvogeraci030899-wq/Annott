@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" id="metaStatusBar" content="default">
 <meta name="apple-mobile-web-app-title" content="ANNOTT">
-<title>ANNOTT · lettura strutturata</title>
+<title>ANNOTT</title>
 <style>
 :root{
   color-scheme: light;
@@ -1321,12 +1321,12 @@ function runSearch(q) {
   clearSearchHits();
   if (!q || q.length < 2) return;
   const out = $('output');
-  const re = new Reg `<Exp(escapeRE(q), 'gi');
-span  const class walker = document.createTreeWalker(out, NodeFilter.SHOW_TEXT, null);
-="  const nodes = [];
+  const re = new RegExp(escapeRE(q), 'gi');
+  const walker = document.createTreeWalker(out, NodeFilter.SHOW_TEXT, null);
+  const nodes = [];
   let n;
-  while ((n = walker.nextNode()))bad nodes.push(n);
-ge  manual for (const node of nodes) {
+  while ((n = walker.nextNode())) nodes.push(n);
+  for (const node of nodes) {
     const s = node.nodeValue;
     let m; re.lastIndex = 0;
     const matches = [];
@@ -1382,7 +1382,7 @@ function renderLibrary(filter = '') {
     const date = new Date(it.updatedAt).toLocaleDateString('it-IT', { day:'2-digit', month:'short' });
     const snippet = it.text.slice(0, 160).replace(/\s+/g, ' ');
     const manualCount = (it.manualAdds || []).length;
-    const manualBadge = manualCount ?">+${manualCount} ✎</span>` : '';
+    const manualBadge = manualCount ? `<span class="badge manual">+${manualCount} ✎</span>` : '';
     el.innerHTML = `
       <div class="row1">
         ${manualBadge}
@@ -1906,3 +1906,106 @@ function bindEvents() {
         const item = new ClipboardItem({
           'text/plain': new Blob([$('output').innerText], { type: 'text/plain' }),
           'text/html': new Blob([html], { type: 'text/html' })
+        });
+        await navigator.clipboard.write([item]);
+      } else await navigator.clipboard.writeText($('output').innerText);
+      toast('Copiato');
+    } catch { toast('Copia non disponibile'); }
+  });
+
+  $('btnCancelSave').addEventListener('click', () => closeModal('modalSave'));
+  $('btnConfirmSave').addEventListener('click', confirmSave);
+  $('saveTitle').addEventListener('keydown', e => { if (e.key === 'Enter') confirmSave(); });
+  $('btnCancelConfirm').addEventListener('click', () => closeModal('modalConfirm'));
+
+  $('btnCancelAI').addEventListener('click', () => closeModal('modalAISetup'));
+  $('btnConfirmAI').addEventListener('click', async () => {
+    closeModal('modalAISetup');
+    const wasReady = ai.ready;
+    const modelChanged = ai.readyModelKey !== ai.modelKey;
+    if (wasReady && !modelChanged) { if (state.text.trim()) runAnalyze(); return; }
+    await initAI(ai.modelKey);
+  });
+
+  $('searchInput').addEventListener('input', e => runSearch(e.target.value));
+  $('btnSearchClose').addEventListener('click', () => {
+    $('searchBar').style.display = 'none';
+    clearSearchHits();
+  });
+  $('searchCount').addEventListener('click', () => {
+    if (!state.searchHits.length) return;
+    state.searchIdx = (state.searchIdx + 1) % state.searchHits.length;
+    focusHit();
+  });
+
+  $('libSearch').addEventListener('input', e => renderLibrary(e.target.value));
+  $('scrollAnnotate').addEventListener('scroll', updateReadProgress, { passive: true });
+
+  if (!localStorage.getItem(THEME_KEY)) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (!localStorage.getItem(THEME_KEY)) setTheme(e.matches ? 'dark' : 'light');
+    });
+  }
+}
+
+function runStatOnly() {
+  const text = state.text;
+  if (!text.trim()) return;
+  const result = analyzeStatistical(text);
+  state.spans = result.spans;
+  state.lang = result.lang;
+  state.lastStats = computeCategoryStats(text, result.spans);
+  state.aiApplied = false;
+  redrawOutput();
+  renderStats();
+  renderLegend();
+}
+
+function init() {
+  const savedTheme = localStorage.getItem(THEME_KEY);
+  if (savedTheme) setTheme(savedTheme);
+  else setTheme(window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+  let restored = false;
+  try {
+    const s = JSON.parse(localStorage.getItem(SES_KEY) || 'null');
+    if (s && s.text && Date.now() - s.ts < 1000*60*60*24*7) {
+      state.text = s.text;
+      state.manualAdds = Array.isArray(s.manualAdds) ? s.manualAdds : [];
+      state.manualRemoves = Array.isArray(s.manualRemoves) ? s.manualRemoves : [];
+      $('input').value = s.text;
+      restored = true;
+    }
+  } catch {}
+
+  if (!restored) {
+    const sample = `La Rivoluzione Francese, iniziata nel 1789 con la presa della Bastiglia, rappresentò un momento di rottura con l'Antico Regime. Le cause furono molteplici: la crisi finanziaria dello Stato, le cattive condizioni di vita del Terzo Stato e la diffusione delle idee illuministe.
+
+Di conseguenza, il 14 luglio 1789 il popolo parigino insorse contro la monarchia. La Dichiarazione dei Diritti dell'Uomo e del Cittadino, approvata nell'agosto dello stesso anno, costituisce uno dei documenti fondamentali della storia moderna.
+
+Napoleone Bonaparte prese il potere nel 1799 con il colpo di stato del 18 brumaio, ponendo fine alla fase rivoluzionaria. Il Consolato, instaurato nel 1799, diede origine a un nuovo ordine istituzionale che portò alla proclamazione dell'impero nel 1804.`;
+    state.text = sample;
+    $('input').value = sample;
+  }
+
+  updateControlsToggle();
+  renderLegend();
+  bindEvents();
+  initResize();
+  updateAIButton();
+
+  if (ai.hasEverDownloaded) {
+    setTimeout(() => {
+      if (hasWebGPU()) initAI(ai.modelKey);
+      else updateAIButton();
+    }, 800);
+  } else {
+    runStatOnly();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+</body>
+</html>
