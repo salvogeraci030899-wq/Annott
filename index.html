@@ -1954,4 +1954,18 @@ Napoleone Bonaparte prese il potere nel 1799 con il colpo di stato del 18 brumai
   initResize();
   updateAIButton();
 
-  if (ai.hasEver
+  if (ai.hasEverDownloaded) {
+    setTimeout(() => {
+      if (hasWebGPU()) initAI(ai.modelKey);
+      else updateAIButton();
+    }, 800);
+  } else {
+    runStatOnly();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+</body>
+</html>
