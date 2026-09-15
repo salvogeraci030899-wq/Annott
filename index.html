@@ -1619,4 +1619,379 @@ function saveToLibrary() {
 
 function confirmSave() {
   const title = $('saveTitle').value.trim() || state.text.trim().slice(0, 60).replace(/\s+/g, ' ');
-  const cov =
+  const cov = computeCoverage(state.text, state.spans, state.activeCats);
+  if (state.currentLibId) {
+    const it = state.library.find(x => x.id === state.currentLibId);
+    if (it) Object.assign(it, {
+      title, text: state.text, lang: state.lang, aiApplied: state.aiApplied,
+      pct: cov.pct, updatedAt: Date.now()
+    });
+  } else {
+    const id = uid();
+    state.library.push({
+      id, title, text: state.text, lang: state.lang, aiApplied: state.aiApplied,
+      pct: cov.pct, createdAt: Date.now(), updatedAt: Date.now()
+    });
+    state.currentLibId = id;
+  }
+  saveLibrary(state.library);
+  closeModal('modalSave');
+  toast('Salvato in libreria');
+  vibrate(10);
+}
+
+async function shareOrExport() {
+  if (!state.text.trim()) { toast('Nulla da condividere'); return; }
+  const html = buildExportHTML();
+  const blob = new Blob([html], { type: 'text/html' });
+  const file = new File([blob], `annotazione-${Date.now()}.html`, { type: 'text/html' });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({ files: [file], title: 'Annotazione', text: state.text.slice(0, 120) });
+      return;
+    } catch {}
+  }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `annotazione-${Date.now()}.html`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('File esportato');
+}
+
+function buildExportHTML() {
+  const annotated = renderAnnotated(state.text, state.spans, state.activeCats);
+  const langName = state.lang === 'cjk' ? 'CJK' : ((LANG_PROFILES[state.lang] && LANG_PROFILES[state.lang].name) || 'English');
+  const model = AI_MODELS[ai.modelKey];
+  const aiNote = state.aiApplied ? ` · validato con ${model.label}` : '';
+  const styles = `
+    body{font-family:Georgia,serif;max-width:720px;margin:32px auto;padding:0 20px;line-height:1.8;font-size:1.08rem;color:#1b1815;background:#faf7f2}
+    h1{font-size:1.1rem;font-family:system-ui;color:#8a8178;font-weight:600;margin-bottom:4px}
+    .meta{font-family:system-ui;font-size:.78rem;color:#8a8178;margin-bottom:24px}
+    mark{padding:1px 0;border-radius:3px;background:transparent;color:inherit}
+    mark.c-num{background:#ffe680} mark.c-name{background:#d9b8ff}
+    mark.c-key{background:#b6e6b6} mark.c-quote{background:#ffc1cf}
+    mark.c-list{background:#a9d8ff} mark.c-def{background:#ffe0b6}
+    mark.c-sentence{background:rgba(255,201,160,.45)}
+  `;
+  return `<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Annotazione</title>
+<style>${styles}</style></head><body>
+<h1>Annota</h1>
+<div class="meta">${new Date().toLocaleString('it-IT')} · Lingua: ${langName}${aiNote}</div>
+<div>${annotated}</div>
+</body></html>`;
+}
+
+function switchView(v) {
+  state.view = v;
+  document.querySelectorAll('.view').forEach(el => el.classList.toggle('active', el.id === 'view-' + v));
+  document.querySelectorAll('.tabbar .tab').forEach(t => t.classList.toggle('active', t.dataset.view === v));
+  if (v === 'library') renderLibrary($('libSearch').value);
+}
+
+function setTheme(t) {
+  document.documentElement.dataset.theme = t;
+  localStorage.setItem(THEME_KEY, t);
+  applyThemeToMeta(t);
+}
+
+function toggleSearch() {
+  const bar = $('searchBar');
+  const on = bar.style.display === 'none';
+  bar.style.display = on ? 'flex' : 'none';
+  if (on) setTimeout(() => $('searchInput').focus(), 80);
+  else { $('searchInput').value = ''; clearSearchHits(); }
+}
+
+function updateReadProgress() {
+  const el = $('scrollAnnotate');
+  const max = el.scrollHeight - el.clientHeight;
+  const p = max > 0 ? (el.scrollTop / max) * 100 : 0;
+  $('readProgress').style.width = p + '%';
+}
+
+function renderModelList() {
+  const box = $('modelList');
+  box.innerHTML = '';
+  for (const [key, m] of Object.entries(AI_MODELS)) {
+    const el = document.createElement('div');
+    el.className = 'model-option' + (key === ai.modelKey ? ' selected' : '');
+    el.innerHTML = `
+      <span class="radio"></span>
+      <div class="info">
+        <div class="name">${m.label}<span class="sz">${m.size}</span></div>
+        <div class="desc">${m.desc}</div>
+      </div>
+    `;
+    el.addEventListener('click', () => {
+      ai.modelKey = key;
+      renderModelList();
+      vibrate(5);
+    });
+    box.appendChild(el);
+  }
+}
+
+function openModelPicker() {
+  if (ai.loading) return;
+  renderModelList();
+  if (ai.hasEverDownloaded) {
+    $('aiSetupTitle').textContent = 'Cambia modello AI';
+    $('aiSetupDesc').textContent = 'Il nuovo modello verrà scaricato (una sola volta). Il vecchio verrà rimosso dalla memoria.';
+    $('btnConfirmAI').textContent = 'Cambia modello';
+  } else {
+    $('aiSetupTitle').textContent = 'Scegli il modello AI';
+    $('aiSetupDesc').textContent = 'Scaricato una sola volta, resta sul dispositivo. Funziona offline. Scegli in base alla potenza del tuo iPhone.';
+    $('btnConfirmAI').textContent = 'Scarica e attiva';
+  }
+  openModal('modalAISetup');
+}
+
+function bindEvents() {
+  $('btnTheme').addEventListener('click', () => {
+    const cur = document.documentElement.dataset.theme;
+    setTheme(cur === 'dark' ? 'light' : 'dark');
+    vibrate(5);
+  });
+  $('btnShare').addEventListener('click', shareOrExport);
+
+  document.querySelectorAll('.tabbar .tab').forEach(t => {
+    t.addEventListener('click', () => { switchView(t.dataset.view); vibrate(5); });
+  });
+
+  const input = $('input');
+  let timer = null;
+  input.addEventListener('input', () => {
+    state.text = input.value;
+    state.currentLibId = null;
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      if (state.text.trim().length > 60) {
+        if (ai.ready) runAnalyze();
+        else runStatOnly();
+      }
+    }, 500);
+  });
+
+  const btnAI = $('btnAI');
+  let longPressTimer = null;
+  let longPressFired = false;
+
+  const cancelLongPress = () => {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      longPressTimer = null;
+    }
+  };
+
+  btnAI.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    longPressFired = false;
+    cancelLongPress();
+    longPressTimer = setTimeout(() => {
+      longPressFired = true;
+      vibrate(20);
+      openModelPicker();
+    }, 500);
+  });
+
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => {
+    btnAI.addEventListener(ev, cancelLongPress);
+  });
+
+  btnAI.addEventListener('contextmenu', e => e.preventDefault());
+
+  btnAI.addEventListener('click', async e => {
+    if (longPressFired) {
+      e.preventDefault();
+      e.stopPropagation();
+      longPressFired = false;
+      return;
+    }
+    if (ai.loading) return;
+
+    if (!ai.ready) {
+      openModelPicker();
+      return;
+    }
+
+    btnAI.classList.add('busy');
+    requestAnimationFrame(() => {
+      setTimeout(async () => {
+        await runAnalyze();
+        btnAI.classList.remove('busy');
+        vibrate(10);
+      }, 10);
+    });
+  });
+
+  // Tasto modifica
+  $('btnEdit').addEventListener('click', () => { toggleEditMode(); });
+
+  // Click sull'output in modalità edit
+  $('output').addEventListener('click', onOutputClick);
+
+  $('btnPaste').addEventListener('click', async () => {
+    try {
+      const t = await navigator.clipboard.readText();
+      if (t) {
+        input.value = t;
+        state.text = t;
+        state.currentLibId = null;
+        if (ai.ready) runAnalyze();
+        else runStatOnly();
+        vibrate(8);
+      } else {
+        toast('Appunti vuoti');
+      }
+    } catch {
+      toast('Incolla manualmente (tieni premuto nel campo)');
+    }
+  });
+
+  $('btnClear').addEventListener('click', () => {
+    input.value = '';
+    state.text = '';
+    state.spans = [];
+    state.currentLibId = null;
+    state.lastStats = null;
+    state.aiApplied = false;
+    $('output').innerHTML = '';
+    $('stats').style.display = 'none';
+    $('langBadge').classList.remove('show');
+    setAIStatus('hidden');
+    localStorage.removeItem(SES_KEY);
+    vibrate(10);
+  });
+
+  $('btnSaveLib').addEventListener('click', saveToLibrary);
+  $('btnReading').addEventListener('click', () => {
+    if (state.editMode) toggleEditMode();
+    document.body.classList.add('reading');
+    window.scrollTo(0, 0);
+    document.documentElement.requestFullscreen?.().catch(()=>{});
+  });
+  $('btnExitReading').addEventListener('click', () => {
+    document.body.classList.remove('reading');
+    document.exitFullscreen?.().catch(()=>{});
+  });
+  $('btnSearchOpen').addEventListener('click', toggleSearch);
+  $('btnSearchReading').addEventListener('click', toggleSearch);
+  $('btnCopy').addEventListener('click', async () => {
+    if (!state.text) return;
+    try {
+      const html = buildExportHTML();
+      if (navigator.clipboard && window.ClipboardItem) {
+        const item = new ClipboardItem({
+          'text/plain': new Blob([$('output').innerText], { type: 'text/plain' }),
+          'text/html': new Blob([html], { type: 'text/html' })
+        });
+        await navigator.clipboard.write([item]);
+      } else {
+        await navigator.clipboard.writeText($('output').innerText);
+      }
+      toast('Copiato');
+    } catch { toast('Copia non disponibile'); }
+  });
+
+  $('btnCancelSave').addEventListener('click', () => closeModal('modalSave'));
+  $('btnConfirmSave').addEventListener('click', confirmSave);
+  $('saveTitle').addEventListener('keydown', e => { if (e.key === 'Enter') confirmSave(); });
+  $('btnCancelConfirm').addEventListener('click', () => closeModal('modalConfirm'));
+
+  $('btnCancelAI').addEventListener('click', () => closeModal('modalAISetup'));
+  $('btnConfirmAI').addEventListener('click', async () => {
+    closeModal('modalAISetup');
+    const wasReady = ai.ready;
+    const modelChanged = ai.readyModelKey !== ai.modelKey;
+    if (wasReady && !modelChanged) {
+      if (state.text.trim()) runAnalyze();
+      return;
+    }
+    await initAI(ai.modelKey);
+  });
+
+  $('searchInput').addEventListener('input', e => runSearch(e.target.value));
+  $('btnSearchClose').addEventListener('click', () => {
+    $('searchBar'). (style.display = 'none';
+    clearSearchHits();
+ a });
+  $('searchCount').addEventListener('click', () => {
+    if (!state.searchHits.length) return;
+    state.searchIdx = (state.searchIdx + 1) % state.searchHits.length;
+    focusHit();
+  });
+
+  $('libSearch').addEventListener('input', e => renderLibrary(e.target.value));
+  $('scrollAnnotate').addEventListener('scroll', updateReadProgress, { passive: true });
+
+  if (!localStorage.getItem(THEME_KEY)) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (!localStorage.getItem(THEME_KEY)) {
+        setTheme(e.matches ? 'dark' : 'light');
+      }
+    });
+  }
+}
+
+function runStatOnly() {
+  const text = state.text;
+  if (!text.trim()) return;
+  const result = analyzeStatistical(text);
+  state.spans = result.spans;
+  state.lang = result.lang;
+  state.lastStats = computeCategoryStats(text, result.spans);
+  state.aiApplied = false;
+  redrawOutput();
+  renderStats();
+  renderLegend();
+  const badge = $('langBadge');
+  badge.textContent = result.lang === 'cjk' ? 'CJK' : (LANG_PROFILES[result.lang]?.name || 'EN');
+  badge.classList.add('show');
+}
+
+function init() {
+  const savedTheme = localStorage.getItem(THEME_KEY);
+  if (savedTheme) setTheme(savedTheme);
+  else setTheme(window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+  let restored = false;
+  try {
+    const s = JSON.parse(localStorage.getItem(SES_KEY) || 'null');
+    if (s && s.text && Date.now() - s.ts < 1000*60*60*24*7) {
+      state.text = s.text;
+      $('input').value = s.text;
+      restored = true;
+    }
+  } catch {}
+
+  if (!restored) {
+    const sample = `La Rivoluzione Francese, iniziata nel 1789 con la presa della Bastiglia, rappresentò un momento di rottura con l'Antico Regime. Le cause furono molteplici: la crisi finanziaria dello Stato, le cattive condizioni di vita del Terzo Stato e la diffusione delle idee illuministe.
+
+Di conseguenza, il 14 luglio 1789 il popolo parigino insorse contro la monarchia. La Dichiarazione dei Diritti dell'Uomo e del Cittadino, approvata nell'agosto dello stesso anno, costituisce uno dei documenti fondamentali della storia moderna.
+
+Napoleone Bonaparte prese il potere nel 1799 con il colpo di stato del 18 brumaio, ponendo fine alla fase rivoluzionaria. Il Consolato, instaurato nel 1799, diede origine a un nuovo ordine istituzionale che portò alla proclamazione dell'Impero nel 1804.`;
+    state.text = sample;
+    $('input').value = sample;
+  }
+
+  renderLegend();
+  bindEvents();
+  initResize();
+  updateAIButton();
+
+  if (ai.hasEverDownloaded) {
+    setTimeout(() => {
+      if (hasWebGPU()) initAI(ai.modelKey);
+      else updateAIButton();
+    }, 800);
+  } else {
+    runStatOnly();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+</body>
+</html>
