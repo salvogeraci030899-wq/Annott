@@ -53,24 +53,25 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px 16px}
 .wrap{max-width:720px;margin:0 auto}
 
-.bottom-bar{
+/* Barra dei controlli: ora SOPRA lo scroll, subito sotto la topbar */
+.top-controls{
   flex:0 0 auto;
   background:color-mix(in srgb,var(--bg) 96%,transparent);
   backdrop-filter:saturate(180%) blur(14px);
   -webkit-backdrop-filter:saturate(180%) blur(14px);
-  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
   padding:8px 14px;
   z-index:25;
   overflow:hidden;
   max-height:400px;
   transition:max-height .25s ease, padding .25s ease, border .25s ease, opacity .2s ease;
 }
-.bottom-bar .inner{max-width:720px;margin:0 auto}
-body.controls-hidden .bottom-bar{
+.top-controls .inner{max-width:720px;margin:0 auto}
+body.controls-hidden .top-controls{
   max-height:0;
   padding-top:0;
   padding-bottom:0;
-  border-top-color:transparent;
+  border-bottom-color:transparent;
   opacity:0;
   pointer-events:none;
 }
@@ -221,14 +222,13 @@ body.edit-mode .output-card{cursor:crosshair}
 .model-option.selected .name{color:var(--ai)}
 .model-option.selected .desc{color:color-mix(in srgb,var(--ai) 70%,var(--ink-2))}
 
-.toast{position:fixed;left:50%;bottom:calc(160px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:.88rem;font-weight:500;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:200;box-shadow:var(--shadow);max-width:90vw;text-align:center}
+.toast{position:fixed;left:50%;bottom:calc(80px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:.88rem;font-weight:500;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:200;box-shadow:var(--shadow);max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-body.controls-hidden .toast{bottom:calc(90px + env(safe-area-inset-bottom))}
 .tabbar{position:sticky;bottom:0;z-index:30;display:flex;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom);flex:0 0 auto}
 .tabbar .tab{flex:1;padding:10px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ink-3);font-size:.68rem;font-weight:600;transition:color .15s}
 .tabbar .tab svg{width:22px;height:22px}
 .tabbar .tab.active{color:var(--ai)}
-body.reading .topbar,body.reading .tabbar,body.reading .input-card,body.reading .actions,body.reading .bottom-bar,body.reading .stats,body.reading .ai-bar{display:none !important}
+body.reading .topbar,body.reading .tabbar,body.reading .input-card,body.reading .actions,body.reading .top-controls,body.reading .stats,body.reading .ai-bar{display:none !important}
 body.reading .scroll{padding:10px 16px 16px}
 body.reading .output-card{font-size:1.18rem;padding:24px 22px;border-radius:0;border:none;box-shadow:none;background:var(--bg)}
 .reading-bar{display:none;position:sticky;top:0;z-index:40;padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top));background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);align-items:center;gap:10px;flex:0 0 auto}
@@ -268,51 +268,8 @@ body.reading .reading-bar{display:flex}
       </button>
     </div>
 
-    <div class="scroll" id="scrollAnnotate">
-      <div class="wrap">
-        <div class="input-card">
-          <textarea id="input" placeholder="Incolla qui il testo da annotare… (qualsiasi lingua)" spellcheck="false"></textarea>
-          <div class="resize-handle" id="resizeHandle" title="Trascina per allungare" aria-label="Trascina per allungare">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="8 9 12 5 16 9"/><line x1="12" y1="5" x2="12" y2="19"/><polyline points="8 15 12 19 16 15"/>
-            </svg>
-          </div>
-        </div>
-
-        <div class="actions">
-          <button class="btn btn-ai-main" id="btnAI" aria-label="Annota">
-            <svg class="ai-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"/>
-              <path d="M19 17l.9 2.1L22 20l-2.1.9L19 23l-.9-2.1L16 20l2.1-.9L19 17z"/>
-              <path d="M5 17l.7 1.8L7.5 19.5 5.7 20.2 5 22l-.7-1.8L2.5 19.5 4.3 18.8 5 17z"/>
-            </svg>
-          </button>
-          <button class="btn ghost icon-only" id="btnPaste" title="Incolla" aria-label="Incolla">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="8" y="2" width="8" height="4" rx="1"/>
-              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
-            </svg>
-          </button>
-          <button class="btn ghost icon-only danger-icon" id="btnClear" title="Pulisci" aria-label="Pulisci">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>
-            </svg>
-          </button>
-        </div>
-
-        <div class="ai-bar" id="aiBar">
-          <span class="spinner" id="aiSpinner"></span>
-          <span class="msg" id="aiMsg">Preparazione AI…</span>
-          <span class="pct" id="aiPct"></span>
-        </div>
-
-        <div class="output-card" id="output"></div>
-
-        <div class="stats" id="stats" style="display:none"></div>
-      </div>
-    </div>
-
-    <div class="bottom-bar" id="bottomBar">
+    <!-- Barra controlli SOPRA lo scroll -->
+    <div class="top-controls" id="topControls">
       <div class="inner">
         <div class="edit-hint">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
@@ -356,6 +313,50 @@ body.reading .reading-bar{display:flex}
             Copia
           </button>
         </div>
+      </div>
+    </div>
+
+    <div class="scroll" id="scrollAnnotate">
+      <div class="wrap">
+        <div class="input-card">
+          <textarea id="input" placeholder="Incolla qui il testo da annotare… (qualsiasi lingua)" spellcheck="false"></textarea>
+          <div class="resize-handle" id="resizeHandle" title="Trascina per allungare" aria-label="Trascina per allungare">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="8 9 12 5 16 9"/><line x1="12" y1="5" x2="12" y2="19"/><polyline points="8 15 12 19 16 15"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-ai-main" id="btnAI" aria-label="Annota">
+            <svg class="ai-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"/>
+              <path d="M19 17l.9 2.1L22 20l-2.1.9L19 23l-.9-2.1L16 20l2.1-.9L19 17z"/>
+              <path d="M5 17l.7 1.8L7.5 19.5 5.7 20.2 5 22l-.7-1.8L2.5 19.5 4.3 18.8 5 17z"/>
+            </svg>
+          </button>
+          <button class="btn ghost icon-only" id="btnPaste" title="Incolla" aria-label="Incolla">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="8" y="2" width="8" height="4" rx="1"/>
+              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+            </svg>
+          </button>
+          <button class="btn ghost icon-only danger-icon" id="btnClear" title="Pulisci" aria-label="Pulisci">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="ai-bar" id="aiBar">
+          <span class="spinner" id="aiSpinner"></span>
+          <span class="msg" id="aiMsg">Preparazione AI…</span>
+          <span class="pct" id="aiPct"></span>
+        </div>
+
+        <div class="output-card" id="output"></div>
+
+        <div class="stats" id="stats" style="display:none"></div>
       </div>
     </div>
   </section>
@@ -1107,12 +1108,10 @@ function updateControlsToggle() {
   const icon = $('iconToggleControls');
   const btn = $('btnToggleControls');
   if (state.controlsHidden) {
-    // chevron verso l'alto: clicca per mostrare
     icon.innerHTML = '<polyline points="18 15 12 9 6 15"/>';
     btn.classList.remove('on');
     btn.title = 'Mostra controlli';
   } else {
-    // chevron verso il basso: clicca per nascondere
     icon.innerHTML = '<polyline points="6 9 12 15 18 9"/>';
     btn.classList.add('on');
     btn.title = 'Nascondi controlli';
@@ -1121,9 +1120,7 @@ function updateControlsToggle() {
 
 function toggleControls() {
   state.controlsHidden = !state.controlsHidden;
-  // Se nascondo la barra mentre sono in modalità modifica, esco dalla modalità
   if (state.controlsHidden && state.editMode) toggleEditMode();
-  // Se nascondo la barra mentre la ricerca è aperta, la chiudo
   if (state.controlsHidden) {
     const bar = $('searchBar');
     if (bar.style.display !== 'none') {
@@ -1629,7 +1626,6 @@ function setTheme(t) {
 
 function toggleSearch() {
   const bar = $('searchBar');
-  // Se i controlli sono nascosti, mostrali prima di aprire la ricerca
   if (state.controlsHidden) {
     state.controlsHidden = false;
     try { localStorage.setItem(CONTROLS_KEY, 'false'); } catch {}
