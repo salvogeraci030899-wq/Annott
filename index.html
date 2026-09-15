@@ -154,7 +154,6 @@ mark.c-sentence{background:var(--c-sentence)}
 .modal .input-name{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border-2);background:var(--surface-2);font-size:16px;outline:none;margin-bottom:12px}
 .modal .row-actions{display:flex;gap:8px;margin-top:12px}
 
-/* Model picker */
 .model-list{display:flex;flex-direction:column;gap:8px;margin:14px 0 4px}
 .model-option{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface-2);cursor:pointer;transition:all .15s;user-select:none;-webkit-user-select:none}
 .model-option:active{transform:scale(.99)}
@@ -517,18 +516,77 @@ function findBigrams(tokens, stopwords) {
   return bigrams;
 }
 
+/* ───── NUMERI E DATE — versione corretta ─────
+   Le date complete diventano un unico span.
+   I numeri si estendono solo su unità di misura reali (whitelist).
+   Gli articoli e le parole funzionali non vengono più inglobati. */
+
+const UNIT_WHITELIST = new Set([
+  '%','‰','°','°c','°f','°k','€','$','£','¥',
+  'km','hm','dam','dm','cm','mm','nm','µm','mi','ft','yd','in',
+  'kg','hg','dag','dg','cg','mg','lb','oz','t','q',
+  'l','dl','cl','ml','hl','gal','pt','qt','fl',
+  'h','min','s','ms','µs','ns',
+  'ore','ora','minuti','minuto','secondi','secondo',
+  'giorni','giorno','settimane','settimana','mesi','mese',
+  'anni','anno','secoli','secolo','millenni','millennio','decenni','decennio',
+  'hours','hour','minutes','minute','seconds','second','days','day',
+  'weeks','week','months','month','years','year','centuries','century',
+  'jahr','jahre','tag','tage','woche','wochen','monat','monate','jahrhundert','jahrhunderte',
+  'heure','heures','jour','jours','semaine','semaines','mois','an','ans','année','années','siècle','siècles',
+  'hora','horas','día','días','dias','semana','semanas','mes','meses','año','años','siglo','siglos',
+  'j','kj','mj','w','kw','mw','v','kv','a','ma','hz','khz','mhz','ghz',
+  'pa','kpa','mpa','n','kn','mol','mmhg','atm',
+  'b','kb','mb','gb','tb','pb','bit','byte','pixel','px',
+  'usd','eur','gbp','jpy','chf'
+]);
+
+const MONTHS_RE = '(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre|january|february|march|april|may|june|july|august|september|october|november|december|janvier|février|fevrier|mars|avril|mai|juin|juillet|août|aout|septembre|octobre|novembre|décembre|decembre|enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre|janeiro|fevereiro|março|marco|maio|junho|julho|setembro|outubro|novembro|dezembro|januar|februar|märz|maerz|juni|juli|august|september|oktober|november|dezember)';
+
 function findNumbers(text) {
   const spans = [];
-  const re = /(?<![\p{L}\p{M}])\d+(?:[.,]\d+)*(?:\s*(?:%|‰))?(?:\s*[\p{L}]{1,6})?(?![\p{L}\p{M}])/gu;
+  const used = new Uint8Array(text.length);
   let m;
-  while ((m = re.exec(text)) !== null) {
-    if (m[0].trim().length === 0) continue;
+
+  // ── 1. Date complete: "14 luglio 1789" o "July 14, 1789" ──
+  const dateRe = new RegExp(
+    '\\b\\d{1,2}\\s+' + MONTHS_RE + '\\s+\\d{3,4}\\b' +
+    '|\\b' + MONTHS_RE + '\\s+\\d{1,2}(?:,)?\\s+\\d{3,4}\\b',
+    'giu'
+  );
+  while ((m = dateRe.exec(text)) !== null) {
     spans.push({ start: m.index, end: m.index + m[0].length, cat: 'num', w: 5 });
+    for (let i = m.index; i < m.index + m[0].length; i++) used[i] = 1;
   }
-  const romanRe = /(?<![\p{L}\p{M}])[IVXLCDM]{2,}(?![\p{L}\p{M}])/g;
+
+  // ── 2. Numeri con eventuale unità di misura (solo whitelist) ──
+  const numRe = /(?<![\p{L}\p{M}])\d+(?:[.,]\d+)*(?:\s*(?:%|‰))?(?![\p{L}\p{M}])/gu;
+  while ((m = numRe.exec(text)) !== null) {
+    if (used[m.index]) continue;
+    const start = m.index;
+    let end = m.index + m[0].length;
+
+    // Estendi SOLO se la parola successiva è una vera unità di misura
+    const after = text.slice(end);
+    const unitMatch = after.match(/^\s*([a-zA-ZÀ-ÿ°µ€$£¥]{1,6})\b/);
+    if (unitMatch) {
+      const unit = unitMatch[1].toLowerCase();
+      if (UNIT_WHITELIST.has(unit)) {
+        end += unitMatch[0].length;
+      }
+    }
+    spans.push({ start, end, cat: 'num', w: 5 });
+    for (let i = start; i < end; i++) used[i] = 1;
+  }
+
+  // ── 3. Numeri romani (min 3 caratteri, per evitare MI/CD/CV) ──
+  const romanRe = /(?<![\p{L}\p{M}])[IVXLCDM]{3,}(?![\p{L}\p{M}])/g;
   while ((m = romanRe.exec(text)) !== null) {
+    if (used[m.index]) continue;
     spans.push({ start: m.index, end: m.index + m[0].length, cat: 'num', w: 4 });
+    for (let i = m.index; i < m.index + m[0].length; i++) used[i] = 1;
   }
+
   return spans;
 }
 
@@ -717,7 +775,7 @@ function analyzeStatistical(text) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   LIVELLO AI LOCALE — WebLLM con selettore di modello
+   AI LOCALE — WebLLM
    ═══════════════════════════════════════════════════════════════════ */
 
 const AI_MODELS = {
@@ -733,14 +791,14 @@ const AI_MODELS = {
     label: 'Qwen 1.5B',
     tag: '1.5B',
     size: '~1 GB',
-    desc: 'Bilanciato. Consigliato.'
+    desc: 'Bilanciato. Consigliato. Limite su Safari iOS.'
   },
   qwen3: {
     id: 'Qwen2.5-3B-Instruct-q4f16_1-MLC',
     label: 'Qwen 3B',
     tag: '3B',
     size: '~1.8 GB',
-    desc: 'Massima qualità. Richiede iPhone Pro o iPad recenti.'
+    desc: 'Massima qualità. Solo desktop o iPad recenti.'
   },
   llama3: {
     id: 'Llama-3.2-3B-Instruct-q4f16_1-MLC',
@@ -816,11 +874,8 @@ function updateAIButton() {
 
 async function initAI(modelKey) {
   if (ai.loading) return;
-
-  // Se è già caricato lo stesso modello, non ricaricare
   if (ai.ready && ai.readyModelKey === modelKey) return;
 
-  // Se è caricato un altro modello, scarica e ricarica
   if (ai.engine) {
     try { await ai.engine.unload(); } catch {}
     ai.engine = null;
@@ -843,7 +898,6 @@ async function initAI(modelKey) {
 
   try {
     const webllm = await import(AI_CDN);
-
     ai.engine = await webllm.CreateMLCEngine(model.id, {
       initProgressCallback: (report) => {
         ai.progress = report.progress || 0;
@@ -851,7 +905,6 @@ async function initAI(modelKey) {
         setAIStatus('loading', ai.lastStatus, ai.progress);
       }
     });
-
     ai.ready = true;
     ai.readyModelKey = modelKey;
     ai.loading = false;
@@ -895,7 +948,6 @@ function contextForSpan(text, span, sentences) {
   return text.slice(a, b);
 }
 
-/* Prompt migliorato per modelli più grandi */
 function buildValidationPrompt(lang, snippet, context) {
   const prompts = {
     it: `Sei un assistente che aiuta studenti a capire quali concetti di un testo sono davvero importanti.
@@ -960,7 +1012,6 @@ Antwoord:`,
 
 function parseYesNo(response) {
   if (!response) return null;
-  // Prendi solo le prime 30 lettere per evitare che il modello produca testi lunghi
   const upper = response.trim().slice(0, 30).toUpperCase();
   const noWords = ['NO', 'NON', 'NÃO', 'NEE', 'НЕТ', 'NEIN'];
   const yesWords = ['SÌ', 'SI', 'YES', 'OUI', 'SÍ', 'JA', 'ДА'];
@@ -970,7 +1021,6 @@ function parseYesNo(response) {
   for (const w of yesWords) {
     if (upper === w || upper.startsWith(w + ' ') || upper.startsWith(w + '.') || upper.startsWith(w + ',') || upper.startsWith(w + '!')) return true;
   }
-  // Fallback: cerca il primo match
   for (const w of noWords) if (upper.includes(w)) return false;
   for (const w of yesWords) if (upper.includes(w)) return true;
   return null;
@@ -987,7 +1037,6 @@ async function aiValidateSpans(text, spans, lang, sentences) {
   const remainder = conceptSpans.slice(MAX);
   const kept = [];
 
-  // Deduplica per snippet
   const seen = new Map();
   for (const s of toValidate) {
     const snippet = text.slice(s.start, s.end);
@@ -1533,7 +1582,6 @@ function updateReadProgress() {
   $('readProgress').style.width = p + '%';
 }
 
-/* ───── Modello: selettore nella modale ───── */
 function renderModelList() {
   const box = $('modelList');
   box.innerHTML = '';
@@ -1559,7 +1607,6 @@ function renderModelList() {
 async function toggleAI() {
   if (ai.loading) return;
 
-  // Se l'AI è già pronta e attiva, disattivala
   if (ai.enabled && ai.ready) {
     ai.enabled = false;
     localStorage.setItem('annota.ai.enabled', 'false');
@@ -1569,14 +1616,12 @@ async function toggleAI() {
     return;
   }
 
-  // Se non è pronta, mostra la modale di scelta
   if (!ai.ready) {
     renderModelList();
     openModal('modalAISetup');
     return;
   }
 
-  // Pronta ma disattivata → riattivala
   ai.enabled = true;
   localStorage.setItem('annota.ai.enabled', 'true');
   updateAIButton();
