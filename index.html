@@ -102,6 +102,18 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .cat-pill .dot{width:9px;height:9px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.10);flex:0 0 auto}
 .cat-pill.off{opacity:.38;text-decoration:line-through;text-decoration-thickness:1px}
 .cat-pill .count{font-size:.66rem;color:var(--ink-3);font-weight:600;margin-left:1px}
+/* In modalità modifica: la categoria selezionata ha un bordo viola marcato */
+body.edit-mode .cat-pill{cursor:crosshair}
+body.edit-mode .cat-pill.off{opacity:1;text-decoration:none}
+.cat-pill.sel{
+  border-color:var(--ai);
+  background:var(--ai-soft);
+  color:var(--ai);
+  font-weight:700;
+  box-shadow:0 0 0 2px color-mix(in srgb,var(--ai) 25%,transparent);
+}
+.cat-pill.sel .count{color:var(--ai);opacity:.75}
+.cat-pill.sel .dot{box-shadow:inset 0 0 0 1px rgba(0,0,0,.15),0 0 0 2px var(--surface)}
 
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
 .stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 10px}
@@ -121,16 +133,10 @@ button{cursor:pointer;border:none;background:none;padding:0}
 [data-theme="dark"] .ai-bar.ready{background:color-mix(in srgb,var(--c-key) 25%,var(--surface));color:#8fdd9a}
 .ai-bar.error{background:color-mix(in srgb,var(--danger) 15%,var(--surface));color:var(--danger);border-color:color-mix(in srgb,var(--danger) 30%,transparent)}
 
-.edit-bar{display:none;background:color-mix(in srgb,var(--ai) 10%,var(--surface));border:1px solid color-mix(in srgb,var(--ai) 25%,transparent);border-radius:12px;padding:10px 12px;margin-bottom:12px;position:sticky;top:60px;z-index:20;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-.edit-bar.show{display:block}
-.edit-bar .edit-title{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:var(--ai);margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.edit-bar .edit-title svg{width:14px;height:14px}
-.edit-cats{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;padding:2px 0;-webkit-overflow-scrolling:touch}
-.edit-cats::-webkit-scrollbar{display:none}
-.edit-cat{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:999px;font-size:.76rem;font-weight:600;background:var(--surface);border:1.5px solid var(--border);color:var(--ink-2);transition:all .15s;white-space:nowrap;cursor:pointer;user-select:none;-webkit-user-select:none}
-.edit-cat .dot{width:10px;height:10px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15);flex:0 0 auto}
-.edit-cat.on{border-color:var(--ai);background:var(--ai-soft);color:var(--ai);font-weight:700}
-.edit-cat:active{transform:scale(.96)}
+/* Suggerimento in modalità modifica */
+.edit-hint{display:none;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:color-mix(in srgb,var(--ai) 10%,var(--surface));border:1px solid color-mix(in srgb,var(--ai) 22%,transparent);margin-bottom:10px;font-size:.78rem;color:var(--ai);font-weight:500;font-style:italic}
+body.edit-mode .edit-hint{display:flex}
+.edit-hint svg{width:14px;height:14px;flex:0 0 auto;opacity:.85}
 
 .toolbar{display:flex;align-items:center;gap:6px;padding:2px 0 10px;margin-bottom:4px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin-left:-2px;margin-right:-2px}
 .toolbar::-webkit-scrollbar{display:none}
@@ -166,7 +172,6 @@ body.edit-mode .output-card{cursor:crosshair}
 .lib-item:active{transform:scale(.99);background:var(--surface-2)}
 .lib-item .row1{display:flex;align-items:center;gap:8px;margin-bottom:6px}
 .lib-item .badge{font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
-.lib-item .badge.ai{background:var(--ai-soft);color:var(--ai)}
 .lib-item .badge.manual{background:color-mix(in srgb,var(--ai) 20%,var(--surface));color:var(--ai)}
 .lib-item .date{font-size:.78rem;color:var(--ink-3);margin-left:auto}
 .lib-item .title{font-weight:600;font-size:.98rem;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
@@ -201,7 +206,7 @@ body.edit-mode .output-card{cursor:crosshair}
 .tabbar .tab{flex:1;padding:10px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ink-3);font-size:.68rem;font-weight:600;transition:color .15s}
 .tabbar .tab svg{width:22px;height:22px}
 .tabbar .tab.active{color:var(--ai)}
-body.reading .topbar,body.reading .tabbar,body.reading .input-card,body.reading .actions,body.reading .toolbar,body.reading .cats-row,body.reading .stats,body.reading .searchbar,body.reading .ai-bar,body.reading .edit-bar{display:none !important}
+body.reading .topbar,body.reading .tabbar,body.reading .input-card,body.reading .actions,body.reading .toolbar,body.reading .cats-row,body.reading .stats,body.reading .searchbar,body.reading .ai-bar,body.reading .edit-hint{display:none !important}
 body.reading .scroll{padding-top:10px}
 body.reading .output-card{font-size:1.18rem;padding:24px 22px;border-radius:0;border:none;box-shadow:none;background:var(--bg)}
 .reading-bar{display:none;position:sticky;top:0;z-index:40;padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top));background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);align-items:center;gap:10px}
@@ -275,6 +280,12 @@ body.reading .reading-bar{display:flex}
         </div>
 
         <div class="cats-row" id="legend"></div>
+
+        <div class="edit-hint">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          <span>Scegli una categoria e tocca le parole per evidenziarle</span>
+        </div>
+
         <div class="stats" id="stats" style="display:none"></div>
 
         <div class="searchbar" id="searchBar" style="display:none">
@@ -284,14 +295,6 @@ body.reading .reading-bar{display:flex}
           <button class="iconbtn" id="btnSearchClose" style="width:30px;height:30px">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
-        </div>
-
-        <div class="edit-bar" id="editBar">
-          <div class="edit-title">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-            <span>Tocca le parole per evidenziarle</span>
-          </div>
-          <div class="edit-cats" id="editCats"></div>
         </div>
 
         <div class="toolbar" id="toolbar">
@@ -765,8 +768,10 @@ function analyzeStatistical(text) {
 const AI_MODELS = {
   qwen05: { id: 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC', label: 'Qwen 0.5B', tag: '0.5B', size: '~400 MB', desc: 'Velocissimo. Base. Per iPhone più vecchi.' },
   qwen15: { id: 'Qwen2.5-1.5B-Instruct-q4f16_1-MLC', label: 'Qwen 1.5B', tag: '1.5B', size: '~1 GB', desc: 'Bilanciato. Consigliato. Limite su Safari iOS.' },
-  qwen3:  { id: 'Qwen2.5-3B-Instruct-q4f16_1-MLC', label: 'Qwen 3B', tag: '3B', size: '~1.8 GB', desc: 'Massima qualità. Solo desktop o iPad recenti.' },
-  llama3: { id: 'Llama-3.2-3B-Instruct-q4f16_1-MLC', label: 'Llama 3.2 3B', tag: 'L3', size: '~1.9 GB', desc: 'Alternativa a Qwen 3B. Ottimo su testi inglesi.' }
+  qwen3:  { id: 'Qwen2.5-3B-Instruct-q4f16_1-MLC', label: 'Qwen 3B', tag: '3B', size: '~1.8 GB', desc: 'Alta qualità. Mac o iPad recenti.' },
+  llama3: { id: 'Llama-3.2-3B-Instruct-q4f16_1-MLC', label: 'Llama 3.2 3B', tag: 'L3', size: '~1.9 GB', desc: 'Alternativa a Qwen 3B. Ottimo su testi inglesi.' },
+  llama31: { id: 'Llama-3.1-8B-Instruct-q4f16_1-MLC', label: 'Llama 3.1 8B', tag: '8B', size: '~4.5 GB', desc: 'Massima qualità. Solo Mac con 16+ GB RAM.' },
+  qwen7:  { id: 'Qwen2.5-7B-Instruct-q4f16_1-MLC', label: 'Qwen 7B', tag: '7B', size: '~4.5 GB', desc: 'Massima qualità. Solo Mac con 16+ GB RAM.' }
 };
 
 const AI_CDN = 'https://esm.run/@mlc-ai/web-llm';
@@ -1080,40 +1085,40 @@ function saveActiveCats() {
   try { localStorage.setItem(CATS_KEY, JSON.stringify([...state.activeCats])); } catch {}
 }
 
+/* Legenda unificata: doppio comportamento a seconda della modalità */
 function renderLegend() {
   const box = $('legend');
   box.innerHTML = '';
   const catStats = state.lastStats || {};
-  for (const c of CATEGORIES) {
-    const el = document.createElement('button');
-    el.className = 'cat-pill' + (state.activeCats.has(c.id) ? '' : ' off');
-    const count = catStats[c.id] ? `<span class="count">${catStats[c.id].count}</span>` : '';
-    el.innerHTML = `<span class="dot" style="background:var(${c.color})"></span>${c.label}${count}`;
-    el.addEventListener('click', () => {
-      if (state.activeCats.has(c.id)) state.activeCats.delete(c.id);
-      else state.activeCats.add(c.id);
-      saveActiveCats();
-      renderLegend();
-      if (state.spans.length || state.manualAdds.length) { redrawOutput(); renderStats(); }
-      vibrate(5);
-    });
-    box.appendChild(el);
-  }
-}
 
-function renderEditCats() {
-  const box = $('editCats');
-  box.innerHTML = '';
   for (const c of CATEGORIES) {
     const el = document.createElement('button');
-    el.className = 'edit-cat' + (state.editCategory === c.id ? ' on' : '');
-    el.innerHTML = `<span class="dot" style="background:var(${c.color})"></span>${c.label}`;
-    el.addEventListener('click', e => {
-      e.stopPropagation();
-      state.editCategory = c.id;
-      renderEditCats();
-      vibrate(5);
-    });
+
+    if (state.editMode) {
+      // Modalità modifica: tutte le pill sono visibili, la selezionata ha stile viola
+      el.className = 'cat-pill' + (state.editCategory === c.id ? ' sel' : '');
+      el.innerHTML = `<span class="dot" style="background:var(${c.color})"></span>${c.label}`;
+      el.addEventListener('click', e => {
+        e.stopPropagation();
+        state.editCategory = c.id;
+        renderLegend();
+        vibrate(5);
+      });
+    } else {
+      // Modalità normale: on/off visibilità
+      el.className = 'cat-pill' + (state.activeCats.has(c.id) ? '' : ' off');
+      const count = catStats[c.id] ? `<span class="count">${catStats[c.id].count}</span>` : '';
+      el.innerHTML = `<span class="dot" style="background:var(${c.color})"></span>${c.label}${count}`;
+      el.addEventListener('click', () => {
+        if (state.activeCats.has(c.id)) state.activeCats.delete(c.id);
+        else state.activeCats.add(c.id);
+        saveActiveCats();
+        renderLegend();
+        if (state.spans.length || state.manualAdds.length) { redrawOutput(); renderStats(); }
+        vibrate(5);
+      });
+    }
+
     box.appendChild(el);
   }
 }
@@ -1122,11 +1127,11 @@ function toggleEditMode() {
   state.editMode = !state.editMode;
   document.body.classList.toggle('edit-mode', state.editMode);
   $('btnEdit').classList.toggle('on', state.editMode);
-  $('editBar').classList.toggle('show', state.editMode);
   $('output').classList.toggle('edit-active', state.editMode);
+  renderLegend();
   if (state.editMode) {
-    renderEditCats();
-    toast('Modalità modifica attiva. Tocca le parole per evidenziarle.');
+    const cat = CATEGORIES.find(c => c.id === state.editCategory);
+    toast(`Modalità modifica · categoria: ${cat ? cat.label : ''}`, 2200);
   }
   vibrate(8);
 }
@@ -1418,20 +1423,14 @@ async function shareOrExport() {
 
 function buildExportHTML() {
   const annotated = renderAnnotated(state.text, state.spans, state.activeCats);
-  const langName = state.lang === 'cjk' ? 'CJK' : ((LANG_PROFILES[state.lang] && LANG_PROFILES[state.lang].name) || 'English');
-  const model = AI_MODELS[ai.modelKey];
-  const aiNote = state.aiApplied ? ` · validato con ${model.label}` : '';
   const styles = `body{font-family:Georgia,serif;max-width:720px;margin:32px auto;padding:0 20px;line-height:1.8;font-size:1.08rem;color:#1b1815;background:#faf7f2}h1{font-size:1.1rem;font-family:system-ui;color:#8a8178;font-weight:600;margin-bottom:4px}.meta{font-family:system-ui;font-size:.78rem;color:#8a8178;margin-bottom:24px}mark{padding:1px 0;border-radius:3px;background:transparent;color:inherit}mark.c-num{background:#ffe680} mark.c-name{background:#d9b8ff}mark.c-key{background:#b6e6b6} mark.c-quote{background:#ffc1cf}mark.c-list{background:#a9d8ff} mark.c-def{background:#ffe0b6}mark.c-sentence{background:rgba(255,201,160,.45)}`;
-  return `<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Annotazione</title><style>${styles}</style></head><body><h1>ANNOTT</h1><div class="meta">${new Date().toLocaleString('it-IT')} · Lingua: ${langName}${aiNote}</div><div>${annotated}</div></body></html>`;
+  return `<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Annotazione</title><style>${styles}</style></head><body><h1>ANNOTT</h1><div class="meta">${new Date().toLocaleString('it-IT')}</div><div>${annotated}</div></body></html>`;
 }
 
 function exportPDF() {
   if (!state.text.trim()) { toast('Nulla da salvare'); return; }
 
   const annotated = renderAnnotated(state.text, state.spans, state.activeCats);
-  const langName = state.lang === 'cjk' ? 'CJK' : ((LANG_PROFILES[state.lang] && LANG_PROFILES[state.lang].name) || 'English');
-  const model = AI_MODELS[ai.modelKey];
-  const aiNote = state.aiApplied ? ` · validato con ${model.label}` : '';
 
   const pdfHTML = `<!doctype html>
 <html lang="it">
@@ -1515,7 +1514,7 @@ function exportPDF() {
 <body>
   <div class="header">
     <h1>ANNOTT · lettura strutturata</h1>
-    <div class="meta">${new Date().toLocaleString('it-IT')} · Lingua: ${langName}${aiNote}</div>
+    <div class="meta">${new Date().toLocaleString('it-IT')}</div>
   </div>
   <div class="content">${annotated}</div>
   <div class="legend">
@@ -1616,7 +1615,7 @@ function openModelPicker() {
     $('btnConfirmAI').textContent = 'Cambia modello';
   } else {
     $('aiSetupTitle').textContent = 'Scegli il modello AI';
-    $('aiSetupDesc').textContent = 'Scaricato una sola volta, resta sul dispositivo. Funziona offline. Scegli in base alla potenza del tuo iPhone.';
+    $('aiSetupDesc').textContent = 'Scaricato una sola volta, resta sul dispositivo. Funziona offline. Scegli in base alla potenza del tuo dispositivo.';
     $('btnConfirmAI').textContent = 'Scarica e attiva';
   }
   openModal('modalAISetup');
@@ -1713,7 +1712,6 @@ function onOutputClick(e) {
   redrawOutput();
   state.lastStats = computeCategoryStats(state.text, state.spans);
   renderStats();
-  renderLegend();
   saveSession();
 
   if (result === 'added') toast(`+ ${token.word}`, 900);
@@ -1919,7 +1917,6 @@ Napoleone Bonaparte prese il potere nel 1799 con il colpo di stato del 18 brumai
   }
 
   renderLegend();
-  renderEditCats();
   bindEvents();
   initResize();
   updateAIButton();
