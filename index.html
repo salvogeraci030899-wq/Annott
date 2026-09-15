@@ -47,8 +47,6 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .topbar .lang-badge.show{opacity:1}
 .topbar .model-badge{font-size:.68rem;font-weight:700;letter-spacing:.04em;padding:4px 8px;border-radius:6px;background:var(--ai-soft);color:var(--ai);opacity:0;transition:opacity .3s}
 .topbar .model-badge.show{opacity:1}
-.topbar .edit-badge{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:6px;background:var(--ai);color:#fff;opacity:0;transition:opacity .3s}
-.topbar .edit-badge.show{opacity:1}
 .topbar .spacer{flex:1}
 .iconbtn{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;color:var(--ink-2);transition:background .15s,color .15s}
 .iconbtn:active{background:var(--surface-3)}
@@ -90,37 +88,14 @@ button{cursor:pointer;border:none;background:none;padding:0}
   color: #ffffff;
 }
 .btn-ai-main:active{ background: var(--ai); filter: brightness(.92); }
-.btn-ai-main .ai-icon{
-  width:24px;
-  height:24px;
-  color: #ffffff;
-}
-[data-theme="dark"] .btn-ai-main{
-  background: var(--ai);
-  color: #1a0f3d;
-}
-[data-theme="dark"] .btn-ai-main .ai-icon{
-  color: #1a0f3d;
-}
-.btn-ai-main.loading{
-  pointer-events:none;
-  opacity:.85;
-}
+.btn-ai-main .ai-icon{ width:24px; height:24px; color: #ffffff; }
+[data-theme="dark"] .btn-ai-main{ background: var(--ai); color: #1a0f3d; }
+[data-theme="dark"] .btn-ai-main .ai-icon{ color: #1a0f3d; }
+.btn-ai-main.loading{ pointer-events:none; opacity:.85; }
 .btn-ai-main.loading::after{
-  content:"";
-  position:absolute;inset:0;
+  content:""; position:absolute;inset:0;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
   animation:shimmer 1.1s infinite;
-}
-
-/* Tasto modifica */
-.btn-edit-active {
-  background: var(--ai);
-  color: #fff;
-  border-color: var(--ai);
-}
-[data-theme="dark"] .btn-edit-active {
-  color: #1a0f3d;
 }
 
 .cats-row{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;padding:2px 0 12px;margin:0 -2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
@@ -130,13 +105,6 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .cat-pill .dot{width:9px;height:9px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.10);flex:0 0 auto}
 .cat-pill.off{opacity:.38;text-decoration:line-through;text-decoration-thickness:1px}
 .cat-pill .count{font-size:.66rem;color:var(--ink-3);font-weight:600;margin-left:1px}
-.cat-pill.edit-selected{
-  border-color: var(--ai);
-  color: var(--ai);
-  font-weight: 700;
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--ai) 25%, transparent);
-}
-.cat-pill.edit-selected .dot{ box-shadow: inset 0 0 0 1px rgba(0,0,0,.10), 0 0 0 2px color-mix(in srgb,var(--ai) 35%, transparent); }
 
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
 .stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 10px}
@@ -156,27 +124,38 @@ button{cursor:pointer;border:none;background:none;padding:0}
 [data-theme="dark"] .ai-bar.ready{background:color-mix(in srgb,var(--c-key) 25%,var(--surface));color:#8fdd9a}
 .ai-bar.error{background:color-mix(in srgb,var(--danger) 15%,var(--surface));color:var(--danger);border-color:color-mix(in srgb,var(--danger) 30%,transparent)}
 
+/* Edit mode bar */
+.edit-bar{display:none;background:color-mix(in srgb,var(--ai) 10%,var(--surface));border:1px solid color-mix(in srgb,var(--ai) 25%,transparent);border-radius:12px;padding:10px 12px;margin-bottom:12px;position:sticky;top:60px;z-index:20;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.edit-bar.show{display:block}
+.edit-bar .edit-title{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:var(--ai);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.edit-bar .edit-title svg{width:14px;height:14px}
+.edit-cats{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;padding:2px 0;-webkit-overflow-scrolling:touch}
+.edit-cats::-webkit-scrollbar{display:none}
+.edit-cat{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:999px;font-size:.76rem;font-weight:600;background:var(--surface);border:1.5px solid var(--border);color:var(--ink-2);transition:all .15s;white-space:nowrap;cursor:pointer;user-select:none;-webkit-user-select:none}
+.edit-cat .dot{width:10px;height:10px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15);flex:0 0 auto}
+.edit-cat.on{border-color:var(--ai);background:var(--ai-soft);color:var(--ai);font-weight:700}
+.edit-cat:active{transform:scale(.96)}
+
 .toolbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:2px 4px 8px;margin-bottom:4px}
 .toolbar .spacer{flex:1}
 .tbtn{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:9px;font-size:.82rem;font-weight:500;color:var(--ink-2);background:var(--surface);border:1px solid var(--border);transition:background .15s,color .15s,transform .08s}
 .tbtn:active{transform:scale(.97);background:var(--surface-3);color:var(--ink)}
 .tbtn svg{width:15px;height:15px}
+.tbtn.on{background:var(--ai-soft);color:var(--ai);border-color:color-mix(in srgb,var(--ai) 30%,transparent)}
+.tbtn.on svg{color:var(--ai)}
 
-.output-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px 22px 26px;box-shadow:var(--shadow);font-family:"New York",Georgia,"Iowan Old Style","Times New Roman",serif;font-size:1.10rem;line-height:1.85;white-space:pre-wrap;word-wrap:break-word;color:var(--ink)}
+.output-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px 22px 26px;box-shadow:var(--shadow);font-family:"New York",Georgia,"Iowan Old Style","Times New Roman",serif;font-size:1.10rem;line-height:1.85;white-space:pre-wrap;word-wrap:break-word;color:var(--ink);transition:box-shadow .2s}
+.output-card.edit-active{box-shadow:0 0 0 2px var(--ai), var(--shadow);cursor:pointer}
 .output-card:empty{display:none}
 .output-card::selection,.output-card *::selection{background:var(--accent-soft)}
-
-/* In modalità edit, i mark e gli span hanno cursore interattivo */
-body.edit-mode .output-card mark{cursor:pointer}
-body.edit-mode .output-card mark:active{filter:brightness(.92)}
-body.edit-mode .output-card [data-s]{cursor:pointer}
-body.edit-mode .output-card [data-s]:active{background:color-mix(in srgb,var(--ai) 10%,transparent);border-radius:3px}
-
 mark{background:transparent;color:inherit;padding:1px 0;border-radius:3px;box-decoration-break:clone;-webkit-box-decoration-break:clone;transition:background .25s}
 mark.c-num{background:var(--c-num)} mark.c-name{background:var(--c-name)}
 mark.c-key{background:var(--c-key)} mark.c-quote{background:var(--c-quote)}
 mark.c-list{background:var(--c-list)} mark.c-def{background:var(--c-def)}
 mark.c-sentence{background:var(--c-sentence)}
+body.edit-mode .output-card mark{transition:none}
+body.edit-mode .output-card{cursor:crosshair}
+
 .search-hit{background:#ff6b35 !important;color:white !important;border-radius:3px}
 .search-hit.current{background:#d35400 !important;outline:2px solid #d35400}
 .searchbar{display:flex;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 12px;margin-bottom:12px}
@@ -192,6 +171,7 @@ mark.c-sentence{background:var(--c-sentence)}
 .lib-item .row1{display:flex;align-items:center;gap:8px;margin-bottom:6px}
 .lib-item .badge{font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
 .lib-item .badge.ai{background:var(--ai-soft);color:var(--ai)}
+.lib-item .badge.manual{background:color-mix(in srgb,var(--ai) 20%,var(--surface));color:var(--ai)}
 .lib-item .date{font-size:.78rem;color:var(--ink-3);margin-left:auto}
 .lib-item .title{font-weight:600;font-size:.98rem;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
 .lib-item .snippet{font-size:.86rem;color:var(--ink-2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -225,7 +205,7 @@ mark.c-sentence{background:var(--c-sentence)}
 .tabbar .tab{flex:1;padding:10px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ink-3);font-size:.68rem;font-weight:600;transition:color .15s}
 .tabbar .tab svg{width:22px;height:22px}
 .tabbar .tab.active{color:var(--ai)}
-body.reading .topbar,body.reading .tabbar,body.reading .input-card,body.reading .actions,body.reading .toolbar,body.reading .cats-row,body.reading .stats,body.reading .searchbar,body.reading .ai-bar{display:none !important}
+body.reading .topbar,body.reading .tabbar,body.reading .input-card,body.reading .actions,body.reading .toolbar,body.reading .cats-row,body.reading .stats,body.reading .searchbar,body.reading .ai-bar,body.reading .edit-bar{display:none !important}
 body.reading .scroll{padding-top:10px}
 body.reading .output-card{font-size:1.18rem;padding:24px 22px;border-radius:0;border:none;box-shadow:none;background:var(--bg)}
 .reading-bar{display:none;position:sticky;top:0;z-index:40;padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top));background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);align-items:center;gap:10px}
@@ -242,7 +222,6 @@ body.reading .reading-bar{display:flex}
     <div class="brand"><span class="dotlogo"></span><span>Annota</span></div>
     <div class="lang-badge" id="langBadge"></div>
     <div class="model-badge" id="modelBadge"></div>
-    <div class="edit-badge" id="editBadge">Modifica</div>
     <div class="spacer"></div>
     <button class="iconbtn" id="btnTheme" title="Tema" aria-label="Cambia tema">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -282,12 +261,6 @@ body.reading .reading-bar{display:flex}
               <path d="M5 17l.7 1.8L7.5 19.5 5.7 20.2 5 22l-.7-1.8L2.5 19.5 4.3 18.8 5 17z"/>
             </svg>
           </button>
-          <button class="btn ghost icon-only" id="btnEdit" title="Modifica evidenziazioni" aria-label="Modifica evidenziazioni">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-            </svg>
-          </button>
           <button class="btn ghost icon-only" id="btnPaste" title="Incolla" aria-label="Incolla">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="8" y="2" width="8" height="4" rx="1"/>
@@ -319,8 +292,21 @@ body.reading .reading-bar{display:flex}
           </button>
         </div>
 
+        <!-- Barra modalità modifica -->
+        <div class="edit-bar" id="editBar">
+          <div class="edit-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <span>Tocca le parole per evidenziarle</span>
+          </div>
+          <div class="edit-cats" id="editCats"></div>
+        </div>
+
         <div class="toolbar" id="toolbar">
           <div class="spacer"></div>
+          <button class="tbtn" id="btnEdit" title="Modifica manuale" aria-label="Modifica manuale">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            Modifica
+          </button>
           <button class="tbtn" id="btnSaveLib">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
             Salva
@@ -429,7 +415,6 @@ function toast(msg, ms = 2000) {
 }
 
 const THEME_BG = { light: '#f6f3ee', dark: '#14110f' };
-
 function applyThemeToMeta(t) {
   const isDark = t === 'dark';
   const bg = isDark ? THEME_BG.dark : THEME_BG.light;
@@ -441,23 +426,19 @@ function applyThemeToMeta(t) {
   if (sb) sb.setAttribute('content', isDark ? 'black' : 'default');
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   MOTORE STATISTICO UNIVERSALE
+   ═══════════════════════════════════════════════════════════════════ */
+
 const LANG_PROFILES = {
-  it:{ name:'Italiano',
-       words:'il lo la i gli le un uno una e ed o od ma però perciò in con su per tra fra da di al allo alla ai agli alle del dello della dei degli delle nel nello nella nei negli nelle sul sullo sulla sui sugli sulle dal dallo dalla dai dagli dalle questo questa questi queste quello quella quelli quelle che chi cui non più anche solo come dove quando perché essere avere sono è era fu sia stata stato stati state viene venga fatto fare può devono deve loro lei lui noi voi egli ella essi esse' },
-  en:{ name:'English',
-       words:'the a an and or but of in on at to for from by with as is are was were be been being this that these those it its he she they them him her his hers their theirs we us our ours you your yours i me my mine not no so very more most much many few some any all every each both either neither one two who whom whose which what where when why how if then else than too also just only can could will would shall should may might must do does did done have has had having about after before during between into through over under above below again further once here there' },
-  fr:{ name:'Français',
-       words:'le la les un une des du de d et ou mais donc or ni car que qui quoi dont où quand comment pourquoi si comme plus moins très trop peu beaucoup tout toute tous toutes ce cet cette ces celui celle ceux celles il elle ils elles nous vous je tu on se son sa ses leur leurs mon ma mes ton ta tes notre nos votre vos est sont était étaient être avoir a ont avait avaient fait faire peut peuvent doit doivent aussi encore déjà toujours jamais même autre autres bien' },
-  es:{ name:'Español',
-       words:'el la los las un una unos unas de del y o pero porque por para con sin en a al sobre bajo entre hasta desde que quien cuyo como cuando donde si no más menos muy mucho poco todo toda todos todas este esta estos estas ese esa esos esas aquel aquella aquellos aquellas yo tú él ella nosotros vosotros ellos ellas me te se nos os le les lo mi tu su mis tus sus es son era fueron ser estar haber ha han había habían hace hacer puede pueden debe deben también aún ya siempre nunca mismo otra otro bien' },
-  de:{ name:'Deutsch',
-       words:'der die das den dem des ein eine einen einem eines einer und oder aber denn weil wenn als wie dass ob für mit von zu aus bei nach über unter zwischen durch gegen ohne um in an auf vor hinter neben ist sind war waren sein haben hat hatte hatten haben wird werden wurde wurden kann können muss müssen soll sollen darf dürfen auch noch schon immer nie sehr mehr weniger viel wenig alle alle jeder jede jedes diese dieser dieses jener jene man nicht doch nur selbst' },
-  pt:{ name:'Português',
-       words:'o a os as um uma uns umas de do da dos das e ou mas porque por para com sem em no na nos nas ao aos à às pelo pela pelos pelas que quem cujo como quando onde se não mais menos muito pouco todo toda todos todas este esta estes estas esse essa esses essas aquele aquela aqueles aquelas eu tu ele ela nós vós eles elas me te se nos vos lhe lhes é são era foram ser estar haver há houve tinha tem fazer pode podem deve devem também ainda já sempre nunca mesmo outro outra bem' },
-  nl:{ name:'Nederlands',
-       words:'de het een en of maar want omdat als dan dat die deze dit van voor met door naar bij uit over onder tussen tegen zonder om in op aan is zijn was waren hebben heeft had kan kunnen moet moeten zal zullen ook nog al altijd nooit zeer meer minder veel weinig alle elk ieder niet toch alleen zelf' },
-  ru:{ name:'Русский',
-       words:'и в во не что он на я с со как а то все она так его но да ты к у же вы за бы по только ее мне было вот от меня еще нет о из ему теперь когда даже ну вдруг ли если уже или ни быть был него до вас опять уж вам ведь там потом себя ничего ей может они тут где есть надо ней для мы тебя их чем была сам чтоб без будто чего раз тоже себе под будет ж тогда кто этот того потому этого какой совсем ним здесь этом один почти мой тем чтобы нее сейчас были куда зачем всех никогда можно при наконец два об другой хоть после над больше тот через эти нас про всего них какая много разве три эту моя впрочем хорошо свою этой перед иногда лучше чуть том нельзя такой им более всегда конечно всю между' }
+  it:{ name:'Italiano', words:'il lo la i gli le un uno una e ed o od ma però perciò in con su per tra fra da di al allo alla ai agli alle del dello della dei degli delle nel nello nella nei negli nelle sul sullo sulla sui sugli sulle dal dallo dalla dai dagli dalle questo questa questi queste quello quella quelli quelle che chi cui non più anche solo come dove quando perché essere avere sono è era fu sia stata stato stati state viene venga fatto fare può devono deve loro lei lui noi voi egli ella essi esse' },
+  en:{ name:'English', words:'the a an and or but of in on at to for from by with as is are was were be been being this that these those it its he she they them him her his hers their theirs we us our ours you your yours i me my mine not no so very more most much many few some any all every each both either neither one two who whom whose which what where when why how if then else than too also just only can could will would shall should may might must do does did done have has had having about after before during between into through over under above below again further once here there' },
+  fr:{ name:'Français', words:'le la les un une des du de d et ou mais donc or ni car que qui quoi dont où quand comment pourquoi si comme plus moins très trop peu beaucoup tout toute tous toutes ce cet cette ces celui celle ceux celles il elle ils elles nous vous je tu on se son sa ses leur leurs mon ma mes ton ta tes notre nos votre vos est sont était étaient être avoir a ont avait avaient fait faire peut peuvent doit doivent aussi encore déjà toujours jamais même autre autres bien' },
+  es:{ name:'Español', words:'el la los las un una unos unas de del y o pero porque por para con sin en a al sobre bajo entre hasta desde que quien cuyo como cuando donde si no más menos muy mucho poco todo toda todos todas este esta estos estas ese esa esos esas aquel aquella aquellos aquellas yo tú él ella nosotros vosotros ellos ellas me te se nos os le les lo mi tu su mis tus sus es son era fueron ser estar haber ha han había habían hace hacer puede pueden debe deben también aún ya siempre nunca mismo otra otro bien' },
+  de:{ name:'Deutsch', words:'der die das den dem des ein eine einen einem eines einer und oder aber denn weil wenn als wie dass ob für mit von zu aus bei nach über unter zwischen durch gegen ohne um in an auf vor hinter neben ist sind war waren sein haben hat hatte hatten haben wird werden wurde wurden kann können muss müssen soll sollen darf dürfen auch noch schon immer nie sehr mehr weniger viel wenig alle alle jeder jede jedes diese dieser dieses jener jene man nicht doch nur selbst' },
+  pt:{ name:'Português', words:'o a os as um uma uns umas de do da dos das e ou mas porque por para com sem em no na nos nas ao aos à às pelo pela pelos pelas que quem cujo como quando onde se não mais menos muito pouco todo toda todos todas este esta estes estas esse essa esses essas aquele aquela aqueles aquelas eu tu ele ela nós vós eles elas me te se nos vos lhe lhes é são era foram ser estar haver há houve tinha tem fazer pode podem deve devem também ainda já sempre nunca mesmo outro outra bem' },
+  nl:{ name:'Nederlands', words:'de het een en of maar want omdat als dan dat die deze dit van voor met door naar bij uit over onder tussen tegen zonder om in op aan is zijn was waren hebben heeft had kan kunnen moet moeten zal zullen ook nog al altijd nooit zeer meer minder veel weinig alle elk ieder niet toch alleen zelf' },
+  ru:{ name:'Русский', words:'и в во не что он на я с со как а то все она так его но да ты к у же вы за бы по только ее мне было вот от меня еще нет о из ему теперь когда даже ну вдруг ли если уже или ни быть был него до вас опять уж вам ведь там потом себя ничего ей может они тут где есть надо ней для мы тебя их чем была сам чтоб без будто чего раз тоже себе под будет ж тогда кто этот того потому этого какой совсем ним здесь этом один почти мой тем чтобы нее сейчас были куда зачем всех никогда можно при наконец два об другой хоть после над больше тот через эти нас про всего них какая много разве три эту моя впрочем хорошо свою этой перед иногда лучше чуть том нельзя такой им более всегда конечно всю между' }
 };
 
 const LANG_SIGNATURE = {
@@ -582,25 +563,7 @@ function findBigrams(tokens, stopwords) {
   return bigrams;
 }
 
-const UNIT_WHITELIST = new Set([
-  '%','‰','°','°c','°f','°k','€','$','£','¥',
-  'km','hm','dam','dm','cm','mm','nm','µm','mi','ft','yd','in',
-  'kg','hg','dag','dg','cg','mg','lb','oz','t','q',
-  'l','dl','cl','ml','hl','gal','pt','qt','fl',
-  'h','min','s','ms','µs','ns',
-  'ore','ora','minuti','minuto','secondi','secondo',
-  'giorni','giorno','settimane','settimana','mesi','mese',
-  'anni','anno','secoli','secolo','millenni','millennio','decenni','decennio',
-  'hours','hour','minutes','minute','seconds','second','days','day',
-  'weeks','week','months','month','years','year','centuries','century',
-  'jahr','jahre','tag','tage','woche','wochen','monat','monate','jahrhundert','jahrhunderte',
-  'heure','heures','jour','jours','semaine','semaines','mois','an','ans','année','années','siècle','siècles',
-  'hora','horas','día','días','dias','semana','semanas','mes','meses','año','años','siglo','siglos',
-  'j','kj','mj','w','kw','mw','v','kv','a','ma','hz','khz','mhz','ghz',
-  'pa','kpa','mpa','n','kn','mol','mmhg','atm',
-  'b','kb','mb','gb','tb','pb','bit','byte','pixel','px',
-  'usd','eur','gbp','jpy','chf'
-]);
+const UNIT_WHITELIST = new Set(['%','‰','°','°c','°f','°k','€','$','£','¥','km','hm','dam','dm','cm','mm','nm','µm','mi','ft','yd','in','kg','hg','dag','dg','cg','mg','lb','oz','t','q','l','dl','cl','ml','hl','gal','pt','qt','fl','h','min','s','ms','µs','ns','ore','ora','minuti','minuto','secondi','secondo','giorni','giorno','settimane','settimana','mesi','mese','anni','anno','secoli','secolo','millenni','millennio','decenni','decennio','hours','hour','minutes','minute','seconds','second','days','day','weeks','week','months','month','years','year','centuries','century','jahr','jahre','tag','tage','woche','wochen','monat','monate','jahrhundert','jahrhunderte','heure','heures','jour','jours','semaine','semaines','mois','an','ans','année','années','siècle','siècles','hora','horas','día','días','dias','semana','semanas','mes','meses','año','años','siglo','siglos','j','kj','mj','w','kw','mw','v','kv','a','ma','hz','khz','mhz','ghz','pa','kpa','mpa','n','kn','mol','mmhg','atm','b','kb','mb','gb','tb','pb','bit','byte','pixel','px','usd','eur','gbp','jpy','chf']);
 
 const MONTHS_RE = '(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre|january|february|march|april|may|june|july|august|september|october|november|december|janvier|février|fevrier|mars|avril|mai|juin|juillet|août|aout|septembre|octobre|novembre|décembre|decembre|enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre|janeiro|fevereiro|março|marco|maio|junho|julho|setembro|outubro|novembro|dezembro|januar|februar|märz|maerz|juni|juli|august|september|oktober|november|dezember)';
 
@@ -608,11 +571,7 @@ function findNumbers(text) {
   const spans = [];
   const used = new Uint8Array(text.length);
   let m;
-  const dateRe = new RegExp(
-    '\\b\\d{1,2}\\s+' + MONTHS_RE + '\\s+\\d{3,4}\\b' +
-    '|\\b' + MONTHS_RE + '\\s+\\d{1,2}(?:,)?\\s+\\d{3,4}\\b',
-    'giu'
-  );
+  const dateRe = new RegExp('\\b\\d{1,2}\\s+' + MONTHS_RE + '\\s+\\d{3,4}\\b' + '|\\b' + MONTHS_RE + '\\s+\\d{1,2}(?:,)?\\s+\\d{3,4}\\b', 'giu');
   while ((m = dateRe.exec(text)) !== null) {
     spans.push({ start: m.index, end: m.index + m[0].length, cat: 'num', w: 5 });
     for (let i = m.index; i < m.index + m[0].length; i++) used[i] = 1;
@@ -649,10 +608,7 @@ function findQuotes(text) {
       while (i < text.length) {
         if (text[i] === open) {
           if (openAt < 0) openAt = i;
-          else {
-            if (i - openAt >= 8) spans.push({ start: openAt, end: i + 1, cat: 'quote', w: 5 });
-            openAt = -1;
-          }
+          else { if (i - openAt >= 8) spans.push({ start: openAt, end: i + 1, cat: 'quote', w: 5 }); openAt = -1; }
         }
         i++;
       }
@@ -687,16 +643,11 @@ function findEnumerations(text) {
     let trigStart = m.index;
     while (trigStart > 0 && !/[.;!?\n]/.test(text[trigStart - 1])) trigStart--;
     while (trigStart < m.index && /\s/.test(text[trigStart])) trigStart++;
-    if (m.index - trigStart >= 3 && m.index - trigStart <= 80) {
-      spans.push({ start: trigStart, end: m.index + 1, cat: 'list', w: 4 });
-    }
+    if (m.index - trigStart >= 3 && m.index - trigStart <= 80) spans.push({ start: trigStart, end: m.index + 1, cat: 'list', w: 4 });
     const seps = /[,;]\s*/g;
     let cur = 0, sep;
     const parts = [];
-    while ((sep = seps.exec(listText)) !== null) {
-      parts.push([cur, sep.index]);
-      cur = sep.index + sep[0].length;
-    }
+    while ((sep = seps.exec(listText)) !== null) { parts.push([cur, sep.index]); cur = sep.index + sep[0].length; }
     if (cur < listText.length) parts.push([cur, listText.length]);
     for (const [a, b] of parts) {
       let s = startList + a, e = startList + b;
@@ -765,9 +716,7 @@ function findConceptSpans(tokens, salient, bigrams) {
   for (let i = 0; i < tokens.length - 1; i++) {
     const a = tokens[i], b = tokens[i + 1];
     if (b.start - a.end > 2) continue;
-    if (bigramSet.has(a.lower + ' ' + b.lower)) {
-      spans.push({ start: a.start, end: b.end, cat: 'key', w: 4, _concept: true });
-    }
+    if (bigramSet.has(a.lower + ' ' + b.lower)) spans.push({ start: a.start, end: b.end, cat: 'key', w: 4, _concept: true });
   }
   for (const t of tokens) {
     if (salient.has(t.lower)) {
@@ -792,9 +741,7 @@ function findKeySentences(sentences, salient, tokens) {
       if (salient.has(t.lower)) concepts++;
     }
     if (total < 6) continue;
-    if (concepts >= 4 && concepts / total >= 0.30) {
-      spans.push({ start: s.start, end: s.end, cat: 'sentence', w: 3, _concept: true });
-    }
+    if (concepts >= 4 && concepts / total >= 0.30) spans.push({ start: s.start, end: s.end, cat: 'sentence', w: 3, _concept: true });
   }
   return spans;
 }
@@ -808,21 +755,21 @@ function analyzeStatistical(text) {
   const salient = computeSalience(tokens, stopwords);
   const bigrams = findBigrams(tokens, stopwords);
   const spans = [
-    ...findNumbers(text),
-    ...findQuotes(text),
-    ...findEnumerations(text),
-    ...findDefinitions(text),
-    ...findProperNouns(text, tokens, stopwords, lang),
-    ...findConceptSpans(tokens, salient, bigrams),
-    ...findKeySentences(sentences, salient, tokens)
+    ...findNumbers(text), ...findQuotes(text), ...findEnumerations(text),
+    ...findDefinitions(text), ...findProperNouns(text, tokens, stopwords, lang),
+    ...findConceptSpans(tokens, salient, bigrams), ...findKeySentences(sentences, salient, tokens)
   ];
   return { spans, lang };
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   AI LOCALE
+   ═══════════════════════════════════════════════════════════════════ */
+
 const AI_MODELS = {
   qwen05: { id: 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC', label: 'Qwen 0.5B', tag: '0.5B', size: '~400 MB', desc: 'Velocissimo. Base. Per iPhone più vecchi.' },
   qwen15: { id: 'Qwen2.5-1.5B-Instruct-q4f16_1-MLC', label: 'Qwen 1.5B', tag: '1.5B', size: '~1 GB', desc: 'Bilanciato. Consigliato. Limite su Safari iOS.' },
-  qwen3:  { id: 'Qwen2.5-3B-Instruct-q4f16_1-MLC',   label: 'Qwen 3B',   tag: '3B',   size: '~1.8 GB', desc: 'Massima qualità. Solo desktop o iPad recenti.' },
+  qwen3:  { id: 'Qwen2.5-3B-Instruct-q4f16_1-MLC', label: 'Qwen 3B', tag: '3B', size: '~1.8 GB', desc: 'Massima qualità. Solo desktop o iPad recenti.' },
   llama3: { id: 'Llama-3.2-3B-Instruct-q4f16_1-MLC', label: 'Llama 3.2 3B', tag: 'L3', size: '~1.9 GB', desc: 'Alternativa a Qwen 3B. Ottimo su testi inglesi.' }
 };
 
@@ -830,27 +777,18 @@ const AI_CDN = 'https://esm.run/@mlc-ai/web-llm';
 const savedModelKey = localStorage.getItem('annota.ai.model');
 
 const ai = {
-  engine: null,
-  loading: false,
+  engine: null, loading: false,
   modelKey: savedModelKey || 'qwen15',
   hasEverDownloaded: !!savedModelKey,
-  ready: false,
-  readyModelKey: null,
-  failed: false,
-  lastError: null,
-  progress: 0,
-  lastStatus: ''
+  ready: false, readyModelKey: null,
+  failed: false, lastError: null,
+  progress: 0, lastStatus: ''
 };
 
-function hasWebGPU() {
-  return typeof navigator !== 'undefined' && !!navigator.gpu;
-}
+function hasWebGPU() { return typeof navigator !== 'undefined' && !!navigator.gpu; }
 
 function setAIStatus(kind, message, pct) {
-  const bar = $('aiBar');
-  const msg = $('aiMsg');
-  const pctEl = $('aiPct');
-  const spinner = $('aiSpinner');
+  const bar = $('aiBar'), msg = $('aiMsg'), pctEl = $('aiPct'), spinner = $('aiSpinner');
   bar.classList.remove('ready', 'error');
   if (kind === 'hidden') { bar.classList.remove('show'); return; }
   bar.classList.add('show');
@@ -859,64 +797,43 @@ function setAIStatus(kind, message, pct) {
     msg.textContent = message || 'Preparazione AI…';
     pctEl.textContent = pct ? Math.round(pct * 100) + '%' : '';
   } else if (kind === 'ready') {
-    bar.classList.add('ready');
-    spinner.style.display = 'none';
-    msg.textContent = message || 'AI locale pronta';
-    pctEl.textContent = '';
+    bar.classList.add('ready'); spinner.style.display = 'none';
+    msg.textContent = message || 'AI locale pronta'; pctEl.textContent = '';
     setTimeout(() => { if (bar.classList.contains('ready')) bar.classList.remove('show'); }, 2400);
   } else if (kind === 'working') {
     spinner.style.display = 'block';
     msg.textContent = message || 'Analisi AI in corso…';
     pctEl.textContent = pct || '';
   } else if (kind === 'error') {
-    bar.classList.add('error');
-    spinner.style.display = 'none';
-    msg.textContent = message || 'AI non disponibile';
-    pctEl.textContent = '';
+    bar.classList.add('error'); spinner.style.display = 'none';
+    msg.textContent = message || 'AI non disponibile'; pctEl.textContent = '';
   }
 }
 
 function updateAIButton() {
-  const btn = $('btnAI');
-  const badge = $('modelBadge');
+  const btn = $('btnAI'), badge = $('modelBadge');
   btn.classList.remove('loading');
-  if (ai.loading) {
-    btn.classList.add('loading');
-    badge.classList.remove('show');
-  } else if (ai.ready) {
+  if (ai.loading) { btn.classList.add('loading'); badge.classList.remove('show'); }
+  else if (ai.ready) {
     const model = AI_MODELS[ai.modelKey] || AI_MODELS.qwen15;
-    badge.textContent = model.tag;
-    badge.classList.add('show');
-  } else {
-    badge.classList.remove('show');
-  }
+    badge.textContent = model.tag; badge.classList.add('show');
+  } else badge.classList.remove('show');
 }
 
 async function initAI(modelKey) {
   if (ai.loading) return;
   if (ai.ready && ai.readyModelKey === modelKey) return;
-
-  if (ai.engine) {
-    try { await ai.engine.unload(); } catch {}
-    ai.engine = null;
-    ai.ready = false;
-  }
-
+  if (ai.engine) { try { await ai.engine.unload(); } catch {} ai.engine = null; ai.ready = false; }
   if (!hasWebGPU()) {
     toast('WebGPU non disponibile su questo browser');
     setAIStatus('error', 'WebGPU non supportato. Serve iOS 26+ con Safari o Chrome 113+.');
-    ai.failed = true;
-    return;
+    ai.failed = true; return;
   }
-
   const model = AI_MODELS[modelKey] || AI_MODELS.qwen15;
-  ai.loading = true;
-  ai.modelKey = modelKey;
-  ai.hasEverDownloaded = true;
+  ai.loading = true; ai.modelKey = modelKey; ai.hasEverDownloaded = true;
   localStorage.setItem('annota.ai.model', modelKey);
   updateAIButton();
   setAIStatus('loading', `Scaricamento ${model.label}…`, 0);
-
   try {
     const webllm = await import(AI_CDN);
     ai.engine = await webllm.CreateMLCEngine(model.id, {
@@ -926,17 +843,14 @@ async function initAI(modelKey) {
         setAIStatus('loading', ai.lastStatus, ai.progress);
       }
     });
-    ai.ready = true;
-    ai.readyModelKey = modelKey;
-    ai.loading = false;
+    ai.ready = true; ai.readyModelKey = modelKey; ai.loading = false;
     updateAIButton();
     setAIStatus('ready', `${model.label} pronta`);
     toast(`${model.label} caricata`, 2200);
     if (state.text.trim()) runAnalyze();
   } catch (e) {
     console.error('AI load error:', e);
-    ai.loading = false;
-    ai.failed = true;
+    ai.loading = false; ai.failed = true;
     ai.lastError = e && e.message ? e.message : String(e);
     updateAIButton();
     const shortErr = (ai.lastError || 'caricamento fallito').slice(0, 80);
@@ -950,81 +864,28 @@ async function llmChat(prompt, maxTokens = 8) {
   const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 30000));
   const call = ai.engine.chat.completions.create({
     messages: [{ role: 'user', content: prompt }],
-    temperature: 0,
-    max_tokens: maxTokens,
-    stream: false
+    temperature: 0, max_tokens: maxTokens, stream: false
   });
   const res = await Promise.race([call, timeout]);
   return (res.choices && res.choices[0] && res.choices[0].message && res.choices[0].message.content) || '';
 }
 
 function contextForSpan(text, span, sentences) {
-  for (const s of sentences) {
-    if (span.start >= s.start && span.end <= s.end) return text.slice(s.start, s.end);
-  }
-  const a = Math.max(0, span.start - 120);
-  const b = Math.min(text.length, span.end + 120);
+  for (const s of sentences) if (span.start >= s.start && span.end <= s.end) return text.slice(s.start, s.end);
+  const a = Math.max(0, span.start - 120), b = Math.min(text.length, span.end + 120);
   return text.slice(a, b);
 }
 
 function buildValidationPrompt(lang, snippet, context) {
   const prompts = {
-    it: `Sei un assistente che aiuta studenti a capire quali concetti di un testo sono davvero importanti.
-Leggi la frase e valuta se il frammento è un concetto CHIAVE (non un dettaglio secondario).
-Rispondi SOLO con "SÌ" o "NO", senza altro.
-
-Frase: "${context}"
-Frammento: "${snippet}"
-Risposta:`,
-    en: `You are an assistant helping students understand which concepts in a text are truly important.
-Read the sentence and judge whether the fragment is a KEY concept (not a secondary detail).
-Answer ONLY "YES" or "NO", nothing else.
-
-Sentence: "${context}"
-Fragment: "${snippet}"
-Answer:`,
-    fr: `Tu aides des étudiants à comprendre quels concepts d'un texte sont vraiment importants.
-Lis la phrase et juge si le fragment est un concept CLÉ (pas un détail secondaire).
-Réponds SEULEMENT "OUI" ou "NON", rien d'autre.
-
-Phrase : "${context}"
-Fragment : "${snippet}"
-Réponse :`,
-    es: `Ayudas a estudiantes a entender qué conceptos de un texto son realmente importantes.
-Lee la frase y juzga si el fragmento es un concepto CLAVE (no un detalle secundario).
-Responde SOLO "SÍ" o "NO", nada más.
-
-Frase: "${context}"
-Fragmento: "${snippet}"
-Respuesta:`,
-    de: `Du hilfst Schülern zu verstehen, welche Konzepte in einem Text wirklich wichtig sind.
-Lies den Satz und beurteile, ob das Fragment ein SCHLÜSSELKONZEPT ist (kein Nebendetail).
-Antworte NUR "JA" oder "NEIN", nichts anderes.
-
-Satz: "${context}"
-Fragment: "${snippet}"
-Antwort:`,
-    pt: `Você ajuda estudantes a entender quais conceitos de um texto são realmente importantes.
-Leia a frase e julgue se o fragmento é um conceito-CHAVE (não um detalhe secundário).
-Responda SOMENTE "SIM" ou "NÃO", nada mais.
-
-Frase: "${context}"
-Fragmento: "${snippet}"
-Resposta:`,
-    nl: `Je helpt studenten begrijpen welke concepten in een tekst echt belangrijk zijn.
-Lees de zin en beoordeel of het fragment een SLEUTELBEGRIP is (geen bijzaak).
-Antwoord ALLEEN "JA" of "NEE", niets anders.
-
-Zin: "${context}"
-Fragment: "${snippet}"
-Antwoord:`,
-    ru: `Ты помогаешь студентам понять, какие концепции в тексте действительно важны.
-Прочитай предложение и реши, является ли фрагмент КЛЮЧЕВЫМ понятием (не второстепенной деталью).
-Отвечай ТОЛЬКО "ДА" или "НЕТ", больше ничего.
-
-Предложение: "${context}"
-Фрагмент: "${snippet}"
-Ответ:`
+    it: `Sei un assistente che aiuta studenti a capire quali concetti di un testo sono davvero importanti.\nLeggi la frase e valuta se il frammento è un concetto CHIAVE (non un dettaglio secondario).\nRispondi SOLO con "SÌ" o "NO", senza altro.\n\nFrase: "${context}"\nFrammento: "${snippet}"\nRisposta:`,
+    en: `You are an assistant helping students understand which concepts in a text are truly important.\nRead the sentence and judge whether the fragment is a KEY concept (not a secondary detail).\nAnswer ONLY "YES" or "NO", nothing else.\n\nSentence: "${context}"\nFragment: "${snippet}"\nAnswer:`,
+    fr: `Tu aides des étudiants à comprendre quels concepts d'un texte sont vraiment importants.\nLis la phrase et juge si le fragment est un concept CLÉ (pas un détail secondaire).\nRéponds SEULEMENT "OUI" ou "NON", rien d'autre.\n\nPhrase : "${context}"\nFragment : "${snippet}"\nRéponse :`,
+    es: `Ayudas a estudiantes a entender qué conceptos de un texto son realmente importantes.\nLee la frase y juzga si el fragmento es un concepto CLAVE (no un detalle secundario).\nResponde SOLO "SÍ" o "NO", nada más.\n\nFrase: "${context}"\nFragmento: "${snippet}"\nRespuesta:`,
+    de: `Du hilfst Schülern zu verstehen, welche Konzepte in einem Text wirklich wichtig sind.\nLies den Satz und beurteile, ob das Fragment ein SCHLÜSSELKONZEPT ist (kein Nebendetail).\nAntworte NUR "JA" oder "NEIN", nichts anderes.\n\nSatz: "${context}"\nFragment: "${snippet}"\nAntwort:`,
+    pt: `Você ajuda estudantes a entender quais conceitos de um texto são realmente importantes.\nLeia a frase e julgue se o fragmento é um conceito-CHAVE (não um detalhe secundário).\nResponda SOMENTE "SIM" ou "NÃO", nada mais.\n\nFrase: "${context}"\nFragmento: "${snippet}"\nResposta:`,
+    nl: `Je helpt studenten begrijpen welke concepten in een tekst echt belangrijk zijn.\nLees de zin en beoordeel of het fragment een SLEUTELBEGRIP is (geen bijzaak).\nAntwoord ALLEEN "JA" of "NEE", niets anders.\n\nZin: "${context}"\nFragment: "${snippet}"\nAntwoord:`,
+    ru: `Ты помогаешь студентам понять, какие концепции в тексте действительно важны.\nПрочитай предложение и реши, является ли фрагмент КЛЮЧЕВЫМ понятием (не второстепенной деталью).\nОтвечай ТОЛЬКО "ДА" или "НЕТ", больше ничего.\n\nПредложение: "${context}"\nФрагмент: "${snippet}"\nОтвет:`
   };
   return prompts[lang] || prompts.en;
 }
@@ -1034,12 +895,8 @@ function parseYesNo(response) {
   const upper = response.trim().slice(0, 30).toUpperCase();
   const noWords = ['NO', 'NON', 'NÃO', 'NEE', 'НЕТ', 'NEIN'];
   const yesWords = ['SÌ', 'SI', 'YES', 'OUI', 'SÍ', 'JA', 'ДА'];
-  for (const w of noWords) {
-    if (upper === w || upper.startsWith(w + ' ') || upper.startsWith(w + '.') || upper.startsWith(w + ',') || upper.startsWith(w + '!')) return false;
-  }
-  for (const w of yesWords) {
-    if (upper === w || upper.startsWith(w + ' ') || upper.startsWith(w + '.') || upper.startsWith(w + ',') || upper.startsWith(w + '!')) return true;
-  }
+  for (const w of noWords) if (upper === w || upper.startsWith(w + ' ') || upper.startsWith(w + '.') || upper.startsWith(w + ',') || upper.startsWith(w + '!')) return false;
+  for (const w of yesWords) if (upper === w || upper.startsWith(w + ' ') || upper.startsWith(w + '.') || upper.startsWith(w + ',') || upper.startsWith(w + '!')) return true;
   for (const w of noWords) if (upper.includes(w)) return false;
   for (const w of yesWords) if (upper.includes(w)) return true;
   return null;
@@ -1066,9 +923,7 @@ async function aiValidateSpans(text, spans, lang, sentences) {
   const total = entries.length;
   for (const [, list] of entries) {
     processed++;
-    if (processed % 2 === 0 || processed === total) {
-      setAIStatus('working', `Validazione AI (${processed}/${total})…`, `${Math.round(processed/total*100)}%`);
-    }
+    if (processed % 2 === 0 || processed === total) setAIStatus('working', `Validazione AI (${processed}/${total})…`, `${Math.round(processed/total*100)}%`);
     const sample = list[0];
     const snippet = text.slice(sample.start, sample.end);
     const context = contextForSpan(text, sample, sentences);
@@ -1083,6 +938,10 @@ async function aiValidateSpans(text, spans, lang, sentences) {
   }
   return [...otherSpans, ...kept, ...remainder];
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   OVERLAP E RENDER
+   ═══════════════════════════════════════════════════════════════════ */
 
 const CAT_PRIORITY = { quote:10, num:9, def:8, list:7, name:6, key:5, sentence:4 };
 
@@ -1122,45 +981,56 @@ function catIdFromIdx(catIndex, idx) {
 const CAT_TO_CLASS = { num:'c-num', name:'c-name', key:'c-key', quote:'c-quote', list:'c-list', def:'c-def', sentence:'c-sentence' };
 
 const CATEGORIES = [
-  { id:'num',      label:'Numeri',     color:'--c-num'      },
-  { id:'name',     label:'Nomi',       color:'--c-name'     },
-  { id:'key',      label:'Concetti',   color:'--c-key'      },
-  { id:'def',      label:'Definizioni',color:'--c-def'      },
-  { id:'quote',    label:'Citazioni',  color:'--c-quote'    },
-  { id:'list',     label:'Elenchi',    color:'--c-list'     },
-  { id:'sentence', label:'Frasi',      color:'--c-sentence' }
+  { id:'num', label:'Numeri', color:'--c-num' },
+  { id:'name', label:'Nomi', color:'--c-name' },
+  { id:'key', label:'Concetti', color:'--c-key' },
+  { id:'def', label:'Definizioni', color:'--c-def' },
+  { id:'quote', label:'Citazioni', color:'--c-quote' },
+  { id:'list', label:'Elenchi', color:'--c-list' },
+  { id:'sentence', label:'Frasi', color:'--c-sentence' }
 ];
 
-/* Rendering con data attributes per supportare la modalità modifica */
-function renderAnnotated(text, spans, activeCats) {
-  const wrapper = (s, e, content) => `<span data-s="${s}" data-e="${e}">${content}</span>`;
-  if (!spans.length) return wrapper(0, text.length, escapeHTML(text));
-  const { runs, catIndex } = buildRuns(text, spans);
-  if (!runs.length) return wrapper(0, text.length, escapeHTML(text));
+/* Unisce spans automatici + modifiche manuali */
+function combineSpans(autoSpans, manualAdds, manualRemoves) {
+  const removeKeys = new Set(manualRemoves.map(s => s.start + ':' + s.end + ':' + s.cat));
+  const filteredAuto = autoSpans.filter(s => !removeKeys.has(s.start + ':' + s.end + ':' + s.cat));
+  // Anche i manualAdds potrebbero essere stati rimossi
+  const addKeys = new Set();
+  const filteredAdds = [];
+  for (const s of manualAdds) {
+    const k = s.start + ':' + s.end + ':' + s.cat;
+    if (addKeys.has(k)) continue;
+    addKeys.add(k);
+    filteredAdds.push(s);
+  }
+  return [...filteredAuto, ...filteredAdds];
+}
 
+function renderAnnotated(text, spans, activeCats) {
+  const combined = combineSpans(spans, state.manualAdds, state.manualRemoves);
+  if (!combined.length) return escapeHTML(text);
+  const { runs, catIndex } = buildRuns(text, combined);
+  if (!runs.length) return escapeHTML(text);
   let html = '';
   let cursor = 0;
   for (const r of runs) {
-    if (r.start > cursor) {
-      html += wrapper(cursor, r.start, escapeHTML(text.slice(cursor, r.start)));
-    }
+    if (r.start > cursor) html += escapeHTML(text.slice(cursor, r.start));
     const catId = catIdFromIdx(catIndex, r.catIdx);
     if (activeCats.has(catId)) {
       const cls = CAT_TO_CLASS[catId] || 'c-key';
-      html += `<mark class="${cls}" data-s="${r.start}" data-e="${r.end}" data-cat="${catId}">${escapeHTML(text.slice(r.start, r.end))}</mark>`;
+      html += `<mark class="${cls}">${escapeHTML(text.slice(r.start, r.end))}</mark>`;
     } else {
-      html += wrapper(r.start, r.end, escapeHTML(text.slice(r.start, r.end)));
+      html += escapeHTML(text.slice(r.start, r.end));
     }
     cursor = r.end;
   }
-  if (cursor < text.length) {
-    html += wrapper(cursor, text.length, escapeHTML(text.slice(cursor)));
-  }
+  if (cursor < text.length) html += escapeHTML(text.slice(cursor));
   return html;
 }
 
 function computeCategoryStats(text, spans) {
-  const { runs, catIndex } = buildRuns(text, spans);
+  const combined = combineSpans(spans, state.manualAdds, state.manualRemoves);
+  const { runs, catIndex } = buildRuns(text, combined);
   const stats = {};
   for (const r of runs) {
     const cat = catIdFromIdx(catIndex, r.catIdx);
@@ -1173,22 +1043,24 @@ function computeCategoryStats(text, spans) {
 }
 
 function computeCoverage(text, spans, activeCats) {
-  if (!spans.length) return { pct: 0, count: 0 };
-  const { runs, catIndex } = buildRuns(text, spans);
+  const combined = combineSpans(spans, state.manualAdds, state.manualRemoves);
+  if (!combined.length) return { pct: 0, count: 0 };
+  const { runs, catIndex } = buildRuns(text, combined);
   let hlChars = 0, count = 0;
   for (const r of runs) {
     const catId = catIdFromIdx(catIndex, r.catIdx);
-    if (activeCats.has(catId)) {
-      hlChars += r.end - r.start;
-      count++;
-    }
+    if (activeCats.has(catId)) { hlChars += r.end - r.start; count++; }
   }
   const pct = text.length ? Math.round(100 * hlChars / text.length) : 0;
   return { pct, count };
 }
 
-const LIB_KEY = 'annota.library.v6';
-const SES_KEY = 'annota.session.v6';
+/* ═══════════════════════════════════════════════════════════════════
+   UI
+   ═══════════════════════════════════════════════════════════════════ */
+
+const LIB_KEY = 'annota.library.v7';
+const SES_KEY = 'annota.session.v7';
 const THEME_KEY = 'annota.theme.v1';
 const INPUT_H_KEY = 'annota.inputHeight.v1';
 const CATS_KEY = 'annota.cats.v1';
@@ -1201,11 +1073,11 @@ function uid() { return Date.now().toString(36) + Math.random().toString(36).sli
 
 const state = {
   text: '', activeCats: new Set(), spans: [],
+  manualAdds: [], manualRemoves: [],
+  editMode: false, editCategory: 'key',
   lang: 'en', library: loadLibrary(), view: 'annotate',
   currentLibId: null, searchHits: [], searchIdx: -1,
-  lastStats: null, aiApplied: false,
-  editMode: false,
-  editCategory: null
+  lastStats: null, aiApplied: false
 };
 
 try {
@@ -1221,41 +1093,53 @@ function saveActiveCats() {
 function renderLegend() {
   const box = $('legend');
   box.innerHTML = '';
-  if (state.editMode) {
-    const activeCats = CATEGORIES.filter(c => state.activeCats.has(c.id));
-    if (!state.editCategory || !state.activeCats.has(state.editCategory)) {
-      state.editCategory = activeCats[0]?.id || null;
-    }
-    for (const c of activeCats) {
-      const el = document.createElement('button');
-      const selected = state.editCategory === c.id;
-      el.className = 'cat-pill' + (selected ? ' edit-selected' : '');
-      el.innerHTML = `<span class="dot" style="background:var(${c.color})"></span>${c.label}`;
-      el.addEventListener('click', () => {
-        state.editCategory = c.id;
-        renderLegend();
-        vibrate(5);
-      });
-      box.appendChild(el);
-    }
-  } else {
-    const catStats = state.lastStats || {};
-    for (const c of CATEGORIES) {
-      const el = document.createElement('button');
-      el.className = 'cat-pill' + (state.activeCats.has(c.id) ? '' : ' off');
-      const count = catStats[c.id] ? `<span class="count">${catStats[c.id].count}</span>` : '';
-      el.innerHTML = `<span class="dot" style="background:var(${c.color})"></span>${c.label}${count}`;
-      el.addEventListener('click', () => {
-        if (state.activeCats.has(c.id)) state.activeCats.delete(c.id);
-        else state.activeCats.add(c.id);
-        saveActiveCats();
-        renderLegend();
-        if (state.spans.length) { redrawOutput(); renderStats(); }
-        vibrate(5);
-      });
-      box.appendChild(el);
-    }
+  const catStats = state.lastStats || {};
+  for (const c of CATEGORIES) {
+    const el = document.createElement('button');
+    el.className = 'cat-pill' + (state.activeCats.has(c.id) ? '' : ' off');
+    const count = catStats[c.id] ? `<span class="count">${catStats[c.id].count}</span>` : '';
+    el.innerHTML = `<span class="dot" style="background:var(${c.color})"></span>${c.label}${count}`;
+    el.addEventListener('click', () => {
+      if (state.activeCats.has(c.id)) state.activeCats.delete(c.id);
+      else state.activeCats.add(c.id);
+      saveActiveCats();
+      renderLegend();
+      if (state.spans.length || state.manualAdds.length) { redrawOutput(); renderStats(); }
+      vibrate(5);
+    });
+    box.appendChild(el);
   }
+}
+
+/* Barra categorie modalità modifica */
+function renderEditCats() {
+  const box = $('editCats');
+  box.innerHTML = '';
+  for (const c of CATEGORIES) {
+    const el = document.createElement('button');
+    el.className = 'edit-cat' + (state.editCategory === c.id ? ' on' : '');
+    el.innerHTML = `<span class="dot" style="background:var(${c.color})"></span>${c.label}`;
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      state.editCategory = c.id;
+      renderEditCats();
+      vibrate(5);
+    });
+    box.appendChild(el);
+  }
+}
+
+function toggleEditMode() {
+  state.editMode = !state.editMode;
+  document.body.classList.toggle('edit-mode', state.editMode);
+  $('btnEdit').classList.toggle('on', state.editMode);
+  $('editBar').classList.toggle('show', state.editMode);
+  $('output').classList.toggle('edit-active', state.editMode);
+  if (state.editMode) {
+    renderEditCats();
+    toast('Modalità modifica attiva. Tocca le parole per evidenziarle.');
+  }
+  vibrate(8);
 }
 
 async function runAnalyze() {
@@ -1286,9 +1170,7 @@ async function runAnalyze() {
       console.error('AI validation error:', e);
       setAIStatus('error', 'Errore durante la validazione AI');
     }
-  } else {
-    setAIStatus('hidden');
-  }
+  } else setAIStatus('hidden');
   state.spans = spans;
   state.lastStats = computeCategoryStats(text, spans);
   const badge = $('langBadge');
@@ -1301,7 +1183,7 @@ async function runAnalyze() {
   redrawOutput();
   renderStats();
   renderLegend();
-  try { localStorage.setItem(SES_KEY, JSON.stringify({ text, ts: Date.now() })); } catch {}
+  saveSession();
 }
 
 function redrawOutput() {
@@ -1323,6 +1205,15 @@ function renderStats() {
     <div class="stat"><div class="k">Frasi</div><div class="v">${sentences}</div></div>
     <div class="stat"><div class="k">Evidenze</div><div class="v">${cov.count}</div></div>
   `;
+}
+
+function saveSession() {
+  try {
+    localStorage.setItem(SES_KEY, JSON.stringify({
+      text: state.text, ts: Date.now(),
+      manualAdds: state.manualAdds, manualRemoves: state.manualRemoves
+    }));
+  } catch {}
 }
 
 function initResize() {
@@ -1357,119 +1248,6 @@ function initResize() {
   handle.addEventListener('lostpointercapture', onUp);
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   MODIFICA MANUALE — tocco su un mark per rimuoverlo,
-   tocco su una parola per evidenziarla con la categoria selezionata
-   ═══════════════════════════════════════════════════════════════════ */
-
-function toggleEditMode() {
-  state.editMode = !state.editMode;
-  const btn = $('btnEdit');
-  const badge = $('editBadge');
-  if (state.editMode) {
-    btn.classList.add('btn-edit-active');
-    badge.classList.add('show');
-    document.body.classList.add('edit-mode');
-    toast('Modalità modifica: tocca un\'evidenziazione per rimuoverla, una parola per aggiungerla', 3200);
-    vibrate(10);
-  } else {
-    btn.classList.remove('btn-edit-active');
-    badge.classList.remove('show');
-    document.body.classList.remove('edit-mode');
-    state.editCategory = null;
-    vibrate(10);
-  }
-  renderLegend();
-}
-
-function getClickTextPos(e) {
-  let range = null;
-  if (document.caretRangeFromPoint) {
-    range = document.caretRangeFromPoint(e.clientX, e.clientY);
-  } else if (document.caretPositionFromPoint) {
-    const p = document.caretPositionFromPoint(e.clientX, e.clientY);
-    if (p && p.offsetNode) {
-      range = { startContainer: p.offsetNode, startOffset: p.offset };
-    }
-  }
-  if (!range) return null;
-  const node = range.startContainer;
-  if (node.nodeType !== 3) return null;
-  const offset = range.startOffset;
-  const parent = node.parentElement;
-  if (!parent) return null;
-  const spanEl = parent.closest('[data-s]');
-  if (!spanEl) return null;
-  const spanStart = parseInt(spanEl.dataset.s, 10);
-  if (isNaN(spanStart)) return null;
-  return spanStart + offset;
-}
-
-function wordBoundsAt(text, pos) {
-  const isWord = c => /[\p{L}\p{M}\p{N}]/u.test(c);
-  let start = pos;
-  let end = pos;
-  while (start > 0 && isWord(text[start - 1])) start--;
-  while (end < text.length && isWord(text[end])) end++;
-  if (start === end) return null;
-  return [start, end];
-}
-
-function removeSpanAt(start, end, cat) {
-  const before = state.spans.length;
-  state.spans = state.spans.filter(s => 
-    !(s.cat === cat && s.start < end && s.end > start)
-  );
-  return before - state.spans.length;
-}
-
-function addSpanAt(start, end, cat) {
-  // Rimuove eventuali span della stessa categoria che si sovrappongono
-  state.spans = state.spans.filter(s => 
-    !(s.cat === cat && s.start < end && s.end > start)
-  );
-  state.spans.push({ start, end, cat, w: 5 });
-}
-
-function onOutputClick(e) {
-  if (!state.editMode) return;
-  const target = e.target;
-
-  // Caso 1: tocco su un mark → rimuovi
-  if (target.tagName === 'MARK' && target.dataset.cat) {
-    e.preventDefault();
-    const s = parseInt(target.dataset.s, 10);
-    const en = parseInt(target.dataset.e, 10);
-    const cat = target.dataset.cat;
-    const removed = removeSpanAt(s, en, cat);
-    if (removed > 0) {
-      state.lastStats = computeCategoryStats(state.text, state.spans);
-      redrawOutput();
-      renderStats();
-      renderLegend();
-      vibrate(12);
-    }
-    return;
-  }
-
-  // Caso 2: tocco su testo non evidenziato → aggiungi
-  const pos = getClickTextPos(e);
-  if (pos === null) return;
-  const bounds = wordBoundsAt(state.text, pos);
-  if (!bounds) return;
-  if (!state.editCategory) {
-    toast('Scegli prima una categoria');
-    return;
-  }
-  e.preventDefault();
-  addSpanAt(bounds[0], bounds[1], state.editCategory);
-  state.lastStats = computeCategoryStats(state.text, state.spans);
-  redrawOutput();
-  renderStats();
-  renderLegend();
-  vibrate(12);
-}
-
 function clearSearchHits() {
   $('output').querySelectorAll('mark.search-hit').forEach(m => {
     const p = m.parentNode;
@@ -1492,8 +1270,7 @@ function runSearch(q) {
   while ((n = walker.nextNode())) nodes.push(n);
   for (const node of nodes) {
     const s = node.nodeValue;
-    let m;
-    re.lastIndex = 0;
+    let m; re.lastIndex = 0;
     const matches = [];
     while ((m = re.exec(s)) !== null) {
       matches.push([m.index, m.index + m[0].length]);
@@ -1532,16 +1309,12 @@ function renderLibrary(filter = '') {
   let items = [...state.library].sort((a, b) => b.updatedAt - a.updatedAt);
   if (filter.trim()) {
     const f = filter.toLowerCase();
-    items = items.filter(it =>
-      it.title.toLowerCase().includes(f) || it.text.toLowerCase().includes(f)
-    );
+    items = items.filter(it => it.title.toLowerCase().includes(f) || it.text.toLowerCase().includes(f));
   }
   if (!items.length) {
     empty.style.display = 'block';
     empty.querySelector('.title').textContent = filter ? 'Nessun risultato' : 'Libreria vuota';
-    empty.querySelector('.sub').textContent = filter
-      ? 'Prova con altre parole chiave.'
-      : 'Salva un testo annotato per ritrovarlo qui, anche offline.';
+    empty.querySelector('.sub').textContent = filter ? 'Prova con altre parole chiave.' : 'Salva un testo annotato per ritrovarlo qui, anche offline.';
     return;
   }
   empty.style.display = 'none';
@@ -1552,10 +1325,13 @@ function renderLibrary(filter = '') {
     const snippet = it.text.slice(0, 160).replace(/\s+/g, ' ');
     const langLabel = it.lang === 'cjk' ? 'CJK' : ((LANG_PROFILES[it.lang] && LANG_PROFILES[it.lang].name.slice(0,3).toUpperCase()) || 'EN');
     const aiBadge = it.aiApplied ? '<span class="badge ai">AI</span>' : '';
+    const manualCount = (it.manualAdds || []).length;
+    const manualBadge = manualCount ? `<span class="badge manual">+${manualCount} ✎</span>` : '';
     el.innerHTML = `
       <div class="row1">
         <span class="badge">${langLabel}</span>
         ${aiBadge}
+        ${manualBadge}
         <span class="date">${date}</span>
       </div>
       <div class="title">${escapeHTML(it.title || 'Senza titolo')}</div>
@@ -1580,6 +1356,8 @@ function openFromLibrary(id) {
   if (!it) return;
   state.text = it.text;
   state.currentLibId = it.id;
+  state.manualAdds = Array.isArray(it.manualAdds) ? it.manualAdds.slice() : [];
+  state.manualRemoves = Array.isArray(it.manualRemoves) ? it.manualRemoves.slice() : [];
   $('input').value = it.text;
   runAnalyze();
   switchView('annotate');
@@ -1624,12 +1402,14 @@ function confirmSave() {
     const it = state.library.find(x => x.id === state.currentLibId);
     if (it) Object.assign(it, {
       title, text: state.text, lang: state.lang, aiApplied: state.aiApplied,
+      manualAdds: state.manualAdds.slice(), manualRemoves: state.manualRemoves.slice(),
       pct: cov.pct, updatedAt: Date.now()
     });
   } else {
     const id = uid();
     state.library.push({
       id, title, text: state.text, lang: state.lang, aiApplied: state.aiApplied,
+      manualAdds: state.manualAdds.slice(), manualRemoves: state.manualRemoves.slice(),
       pct: cov.pct, createdAt: Date.now(), updatedAt: Date.now()
     });
     state.currentLibId = id;
@@ -1664,22 +1444,8 @@ function buildExportHTML() {
   const langName = state.lang === 'cjk' ? 'CJK' : ((LANG_PROFILES[state.lang] && LANG_PROFILES[state.lang].name) || 'English');
   const model = AI_MODELS[ai.modelKey];
   const aiNote = state.aiApplied ? ` · validato con ${model.label}` : '';
-  const styles = `
-    body{font-family:Georgia,serif;max-width:720px;margin:32px auto;padding:0 20px;line-height:1.8;font-size:1.08rem;color:#1b1815;background:#faf7f2}
-    h1{font-size:1.1rem;font-family:system-ui;color:#8a8178;font-weight:600;margin-bottom:4px}
-    .meta{font-family:system-ui;font-size:.78rem;color:#8a8178;margin-bottom:24px}
-    mark{padding:1px 0;border-radius:3px;background:transparent;color:inherit}
-    mark.c-num{background:#ffe680} mark.c-name{background:#d9b8ff}
-    mark.c-key{background:#b6e6b6} mark.c-quote{background:#ffc1cf}
-    mark.c-list{background:#a9d8ff} mark.c-def{background:#ffe0b6}
-    mark.c-sentence{background:rgba(255,201,160,.45)}
-  `;
-  return `<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Annotazione</title>
-<style>${styles}</style></head><body>
-<h1>Annota</h1>
-<div class="meta">${new Date().toLocaleString('it-IT')} · Lingua: ${langName}${aiNote}</div>
-<div>${annotated}</div>
-</body></html>`;
+  const styles = `body{font-family:Georgia,serif;max-width:720px;margin:32px auto;padding:0 20px;line-height:1.8;font-size:1.08rem;color:#1b1815;background:#faf7f2}h1{font-size:1.1rem;font-family:system-ui;color:#8a8178;font-weight:600;margin-bottom:4px}.meta{font-family:system-ui;font-size:.78rem;color:#8a8178;margin-bottom:24px}mark{padding:1px 0;border-radius:3px;background:transparent;color:inherit}mark.c-num{background:#ffe680} mark.c-name{background:#d9b8ff}mark.c-key{background:#b6e6b6} mark.c-quote{background:#ffc1cf}mark.c-list{background:#a9d8ff} mark.c-def{background:#ffe0b6}mark.c-sentence{background:rgba(255,201,160,.45)}`;
+  return `<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Annotazione</title><style>${styles}</style></head><body><h1>Annota</h1><div class="meta">${new Date().toLocaleString('it-IT')} · Lingua: ${langName}${aiNote}</div><div>${annotated}</div></body></html>`;
 }
 
 function switchView(v) {
@@ -1716,18 +1482,8 @@ function renderModelList() {
   for (const [key, m] of Object.entries(AI_MODELS)) {
     const el = document.createElement('div');
     el.className = 'model-option' + (key === ai.modelKey ? ' selected' : '');
-    el.innerHTML = `
-      <span class="radio"></span>
-      <div class="info">
-        <div class="name">${m.label}<span class="sz">${m.size}</span></div>
-        <div class="desc">${m.desc}</div>
-      </div>
-    `;
-    el.addEventListener('click', () => {
-      ai.modelKey = key;
-      renderModelList();
-      vibrate(5);
-    });
+    el.innerHTML = `<span class="radio"></span><div class="info"><div class="name">${m.label}<span class="sz">${m.size}</span></div><div class="desc">${m.desc}</div></div>`;
+    el.addEventListener('click', () => { ai.modelKey = key; renderModelList(); vibrate(5); });
     box.appendChild(el);
   }
 }
@@ -1747,6 +1503,140 @@ function openModelPicker() {
   openModal('modalAISetup');
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   GESTIONE CLICK SUL TESTO IN MODALITÀ MODIFICA
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Trova il token che contiene la posizione assoluta nel testo originale */
+function findTokenAt(text, pos) {
+  const tokens = tokenize(text);
+  for (const t of tokens) {
+    if (pos >= t.start && pos <= t.end) return t;
+  }
+  // Fallback: il token più vicino
+  let best = null, bestDist = Infinity;
+  for (const t of tokens) {
+    const d = Math.min(Math.abs(t.start - pos), Math.abs(t.end - pos));
+    if (d < bestDist) { bestDist = d; best = t; }
+  }
+  if (best && bestDist < 5) return best;
+  return null;
+}
+
+/* Ottiene la posizione carattere del click nell'output */
+function getClickPosition(outputEl, clientX, clientY) {
+  let node = null, offset = 0;
+  if (document.caretRangeFromPoint) {
+    const range = document.caretRangeFromPoint(clientX, clientY);
+    if (range) { node = range.startContainer; offset = range.startOffset; }
+  } else if (document.caretPositionFromPoint) {
+    const pos = document.caretPositionFromPoint(clientX, clientY);
+    if (pos) { node = pos.offsetNode; offset = pos.offset; }
+  }
+  if (!node) return -1;
+
+  // Risale al nodo di testo effettivo
+  if (node.nodeType !== 3) {
+    // Se è un elemento, prendi il primo figlio testo
+    if (node.firstChild && node.firstChild.nodeType === 3) {
+      node = node.firstChild; offset = 0;
+    } else {
+      // Prova a trovare un nodo di testo precedente
+      let prev = node.firstChild;
+      while (prev && prev.nodeType !== 3) prev = prev.firstChild;
+      if (!prev) return -1;
+      node = prev; offset = node.nodeValue.length;
+    }
+  }
+
+  // Cammina tutti i nodi di testo sotto outputEl in ordine
+  const walker = document.createTreeWalker(outputEl, NodeFilter.SHOW_TEXT, null);
+  let abs = 0, n;
+  while ((n = walker.nextNode())) {
+    if (n === node) return abs + offset;
+    abs += n.nodeValue.length;
+  }
+  return -1;
+}
+
+/* Trova se esiste uno span (auto o manual) che copre esattamente [start, end] */
+function findExistingSpanForRange(start, end) {
+  // Cerca negli automatici
+  for (const s of state.spans) {
+    if (s.start === start && s.end === end) return { span: s, source: 'auto' };
+  }
+  // Cerca nei manuali
+  for (const s of state.manualAdds) {
+    if (s.start === start && s.end === end) return { span: s, source: 'manual' };
+  }
+  return null;
+}
+
+/* Applica un toggle di evidenziazione su un token */
+function toggleTokenHighlight(token) {
+  const cat = state.editCategory;
+  const start = token.start, end = token.end;
+
+  const existing = findExistingSpanForRange(start, end);
+
+  // Se esiste uno span con quella categoria → rimuovi
+  if (existing && existing.span.cat === cat) {
+    if (existing.source === 'auto') {
+      // Aggiungi ai manualRemoves per sovrascrivere l'auto
+      state.manualRemoves.push({ start, end, cat });
+    } else {
+      // Rimuovi dai manualAdds
+      state.manualAdds = state.manualAdds.filter(s => !(s.start === start && s.end === end && s.cat === cat));
+    }
+    vibrate(8);
+    return 'removed';
+  }
+
+  // Se esiste uno span con categoria diversa → sostituisci (rimuovi quella, aggiungi la nuova)
+  if (existing) {
+    if (existing.source === 'auto') {
+      state.manualRemoves.push({ start, end, cat: existing.span.cat });
+    } else {
+      state.manualAdds = state.manualAdds.filter(s => !(s.start === start && s.end === end));
+    }
+  }
+
+  // Rimuovi eventuali rimozioni esistenti per questa nuova categoria
+  state.manualRemoves = state.manualRemoves.filter(s => !(s.start === start && s.end === end && s.cat === cat));
+
+  // Aggiungi il nuovo span manuale
+  state.manualAdds.push({ start, end, cat, w: 10, manual: true });
+  vibrate(8);
+  return 'added';
+}
+
+/* Click handler sul testo in modalità modifica */
+function onOutputClick(e) {
+  if (!state.editMode) return;
+  e.preventDefault();
+  e.stopPropagation();
+
+  const x = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : null);
+  const y = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : null);
+  if (x == null || y == null) return;
+
+  const pos = getClickPosition($('output'), x, y);
+  if (pos < 0) return;
+
+  const token = findTokenAt(state.text, pos);
+  if (!token) return;
+
+  const result = toggleTokenHighlight(token);
+  redrawOutput();
+  state.lastStats = computeCategoryStats(state.text, state.spans);
+  renderStats();
+  renderLegend();
+  saveSession();
+
+  if (result === 'added') toast(`+ ${token.word}`, 900);
+  else toast(`− ${token.word}`, 900);
+}
+
 function bindEvents() {
   $('btnTheme').addEventListener('click', () => {
     const cur = document.documentElement.dataset.theme;
@@ -1764,6 +1654,7 @@ function bindEvents() {
   input.addEventListener('input', () => {
     state.text = input.value;
     state.currentLibId = null;
+    state.manualAdds = []; state.manualRemoves = [];
     clearTimeout(timer);
     timer = setTimeout(() => {
       if (state.text.trim().length > 60) {
@@ -1776,13 +1667,7 @@ function bindEvents() {
   const btnAI = $('btnAI');
   let longPressTimer = null;
   let longPressFired = false;
-
-  const cancelLongPress = () => {
-    if (longPressTimer) {
-      clearTimeout(longPressTimer);
-      longPressTimer = null;
-    }
-  };
+  const cancelLongPress = () => { if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null; } };
 
   btnAI.addEventListener('pointerdown', e => {
     if (e.pointerType === 'mouse' && e.button !== 0) return;
@@ -1794,27 +1679,13 @@ function bindEvents() {
       openModelPicker();
     }, 500);
   });
-
-  ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => {
-    btnAI.addEventListener(ev, cancelLongPress);
-  });
-
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => btnAI.addEventListener(ev, cancelLongPress));
   btnAI.addEventListener('contextmenu', e => e.preventDefault());
 
   btnAI.addEventListener('click', async e => {
-    if (longPressFired) {
-      e.preventDefault();
-      e.stopPropagation();
-      longPressFired = false;
-      return;
-    }
+    if (longPressFired) { e.preventDefault(); e.stopPropagation(); longPressFired = false; return; }
     if (ai.loading) return;
-
-    if (!ai.ready) {
-      openModelPicker();
-      return;
-    }
-
+    if (!ai.ready) { openModelPicker(); return; }
     btnAI.classList.add('busy');
     requestAnimationFrame(() => {
       setTimeout(async () => {
@@ -1825,12 +1696,6 @@ function bindEvents() {
     });
   });
 
-  // Tasto modifica
-  $('btnEdit').addEventListener('click', () => { toggleEditMode(); });
-
-  // Click sull'output in modalità edit
-  $('output').addEventListener('click', onOutputClick);
-
   $('btnPaste').addEventListener('click', async () => {
     try {
       const t = await navigator.clipboard.readText();
@@ -1838,24 +1703,23 @@ function bindEvents() {
         input.value = t;
         state.text = t;
         state.currentLibId = null;
+        state.manualAdds = []; state.manualRemoves = [];
         if (ai.ready) runAnalyze();
         else runStatOnly();
         vibrate(8);
-      } else {
-        toast('Appunti vuoti');
-      }
-    } catch {
-      toast('Incolla manualmente (tieni premuto nel campo)');
-    }
+      } else toast('Appunti vuoti');
+    } catch { toast('Incolla manualmente (tieni premuto nel campo)'); }
   });
 
   $('btnClear').addEventListener('click', () => {
     input.value = '';
     state.text = '';
     state.spans = [];
+    state.manualAdds = []; state.manualRemoves = [];
     state.currentLibId = null;
     state.lastStats = null;
     state.aiApplied = false;
+    if (state.editMode) toggleEditMode();
     $('output').innerHTML = '';
     $('stats').style.display = 'none';
     $('langBadge').classList.remove('show');
@@ -1863,6 +1727,11 @@ function bindEvents() {
     localStorage.removeItem(SES_KEY);
     vibrate(10);
   });
+
+  // Modalità modifica
+  $('btnEdit').addEventListener('click', toggleEditMode);
+  // Click sul testo in modalità modifica
+  $('output').addEventListener('click', onOutputClick);
 
   $('btnSaveLib').addEventListener('click', saveToLibrary);
   $('btnReading').addEventListener('click', () => {
@@ -1887,9 +1756,7 @@ function bindEvents() {
           'text/html': new Blob([html], { type: 'text/html' })
         });
         await navigator.clipboard.write([item]);
-      } else {
-        await navigator.clipboard.writeText($('output').innerText);
-      }
+      } else await navigator.clipboard.writeText($('output').innerText);
       toast('Copiato');
     } catch { toast('Copia non disponibile'); }
   });
@@ -1904,18 +1771,15 @@ function bindEvents() {
     closeModal('modalAISetup');
     const wasReady = ai.ready;
     const modelChanged = ai.readyModelKey !== ai.modelKey;
-    if (wasReady && !modelChanged) {
-      if (state.text.trim()) runAnalyze();
-      return;
-    }
+    if (wasReady && !modelChanged) { if (state.text.trim()) runAnalyze(); return; }
     await initAI(ai.modelKey);
   });
 
   $('searchInput').addEventListener('input', e => runSearch(e.target.value));
   $('btnSearchClose').addEventListener('click', () => {
-    $('searchBar'). (style.display = 'none';
+    $('searchBar').style.display = 'none';
     clearSearchHits();
- a });
+  });
   $('searchCount').addEventListener('click', () => {
     if (!state.searchHits.length) return;
     state.searchIdx = (state.searchIdx + 1) % state.searchHits.length;
@@ -1927,9 +1791,7 @@ function bindEvents() {
 
   if (!localStorage.getItem(THEME_KEY)) {
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      if (!localStorage.getItem(THEME_KEY)) {
-        setTheme(e.matches ? 'dark' : 'light');
-      }
+      if (!localStorage.getItem(THEME_KEY)) setTheme(e.matches ? 'dark' : 'light');
     });
   }
 }
@@ -1960,6 +1822,8 @@ function init() {
     const s = JSON.parse(localStorage.getItem(SES_KEY) || 'null');
     if (s && s.text && Date.now() - s.ts < 1000*60*60*24*7) {
       state.text = s.text;
+      state.manualAdds = Array.isArray(s.manualAdds) ? s.manualAdds : [];
+      state.manualRemoves = Array.isArray(s.manualRemoves) ? s.manualRemoves : [];
       $('input').value = s.text;
       restored = true;
     }
@@ -1976,6 +1840,7 @@ Napoleone Bonaparte prese il potere nel 1799 con il colpo di stato del 18 brumai
   }
 
   renderLegend();
+  renderEditCats();
   bindEvents();
   initResize();
   updateAIButton();
