@@ -40,11 +40,13 @@ button,input,textarea{font-family:inherit;font-size:inherit;color:inherit}
 button{cursor:pointer;border:none;background:none;padding:0}
 ::selection{background:var(--accent-soft)}
 .app{display:flex;flex-direction:column;min-height:100dvh;padding-top:env(safe-area-inset-top)}
-.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:10px 14px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--border)}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:8px;padding:10px 14px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--border)}
 .topbar .brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.02rem;letter-spacing:-0.01em}
 .topbar .brand .dotlogo{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,var(--c-num),var(--c-list) 30%,var(--c-key) 60%,var(--c-name));box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}
 .topbar .lang-badge{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:6px;background:var(--surface-3);color:var(--ink-3);opacity:0;transition:opacity .3s}
 .topbar .lang-badge.show{opacity:1}
+.topbar .model-badge{font-size:.68rem;font-weight:700;letter-spacing:.04em;padding:4px 8px;border-radius:6px;background:var(--ai-soft);color:var(--ai);opacity:0;transition:opacity .3s}
+.topbar .model-badge.show{opacity:1}
 .topbar .spacer{flex:1}
 .iconbtn{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;color:var(--ink-2);transition:background .15s,color .15s}
 .iconbtn:active{background:var(--surface-3)}
@@ -77,21 +79,20 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .btn svg{width:17px;height:17px}
 .btn.icon-only svg{width:20px;height:20px}
 
-/* Bottone AI principale (ex Annota) */
+/* Tasto AI principale: solo icona, sfondo scuro come il vecchio Annota */
 .btn-ai-main{
   touch-action: manipulation;
   -webkit-user-select: none; user-select: none;
   -webkit-touch-callout: none;
+  padding: 13px 0;
 }
-.btn-ai-main .model-tag{
-  font-size:.62rem;
-  font-weight:700;
-  letter-spacing:.04em;
-  padding:2px 6px;
-  border-radius:5px;
-  background:rgba(255,255,255,.18);
-  margin-left:4px;
-  opacity:.9;
+.btn-ai-main .ai-icon{
+  width:24px;
+  height:24px;
+  color: var(--accent-soft);
+}
+[data-theme="dark"] .btn-ai-main .ai-icon{
+  color: #d4b478;
 }
 .btn-ai-main.loading{
   pointer-events:none;
@@ -100,12 +101,9 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .btn-ai-main.loading::after{
   content:"";
   position:absolute;inset:0;
-  background:linear-gradient(90deg,transparent,rgba(124,77,255,.45),transparent);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
   animation:shimmer 1.1s infinite;
 }
-.btn-ai-main .ai-icon{color:var(--ai);width:19px;height:19px}
-.btn.primary .ai-icon{color:var(--ai-soft)}
-[data-theme="dark"] .btn.primary .ai-icon{color:var(--ai)}
 
 .cats-row{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;padding:2px 0 12px;margin:0 -2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .cats-row::-webkit-scrollbar{display:none}
@@ -211,6 +209,7 @@ body.reading .reading-bar{display:flex}
   <header class="topbar">
     <div class="brand"><span class="dotlogo"></span><span>Annota</span></div>
     <div class="lang-badge" id="langBadge"></div>
+    <div class="model-badge" id="modelBadge"></div>
     <div class="spacer"></div>
     <button class="iconbtn" id="btnTheme" title="Tema" aria-label="Cambia tema">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -243,14 +242,12 @@ body.reading .reading-bar{display:flex}
         </div>
 
         <div class="actions">
-          <button class="btn primary btn-ai-main" id="btnAI" aria-label="Annota con AI">
+          <button class="btn primary btn-ai-main" id="btnAI" aria-label="Annota">
             <svg class="ai-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"/>
               <path d="M19 17l.9 2.1L22 20l-2.1.9L19 23l-.9-2.1L16 20l2.1-.9L19 17z"/>
               <path d="M5 17l.7 1.8L7.5 19.5 5.7 20.2 5 22l-.7-1.8L2.5 19.5 4.3 18.8 5 17z"/>
             </svg>
-            <span id="aiLabel">Annota</span>
-            <span class="model-tag" id="modelTag">1.5B</span>
           </button>
           <button class="btn ghost icon-only" id="btnPaste" title="Incolla" aria-label="Incolla">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -792,7 +789,7 @@ function analyzeStatistical(text) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   AI LOCALE — sempre attiva, non disattivabile
+   AI LOCALE
    ═══════════════════════════════════════════════════════════════════ */
 
 const AI_MODELS = {
@@ -855,17 +852,18 @@ function setAIStatus(kind, message, pct) {
 
 function updateAIButton() {
   const btn = $('btnAI');
-  const tag = $('modelTag');
-  const label = $('aiLabel');
+  const badge = $('modelBadge');
   btn.classList.remove('loading');
   if (ai.loading) {
     btn.classList.add('loading');
-    label.textContent = 'Preparazione…';
+    badge.classList.remove('show');
+  } else if (ai.ready) {
+    const model = AI_MODELS[ai.modelKey] || AI_MODELS.qwen15;
+    badge.textContent = model.tag;
+    badge.classList.add('show');
   } else {
-    label.textContent = 'Annota';
+    badge.classList.remove('show');
   }
-  const model = AI_MODELS[ai.modelKey] || AI_MODELS.qwen15;
-  tag.textContent = model.tag;
 }
 
 async function initAI(modelKey) {
@@ -908,7 +906,6 @@ async function initAI(modelKey) {
     updateAIButton();
     setAIStatus('ready', `${model.label} pronta`);
     toast(`${model.label} caricata`, 2200);
-    // Se c'è testo, analizza subito con AI
     if (state.text.trim()) runAnalyze();
   } catch (e) {
     console.error('AI load error:', e);
@@ -1582,11 +1579,9 @@ function renderModelList() {
   }
 }
 
-/* Apre il selettore del modello */
 function openModelPicker() {
   if (ai.loading) return;
   renderModelList();
-  // Adatta il testo della modale
   if (ai.hasEverDownloaded) {
     $('aiSetupTitle').textContent = 'Cambia modello AI';
     $('aiSetupDesc').textContent = 'Il nuovo modello verrà scaricato (una sola volta). Il vecchio verrà rimosso dalla memoria.';
@@ -1618,25 +1613,14 @@ function bindEvents() {
     state.currentLibId = null;
     clearTimeout(timer);
     timer = setTimeout(() => {
-      if (state.text.trim().length > 60 && ai.ready) runAnalyze();
-      else if (state.text.trim().length > 60 && !ai.ready) {
-        // Analisi statistica istantanea senza AI
-        const result = analyzeStatistical(state.text);
-        state.spans = result.spans;
-        state.lang = result.lang;
-        state.lastStats = computeCategoryStats(state.text, result.spans);
-        state.aiApplied = false;
-        redrawOutput();
-        renderStats();
-        renderLegend();
-        const badge = $('langBadge');
-        badge.textContent = result.lang === 'cjk' ? 'CJK' : (LANG_PROFILES[result.lang]?.name || 'EN');
-        badge.classList.add('show');
+      if (state.text.trim().length > 60) {
+        if (ai.ready) runAnalyze();
+        else runStatOnly();
       }
     }, 500);
   });
 
-  // ═══════ TASTO AI: tap = analizza, long press = cambia modello ═══════
+  // Tasto AI: tap = analizza, long press = cambia modello
   const btnAI = $('btnAI');
   let longPressTimer = null;
   let longPressFired = false;
@@ -1672,29 +1656,24 @@ function bindEvents() {
       longPressFired = false;
       return;
     }
-    // Tap normale: comportamento del vecchio tasto "Annota"
     if (ai.loading) return;
 
     if (!ai.ready) {
-      // Modello non ancora caricato: apri il picker
       openModelPicker();
       return;
     }
 
-    // Modello pronto: esegui l'analisi completa
     btnAI.classList.add('busy');
-    $('aiLabel').textContent = 'Analisi…';
     requestAnimationFrame(() => {
       setTimeout(async () => {
         await runAnalyze();
         btnAI.classList.remove('busy');
-        $('aiLabel').textContent = 'Annota';
         vibrate(10);
       }, 10);
     });
   });
 
-  // ═══════ Tasto Incolla ═══════
+  // Tasto Incolla
   $('btnPaste').addEventListener('click', async () => {
     try {
       const t = await navigator.clipboard.readText();
@@ -1703,20 +1682,7 @@ function bindEvents() {
         state.text = t;
         state.currentLibId = null;
         if (ai.ready) runAnalyze();
-        else {
-          // Analisi statistica base se AI non pronta
-          const result = analyzeStatistical(t);
-          state.spans = result.spans;
-          state.lang = result.lang;
-          state.lastStats = computeCategoryStats(t, result.spans);
-          state.aiApplied = false;
-          redrawOutput();
-          renderStats();
-          renderLegend();
-          const badge = $('langBadge');
-          badge.textContent = result.lang === 'cjk' ? 'CJK' : (LANG_PROFILES[result.lang]?.name || 'EN');
-          badge.classList.add('show');
-        }
+        else runStatOnly();
         vibrate(8);
       } else {
         toast('Appunti vuoti');
@@ -1726,7 +1692,7 @@ function bindEvents() {
     }
   });
 
-  // ═══════ Tasto Cestino ═══════
+  // Tasto Cestino
   $('btnClear').addEventListener('click', () => {
     input.value = '';
     state.text = '';
@@ -1782,7 +1748,6 @@ function bindEvents() {
     const wasReady = ai.ready;
     const modelChanged = ai.readyModelKey !== ai.modelKey;
     if (wasReady && !modelChanged) {
-      // Nulla da fare, stesso modello già pronto
       if (state.text.trim()) runAnalyze();
       return;
     }
@@ -1810,6 +1775,23 @@ function bindEvents() {
       }
     });
   }
+}
+
+/* Analisi solo statistica, senza AI */
+function runStatOnly() {
+  const text = state.text;
+  if (!text.trim()) return;
+  const result = analyzeStatistical(text);
+  state.spans = result.spans;
+  state.lang = result.lang;
+  state.lastStats = computeCategoryStats(text, result.spans);
+  state.aiApplied = false;
+  redrawOutput();
+  renderStats();
+  renderLegend();
+  const badge = $('langBadge');
+  badge.textContent = result.lang === 'cjk' ? 'CJK' : (LANG_PROFILES[result.lang]?.name || 'EN');
+  badge.classList.add('show');
 }
 
 function init() {
@@ -1842,15 +1824,13 @@ Napoleone Bonaparte prese il potere nel 1799 con il colpo di stato del 18 brumai
   initResize();
   updateAIButton();
 
-  // Se l'utente ha già scaricato un modello in passato, ricarica in background
   if (ai.hasEverDownloaded) {
     setTimeout(() => {
       if (hasWebGPU()) initAI(ai.modelKey);
       else updateAIButton();
     }, 800);
   } else {
-    // Primo avvio: analisi statistica
-    runAnalyze();
+    runStatOnly();
   }
 }
 
