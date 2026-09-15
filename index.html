@@ -40,19 +40,19 @@ button,input,textarea{font-family:inherit;font-size:inherit;color:inherit}
 button{cursor:pointer;border:none;background:none;padding:0}
 ::selection{background:var(--accent-soft)}
 .app{display:flex;flex-direction:column;height:100dvh;padding-top:env(safe-area-inset-top)}
-.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:10px 14px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--border);flex:0 0 auto}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:8px;padding:10px 14px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--border);flex:0 0 auto}
 .topbar .brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.02rem;letter-spacing:-0.01em}
 .topbar .brand .dotlogo{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,var(--c-num),var(--c-list) 30%,var(--c-key) 60%,var(--c-name));box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}
 .topbar .spacer{flex:1}
 .iconbtn{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;color:var(--ink-2);transition:background .15s,color .15s}
 .iconbtn:active{background:var(--surface-3)}
 .iconbtn svg{width:20px;height:20px}
+.iconbtn.on{background:var(--ai-soft);color:var(--ai)}
 .view{display:none;flex:1;flex-direction:column;min-height:0}
 .view.active{display:flex}
 .scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px 16px}
 .wrap{max-width:720px;margin:0 auto}
 
-/* Barra inferiore fissa: contiene edit-hint, searchbar, categorie, toolbar */
 .bottom-bar{
   flex:0 0 auto;
   background:color-mix(in srgb,var(--bg) 96%,transparent);
@@ -61,8 +61,19 @@ button{cursor:pointer;border:none;background:none;padding:0}
   border-top:1px solid var(--border);
   padding:8px 14px;
   z-index:25;
+  overflow:hidden;
+  max-height:400px;
+  transition:max-height .25s ease, padding .25s ease, border .25s ease, opacity .2s ease;
 }
 .bottom-bar .inner{max-width:720px;margin:0 auto}
+body.controls-hidden .bottom-bar{
+  max-height:0;
+  padding-top:0;
+  padding-bottom:0;
+  border-top-color:transparent;
+  opacity:0;
+  pointer-events:none;
+}
 
 .input-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow);margin-bottom:14px;display:flex;flex-direction:column}
 .input-card textarea{width:100%;min-height:80px;height:140px;border:none;outline:none;resize:none;background:transparent;font-size:16px;line-height:1.55;color:var(--ink);display:block}
@@ -212,6 +223,7 @@ body.edit-mode .output-card{cursor:crosshair}
 
 .toast{position:fixed;left:50%;bottom:calc(160px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:.88rem;font-weight:500;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:200;box-shadow:var(--shadow);max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+body.controls-hidden .toast{bottom:calc(90px + env(safe-area-inset-bottom))}
 .tabbar{position:sticky;bottom:0;z-index:30;display:flex;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom);flex:0 0 auto}
 .tabbar .tab{flex:1;padding:10px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ink-3);font-size:.68rem;font-weight:600;transition:color .15s}
 .tabbar .tab svg{width:22px;height:22px}
@@ -232,6 +244,11 @@ body.reading .reading-bar{display:flex}
   <header class="topbar">
     <div class="brand"><span class="dotlogo"></span><span>ANNOTT</span></div>
     <div class="spacer"></div>
+    <button class="iconbtn" id="btnToggleControls" title="Mostra/nascondi controlli" aria-label="Mostra/nascondi controlli">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="iconToggleControls">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </button>
     <button class="iconbtn" id="btnTheme" title="Tema" aria-label="Cambia tema">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
     </button>
@@ -295,7 +312,6 @@ body.reading .reading-bar{display:flex}
       </div>
     </div>
 
-    <!-- Barra inferiore fissa: edit hint + searchbar + categorie + toolbar -->
     <div class="bottom-bar" id="bottomBar">
       <div class="inner">
         <div class="edit-hint">
@@ -1058,6 +1074,7 @@ const SES_KEY = 'annota.session.v7';
 const THEME_KEY = 'annota.theme.v1';
 const INPUT_H_KEY = 'annota.inputHeight.v1';
 const CATS_KEY = 'annota.cats.v1';
+const CONTROLS_KEY = 'annota.controlsHidden.v1';
 
 function loadLibrary() { try { return JSON.parse(localStorage.getItem(LIB_KEY) || '[]'); } catch { return []; } }
 function saveLibrary(list) {
@@ -1069,6 +1086,7 @@ const state = {
   text: '', activeCats: new Set(), spans: [],
   manualAdds: [], manualRemoves: [],
   editMode: false, editCategory: 'key',
+  controlsHidden: JSON.parse(localStorage.getItem(CONTROLS_KEY) || 'false'),
   lang: 'en', library: loadLibrary(), view: 'annotate',
   currentLibId: null, searchHits: [], searchIdx: -1,
   lastStats: null, aiApplied: false
@@ -1082,6 +1100,40 @@ if (!state.activeCats.size) state.activeCats = new Set(CATEGORIES.map(c => c.id)
 
 function saveActiveCats() {
   try { localStorage.setItem(CATS_KEY, JSON.stringify([...state.activeCats])); } catch {}
+}
+
+function updateControlsToggle() {
+  document.body.classList.toggle('controls-hidden', state.controlsHidden);
+  const icon = $('iconToggleControls');
+  const btn = $('btnToggleControls');
+  if (state.controlsHidden) {
+    // chevron verso l'alto: clicca per mostrare
+    icon.innerHTML = '<polyline points="18 15 12 9 6 15"/>';
+    btn.classList.remove('on');
+    btn.title = 'Mostra controlli';
+  } else {
+    // chevron verso il basso: clicca per nascondere
+    icon.innerHTML = '<polyline points="6 9 12 15 18 9"/>';
+    btn.classList.add('on');
+    btn.title = 'Nascondi controlli';
+  }
+}
+
+function toggleControls() {
+  state.controlsHidden = !state.controlsHidden;
+  // Se nascondo la barra mentre sono in modalità modifica, esco dalla modalità
+  if (state.controlsHidden && state.editMode) toggleEditMode();
+  // Se nascondo la barra mentre la ricerca è aperta, la chiudo
+  if (state.controlsHidden) {
+    const bar = $('searchBar');
+    if (bar.style.display !== 'none') {
+      bar.style.display = 'none';
+      clearSearchHits();
+    }
+  }
+  try { localStorage.setItem(CONTROLS_KEY, JSON.stringify(state.controlsHidden)); } catch {}
+  updateControlsToggle();
+  vibrate(6);
 }
 
 function renderLegend() {
@@ -1577,6 +1629,12 @@ function setTheme(t) {
 
 function toggleSearch() {
   const bar = $('searchBar');
+  // Se i controlli sono nascosti, mostrali prima di aprire la ricerca
+  if (state.controlsHidden) {
+    state.controlsHidden = false;
+    try { localStorage.setItem(CONTROLS_KEY, 'false'); } catch {}
+    updateControlsToggle();
+  }
   const on = bar.style.display === 'none';
   bar.style.display = on ? 'flex' : 'none';
   if (on) setTimeout(() => $('searchInput').focus(), 80);
@@ -1715,6 +1773,7 @@ function onOutputClick(e) {
 }
 
 function bindEvents() {
+  $('btnToggleControls').addEventListener('click', toggleControls);
   $('btnTheme').addEventListener('click', () => {
     const cur = document.documentElement.dataset.theme;
     setTheme(cur === 'dark' ? 'light' : 'dark');
@@ -1907,11 +1966,12 @@ function init() {
 
 Di conseguenza, il 14 luglio 1789 il popolo parigino insorse contro la monarchia. La Dichiarazione dei Diritti dell'Uomo e del Cittadino, approvata nell'agosto dello stesso anno, costituisce uno dei documenti fondamentali della storia moderna.
 
-Napoleone Bonaparte prese il potere nel 1799 con il colpo di stato del 18 brumaio, ponendo fine alla fase rivoluzionaria. Il Consolato, instaurato nel 1799, diede origine a un nuovo ordine istituzionale che portò alla proclamazione dell'Impero nel 1804.`;
+Napoleone Bonaparte prese il potere nel 1799 con il colpo di stato del 18 brumaio, ponendo fine alla fase rivoluzionaria. Il Consolato, instaurato nel 1799, diede origine a un nuovo ordine istituzionale che portò alla proclamazione dell'impero nel 1804.`;
     state.text = sample;
     $('input').value = sample;
   }
 
+  updateControlsToggle();
   renderLegend();
   bindEvents();
   initResize();
