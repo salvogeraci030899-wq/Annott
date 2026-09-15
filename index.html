@@ -1,0 +1,1314 @@
+<!doctype html>
+<html lang="it" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#f7f4ef">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Annota">
+<title>Annota · lettura strutturata</title>
+<style>
+:root {
+  --bg: #f6f3ee; --surface: #ffffff; --surface-2: #fbf9f5; --surface-3: #f1ede6;
+  --ink: #1b1815; --ink-2: #57534e; --ink-3: #a8a29e;
+  --border: #e6e0d6; --border-2: #d9d2c5;
+  --accent: #b8893d; --accent-soft: #f3e6cf; --danger: #c0392b;
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px -12px rgba(0,0,0,.10);
+  --c-data:#ffe680; --c-def:#a9d8ff; --c-cause:#b6e6b6; --c-thesis:#ffc9a0;
+  --c-name:#d9b8ff; --c-quote:#ffc1cf; --c-arg:#c9ecc9; --c-obj:#ffd1d1;
+  --c-art:#c6d8ff; --c-princ:#ffe3a6; --c-process:#b6e6e6; --c-theme:#e6c8ff;
+  --c-figure:#ffe0b6; --c-who:#d9b8ff; --c-what:#b6e6b6; --c-when:#ffe680; --c-where:#c6d8ff;
+}
+[data-theme="dark"] {
+  --bg:#14110f; --surface:#1e1a18; --surface-2:#262120; --surface-3:#2e2826;
+  --ink:#f3efe9; --ink-2:#b6ada3; --ink-3:#6a635c;
+  --border:#302a27; --border-2:#3d3632;
+  --accent:#d4b478; --accent-soft:#3a2f1c; --danger:#e57373;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px -12px rgba(0,0,0,.6);
+  --c-data:rgba(255,205,50,.42);
+  --c-def:rgba(80,170,255,.38);
+  --c-cause:rgba(100,220,110,.36);
+  --c-thesis:rgba(255,165,90,.40);
+  --c-name:rgba(200,140,255,.40);
+  --c-quote:rgba(255,140,175,.38);
+  --c-arg:rgba(130,225,140,.34);
+  --c-obj:rgba(255,145,145,.36);
+  --c-art:rgba(140,185,255,.38);
+  --c-princ:rgba(255,200,105,.40);
+  --c-process:rgba(130,220,220,.36);
+  --c-theme:rgba(205,150,255,.40);
+  --c-figure:rgba(255,195,135,.40);
+  --c-who:rgba(200,140,255,.40);
+  --c-what:rgba(130,225,140,.34);
+  --c-when:rgba(255,205,50,.42);
+  --c-where:rgba(140,185,255,.38);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,"Segoe UI",sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;overscroll-behavior-y:none}
+button,input,textarea{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none;padding:0}
+::selection{background:var(--accent-soft)}
+.app{display:flex;flex-direction:column;min-height:100dvh;padding-top:env(safe-area-inset-top)}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:10px 14px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--border)}
+.topbar .brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.02rem;letter-spacing:-0.01em}
+.topbar .brand .dotlogo{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,var(--c-data),var(--c-def) 40%,var(--c-cause) 70%,var(--c-thesis));box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}
+.topbar .spacer{flex:1}
+.iconbtn{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;color:var(--ink-2);transition:background .15s,color .15s}
+.iconbtn:active{background:var(--surface-3)}
+.iconbtn svg{width:20px;height:20px}
+.view{display:none;flex:1;flex-direction:column;min-height:0}
+.view.active{display:flex}
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px 120px}
+.wrap{max-width:720px;margin:0 auto}
+
+.input-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow);margin-bottom:14px;display:flex;flex-direction:column}
+.input-card textarea{
+  width:100%;min-height:80px;height:140px;
+  border:none;outline:none;
+  resize:none;
+  background:transparent;
+  font-size:16px;line-height:1.55;color:var(--ink);
+  display:block;
+}
+.input-card textarea::placeholder{color:var(--ink-3)}
+.resize-handle{
+  margin-top:8px;
+  height:28px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:ns-resize;
+  touch-action:none;
+  color:var(--ink-3);
+  border-radius:8px;
+  user-select:none;
+  -webkit-user-select:none;
+  transition:color .15s, background .15s;
+}
+.resize-handle:hover{color:var(--ink-2)}
+.resize-handle.dragging{color:var(--accent);background:var(--surface-3)}
+.resize-handle svg{width:26px;height:26px;pointer-events:none}
+
+.actions{display:flex;gap:8px;margin:12px 0 10px;flex-wrap:wrap}
+.btn{flex:1 1 auto;padding:13px 18px;border-radius:12px;font-weight:600;font-size:.95rem;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .08s,background .15s;min-width:0}
+.btn:active{transform:scale(.985)}
+.btn.primary{background:var(--ink);color:var(--bg);flex:1 1 auto}
+.btn.primary:active{background:#000}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--border-2)}
+.btn.ghost:active{background:var(--surface-3)}
+.btn.icon-only{
+  flex:0 0 auto;
+  width:52px;
+  padding:13px 0;
+}
+.btn.danger-icon{color:var(--danger)}
+.btn svg{width:17px;height:17px}
+.btn.icon-only svg{width:20px;height:20px}
+
+.cats-row{
+  display:flex;
+  gap:6px;
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding:2px 0 12px;
+  margin:0 -2px;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.cats-row::-webkit-scrollbar{display:none}
+.cat-pill{
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 10px 6px 8px;
+  border-radius:999px;
+  font-size:.73rem;
+  font-weight:600;
+  background:var(--surface);
+  border:1px solid var(--border);
+  color:var(--ink-2);
+  transition:all .15s;
+  white-space:nowrap;
+  line-height:1;
+  user-select:none;
+  -webkit-user-select:none;
+}
+.cat-pill:active{transform:scale(.96)}
+.cat-pill .dot{
+  width:9px;height:9px;border-radius:50%;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.10);
+  flex:0 0 auto;
+}
+.cat-pill.off{
+  opacity:.38;
+  text-decoration:line-through;
+  text-decoration-thickness:1px;
+}
+
+.toolbar{
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+  padding:2px 4px 8px;
+  margin-bottom:4px;
+}
+.toolbar .spacer{flex:1}
+.tbtn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 11px;border-radius:9px;
+  font-size:.82rem;font-weight:500;
+  color:var(--ink-2);
+  background:var(--surface);
+  border:1px solid var(--border);
+  transition:background .15s,color .15s,transform .08s;
+}
+.tbtn:active{transform:scale(.97);background:var(--surface-3);color:var(--ink)}
+.tbtn svg{width:15px;height:15px}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 12px}
+.stat .k{font-size:.68rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em;font-weight:700}
+.stat .v{font-size:1.05rem;font-weight:700;margin-top:2px;letter-spacing:-0.01em}
+.stat.warn .v{color:var(--danger)}
+.stat.ok .v{color:#3b8f4b}
+[data-theme="dark"] .stat.ok .v{color:#7bd88f}
+.output-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px 22px 26px;box-shadow:var(--shadow);font-family:"New York",Georgia,"Iowan Old Style","Times New Roman",serif;font-size:1.10rem;line-height:1.85;white-space:pre-wrap;word-wrap:break-word;color:var(--ink)}
+.output-card:empty{display:none}
+.output-card::selection,.output-card *::selection{background:var(--accent-soft)}
+mark{background:transparent;color:inherit;padding:1px 0;border-radius:3px;box-decoration-break:clone;-webkit-box-decoration-break:clone;transition:background .25s}
+mark.c-data{background:var(--c-data)} mark.c-def{background:var(--c-def)}
+mark.c-cause{background:var(--c-cause)} mark.c-thesis{background:var(--c-thesis)}
+mark.c-name{background:var(--c-name)} mark.c-quote{background:var(--c-quote)}
+mark.c-arg{background:var(--c-arg)} mark.c-obj{background:var(--c-obj)}
+mark.c-art{background:var(--c-art)} mark.c-princ{background:var(--c-princ)}
+mark.c-process{background:var(--c-process)} mark.c-theme{background:var(--c-theme)}
+mark.c-figure{background:var(--c-figure)} mark.c-who{background:var(--c-who)}
+mark.c-what{background:var(--c-what)} mark.c-when{background:var(--c-when)}
+mark.c-where{background:var(--c-where)}
+.search-hit{background:#ff6b35 !important;color:white !important;border-radius:3px}
+.search-hit.current{background:#d35400 !important;outline:2px solid #d35400}
+.searchbar{display:flex;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 12px;margin-bottom:12px}
+.searchbar input{flex:1;border:none;outline:none;background:transparent;font-size:15px}
+.searchbar .count{color:var(--ink-3);font-size:.82rem;min-width:40px;text-align:right}
+.empty{text-align:center;padding:60px 24px;color:var(--ink-3)}
+.empty .icon{font-size:2.6rem;margin-bottom:10px;opacity:.6}
+.empty .title{color:var(--ink-2);font-weight:600;margin-bottom:4px}
+.empty .sub{font-size:.9rem}
+.lib-list{display:flex;flex-direction:column;gap:10px}
+.lib-item{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;transition:transform .08s,background .15s;cursor:pointer;box-shadow:var(--shadow)}
+.lib-item:active{transform:scale(.99);background:var(--surface-2)}
+.lib-item .row1{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.lib-item .badge{font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.lib-item .date{font-size:.78rem;color:var(--ink-3);margin-left:auto}
+.lib-item .title{font-weight:600;font-size:.98rem;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+.lib-item .snippet{font-size:.86rem;color:var(--ink-2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.lib-item .meta{display:flex;gap:12px;margin-top:8px;font-size:.76rem;color:var(--ink-3)}
+.modal-bg{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.42);backdrop-filter:blur(3px);display:none;align-items:flex-end;justify-content:center;padding:0}
+.modal-bg.open{display:flex}
+.modal{background:var(--surface);border-top-left-radius:20px;border-top-right-radius:20px;padding:20px 20px calc(20px + env(safe-area-inset-bottom));width:100%;max-width:520px;animation:slideUp .22s ease-out;border:1px solid var(--border);border-bottom:none}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
+.modal h3{margin:0 0 4px;font-size:1.05rem;letter-spacing:-0.01em}
+.modal p{margin:0 0 16px;color:var(--ink-2);font-size:.9rem}
+.modal .input-name{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border-2);background:var(--surface-2);font-size:16px;outline:none;margin-bottom:12px}
+.modal .row-actions{display:flex;gap:8px}
+.toast{position:fixed;left:50%;bottom:calc(80px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:.88rem;font-weight:500;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:200;box-shadow:var(--shadow);max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.tabbar{position:sticky;bottom:0;z-index:30;display:flex;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom)}
+.tabbar .tab{flex:1;padding:10px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ink-3);font-size:.68rem;font-weight:600;transition:color .15s}
+.tabbar .tab svg{width:22px;height:22px}
+.tabbar .tab.active{color:var(--accent)}
+body.reading .topbar,body.reading .tabbar,body.reading .input-card,body.reading .actions,body.reading .toolbar,body.reading .cats-row,body.reading .stats,body.reading .searchbar{display:none !important}
+body.reading .scroll{padding-top:10px}
+body.reading .output-card{font-size:1.18rem;padding:24px 22px;border-radius:0;border:none;box-shadow:none;background:var(--bg)}
+.reading-bar{display:none;position:sticky;top:0;z-index:40;padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top));background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);align-items:center;gap:10px}
+body.reading .reading-bar{display:flex}
+.reading-bar .progress{flex:1;height:4px;background:var(--surface-3);border-radius:2px;overflow:hidden}
+.reading-bar .progress > i{display:block;height:100%;width:0;background:var(--accent);transition:width .1s}
+@media (min-width:640px){.scroll{padding:22px 22px 120px}}
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="dotlogo"></span>
+      <span>Annota</span>
+    </div>
+    <div class="spacer"></div>
+    <button class="iconbtn" id="btnTheme" title="Tema" aria-label="Cambia tema">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+    <button class="iconbtn" id="btnShare" title="Condividi" aria-label="Condividi">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+    </button>
+  </header>
+
+  <section class="view active" id="view-annotate">
+    <div class="reading-bar">
+      <button class="iconbtn" id="btnExitReading" aria-label="Esci">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="progress"><i id="readProgress"></i></div>
+      <button class="iconbtn" id="btnSearchReading" aria-label="Cerca">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+    </div>
+
+    <div class="scroll" id="scrollAnnotate">
+      <div class="wrap">
+
+        <div class="input-card">
+          <textarea id="input" placeholder="Incolla qui il testo da annotare…" spellcheck="false"></textarea>
+          <div class="resize-handle" id="resizeHandle" title="Trascina per allungare" aria-label="Trascina per allungare">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="8 9 12 5 16 9"/>
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <polyline points="8 15 12 19 16 15"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn primary" id="btnAnalyze">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            <span>Annota</span>
+          </button>
+          <button class="btn ghost icon-only danger-icon" id="btnClear" title="Pulisci" aria-label="Pulisci">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"/>
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+              <path d="M10 11v6M14 11v6"/>
+              <path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="cats-row" id="legend"></div>
+
+        <div class="stats" id="stats" style="display:none"></div>
+
+        <div class="searchbar" id="searchBar" style="display:none">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--ink-3)"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="searchInput" type="search" placeholder="Cerca nel testo…" autocomplete="off">
+          <span class="count" id="searchCount"></span>
+          <button class="iconbtn" id="btnSearchClose" style="width:30px;height:30px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+
+        <div class="toolbar" id="toolbar">
+          <div class="spacer"></div>
+          <button class="tbtn" id="btnSaveLib">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Salva
+          </button>
+          <button class="tbtn" id="btnReading">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            Lettura
+          </button>
+          <button class="tbtn" id="btnSearchOpen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Cerca
+          </button>
+          <button class="tbtn" id="btnCopy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copia
+          </button>
+        </div>
+
+        <div class="output-card" id="output"></div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="view-library">
+    <div class="scroll">
+      <div class="wrap">
+        <div class="searchbar">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--ink-3)"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input id="libSearch" type="search" placeholder="Cerca nella libreria…" autocomplete="off">
+        </div>
+        <div class="lib-list" id="libList"></div>
+        <div class="empty" id="libEmpty" style="display:none">
+          <div class="icon">📚</div>
+          <div class="title">Libreria vuota</div>
+          <div class="sub">Salva un testo annotato per ritrovarlo qui, anche offline.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="tabbar">
+    <button class="tab active" data-view="annotate">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
+      <span>Annota</span>
+    </button>
+    <button class="tab" data-view="library">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      <span>Libreria</span>
+    </button>
+  </nav>
+</div>
+
+<div class="modal-bg" id="modalSave">
+  <div class="modal">
+    <h3>Salva in libreria</h3>
+    <p>Il testo annotato resterà sul tuo dispositivo, offline.</p>
+    <input class="input-name" id="saveTitle" placeholder="Titolo (facoltativo)" autocomplete="off">
+    <div class="row-actions">
+      <button class="btn ghost" id="btnCancelSave">Annulla</button>
+      <button class="btn primary" id="btnConfirmSave">Salva</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modalConfirm">
+  <div class="modal">
+    <h3 id="confirmTitle">Sei sicuro?</h3>
+    <p id="confirmText">Questa azione non può essere annullata.</p>
+    <div class="row-actions">
+      <button class="btn ghost" id="btnCancelConfirm">Annulla</button>
+      <button class="btn primary danger" id="btnOkConfirm">Elimina</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+'use strict';
+
+const $ = id => document.getElementById(id);
+const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
+
+const escapeHTML = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const escapeRE = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const vibrate = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch {} };
+
+let toastTimer = null;
+function toast(msg, ms = 1800) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), ms);
+}
+
+const MIN_WEIGHT = 3;
+
+const PERIODI_STORICI = [
+  'Preistoria','Paleolitico','Mesolitico','Neolitico','Età del Bronzo','Età del Ferro',
+  'Antichità','Età antica','Età classica','Alto Medioevo','Basso Medioevo','Medioevo',
+  'Umanesimo','Rinascimento','Età moderna','Età contemporanea','Illuminismo','Romanticismo',
+  'Positivismo','Rivoluzione Francese','Rivoluzione Industriale','Rivoluzione Americana',
+  'Rivoluzione Russa','Restaurazione','Risorgimento',"Unità d'Italia",'Prima Guerra Mondiale',
+  'Seconda Guerra Mondiale','Grande Guerra','Guerra Fredda',"Guerra dei Trent'anni",
+  'Guerra di Secessione','Impero Romano','Impero Bizantino','Impero Carolingio',
+  'Sacro Romano Impero','Repubblica Romana','Antica Roma','Antica Grecia',
+  'Riforma Protestante','Controriforma',"Scoperta dell'America",'Fascismo','Nazismo',
+  'Comunismo','Socialismo','Liberalismo','Democrazia','Feudalesimo','Capitalismo',
+  'Mercantilismo','Colonialismo','Imperialismo','Ancien Régime','Antico Regime','Terzo Stato'
+];
+
+const STOP_NAMES_BASE = (
+  'il lo la i gli le un uno una e ed o od ma però perciò in con su per tra fra da di ' +
+  'a al allo alla ai agli alle del dello della dei degli delle nel nello nella nei negli nelle ' +
+  'sul sullo sulla sui sugli sulle dal dallo dalla dai dagli dalle questo questa questi queste ' +
+  'quello quella quelli quelle ciò esso essa tuttavia inoltre infine poi dopo prima durante mentre ' +
+  'quando come dove perché anche solo proprio soprattutto cioè quindi dunque pertanto tale tali ' +
+  'simile simili grande grandi nuovo nuova nuovi nuove senza verso contro sotto sopra presso oltre ' +
+  'entro fino lungo vicino'
+).split(/\s+/);
+const STOP_NAMES = new Set();
+for (const w of STOP_NAMES_BASE) {
+  STOP_NAMES.add(w);
+  if (w.length > 0) STOP_NAMES.add(w[0].toUpperCase() + w.slice(1));
+}
+
+const PERIODI_RE = PERIODI_STORICI.map(escapeRE).join('|');
+const NAME_RE = /(?:^|[^A-Za-zÀ-ÿ])([A-ZÀÈÉÌÒÙ][a-zàèéìòù']{2,}(?:[ \t]+[A-ZÀÈÉÌÒÙ][a-zàèéìòù']+)*)/g;
+
+const CONCEPT_NUCLEI = 'crisi|carestia|pestilenza|epidemia|rivoluzione|riforma|guerra|trattato|alleanza|conflitto|rivolta|insurrezione|ribellione|diffusione|espansione|declino|caduta|ascesa|sviluppo|crescita|trasformazione|cambiamento|condizioni|situazione|fenomeno|processo|movimento|corrente|dottrina|ideologia|pensiero';
+const CONCEPT_ADJ = 'finanziaria|economica|politica|sociale|militare|religiosa|culturale|industriale|agraria|demografica|internazionale|nazionale|interna|esterna|mondiale';
+const CONCEPT_RE = new RegExp(
+  '\\b(?:la|le|il|lo|i|gli|una|un|l\')\\s+' +
+  '(?:\\w+\\s+){0,2}?' +
+  '(?:' + CONCEPT_NUCLEI + ')\\b' +
+  '(?:\\s+(?:' + CONCEPT_ADJ + '))?' +
+  '(?:\\s+(?:di|del|dello|della|dei|degli|delle|d\')\\s+\\w+(?:\\s+\\w+){0,3})?',
+  'gi'
+);
+
+const PROFILES = {
+  storia: {
+    label: 'Storia', icon: '📜',
+    cats: [
+      { id:'data',   label:'Date e periodi',       color:'--c-data'   },
+      { id:'def',    label:'Definizioni',          color:'--c-def'    },
+      { id:'cause',  label:'Cause e conseguenze',  color:'--c-cause'  },
+      { id:'thesis', label:'Tesi e giudizi',       color:'--c-thesis' },
+      { id:'name',   label:'Nomi e luoghi',        color:'--c-name'   }
+    ],
+    rules: [
+      { cat:'data', w:5, re:/\b(?:1\d{3}|20\d{2})\b/g },
+      { cat:'data', w:5, re:/\b[2-9]\d{2}\s*(?:a\.C\.|d\.C\.|avanti Cristo|dopo Cristo)/gi },
+      { cat:'data', w:5, re:/\b(?:I|II|III|IV|V|VI|VII|VIII|IX|X|XI|XII|XIII|XIV|XV|XVI|XVII|XVIII|XIX|XX|XXI)\s+secolo\b/gi },
+      { cat:'data', w:5, re:/\b\d{1,2}\s+(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)\s+\d{3,4}\b/gi },
+      { cat:'data', w:4, re:new RegExp('\\b(?:' + PERIODI_RE + ')\\b','gi') },
+      { cat:'def', w:4, ext:true, re:/\b(?:si definisce|si intende|si indica|viene definito|viene definita|viene chiamato|viene chiamata|prende il nome di|è noto come|è nota come|costituisce|rappresenta)\b/gi },
+      { cat:'def', w:3, ext:true, re:/\b(?:è|era|fu)\s+(?:un|una)\s+(?:sistema|movimento|fenomeno|processo|periodo|concetto|dottrina|teoria|corrente|istituzione|organizzazione|trattato|accordo|legge|evento)\b/gi },
+      { cat:'cause', w:5, ext:'list', re:/\b(?:Le cause|I motivi|Le ragioni|I fattori|Le premesse)\s+(?:furono|sono|erano|principali|fondamentali|determinanti|molteplici)\b[^:]{0,50}:/gi },
+      { cat:'cause', w:5, ext:'list', re:/\b(?:Tra le cause|Tra i motivi|Tra i fattori|Tra le ragioni)\b[^:]{0,30}:/gi },
+      { cat:'cause', w:5, ext:'list', re:/\b(?:Le cause principali|I motivi principali|Le ragioni principali|I fattori principali|I fattori determinanti)\b[^:]{0,20}:/gi },
+      { cat:'cause', w:5, ext:'list', re:/\b(?:Per diverse ragioni|Per vari motivi|Per molteplici cause)\b[^:]{0,20}:/gi },
+      { cat:'cause', w:3, re: CONCEPT_RE },
+      { cat:'cause', w:5, ext:true, re:/\b(?:diede origine|trasse origine|portò a|portarono a|determinò|determinarono|causò|causarono|provocò|provocarono|comportò|comportarono|condusse a|condussero a|sfociò in)\b/gi },
+      { cat:'cause', w:4, re:/\b(?:di conseguenza|per conseguenza|come conseguenza|a causa di|per via di|in seguito a)\b/gi },
+      { cat:'cause', w:3, re:/\b(?:poiché|giacché|dato che|dal momento che|in quanto|perciò|pertanto|quindi|dunque)\b/gi },
+      { cat:'thesis', w:4, ext:true, re:/\b(?:è fondamentale|è essenziale|è decisivo|è decisiva|è cruciale|va sottolineato|va ricordato|bisogna riconoscere|si deve riconoscere|è importante notare|è significativo che)\b/gi },
+      { cat:'thesis', w:3, ext:true, re:/\b(?:rappresentò un|rappresenta un|segnò un|segnò una|marcò un|fu un momento|fu una svolta)\b/gi },
+      { cat:'name', w:3, re: NAME_RE }
+    ]
+  },
+
+  filosofia: {
+    label: 'Filosofia', icon: '🧠',
+    cats: [
+      { id:'thesis', label:'Tesi',            color:'--c-thesis' },
+      { id:'arg',    label:'Argomenti',       color:'--c-arg'    },
+      { id:'obj',    label:'Obiezioni',       color:'--c-obj'    },
+      { id:'def',    label:'Concetti',        color:'--c-def'    },
+      { id:'name',   label:'Filosofi',        color:'--c-name'   }
+    ],
+    rules: [
+      { cat:'thesis', w:5, ext:'list', re:/\b(?:Le tesi|Gli argomenti|Le dottrine)\s+(?:principali|fondamentali)\s*[^:]{0,20}:/gi },
+      { cat:'thesis', w:5, ext:true, re:/\b(?:sostiene che|afferma che|ritiene che|sosteneva che|affermava che|secondo\s+[A-Z][a-zà-ÿ]+)\b/gi },
+      { cat:'thesis', w:4, ext:true, re:/\b(?:la tesi|la dottrina|il pensiero di|la concezione di|la teoria di)\b/gi },
+      { cat:'arg',    w:4, re:/\b(?:infatti|in quanto|dal momento che|giacché|poiché|perché|dunque|pertanto|quindi|ne consegue che|si deduce che|dimostra che)\b/gi },
+      { cat:'arg',    w:3, re:/\b(?:in primo luogo|in secondo luogo|in terzo luogo|da un lato|dall'altro lato|d'altra parte)\b/gi },
+      { cat:'obj',    w:5, ext:true, re:/\b(?:si potrebbe obiettare|si obietta|obietta che|critica|confuta|contesta|nega che)\b/gi },
+      { cat:'obj',    w:4, re:/\b(?:tuttavia|in realtà|al contrario|d'altro canto|ma\s+(?:si|bisogna|occorre))\b/gi },
+      { cat:'def',    w:4, ext:true, re:/\b(?:si definisce|si intende|significa che|è definito|è definita|consiste in|consiste nel|si configura come|si presenta come)\b/gi },
+      { cat:'name',   w:3, re: NAME_RE }
+    ]
+  },
+
+  scienze: {
+    label: 'Scienze', icon: '🔬',
+    cats: [
+      { id:'def',     label:'Definizioni',    color:'--c-def'     },
+      { id:'process', label:'Processi',       color:'--c-process' },
+      { id:'data',    label:'Dati e misure',  color:'--c-data'    },
+      { id:'princ',   label:'Leggi e principi', color:'--c-princ' },
+      { id:'name',    label:'Nomi e sostanze',color:'--c-name'    }
+    ],
+    rules: [
+      { cat:'def',     w:5, ext:'list', re:/\b(?:Le (?:proprietà|caratteristiche|fasi|tipologie|classi))\s+(?:principali|fondamentali)?\s*[^:]{0,20}:/gi },
+      { cat:'def',     w:5, ext:true, re:/\b(?:si definisce|si intende|è definito|è definita|si chiama|prende il nome di|consiste in)\b/gi },
+      { cat:'def',     w:4, ext:true, re:/\b(?:è|era)\s+(?:un|una)\s+(?:sistema|processo|fenomeno|reazione|struttura|organismo|composto|elemento|molecola)\b/gi },
+      { cat:'process', w:4, ext:true, re:/\b(?:avviene|si verifica|si produce|si trasforma|si forma|si decompone|reagisce|si combina|assorbe|emette|trasferisce|si propaga)\b/gi },
+      { cat:'process', w:3, re:/\b(?:attraverso|mediante|tramite|per mezzo di)\b/gi },
+      { cat:'data',    w:5, re:/\b\d+(?:[.,]\d+)?\s*(?:%|km|m|cm|mm|kg|g|mg|ml|l|°C|°K|J|W|V|A|Hz|Pa|N|mol|s)\b/gi },
+      { cat:'data',    w:4, re:/\b\d+(?:[.,]\d+)?\s*(?:volte|anni|milioni|miliardi|millenni)\b/gi },
+      { cat:'princ',   w:5, ext:true, re:/\b(?:legge di|principio di|teoria di|postulato di|teorema di|modello di)\s+[A-ZÀ-Ù][a-zà-ÿ]+/g },
+      { cat:'name',    w:3, re: NAME_RE }
+    ]
+  },
+
+  diritto: {
+    label: 'Diritto', icon: '⚖️',
+    cats: [
+      { id:'art',   label:'Articoli e commi',  color:'--c-art'   },
+      { id:'princ', label:'Principi',          color:'--c-princ' },
+      { id:'def',   label:'Definizioni',       color:'--c-def'   },
+      { id:'obj',   label:'Obblighi e sanzioni', color:'--c-obj' },
+      { id:'name',  label:'Soggetti e organi', color:'--c-name'  }
+    ],
+    rules: [
+      { cat:'art',   w:5, re:/\b(?:art(?:icolo)?\.?\s*\d+(?:\s*comma\s*\d+)?|comma\s+\d+|co\.\s*\d+|c\.\d+)\b/gi },
+      { cat:'art',   w:4, re:/\b(?:legge|decreto|regolamento|direttiva|trattato|statuto)\s+(?:n\.\s*)?\d+/gi },
+      { cat:'princ', w:5, ext:'list', re:/\b(?:I principi|Le norme|Le disposizioni|Le clausole)\s+(?:principali|fondamentali)?\s*[^:]{0,20}:/gi },
+      { cat:'princ', w:5, ext:true, re:/\b(?:principio di|norma|disposizione|clausola|precetto|regola generale)\b/gi },
+      { cat:'def',   w:4, ext:true, re:/\b(?:si intende|si definisce|è definito|è considerato|si configura|costituisce)\b/gi },
+      { cat:'obj',   w:5, ext:true, re:/\b(?:è tenuto a|ha l'obbligo|è vietato|non è consentito|sanzione|pena|reclusione|multa|ammenda|arresto|responsabilità)\b/gi },
+      { cat:'obj',   w:4, ext:true, re:/\b(?:deve|devono)\b/gi },
+      { cat:'name',  w:3, re: NAME_RE }
+    ]
+  },
+
+  letteratura: {
+    label: 'Letteratura', icon: '📖',
+    cats: [
+      { id:'theme',  label:'Temi',          color:'--c-theme'  },
+      { id:'figure', label:'Figure retoriche', color:'--c-figure' },
+      { id:'quote',  label:'Citazioni',     color:'--c-quote'  },
+      { id:'thesis', label:'Interpretazioni', color:'--c-thesis' },
+      { id:'name',   label:'Personaggi e autori', color:'--c-name' }
+    ],
+    rules: [
+      { cat:'theme',  w:5, ext:'list', re:/\b(?:I temi|I motivi|I simboli)\s+(?:principali|fondamentali)?\s*[^:]{0,20}:/gi },
+      { cat:'theme',  w:5, ext:true, re:/\b(?:il tema di|il tema del|il tema della|il motivo di|il simbolo di|simboleggia)\b/gi },
+      { cat:'figure', w:5, re:/\b(?:metafora|similitudine|analogia|allegoria|iperbole|ossimoro|anafora|allitterazione|ironia|sineddoche|metonimia|personificazione|antitesi)\b/gi },
+      { cat:'quote',  w:5, re:/[«"][^«»"]{8,}[»"]/g },
+      { cat:'quote',  w:4, re:/[""][^""]{8,}[""]/g },
+      { cat:'thesis', w:4, ext:true, re:/\b(?:l'autore|il poeta|il narratore|il protagonista|il personaggio)\s+(?:vuole|intende|rappresenta|esprime|suggerisce|descrive|mostra)\b/gi },
+      { cat:'thesis', w:3, ext:true, re:/\b(?:si può leggere come|si interpreta come|può essere inteso come|allude a)\b/gi },
+      { cat:'name',   w:3, re: NAME_RE }
+    ]
+  },
+
+  giornalismo: {
+    label: 'Giornalismo', icon: '📰',
+    cats: [
+      { id:'who',   label:'Protagonisti', color:'--c-who'   },
+      { id:'what',  label:'Azioni',       color:'--c-what'  },
+      { id:'when',  label:'Tempi',        color:'--c-when'  },
+      { id:'where', label:'Luoghi',       color:'--c-where' },
+      { id:'quote', label:'Dichiarazioni', color:'--c-quote' }
+    ],
+    rules: [
+      { cat:'quote', w:5, ext:true, re:/\b(?:ha dichiarato|ha affermato|ha spiegato|ha precisato|ha aggiunto|ha sottolineato|secondo quanto|stando a|fonti riferiscono)\b/gi },
+      { cat:'quote', w:5, re:/[«"][^«»"]{10,}[»"]/g },
+      { cat:'when',  w:5, re:/\b(?:oggi|ieri|domani|l'altro ieri|questa mattina|questo pomeriggio|stamattina|stasera|la scorsa settimana|il mese scorso|l'anno scorso)\b/gi },
+      { cat:'when',  w:4, re:/\b(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)(?:\s+\d{4})?\b/gi },
+      { cat:'who',   w:3, re: NAME_RE },
+      { cat:'what',  w:3, ext:true, re:/\b(?:ha annunciato|ha firmato|ha approvato|ha respinto|ha deciso|ha lanciato|ha presentato|ha votato|ha confermato|ha smentito)\b/gi },
+      { cat:'where', w:3, re:/\b(?:a Roma|a Milano|a Napoli|a Torino|a Parigi|a Londra|a Berlino|a Madrid|a Bruxelles|a Washington|a New York|in Italia|in Francia|in Germania|in Spagna|negli Stati Uniti|in Europa)\b/gi }
+    ]
+  }
+};
+
+const DETECT_KEYS = {
+  storia:     ['secolo','guerra','rivoluzione','impero','regno','trattato','battaglia','dinastia','monarchia','nazione','esercito','pace','storico','storia','antico','medievale','moderno','contemporaneo'],
+  filosofia:  ['filosofo','filosofia','concetto','tesi','argomento','metafisica','etica','conoscenza','ragione','idea','pensiero','dottrina','critica','dialettica','logica','ontologia','fenomeno'],
+  scienze:    ['cellula','molecola','atomo','energia','reazione','processo','organismo','teoria','esperimento','fenomeno','sistema','struttura','funzione','materia','massa','forza','velocità','temperatura','sostanza'],
+  diritto:    ['articolo','comma','legge','decreto','costituzione','norma','disposizione','sanzione','pena','reato','diritto','obbligo','contratto','giudice','tribunale','codice','civilistico','penale'],
+  letteratura:['poeta','romanzo','versi','metafora','protagonista','narratore','tema','simbolo','strofa','capitolo','autore','opera','stile','personaggio','racconto','novella','componimento'],
+  giornalismo:['dichiarato','secondo','fonte','oggi','ieri','intervista','cronaca','notizia','report','corrispondente','agenzia','redazione','scoop']
+};
+
+function detectProfile(text) {
+  const low = text.toLowerCase();
+  const scores = {};
+  for (const [k, words] of Object.entries(DETECT_KEYS)) {
+    let s = 0;
+    for (const word of words) {
+      const re = new RegExp('\\b' + escapeRE(word), 'g');
+      const m = low.match(re);
+      if (m) s += m.length;
+    }
+    scores[k] = s;
+  }
+  const years = (text.match(/\b(?:1[0-9]{3}|20[0-2][0-9])\b/g) || []).length;
+  scores.storia += years * 2;
+  const secCount = (text.match(/\b(?:I|II|III|IV|V|VI|VII|VIII|IX|X|XI|XII|XIII|XIV|XV|XVI|XVII|XVIII|XIX|XX)\s+secolo\b/gi) || []).length;
+  scores.storia += secCount * 3;
+  const artCount = (text.match(/\b(?:art(?:icolo)?|comma)\s*\d+/gi) || []).length;
+  scores.diritto += artCount * 4;
+
+  let best = 'storia', bestVal = -1;
+  for (const [k, v] of Object.entries(scores)) if (v > bestVal) { bestVal = v; best = k; }
+  if (bestVal < 3) return { id:'storia', confident:false, scores };
+  const sorted = Object.entries(scores).sort((a,b) => b[1]-a[1]);
+  const second = sorted[1]?.[1] ?? 0;
+  const confident = bestVal >= 6 && bestVal >= second * 1.6;
+  return { id: best, confident, scores };
+}
+
+function findSpans(text, profileId) {
+  const profile = PROFILES[profileId];
+  const spans = [];
+
+  for (const rule of profile.rules) {
+    if (rule.w < MIN_WEIGHT) continue;
+    const re = new RegExp(rule.re.source, rule.re.flags);
+    let m;
+    let guard = 0;
+    while ((m = re.exec(text)) !== null) {
+      if (++guard > 5000) break;
+
+      if (rule.ext === 'list') {
+        const colonInMatch = m[0].indexOf(':');
+        if (colonInMatch < 0) { if (m[0].length === 0) re.lastIndex++; continue; }
+
+        const trigStart = m.index;
+        const trigEnd = m.index + colonInMatch + 1;
+        spans.push({ start: trigStart, end: trigEnd, cat: rule.cat, w: rule.w });
+
+        let listEnd = trigEnd;
+        const maxEnd = Math.min(text.length, trigEnd + 500);
+        while (listEnd < maxEnd && !/[.;!?\n]/.test(text[listEnd])) listEnd++;
+
+        if (listEnd > trigEnd) {
+          const listText = text.slice(trigEnd, listEnd);
+          const parts = [];
+          let pCur = 0;
+          const sep = /,\s*|\s+e\s+/gi;
+          let mm;
+          while ((mm = sep.exec(listText)) !== null) {
+            parts.push([pCur, mm.index]);
+            pCur = mm.index + mm[0].length;
+            if (mm[0].length === 0) sep.lastIndex++;
+          }
+          if (pCur < listText.length) parts.push([pCur, listText.length]);
+
+          for (const [a, b] of parts) {
+            let s = trigEnd + a;
+            let e = trigEnd + b;
+            while (s < e && /\s/.test(text[s])) s++;
+            while (e > s && /\s/.test(text[e - 1])) e--;
+            if (e - s < 4) continue;
+            if (e - s > 180) continue;
+            spans.push({ start: s, end: e, cat: rule.cat, w: rule.w });
+          }
+        }
+
+        if (m[0].length === 0) re.lastIndex++;
+        continue;
+      }
+
+      const captured = m[1] !== undefined ? m[1] : m[0];
+      const offsetInMatch = m[0].length - captured.length;
+      const start = m.index + offsetInMatch;
+      let end = start + captured.length;
+      if (end <= start) { if (m.index === re.lastIndex) re.lastIndex++; continue; }
+
+      if (rule.ext === true) {
+        const maxEnd = Math.min(text.length, end + 200);
+        while (end < maxEnd && !/[.;!?"\n]/.test(text[end])) end++;
+        while (end > start + captured.length && /\s/.test(text[end - 1])) end--;
+        if (end <= start) end = start + captured.length;
+      }
+
+      if (rule.cat === 'name' || rule.cat === 'who') {
+        const parts = captured.split(/(\s+)/);
+        let idx = 0, skip = 0;
+        while (idx + 1 < parts.length && STOP_NAMES.has(parts[idx])) {
+          skip += parts[idx].length;
+          idx++;
+          if (idx < parts.length && /^\s+$/.test(parts[idx])) {
+            skip += parts[idx].length;
+            idx++;
+          }
+        }
+        const remaining = parts.slice(idx).join('').replace(/\s+$/, '');
+        if (remaining.length < 3) continue;
+        const firstWord = remaining.split(/\s+/)[0];
+        if (STOP_NAMES.has(firstWord)) continue;
+        if (!remaining.includes(' ') && remaining.length < 4) continue;
+
+        const fStart = start + skip;
+        const fEnd = fStart + remaining.length;
+        spans.push({ start: fStart, end: fEnd, cat: rule.cat, w: rule.w });
+        continue;
+      }
+
+      if (captured.trim().length === 0) continue;
+      spans.push({ start, end, cat: rule.cat, w: rule.w });
+
+      if (m[0].length === 0) re.lastIndex++;
+    }
+  }
+  return spans;
+}
+
+function buildRuns(text, spans) {
+  const n = text.length;
+  const owner = new Uint16Array(n);
+  const weight = new Uint8Array(n);
+  const catIndex = {};
+
+  for (const s of spans) {
+    for (let i = s.start; i < s.end; i++) {
+      if (s.w > weight[i]) {
+        weight[i] = s.w;
+        if (!catIndex[s.cat]) catIndex[s.cat] = Object.keys(catIndex).length + 1;
+        owner[i] = catIndex[s.cat];
+      }
+    }
+  }
+
+  const runs = [];
+  let i = 0;
+  while (i < n) {
+    if (!owner[i]) { i++; continue; }
+    const cat = owner[i];
+    let j = i + 1;
+    while (j < n && owner[j] === cat) j++;
+    runs.push({ start: i, end: j, catIdx: cat });
+    i = j;
+  }
+  return { runs, catIndex };
+}
+
+function catIdFromIdx(catIndex, idx) {
+  for (const [k, v] of Object.entries(catIndex)) if (v === idx) return k;
+  return null;
+}
+
+const CAT_TO_CLASS = {
+  data:'c-data', def:'c-def', cause:'c-cause', thesis:'c-thesis', name:'c-name',
+  arg:'c-arg', obj:'c-obj', art:'c-art', princ:'c-princ', process:'c-process',
+  theme:'c-theme', figure:'c-figure', quote:'c-quote',
+  who:'c-who', what:'c-what', when:'c-when', where:'c-where'
+};
+
+function renderAnnotated(text, spans, activeCats) {
+  if (!spans.length) return escapeHTML(text);
+  const { runs, catIndex } = buildRuns(text, spans);
+  if (!runs.length) return escapeHTML(text);
+
+  let html = '';
+  let cursor = 0;
+  for (const r of runs) {
+    if (r.start > cursor) html += escapeHTML(text.slice(cursor, r.start));
+    const catId = catIdFromIdx(catIndex, r.catIdx);
+    if (activeCats.has(catId)) {
+      const cls = CAT_TO_CLASS[catId] || 'c-data';
+      html += `<mark class="${cls}">${escapeHTML(text.slice(r.start, r.end))}</mark>`;
+    } else {
+      html += escapeHTML(text.slice(r.start, r.end));
+    }
+    cursor = r.end;
+  }
+  if (cursor < text.length) html += escapeHTML(text.slice(cursor));
+  return html;
+}
+
+function computeCoverage(text, spans, activeCats) {
+  if (!spans.length) return { pct: 0, count: 0, hlChars: 0 };
+  const { runs, catIndex } = buildRuns(text, spans);
+  let hlChars = 0, count = 0;
+  for (const r of runs) {
+    const catId = catIdFromIdx(catIndex, r.catIdx);
+    if (activeCats.has(catId)) {
+      hlChars += r.end - r.start;
+      count++;
+    }
+  }
+  const pct = text.length ? Math.round(100 * hlChars / text.length) : 0;
+  return { pct, count, hlChars };
+}
+
+const LIB_KEY = 'annota.library.v2';
+const SES_KEY = 'annota.session.v2';
+const THEME_KEY = 'annota.theme.v1';
+const INPUT_H_KEY = 'annota.inputHeight.v1';
+
+function loadLibrary() {
+  try { return JSON.parse(localStorage.getItem(LIB_KEY) || '[]'); } catch { return []; }
+}
+function saveLibrary(list) {
+  try { localStorage.setItem(LIB_KEY, JSON.stringify(list)); }
+  catch { toast('Spazio esaurito: elimina qualche testo'); }
+}
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+
+const state = {
+  text: '', profileId: 'storia',
+  activeCats: new Set(), spans: [], library: loadLibrary(),
+  view: 'annotate', currentLibId: null,
+  searchQuery: '', searchHits: [], searchIdx: -1
+};
+
+function renderLegend() {
+  const profile = PROFILES[state.profileId];
+  const box = $('legend');
+  box.innerHTML = '';
+  for (const c of profile.cats) {
+    const el = document.createElement('button');
+    el.className = 'cat-pill' + (state.activeCats.has(c.id) ? '' : ' off');
+    el.innerHTML = `<span class="dot" style="background:var(${c.color})"></span>${c.label}`;
+    el.addEventListener('click', () => {
+      if (state.activeCats.has(c.id)) state.activeCats.delete(c.id);
+      else state.activeCats.add(c.id);
+      renderLegend();
+      if (state.spans.length) { redrawOutput(); renderStats(); }
+      vibrate(5);
+    });
+    box.appendChild(el);
+  }
+}
+
+function analyze() {
+  const text = state.text;
+  if (!text.trim()) {
+    state.spans = [];
+    $('output').innerHTML = '';
+    $('stats').style.display = 'none';
+    return;
+  }
+
+  const det = detectProfile(text);
+  if (det.id !== state.profileId) {
+    state.profileId = det.id;
+    state.activeCats = new Set(PROFILES[det.id].cats.map(c => c.id));
+    renderLegend();
+  }
+
+  state.spans = findSpans(text, state.profileId);
+  redrawOutput();
+  renderStats();
+
+  try {
+    localStorage.setItem(SES_KEY, JSON.stringify({
+      text, profileId: state.profileId, ts: Date.now()
+    }));
+  } catch {}
+}
+
+function redrawOutput() {
+  $('output').innerHTML = renderAnnotated(state.text, state.spans, state.activeCats);
+}
+
+function renderStats() {
+  const text = state.text;
+  const cov = computeCoverage(text, state.spans, state.activeCats);
+  const words = (text.match(/\p{L}+/gu) || []).length;
+
+  const warn = cov.pct > 42;
+  const ok = cov.pct >= 8 && cov.pct <= 32;
+
+  const box = $('stats');
+  box.style.display = 'grid';
+  box.innerHTML = `
+    <div class="stat ${warn ? 'warn' : (ok ? 'ok' : '')}"><div class="k">Copertura</div><div class="v">${cov.pct}%</div></div>
+    <div class="stat"><div class="k">Parole</div><div class="v">${words.toLocaleString('it-IT')}</div></div>
+    <div class="stat"><div class="k">Evidenze</div><div class="v">${cov.count}</div></div>
+  `;
+}
+
+function initResize() {
+  const ta = $('input');
+  const handle = $('resizeHandle');
+
+  const saved = parseInt(localStorage.getItem(INPUT_H_KEY) || '0', 10);
+  if (saved && saved >= 80 && saved <= 2000) {
+    ta.style.height = saved + 'px';
+  }
+
+  let dragging = false;
+  let startY = 0;
+  let startH = 0;
+
+  const onDown = e => {
+    e.preventDefault();
+    dragging = true;
+    startY = e.clientY;
+    startH = ta.offsetHeight;
+    handle.classList.add('dragging');
+    try { handle.setPointerCapture(e.pointerId); } catch {}
+    vibrate(5);
+  };
+
+  const onMove = e => {
+    if (!dragging) return;
+    const dy = e.clientY - startY;
+    const newH = Math.max(80, Math.min(2000, startH + dy));
+    ta.style.height = newH + 'px';
+  };
+
+  const onUp = e => {
+    if (!dragging) return;
+    dragging = false;
+    handle.classList.remove('dragging');
+    try { handle.releasePointerCapture(e.pointerId); } catch {}
+    localStorage.setItem(INPUT_H_KEY, String(ta.offsetHeight));
+  };
+
+  handle.addEventListener('pointerdown', onDown);
+  handle.addEventListener('pointermove', onMove);
+  handle.addEventListener('pointerup', onUp);
+  handle.addEventListener('pointercancel', onUp);
+  handle.addEventListener('lostpointercapture', onUp);
+}
+
+function clearSearchHits() {
+  $('output').querySelectorAll('mark.search-hit').forEach(m => {
+    const parent = m.parentNode;
+    while (m.firstChild) parent.insertBefore(m.firstChild, m);
+    parent.removeChild(m);
+    parent.normalize();
+  });
+  state.searchHits = [];
+  state.searchIdx = -1;
+  $('searchCount').textContent = '';
+}
+
+function runSearch(q) {
+  clearSearchHits();
+  if (!q || q.length < 2) return;
+  const out = $('output');
+  const re = new RegExp(escapeRE(q), 'gi');
+  const walker = document.createTreeWalker(out, NodeFilter.SHOW_TEXT, null);
+  const textNodes = [];
+  let n;
+  while ((n = walker.nextNode())) textNodes.push(n);
+
+  for (const node of textNodes) {
+    const s = node.nodeValue;
+    let m;
+    re.lastIndex = 0;
+    const matches = [];
+    while ((m = re.exec(s)) !== null) {
+      matches.push([m.index, m.index + m[0].length]);
+      if (m[0].length === 0) re.lastIndex++;
+    }
+    if (!matches.length) continue;
+    const frag = document.createDocumentFragment();
+    let cur = 0;
+    for (const [a, b] of matches) {
+      if (a > cur) frag.appendChild(document.createTextNode(s.slice(cur, a)));
+      const mk = document.createElement('mark');
+      mk.className = 'search-hit';
+      mk.textContent = s.slice(a, b);
+      frag.appendChild(mk);
+      cur = b;
+    }
+    if (cur < s.length) frag.appendChild(document.createTextNode(s.slice(cur)));
+    node.parentNode.replaceChild(frag, node);
+  }
+
+  state.searchHits = [...out.querySelectorAll('mark.search-hit')];
+  $('searchCount').textContent = state.searchHits.length ? `1/${state.searchHits.length}` : '0';
+  if (state.searchHits.length) { state.searchIdx = 0; focusHit(); }
+}
+
+function focusHit() {
+  state.searchHits.forEach((h, i) => h.classList.toggle('current', i === state.searchIdx));
+  const h = state.searchHits[state.searchIdx];
+  if (h) h.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  $('searchCount').textContent = `${state.searchIdx + 1}/${state.searchHits.length}`;
+}
+
+function renderLibrary(filter = '') {
+  const list = $('libList');
+  const empty = $('libEmpty');
+  list.innerHTML = '';
+
+  let items = [...state.library].sort((a, b) => b.updatedAt - a.updatedAt);
+  if (filter.trim()) {
+    const f = filter.toLowerCase();
+    items = items.filter(it =>
+      it.title.toLowerCase().includes(f) || it.text.toLowerCase().includes(f)
+    );
+  }
+
+  if (!items.length) {
+    empty.style.display = 'block';
+    empty.querySelector('.title').textContent = filter ? 'Nessun risultato' : 'Libreria vuota';
+    empty.querySelector('.sub').textContent = filter
+      ? 'Prova con altre parole chiave.'
+      : 'Salva un testo annotato per ritrovarlo qui, anche offline.';
+    return;
+  }
+  empty.style.display = 'none';
+
+  for (const it of items) {
+    const el = document.createElement('div');
+    el.className = 'lib-item';
+    const profile = PROFILES[it.profileId] || PROFILES.storia;
+    const date = new Date(it.updatedAt).toLocaleDateString('it-IT', { day:'2-digit', month:'short' });
+    const snippet = it.text.slice(0, 160).replace(/\s+/g, ' ');
+    el.innerHTML = `
+      <div class="row1">
+        <span class="badge">${profile.icon} ${profile.label}</span>
+        <span class="date">${date}</span>
+      </div>
+      <div class="title">${escapeHTML(it.title || 'Senza titolo')}</div>
+      <div class="snippet">${escapeHTML(snippet)}…</div>
+      <div class="meta">
+        <span>${(it.text.match(/\p{L}+/gu) || []).length} parole</span>
+        <span>copertura ${it.pct ?? '—'}%</span>
+      </div>
+    `;
+    el.addEventListener('click', () => openFromLibrary(it.id));
+    el.addEventListener('contextmenu', e => { e.preventDefault(); askDelete(it.id); });
+    let pressTimer;
+    el.addEventListener('touchstart', () => {
+      pressTimer = setTimeout(() => { askDelete(it.id); vibrate(15); }, 600);
+    }, { passive: true });
+    el.addEventListener('touchend', () => clearTimeout(pressTimer));
+    el.addEventListener('touchmove', () => clearTimeout(pressTimer));
+    list.appendChild(el);
+  }
+}
+
+function openFromLibrary(id) {
+  const it = state.library.find(x => x.id === id);
+  if (!it) return;
+  state.text = it.text;
+  state.profileId = it.profileId;
+  state.activeCats = new Set(PROFILES[it.profileId].cats.map(c => c.id));
+  state.currentLibId = it.id;
+  $('input').value = it.text;
+  renderLegend();
+  analyze();
+  switchView('annotate');
+  $('scrollAnnotate').scrollTop = 0;
+  toast('Aperto dalla libreria');
+}
+
+function askDelete(id) {
+  const it = state.library.find(x => x.id === id);
+  if (!it) return;
+  $('confirmTitle').textContent = 'Eliminare il testo?';
+  $('confirmText').textContent = `"${it.title || 'Senza titolo'}" verrà rimosso dalla libreria.`;
+  openModal('modalConfirm');
+  $('btnOkConfirm').onclick = () => {
+    state.library = state.library.filter(x => x.id !== id);
+    saveLibrary(state.library);
+    renderLibrary($('libSearch').value);
+    closeModal('modalConfirm');
+    toast('Eliminato');
+    vibrate(10);
+  };
+}
+
+function openModal(id) { $(id).classList.add('open'); }
+function closeModal(id) { $(id).classList.remove('open'); }
+document.querySelectorAll('.modal-bg').forEach(bg => {
+  bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('open'); });
+});
+
+function saveToLibrary() {
+  if (!state.text.trim()) { toast('Nulla da salvare'); return; }
+  const suggested = state.text.trim().slice(0, 60).replace(/\s+/g, ' ').replace(/[.,;:!?]+$/, '');
+  $('saveTitle').value = state.library.find(x => x.id === state.currentLibId)?.title || suggested;
+  openModal('modalSave');
+  setTimeout(() => $('saveTitle').focus(), 100);
+}
+
+function confirmSave() {
+  const title = $('saveTitle').value.trim() || state.text.trim().slice(0, 60).replace(/\s+/g, ' ');
+  const cov = computeCoverage(state.text, state.spans, state.activeCats);
+
+  if (state.currentLibId) {
+    const it = state.library.find(x => x.id === state.currentLibId);
+    if (it) {
+      Object.assign(it, {
+        title, text: state.text, profileId: state.profileId,
+        pct: cov.pct, updatedAt: Date.now()
+      });
+    }
+  } else {
+    const id = uid();
+    state.library.push({
+      id, title, text: state.text, profileId: state.profileId,
+      pct: cov.pct, createdAt: Date.now(), updatedAt: Date.now()
+    });
+    state.currentLibId = id;
+  }
+  saveLibrary(state.library);
+  closeModal('modalSave');
+  toast('Salvato in libreria');
+  vibrate(10);
+}
+
+async function shareOrExport() {
+  if (!state.text.trim()) { toast('Nulla da condividere'); return; }
+  const html = buildExportHTML();
+  const blob = new Blob([html], { type: 'text/html' });
+  const file = new File([blob], `annotazione-${Date.now()}.html`, { type: 'text/html' });
+
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    try {
+      await navigator.share({ files: [file], title: 'Annotazione', text: state.text.slice(0, 120) });
+      return;
+    } catch {}
+  }
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `annotazione-${Date.now()}.html`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('File esportato');
+}
+
+function buildExportHTML() {
+  const profile = PROFILES[state.profileId];
+  const annotated = renderAnnotated(state.text, state.spans, state.activeCats);
+  const styles = `
+    body{font-family:Georgia,serif;max-width:720px;margin:32px auto;padding:0 20px;line-height:1.8;font-size:1.08rem;color:#1b1815;background:#faf7f2}
+    h1{font-size:1.1rem;font-family:system-ui;color:#8a8178;font-weight:600;margin-bottom:4px}
+    .meta{font-family:system-ui;font-size:.78rem;color:#8a8178;margin-bottom:24px}
+    mark{padding:1px 0;border-radius:3px;background:transparent;color:inherit}
+    mark.c-data{background:#ffe680} mark.c-def{background:#a9d8ff}
+    mark.c-cause{background:#b6e6b6} mark.c-thesis{background:#ffc9a0}
+    mark.c-name{background:#d9b8ff} mark.c-quote{background:#ffc1cf}
+    mark.c-arg{background:#c9ecc9} mark.c-obj{background:#ffd1d1}
+    mark.c-art{background:#c6d8ff} mark.c-princ{background:#ffe3a6}
+    mark.c-process{background:#b6e6e6} mark.c-theme{background:#e6c8ff}
+    mark.c-figure{background:#ffe0b6} mark.c-who{background:#d9b8ff}
+    mark.c-what{background:#b6e6b6} mark.c-when{background:#ffe680}
+    mark.c-where{background:#c6d8ff}
+  `;
+  return `<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Annotazione</title>
+<style>${styles}</style></head><body>
+<h1>Annota · ${profile.label}</h1>
+<div class="meta">${new Date().toLocaleString('it-IT')}</div>
+<div>${annotated}</div>
+</body></html>`;
+}
+
+function switchView(v) {
+  state.view = v;
+  $$('.view').forEach(el => el.classList.toggle('active', el.id === 'view-' + v));
+  $$('.tabbar .tab').forEach(t => t.classList.toggle('active', t.dataset.view === v));
+  if (v === 'library') renderLibrary($('libSearch').value);
+}
+
+function setTheme(t) {
+  document.documentElement.dataset.theme = t;
+  localStorage.setItem(THEME_KEY, t);
+  document.querySelector('meta[name=theme-color]').setAttribute('content', t === 'dark' ? '#14110f' : '#f6f3ee');
+}
+
+function bindEvents() {
+  $('btnTheme').addEventListener('click', () => {
+    const cur = document.documentElement.dataset.theme;
+    setTheme(cur === 'dark' ? 'light' : 'dark');
+    vibrate(5);
+  });
+  $('btnShare').addEventListener('click', shareOrExport);
+
+  $$('.tabbar .tab').forEach(t => {
+    t.addEventListener('click', () => { switchView(t.dataset.view); vibrate(5); });
+  });
+
+  const input = $('input');
+  let inputTimer = null;
+  input.addEventListener('input', () => {
+    state.text = input.value;
+    state.currentLibId = null;
+    clearTimeout(inputTimer);
+    inputTimer = setTimeout(() => {
+      if (state.text.trim().length > 80) {
+        const det = detectProfile(state.text);
+        if (det.id !== state.profileId) {
+          state.profileId = det.id;
+          state.activeCats = new Set(PROFILES[det.id].cats.map(c => c.id));
+          renderLegend();
+        }
+      }
+    }, 400);
+  });
+
+  $('btnAnalyze').addEventListener('click', () => { analyze(); vibrate(10); });
+  $('btnClear').addEventListener('click', () => {
+    input.value = '';
+    state.text = '';
+    state.spans = [];
+    state.currentLibId = null;
+    $('output').innerHTML = '';
+    $('stats').style.display = 'none';
+    localStorage.removeItem(SES_KEY);
+    vibrate(10);
+  });
+
+  $('btnSaveLib').addEventListener('click', saveToLibrary);
+  $('btnReading').addEventListener('click', () => {
+    document.body.classList.add('reading');
+    window.scrollTo(0, 0);
+    document.documentElement.requestFullscreen?.().catch(()=>{});
+  });
+  $('btnExitReading').addEventListener('click', () => {
+    document.body.classList.remove('reading');
+    document.exitFullscreen?.().catch(()=>{});
+  });
+  $('btnSearchOpen').addEventListener('click', toggleSearch);
+  $('btnSearchReading').addEventListener('click', toggleSearch);
+  $('btnCopy').addEventListener('click', async () => {
+    if (!state.text) return;
+    try {
+      const html = buildExportHTML();
+      if (navigator.clipboard && window.ClipboardItem) {
+        const item = new ClipboardItem({
+          'text/plain': new Blob([$('output').innerText], { type: 'text/plain' }),
+          'text/html': new Blob([html], { type: 'text/html' })
+        });
+        await navigator.clipboard.write([item]);
+      } else {
+        await navigator.clipboard.writeText($('output').innerText);
+      }
+      toast('Copiato');
+    } catch { toast('Copia non disponibile'); }
+  });
+
+  $('btnCancelSave').addEventListener('click', () => closeModal('modalSave'));
+  $('btnConfirmSave').addEventListener('click', confirmSave);
+  $('saveTitle').addEventListener('keydown', e => { if (e.key === 'Enter') confirmSave(); });
+
+  $('btnCancelConfirm').addEventListener('click', () => closeModal('modalConfirm'));
+
+  $('searchInput').addEventListener('input', e => runSearch(e.target.value));
+  $('btnSearchClose').addEventListener('click', () => {
+    $('searchBar').style.display = 'none';
+    clearSearchHits();
+  });
+  $('searchCount').addEventListener('click', () => {
+    if (!state.searchHits.length) return;
+    state.searchIdx = (state.searchIdx + 1) % state.searchHits.length;
+    focusHit();
+  });
+
+  $('libSearch').addEventListener('input', e => renderLibrary(e.target.value));
+  $('scrollAnnotate').addEventListener('scroll', updateReadProgress, { passive: true });
+}
+
+function toggleSearch() {
+  const bar = $('searchBar');
+  const on = bar.style.display === 'none';
+  bar.style.display = on ? 'flex' : 'none';
+  if (on) setTimeout(() => $('searchInput').focus(), 80);
+  else { $('searchInput').value = ''; clearSearchHits(); }
+}
+
+function updateReadProgress() {
+  const el = $('scrollAnnotate');
+  const max = el.scrollHeight - el.clientHeight;
+  const p = max > 0 ? (el.scrollTop / max) * 100 : 0;
+  $('readProgress').style.width = p + '%';
+}
+
+function init() {
+  const savedTheme = localStorage.getItem(THEME_KEY);
+  if (savedTheme) setTheme(savedTheme);
+  else if (window.matchMedia?.('(prefers-color-scheme: dark)').matches) setTheme('dark');
+
+  let restored = false;
+  try {
+    const s = JSON.parse(localStorage.getItem(SES_KEY) || 'null');
+    if (s && s.text && Date.now() - s.ts < 1000*60*60*24*7) {
+      state.text = s.text;
+      state.profileId = s.profileId && PROFILES[s.profileId] ? s.profileId : state.profileId;
+      $('input').value = s.text;
+      restored = true;
+    }
+  } catch {}
+
+  if (!restored) {
+    const sample = `La Rivoluzione Francese, iniziata nel 1789 con la presa della Bastiglia, rappresentò un momento di rottura con l'Antico Regime. Le cause furono molteplici: la crisi finanziaria dello Stato, le cattive condizioni di vita del Terzo Stato e la diffusione delle idee illuministe.
+
+Di conseguenza, il 14 luglio 1789 il popolo parigino insorse contro la monarchia. La Dichiarazione dei Diritti dell'Uomo e del Cittadino, approvata nell'agosto dello stesso anno, costituisce uno dei documenti fondamentali della storia moderna.
+
+Napoleone Bonaparte prese il potere nel 1799 con il colpo di Stato del 18 brumaio, ponendo fine alla fase rivoluzionaria. Il Consolato, instaurato nel 1799, diede origine a un nuovo ordine istituzionale che portò alla proclamazione dell'Impero nel 1804.`;
+    state.text = sample;
+    $('input').value = sample;
+  }
+
+  state.activeCats = new Set(PROFILES[state.profileId].cats.map(c => c.id));
+  renderLegend();
+  bindEvents();
+  initResize();
+  analyze();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+</body>
+</html>
