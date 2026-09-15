@@ -79,20 +79,27 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .btn svg{width:17px;height:17px}
 .btn.icon-only svg{width:20px;height:20px}
 
-/* Tasto AI principale: solo icona, sfondo scuro come il vecchio Annota */
+/* Tasto AI principale: viola, solo icona */
 .btn-ai-main{
   touch-action: manipulation;
   -webkit-user-select: none; user-select: none;
   -webkit-touch-callout: none;
   padding: 13px 0;
+  background: var(--ai);
+  color: #ffffff;
 }
+.btn-ai-main:active{ background: var(--ai); filter: brightness(.92); }
 .btn-ai-main .ai-icon{
   width:24px;
   height:24px;
-  color: var(--accent-soft);
+  color: #ffffff;
+}
+[data-theme="dark"] .btn-ai-main{
+  background: var(--ai);
+  color: #1a0f3d;
 }
 [data-theme="dark"] .btn-ai-main .ai-icon{
-  color: #d4b478;
+  color: #1a0f3d;
 }
 .btn-ai-main.loading{
   pointer-events:none;
@@ -101,7 +108,7 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .btn-ai-main.loading::after{
   content:"";
   position:absolute;inset:0;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
   animation:shimmer 1.1s infinite;
 }
 
@@ -242,7 +249,7 @@ body.reading .reading-bar{display:flex}
         </div>
 
         <div class="actions">
-          <button class="btn primary btn-ai-main" id="btnAI" aria-label="Annota">
+          <button class="btn btn-ai-main" id="btnAI" aria-label="Annota">
             <svg class="ai-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"/>
               <path d="M19 17l.9 2.1L22 20l-2.1.9L19 23l-.9-2.1L16 20l2.1-.9L19 17z"/>
@@ -1620,7 +1627,6 @@ function bindEvents() {
     }, 500);
   });
 
-  // Tasto AI: tap = analizza, long press = cambia modello
   const btnAI = $('btnAI');
   let longPressTimer = null;
   let longPressFired = false;
@@ -1673,7 +1679,6 @@ function bindEvents() {
     });
   });
 
-  // Tasto Incolla
   $('btnPaste').addEventListener('click', async () => {
     try {
       const t = await navigator.clipboard.readText();
@@ -1692,7 +1697,6 @@ function bindEvents() {
     }
   });
 
-  // Tasto Cestino
   $('btnClear').addEventListener('click', () => {
     input.value = '';
     state.text = '';
@@ -1777,7 +1781,6 @@ function bindEvents() {
   }
 }
 
-/* Analisi solo statistica, senza AI */
 function runStatOnly() {
   const text = state.text;
   if (!text.trim()) return;
