@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="it" data-theme="light">
+<html lang="it">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" id="metaThemeColor" content="#f6f3ee">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" id="metaStatusBar" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ANNOTT">
 <title>ANNOTT · lettura strutturata</title>
 <style>
@@ -249,9 +249,6 @@ body.reading .reading-bar{display:flex}
         <polyline points="6 9 12 15 18 9"/>
       </svg>
     </button>
-    <button class="iconbtn" id="btnTheme" title="Tema" aria-label="Cambia tema">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-    </button>
     <button class="iconbtn" id="btnShare" title="Condividi" aria-label="Condividi">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
     </button>
@@ -445,42 +442,29 @@ function toast(msg, ms = 2000) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   TEMA — con status bar trasparente (black-translucent)
+   TEMA — segue SEMPRE il sistema operativo
    
-   Con black-translucent la status bar diventa trasparente e mostra
-   il colore del contenuto sotto. Il colore del testo (ora, batteria)
-   si adatta al color-scheme dichiarato sull'elemento html.
-   In teoria questo permette al testo della status bar di cambiare
-   insieme al tema. Su alcuni iPhone funziona, su altri no.
+   Nessuna preferenza manuale. Il tema dell'app e la status bar
+   seguono il tema di iOS. Il sistema imposta:
+   - il color-scheme via data-theme (guarda prefers-color-scheme)
+   - il meta theme-color
+   - e su PWA iOS, la status bar segue automaticamente
+     perché usiamo black-translucent + color-scheme
    ═══════════════════════════════════════════════════════════════════ */
 
 const THEME_BG = { light: '#f6f3ee', dark: '#14110f' };
 
-function isStandalonePWA() {
-  return window.navigator.standalone === true ||
-         window.matchMedia('(display-mode: standalone)').matches;
-}
-
-function syncWithSystem() {
+function systemTheme() {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-function applyThemeToMeta(t) {
-  const bg = t === 'dark' ? THEME_BG.dark : THEME_BG.light;
+function applySystemTheme() {
+  const t = systemTheme();
+  document.documentElement.dataset.theme = t;
+  document.documentElement.style.colorScheme = t;
   let meta = document.getElementById('metaThemeColor');
   if (!meta) meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', bg);
-}
-
-function setTheme(t) {
-  // 1. Tema visivo dell'app (repaint CSS istantaneo)
-  document.documentElement.dataset.theme = t;
-  // 2. color-scheme inline (aiuta Safari a sincronizzare la chrome)
-  document.documentElement.style.colorScheme = t;
-  // 3. theme-color meta (utile in Safari normale, non in PWA)
-  applyThemeToMeta(t);
-  // 4. Persisti la preferenza
-  try { localStorage.setItem(THEME_KEY, t); } catch {}
+  if (meta) meta.setAttribute('content', t === 'dark' ? THEME_BG.dark : THEME_BG.light);
 }
 
 const LANG_PROFILES = {
@@ -489,7 +473,7 @@ const LANG_PROFILES = {
   fr:{ name:'Français', words:'le la les un une des du de d et ou mais donc or ni car que qui quoi dont où quand comment pourquoi si comme plus moins très trop peu beaucoup tout toute tous toutes ce cet cette ces celui celle ceux celles il elle ils elles nous vous je tu on se son sa ses leur leurs mon ma mes ton ta tes notre nos votre vos est sont était étaient être avoir a ont avait avaient fait faire peut peuvent doit doivent aussi encore déjà toujours jamais même autre autres bien' },
   es:{ name:'Español', words:'el la los las un una unos unas de del y o pero porque por para con sin en a al sobre bajo entre hasta desde que quien cuyo como cuando donde si no más menos muy mucho poco todo toda todos todas este esta estos estas ese esa esos esas aquel aquella aquellos aquellas yo tú él ella nosotros vosotros ellos ellas me te se nos os le les lo mi tu su mis tus sus es son era fueron ser estar haber ha han había habían hace hacer puede pueden debe deben también aún ya siempre nunca mismo otra otro bien' },
   de:{ name:'Deutsch', words:'der die das den dem des ein eine einen einem eines einer und oder aber denn weil wenn als wie dass ob für mit von zu aus bei nach über unter zwischen durch gegen ohne um in an auf vor hinter neben ist sind war waren sein haben hat hatte hatten haben wird werden wurde wurden kann können muss müssen soll sollen darf dürfen auch noch schon immer nie sehr mehr weniger viel wenig alle alle jeder jede jedes diese dieser dieses jener jene man nicht doch nur selbst' },
-  pt:{ name:'Português', words:'o a os as um uma uns umas de do da dos das e ou mas porque por para com sem em no na nos nas ao aos à às pelo pela pelos pelas que quem cujo como quando onde se não mais menos muito pouco todo toda todos todas este esta estes estas esse essa esses essas aquele aquela aqueles aquelas eu tu ele ela nós vós eles elas me te se nos vos lhe lhes é são era foram ser estar haver há houve tinha tem fazer pode podem deve devem também ancora ancora sempre nunca mesmo outro outra bem' },
+  pt:{ name:'Português', words:'o a os as um uma uns umas de do da dos das e ou mas porque por para com sem em no na nos nas ao aos à às pelo pela pelos pelas que quem cujo como quando onde se não mais menos muito pouco todo toda todos todas este esta estes estas esse essa esses essas aquele aquela aqueles aquelas eu tu ele ela nós vós eles elas me te se nos vos lhe lhes é são era foram ser estar haver há houve tinha tem fazer pode podem deve devem também ainda já sempre nunca mesmo outro outra bem' },
   nl:{ name:'Nederlands', words:'de het een en of maar want omdat als dan dat die deze dit van voor met door naar bij uit over onder tussen tegen zonder om in op aan is zijn was waren hebben heeft had kan kunnen moet moeten zal zullen ook nog al altijd nooit zeer meer minder veel weinig alle elk ieder niet toch alleen zelf' },
   ru:{ name:'Русский', words:'и в во не что он на я с со как а то все она так его но да ты к у же вы за бы по только ее мне было вот от меня еще нет о из ему теперь когда даже ну вдруг ли если уже или ни быть был него до вас опять уж вам ведь там потом себя ничего ей может они тут где есть надо ней для мы тебя их чем была сам чтоб без будто чего раз тоже себе под будет ж тогда кто этот того потому этого какой совсем ним здесь этом один почти мой тем чтобы нее сейчас были куда зачем всех никогда можно при наконец два об другой хоть после над больше тот через эти нас про всего них какая много разве три эту моя впрочем хорошо свою этой перед иногда лучше чуть том нельзя такой им более всегда конечно всю между' }
 };
@@ -1098,7 +1082,6 @@ function computeCoverage(text, spans, activeCats) {
 
 const LIB_KEY = 'annota.library.v7';
 const SES_KEY = 'annota.session.v7';
-const THEME_KEY = 'annota.theme.v1';
 const INPUT_H_KEY = 'annota.inputHeight.v1';
 const CATS_KEY = 'annota.cats.v1';
 const CONTROLS_KEY = 'annota.controlsHidden.v1';
@@ -1790,14 +1773,6 @@ function onOutputClick(e) {
 
 function bindEvents() {
   $('btnToggleControls').addEventListener('click', toggleControls);
-  $('btnTheme').addEventListener('click', () => {
-    const cur = document.documentElement.dataset.theme;
-    setTheme(cur === 'dark' ? 'light' : 'dark');
-    if (isStandalonePWA()) {
-      toast('Tema aggiornato. La status bar si adegua alla prossima apertura.', 2800);
-    }
-    vibrate(5);
-  });
   $('btnShare').addEventListener('click', shareOrExport);
 
   document.querySelectorAll('.tabbar .tab').forEach(t => {
@@ -1943,12 +1918,8 @@ function bindEvents() {
   $('libSearch').addEventListener('input', e => renderLibrary(e.target.value));
   $('scrollAnnotate').addEventListener('scroll', updateReadProgress, { passive: true });
 
-  // Segue i cambi di tema del sistema operativo
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-    if (isStandalonePWA() || !localStorage.getItem(THEME_KEY)) {
-      setTheme(e.matches ? 'dark' : 'light');
-    }
-  });
+  // Ascolta i cambi di tema del sistema operativo
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applySystemTheme);
 }
 
 function runStatOnly() {
@@ -1965,14 +1936,8 @@ function runStatOnly() {
 }
 
 function init() {
-  // Scelta del tema iniziale
-  let initialTheme;
-  if (isStandalonePWA()) {
-    initialTheme = syncWithSystem();
-  } else {
-    initialTheme = localStorage.getItem(THEME_KEY) || syncWithSystem();
-  }
-  setTheme(initialTheme);
+  // Applica il tema di sistema subito
+  applySystemTheme();
 
   let restored = false;
   try {
