@@ -75,7 +75,6 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .btn svg{width:17px;height:17px}
 .btn.icon-only svg{width:20px;height:20px}
 
-/* Bottone AI */
 .btn-ai{flex:0 0 auto;width:52px;padding:13px 0;position:relative}
 .btn-ai svg{width:20px;height:20px}
 .btn-ai.off{color:var(--ink-3)}
@@ -83,7 +82,9 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .btn-ai.loading{color:var(--ai);background:var(--ai-soft);border-color:transparent}
 .btn-ai.loading svg{animation:pulse 1.2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.9)}}
-.btn-ai .progress-ring{position:absolute;inset:0;pointer-events:none}
+.btn-ai .model-tag{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);font-size:.55rem;font-weight:700;letter-spacing:.02em;opacity:.85;pointer-events:none}
+.btn-ai.on .model-tag{color:var(--ai)}
+.btn-ai.off .model-tag{color:var(--ink-3)}
 
 .cats-row{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;padding:2px 0 12px;margin:0 -2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .cats-row::-webkit-scrollbar{display:none}
@@ -101,7 +102,6 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .stat.ok .v{color:#3b8f4b}
 [data-theme="dark"] .stat.ok .v{color:#7bd88f}
 
-/* AI status bar */
 .ai-bar{display:none;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:var(--ai-soft);border:1px solid color-mix(in srgb,var(--ai) 25%,transparent);margin-bottom:12px;font-size:.82rem;color:var(--ai);font-weight:500}
 .ai-bar.show{display:flex}
 .ai-bar .spinner{width:14px;height:14px;border:2px solid color-mix(in srgb,var(--ai) 25%,transparent);border-top-color:var(--ai);border-radius:50%;animation:spin .7s linear infinite;flex:0 0 auto}
@@ -147,12 +147,28 @@ mark.c-sentence{background:var(--c-sentence)}
 .lib-item .meta{display:flex;gap:12px;margin-top:8px;font-size:.76rem;color:var(--ink-3)}
 .modal-bg{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.42);backdrop-filter:blur(3px);display:none;align-items:flex-end;justify-content:center;padding:0}
 .modal-bg.open{display:flex}
-.modal{background:var(--surface);border-top-left-radius:20px;border-top-right-radius:20px;padding:20px 20px calc(20px + env(safe-area-inset-bottom));width:100%;max-width:520px;animation:slideUp .22s ease-out;border:1px solid var(--border);border-bottom:none}
+.modal{background:var(--surface);border-top-left-radius:20px;border-top-right-radius:20px;padding:20px 20px calc(20px + env(safe-area-inset-bottom));width:100%;max-width:520px;animation:slideUp .22s ease-out;border:1px solid var(--border);border-bottom:none;max-height:85dvh;overflow-y:auto}
 @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
 .modal h3{margin:0 0 4px;font-size:1.05rem;letter-spacing:-0.01em}
 .modal p{margin:0 0 16px;color:var(--ink-2);font-size:.9rem}
 .modal .input-name{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border-2);background:var(--surface-2);font-size:16px;outline:none;margin-bottom:12px}
-.modal .row-actions{display:flex;gap:8px}
+.modal .row-actions{display:flex;gap:8px;margin-top:12px}
+
+/* Model picker */
+.model-list{display:flex;flex-direction:column;gap:8px;margin:14px 0 4px}
+.model-option{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface-2);cursor:pointer;transition:all .15s;user-select:none;-webkit-user-select:none}
+.model-option:active{transform:scale(.99)}
+.model-option.selected{border-color:var(--ai);background:var(--ai-soft)}
+.model-option .radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--border-2);flex:0 0 auto;display:grid;place-items:center;transition:all .15s}
+.model-option.selected .radio{border-color:var(--ai);background:var(--ai)}
+.model-option.selected .radio::after{content:"";width:6px;height:6px;border-radius:50%;background:white}
+.model-option .info{flex:1;min-width:0}
+.model-option .name{font-weight:600;font-size:.92rem;color:var(--ink);margin-bottom:1px}
+.model-option .name .sz{font-weight:500;font-size:.78rem;color:var(--ink-3);margin-left:6px}
+.model-option .desc{font-size:.78rem;color:var(--ink-2)}
+.model-option.selected .name{color:var(--ai)}
+.model-option.selected .desc{color:color-mix(in srgb,var(--ai) 70%,var(--ink-2))}
+
 .toast{position:fixed;left:50%;bottom:calc(80px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:.88rem;font-weight:500;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:200;box-shadow:var(--shadow);max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .tabbar{position:sticky;bottom:0;z-index:30;display:flex;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom)}
@@ -217,6 +233,7 @@ body.reading .reading-bar{display:flex}
               <path d="M19 17l.9 2.1L22 20l-2.1.9L19 23l-.9-2.1L16 20l2.1-.9L19 17z"/>
               <path d="M5 17l.7 1.8L7.5 19.5 5.7 20.2 5 22l-.7-1.8L2.5 19.5 4.3 18.8 5 17z"/>
             </svg>
+            <span class="model-tag" id="modelTag"></span>
           </button>
           <button class="btn ghost icon-only danger-icon" id="btnClear" title="Pulisci" aria-label="Pulisci">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -322,8 +339,9 @@ body.reading .reading-bar{display:flex}
 
 <div class="modal-bg" id="modalAISetup">
   <div class="modal">
-    <h3 id="aiSetupTitle">Attivare l'AI locale?</h3>
-    <p id="aiSetupText">Scarica un modello AI da ~400 MB direttamente nel browser. Verrà salvato sul dispositivo e riutilizzato offline. Migliorerà la qualità delle annotazioni distinguendo i concetti davvero importanti dal rumore statistico.</p>
+    <h3 id="aiSetupTitle">Scegli il modello AI</h3>
+    <p>Scaricato una sola volta, resta sul dispositivo. Funziona offline. Scegli in base alla potenza del tuo iPhone.</p>
+    <div class="model-list" id="modelList"></div>
     <div class="row-actions">
       <button class="btn ghost" id="btnCancelAI">Annulla</button>
       <button class="btn primary" id="btnConfirmAI" style="background:var(--ai)">Scarica e attiva</button>
@@ -352,7 +370,7 @@ function toast(msg, ms = 2000) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   PARTE 1 — MOTORE STATISTICO UNIVERSALE (invariato)
+   MOTORE STATISTICO UNIVERSALE
    ═══════════════════════════════════════════════════════════════════ */
 
 const LANG_PROFILES = {
@@ -695,34 +713,63 @@ function analyzeStatistical(text) {
     ...findConceptSpans(tokens, salient, bigrams),
     ...findKeySentences(sentences, salient, tokens)
   ];
-
   return { spans, lang };
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   PARTE 2 — LIVELLO AI LOCALE (WebLLM + Qwen 0.5B)
+   LIVELLO AI LOCALE — WebLLM con selettore di modello
    ═══════════════════════════════════════════════════════════════════ */
 
-const AI_MODEL = 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC';
+const AI_MODELS = {
+  qwen05: {
+    id: 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC',
+    label: 'Qwen 0.5B',
+    tag: '0.5B',
+    size: '~400 MB',
+    desc: 'Velocissimo. Base. Per iPhone più vecchi.'
+  },
+  qwen15: {
+    id: 'Qwen2.5-1.5B-Instruct-q4f16_1-MLC',
+    label: 'Qwen 1.5B',
+    tag: '1.5B',
+    size: '~1 GB',
+    desc: 'Bilanciato. Consigliato.'
+  },
+  qwen3: {
+    id: 'Qwen2.5-3B-Instruct-q4f16_1-MLC',
+    label: 'Qwen 3B',
+    tag: '3B',
+    size: '~1.8 GB',
+    desc: 'Massima qualità. Richiede iPhone Pro o iPad recenti.'
+  },
+  llama3: {
+    id: 'Llama-3.2-3B-Instruct-q4f16_1-MLC',
+    label: 'Llama 3.2 3B',
+    tag: 'L3',
+    size: '~1.9 GB',
+    desc: 'Alternativa a Qwen 3B. Ottimo su testi inglesi.'
+  }
+};
+
 const AI_CDN = 'https://esm.run/@mlc-ai/web-llm';
 
 const ai = {
   engine: null,
   loading: false,
   enabled: JSON.parse(localStorage.getItem('annota.ai.enabled') || 'false'),
+  modelKey: localStorage.getItem('annota.ai.model') || 'qwen15',
   ready: false,
+  readyModelKey: null,
   failed: false,
   lastError: null,
   progress: 0,
   lastStatus: ''
 };
 
-/* Controlla WebGPU */
 function hasWebGPU() {
   return typeof navigator !== 'undefined' && !!navigator.gpu;
 }
 
-/* Aggiorna la barra di stato AI */
 function setAIStatus(kind, message, pct) {
   const bar = $('aiBar');
   const msg = $('aiMsg');
@@ -730,12 +777,7 @@ function setAIStatus(kind, message, pct) {
   const spinner = $('aiSpinner');
 
   bar.classList.remove('ready', 'error');
-
-  if (kind === 'hidden') {
-    bar.classList.remove('show');
-    return;
-  }
-
+  if (kind === 'hidden') { bar.classList.remove('show'); return; }
   bar.classList.add('show');
 
   if (kind === 'loading') {
@@ -747,7 +789,7 @@ function setAIStatus(kind, message, pct) {
     spinner.style.display = 'none';
     msg.textContent = message || 'AI locale pronta';
     pctEl.textContent = '';
-    setTimeout(() => { if (bar.classList.contains('ready')) bar.classList.remove('show'); }, 2200);
+    setTimeout(() => { if (bar.classList.contains('ready')) bar.classList.remove('show'); }, 2400);
   } else if (kind === 'working') {
     spinner.style.display = 'block';
     msg.textContent = message || 'Analisi AI in corso…';
@@ -760,33 +802,49 @@ function setAIStatus(kind, message, pct) {
   }
 }
 
-/* Aggiorna il bottone AI */
 function updateAIButton() {
   const btn = $('btnAI');
+  const tag = $('modelTag');
   btn.classList.remove('off', 'on', 'loading');
   if (ai.loading) btn.classList.add('loading');
   else if (ai.enabled && ai.ready) btn.classList.add('on');
   else btn.classList.add('off');
+
+  const model = AI_MODELS[ai.modelKey] || AI_MODELS.qwen15;
+  tag.textContent = model.tag;
 }
 
-/* Carica il motore LLM */
-async function initAI() {
-  if (ai.engine || ai.loading) return;
+async function initAI(modelKey) {
+  if (ai.loading) return;
+
+  // Se è già caricato lo stesso modello, non ricaricare
+  if (ai.ready && ai.readyModelKey === modelKey) return;
+
+  // Se è caricato un altro modello, scarica e ricarica
+  if (ai.engine) {
+    try { await ai.engine.unload(); } catch {}
+    ai.engine = null;
+    ai.ready = false;
+  }
+
   if (!hasWebGPU()) {
     toast('WebGPU non disponibile su questo browser');
-    setAIStatus('error', 'WebGPU non supportato su questo dispositivo. Prova Safari aggiornato o Chrome.');
+    setAIStatus('error', 'WebGPU non supportato. Serve iOS 26+ con Safari o Chrome 113+.');
     ai.failed = true;
     return;
   }
 
+  const model = AI_MODELS[modelKey] || AI_MODELS.qwen15;
   ai.loading = true;
+  ai.modelKey = modelKey;
+  localStorage.setItem('annota.ai.model', modelKey);
   updateAIButton();
-  setAIStatus('loading', 'Scaricamento modello AI…', 0);
+  setAIStatus('loading', `Scaricamento ${model.label}…`, 0);
 
   try {
     const webllm = await import(AI_CDN);
 
-    ai.engine = await webllm.CreateMLCEngine(AI_MODEL, {
+    ai.engine = await webllm.CreateMLCEngine(model.id, {
       initProgressCallback: (report) => {
         ai.progress = report.progress || 0;
         ai.lastStatus = report.text || '';
@@ -795,27 +853,29 @@ async function initAI() {
     });
 
     ai.ready = true;
+    ai.readyModelKey = modelKey;
     ai.loading = false;
     updateAIButton();
-    setAIStatus('ready', 'AI locale pronta');
-    toast('AI locale caricata', 2200);
+    setAIStatus('ready', `${model.label} pronta`);
+    toast(`${model.label} caricata`, 2200);
   } catch (e) {
     console.error('AI load error:', e);
     ai.loading = false;
     ai.failed = true;
     ai.lastError = e && e.message ? e.message : String(e);
     updateAIButton();
-    setAIStatus('error', 'Errore: ' + (ai.lastError || 'caricamento fallito').slice(0, 60));
+    const shortErr = (ai.lastError || 'caricamento fallito').slice(0, 80);
+    setAIStatus('error', 'Errore: ' + shortErr);
     ai.enabled = false;
     localStorage.setItem('annota.ai.enabled', 'false');
     updateAIButton();
+    toast('Modello troppo grande per questo dispositivo? Prova il più piccolo.', 3500);
   }
 }
 
-/* Chiamata LLM con timeout */
 async function llmChat(prompt, maxTokens = 8) {
   if (!ai.engine) throw new Error('AI non caricata');
-  const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 25000));
+  const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 30000));
   const call = ai.engine.chat.completions.create({
     messages: [{ role: 'user', content: prompt }],
     temperature: 0,
@@ -826,56 +886,70 @@ async function llmChat(prompt, maxTokens = 8) {
   return (res.choices && res.choices[0] && res.choices[0].message && res.choices[0].message.content) || '';
 }
 
-/* Frasi di contesto per uno span */
 function contextForSpan(text, span, sentences) {
   for (const s of sentences) {
     if (span.start >= s.start && span.end <= s.end) return text.slice(s.start, s.end);
   }
-  // Fallback: estrai 200 char attorno
-  const a = Math.max(0, span.start - 100);
-  const b = Math.min(text.length, span.end + 100);
+  const a = Math.max(0, span.start - 120);
+  const b = Math.min(text.length, span.end + 120);
   return text.slice(a, b);
 }
 
-/* Prompt di validazione (bilingue per sicurezza) */
+/* Prompt migliorato per modelli più grandi */
 function buildValidationPrompt(lang, snippet, context) {
   const prompts = {
-    it: `Sei un annotatore. Ti do una frase e un frammento. Il frammento è un concetto chiave della frase? Rispondi SOLO "SÌ" o "NO".
+    it: `Sei un assistente che aiuta studenti a capire quali concetti di un testo sono davvero importanti.
+Leggi la frase e valuta se il frammento è un concetto CHIAVE (non un dettaglio secondario).
+Rispondi SOLO con "SÌ" o "NO", senza altro.
 
 Frase: "${context}"
 Frammento: "${snippet}"
 Risposta:`,
-    en: `You are an annotator. I give you a sentence and a fragment. Is the fragment a key concept of the sentence? Answer ONLY "YES" or "NO".
+    en: `You are an assistant helping students understand which concepts in a text are truly important.
+Read the sentence and judge whether the fragment is a KEY concept (not a secondary detail).
+Answer ONLY "YES" or "NO", nothing else.
 
 Sentence: "${context}"
 Fragment: "${snippet}"
 Answer:`,
-    fr: `Tu es un annotateur. Je te donne une phrase et un fragment. Le fragment est-il un concept clé de la phrase ? Réponds SEULEMENT "OUI" ou "NON".
+    fr: `Tu aides des étudiants à comprendre quels concepts d'un texte sont vraiment importants.
+Lis la phrase et juge si le fragment est un concept CLÉ (pas un détail secondaire).
+Réponds SEULEMENT "OUI" ou "NON", rien d'autre.
 
 Phrase : "${context}"
 Fragment : "${snippet}"
 Réponse :`,
-    es: `Eres un anotador. Te doy una frase y un fragmento. ¿El fragmento es un concepto clave de la frase? Responde SOLO "SÍ" o "NO".
+    es: `Ayudas a estudiantes a entender qué conceptos de un texto son realmente importantes.
+Lee la frase y juzga si el fragmento es un concepto CLAVE (no un detalle secundario).
+Responde SOLO "SÍ" o "NO", nada más.
 
 Frase: "${context}"
 Fragmento: "${snippet}"
 Respuesta:`,
-    de: `Du bist ein Annotator. Ich gebe dir einen Satz und ein Fragment. Ist das Fragment ein Schlüsselkonzept des Satzes? Antworte NUR "JA" oder "NEIN".
+    de: `Du hilfst Schülern zu verstehen, welche Konzepte in einem Text wirklich wichtig sind.
+Lies den Satz und beurteile, ob das Fragment ein SCHLÜSSELKONZEPT ist (kein Nebendetail).
+Antworte NUR "JA" oder "NEIN", nichts anderes.
 
 Satz: "${context}"
 Fragment: "${snippet}"
 Antwort:`,
-    pt: `Você é um anotador. Dou-lhe uma frase e um fragmento. O fragmento é um conceito-chave da frase? Responda SOMENTE "SIM" ou "NÃO".
+    pt: `Você ajuda estudantes a entender quais conceitos de um texto são realmente importantes.
+Leia a frase e julgue se o fragmento é um conceito-CHAVE (não um detalhe secundário).
+Responda SOMENTE "SIM" ou "NÃO", nada mais.
 
 Frase: "${context}"
 Fragmento: "${snippet}"
 Resposta:`,
-    nl: `Je bent een annoteerder. Ik geef je een zin en een fragment. Is het fragment een sleutelbegrip van de zin? Antwoord ALLEEN "JA" of "NEE".
+    nl: `Je helpt studenten begrijpen welke concepten in een tekst echt belangrijk zijn.
+Lees de zin en beoordeel of het fragment een SLEUTELBEGRIP is (geen bijzaak).
+Antwoord ALLEEN "JA" of "NEE", niets anders.
 
 Zin: "${context}"
 Fragment: "${snippet}"
 Antwoord:`,
-    ru: `Ты аннотатор. Я даю тебе предложение и фрагмент. Является ли фрагмент ключевым понятием предложения? Отвечай ТОЛЬКО "ДА" или "НЕТ".
+    ru: `Ты помогаешь студентам понять, какие концепции в тексте действительно важны.
+Прочитай предложение и реши, является ли фрагмент КЛЮЧЕВЫМ понятием (не второстепенной деталью).
+Отвечай ТОЛЬКО "ДА" или "НЕТ", больше ничего.
 
 Предложение: "${context}"
 Фрагмент: "${snippet}"
@@ -884,41 +958,36 @@ Antwoord:`,
   return prompts[lang] || prompts.en;
 }
 
-function parseYesNo(response, lang) {
+function parseYesNo(response) {
   if (!response) return null;
-  const upper = response.trim().toUpperCase();
-  // Controlla NO/NON/NÃO/NEE/НЕТ per primi (evita match falsi con "SI" in "NON")
+  // Prendi solo le prime 30 lettere per evitare che il modello produca testi lunghi
+  const upper = response.trim().slice(0, 30).toUpperCase();
   const noWords = ['NO', 'NON', 'NÃO', 'NEE', 'НЕТ', 'NEIN'];
   const yesWords = ['SÌ', 'SI', 'YES', 'OUI', 'SÍ', 'JA', 'ДА'];
   for (const w of noWords) {
-    if (upper.startsWith(w) || upper.includes(' ' + w)) return false;
+    if (upper === w || upper.startsWith(w + ' ') || upper.startsWith(w + '.') || upper.startsWith(w + ',') || upper.startsWith(w + '!')) return false;
   }
   for (const w of yesWords) {
-    if (upper.startsWith(w)) return true;
+    if (upper === w || upper.startsWith(w + ' ') || upper.startsWith(w + '.') || upper.startsWith(w + ',') || upper.startsWith(w + '!')) return true;
   }
-  // Euristica fallback
-  if (upper.includes('NON') || upper.includes('NO') || upper.includes('NOT')) return false;
-  if (upper.includes('SÌ') || upper.includes('YES') || upper.includes('OUI') || upper.includes('JA') || upper.includes('SI')) return true;
+  // Fallback: cerca il primo match
+  for (const w of noWords) if (upper.includes(w)) return false;
+  for (const w of yesWords) if (upper.includes(w)) return true;
   return null;
 }
 
-/* Validazione AI: filtra span con _concept:true */
 async function aiValidateSpans(text, spans, lang, sentences) {
   if (!ai.engine || !ai.ready) return spans;
-
   const conceptSpans = spans.filter(s => s._concept);
   const otherSpans = spans.filter(s => !s._concept);
-
   if (!conceptSpans.length) return spans;
 
-  // Limite massimo di span da validare (per contenere tempi)
-  const MAX = 30;
+  const MAX = 40;
   const toValidate = conceptSpans.slice(0, MAX);
   const remainder = conceptSpans.slice(MAX);
-
   const kept = [];
 
-  // Deduplica per snippet (evita di processare lo stesso termine più volte)
+  // Deduplica per snippet
   const seen = new Map();
   for (const s of toValidate) {
     const snippet = text.slice(s.start, s.end);
@@ -931,10 +1000,10 @@ async function aiValidateSpans(text, spans, lang, sentences) {
   let processed = 0;
   const total = entries.length;
 
-  for (const [key, list] of entries) {
+  for (const [, list] of entries) {
     processed++;
-    if (processed % 3 === 0 || processed === total) {
-      setAIStatus('working', `Validazione concetti (${processed}/${total})…`, `${Math.round(processed/total*100)}%`);
+    if (processed % 2 === 0 || processed === total) {
+      setAIStatus('working', `Validazione AI (${processed}/${total})…`, `${Math.round(processed/total*100)}%`);
     }
 
     const sample = list[0];
@@ -944,15 +1013,12 @@ async function aiValidateSpans(text, spans, lang, sentences) {
 
     let keep = true;
     try {
-      const response = await llmChat(prompt, 5);
-      const verdict = parseYesNo(response, lang);
-      // Null = incerto → manteniamo (conservativo)
+      const response = await llmChat(prompt, 6);
+      const verdict = parseYesNo(response);
       keep = verdict === null ? true : verdict;
     } catch (e) {
-      // Su errore, mantieni per non perdere informazione
       keep = true;
     }
-
     if (keep) kept.push(...list);
   }
 
@@ -960,7 +1026,7 @@ async function aiValidateSpans(text, spans, lang, sentences) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   PARTE 3 — OVERLAP E RENDER
+   OVERLAP E RENDER
    ═══════════════════════════════════════════════════════════════════ */
 
 const CAT_PRIORITY = { quote:10, num:9, def:8, list:7, name:6, key:5, sentence:4 };
@@ -1060,11 +1126,11 @@ function computeCoverage(text, spans, activeCats) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   PARTE 4 — UI
+   UI
    ═══════════════════════════════════════════════════════════════════ */
 
-const LIB_KEY = 'annota.library.v4';
-const SES_KEY = 'annota.session.v4';
+const LIB_KEY = 'annota.library.v5';
+const SES_KEY = 'annota.session.v5';
 const THEME_KEY = 'annota.theme.v1';
 const INPUT_H_KEY = 'annota.inputHeight.v1';
 const CATS_KEY = 'annota.cats.v1';
@@ -1125,12 +1191,10 @@ async function runAnalyze(useAI) {
     return;
   }
 
-  // Fase 1: analisi statistica
   const result = analyzeStatistical(text);
   state.lang = result.lang;
   let spans = result.spans;
 
-  // Fase 2: validazione AI (opzionale)
   state.aiApplied = false;
   if (useAI && ai.ready && ai.enabled) {
     const sentences = segmentSentences(text);
@@ -1152,7 +1216,6 @@ async function runAnalyze(useAI) {
   state.spans = spans;
   state.lastStats = computeCategoryStats(text, spans);
 
-  // Badge lingua
   const badge = $('langBadge');
   if (result.lang === 'cjk') badge.textContent = 'CJK';
   else {
@@ -1422,7 +1485,8 @@ async function shareOrExport() {
 function buildExportHTML() {
   const annotated = renderAnnotated(state.text, state.spans, state.activeCats);
   const langName = state.lang === 'cjk' ? 'CJK' : ((LANG_PROFILES[state.lang] && LANG_PROFILES[state.lang].name) || 'English');
-  const aiNote = state.aiApplied ? ' · validato con AI locale' : '';
+  const model = AI_MODELS[ai.modelKey];
+  const aiNote = state.aiApplied ? ` · validato con ${model.label}` : '';
   const styles = `
     body{font-family:Georgia,serif;max-width:720px;margin:32px auto;padding:0 20px;line-height:1.8;font-size:1.08rem;color:#1b1815;background:#faf7f2}
     h1{font-size:1.1rem;font-family:system-ui;color:#8a8178;font-weight:600;margin-bottom:4px}
@@ -1469,28 +1533,50 @@ function updateReadProgress() {
   $('readProgress').style.width = p + '%';
 }
 
-/* Toggle AI */
+/* ───── Modello: selettore nella modale ───── */
+function renderModelList() {
+  const box = $('modelList');
+  box.innerHTML = '';
+  for (const [key, m] of Object.entries(AI_MODELS)) {
+    const el = document.createElement('div');
+    el.className = 'model-option' + (key === ai.modelKey ? ' selected' : '');
+    el.innerHTML = `
+      <span class="radio"></span>
+      <div class="info">
+        <div class="name">${m.label}<span class="sz">${m.size}</span></div>
+        <div class="desc">${m.desc}</div>
+      </div>
+    `;
+    el.addEventListener('click', () => {
+      ai.modelKey = key;
+      renderModelList();
+      vibrate(5);
+    });
+    box.appendChild(el);
+  }
+}
+
 async function toggleAI() {
   if (ai.loading) return;
 
+  // Se l'AI è già pronta e attiva, disattivala
   if (ai.enabled && ai.ready) {
-    // Disattiva
     ai.enabled = false;
     localStorage.setItem('annota.ai.enabled', 'false');
     updateAIButton();
     toast('AI disattivata');
-    // Ri-analizza senza AI
     if (state.text.trim()) runAnalyze(false);
     return;
   }
 
+  // Se non è pronta, mostra la modale di scelta
   if (!ai.ready) {
-    // Primo utilizzo: mostra conferma
+    renderModelList();
     openModal('modalAISetup');
     return;
   }
 
-  // Riattiva
+  // Pronta ma disattivata → riattivala
   ai.enabled = true;
   localStorage.setItem('annota.ai.enabled', 'true');
   updateAIButton();
@@ -1586,13 +1672,12 @@ function bindEvents() {
   $('saveTitle').addEventListener('keydown', e => { if (e.key === 'Enter') confirmSave(); });
   $('btnCancelConfirm').addEventListener('click', () => closeModal('modalConfirm'));
 
-  // Modale AI
   $('btnCancelAI').addEventListener('click', () => closeModal('modalAISetup'));
   $('btnConfirmAI').addEventListener('click', async () => {
     closeModal('modalAISetup');
     ai.enabled = true;
     localStorage.setItem('annota.ai.enabled', 'true');
-    await initAI();
+    await initAI(ai.modelKey);
     if (ai.ready && state.text.trim()) runAnalyze(true);
   });
 
@@ -1642,9 +1727,7 @@ Napoleone Bonaparte prese il potere nel 1799 con il colpo di Stato del 18 brumai
   updateAIButton();
   runAnalyze(false);
 
-  // Se l'utente aveva attivato l'AI in precedenza, prova a ricaricarla
   if (ai.enabled) {
-    // Carica in background dopo un breve ritardo
     setTimeout(() => {
       if (!hasWebGPU()) {
         ai.enabled = false;
@@ -1652,7 +1735,7 @@ Napoleone Bonaparte prese il potere nel 1799 con il colpo di Stato del 18 brumai
         updateAIButton();
         return;
       }
-      initAI();
+      initAI(ai.modelKey);
     }, 800);
   }
 }
