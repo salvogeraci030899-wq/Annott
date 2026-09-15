@@ -274,6 +274,14 @@ body.reading .reading-bar{display:flex}
   transition:all .15s;cursor:pointer;
   white-space:pre-wrap;
 }
+.mcq-option.mcq-short{
+  text-align:center;
+  font-size:1.15rem;
+  font-weight:700;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:.02em;
+  padding:18px 16px;
+}
 .mcq-option:not(:disabled):active{transform:scale(.99)}
 .mcq-option:not(:disabled):hover{border-color:var(--border-2)}
 .mcq-option.correct{
@@ -1290,9 +1298,9 @@ function setNote(s, e, c, text) {
 }
 
 /* ============================================================
-   MODULO SCHEDE (v2)
+   MODULO SCHEDE (v3)
    ============================================================ */
-const CARDS_KEY = 'annota.cards.v2';
+const CARDS_KEY = 'annota.cards.v3';
 let cards = [];
 try { cards = JSON.parse(localStorage.getItem(CARDS_KEY) || '[]'); } catch {}
 function saveCards() { try { localStorage.setItem(CARDS_KEY, JSON.stringify(cards)); } catch {} }
@@ -1317,6 +1325,15 @@ function cardContentId(type, front, back) {
   const s = type + '|' + front + '|' + back;
   for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
   return 'c' + Math.abs(h).toString(36);
+}
+
+function shuffleArr(a) {
+  const arr = a.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
 }
 
 function proposeDefinitionCards(text, spans) {
@@ -1374,9 +1391,19 @@ function proposeConceptCards(text, spans, sentences, lang) {
   return props;
 }
 
+// Prefissi variabili per non ripetere sempre "Quando?"
+const DATE_PREFIXES = [
+  'Quando?',
+  'In quale anno?',
+  'Che anno?',
+  'In che anno?',
+  'Quando è avvenuto?'
+];
+
 function proposeFactCards(text, spans, sentences) {
   const props = [];
   const numSpans = spans.filter(s => s.cat === 'num');
+  const seenContent = new Set();
   for (const s of numSpans) {
     const val = text.slice(s.start, s.end).trim();
     const yearMatch = val.match(/\b(1\d{3}|20\d{2})\b/);
@@ -1386,15 +1413,48 @@ function proposeFactCards(text, spans, sentences) {
     if (!sent) continue;
     const sentText = text.slice(sent.start, sent.end).trim();
     if (sentText.length > 400) continue;
-    const eventText = sentText.replace(new RegExp('\\b' + year + '\\b', 'g'), '[quando?]');
-    if (eventText.length < 20) continue;
-    const front = `Quando? ${eventText}`;
+
+    // Sostituisci TUTTE le occorrenze dell'anno con ___
+    const yearRe = new RegExp('\\b' + year + '\\b', 'g');
+    const occurrences = (sentText.match(yearRe) || []).length;
+    if (occurrences === 0) continue;
+    const clozeText = sentText.replace(yearRe, '___');
+
+    // Genera distrattori "anno breve"
+    const y = parseInt(year, 10);
+    const offsets = [-1, 1, -2, 2, -3, 3, -4, 4, -5, 5, -6, 6, -7, 7, -8, 8, -9, 9, -10, 10, -15, 15, -20, 20, -25, 25];
+    const allD = [];
+    for (const off of offsets) {
+      const ny = y + off;
+      if (ny < 1000 || ny > 2099) continue;
+      const ns = String(ny);
+      if (ns === year) continue;
+      allD.push(ns);
+    }
+    if (allD.length < 3) continue;
+
+    // Prendi i 6 più vicini all'anno corretto, mescola, scegli 3
+    const sorted = allD.slice().sort((a, b) => Math.abs(parseInt(a) - y) - Math.abs(parseInt(b) - y));
+    const top = sorted.slice(0, 6);
+    const distractors = shuffleArr(top).slice(0, 3);
+
+    // Prefisso variabile per non ripetere sempre "Quando?"
+    const prefix = DATE_PREFIXES[Math.floor(Math.random() * DATE_PREFIXES.length)];
+
+    const front = `${prefix} ${clozeText}`;
+    const back = sentText;
+    const contentId = cardContentId('fact', front, year);
+    if (seenContent.has(contentId)) continue;
+    seenContent.add(contentId);
+
     props.push({
       type: 'fact',
       front,
-      back: sentText,
+      back,
+      mcqAnswer: year,
+      mcqDistractors: distractors,
       sourceCat: 'num',
-      contentId: cardContentId('fact', front, sentText)
+      contentId
     });
   }
   return props;
@@ -1469,7 +1529,7 @@ function confirmCardGeneration() {
   checks.forEach(chk => {
     if (chk.checked && !chk.disabled) {
       const p = pendingProposals[parseInt(chk.dataset.idx, 10)];
-      cards.push({
+      const card = {
         id: uid(),
         contentId: p.contentId,
         docKey: dk,
@@ -1479,7 +1539,10 @@ function confirmCardGeneration() {
         front: p.front,
         back: p.back,
         createdAt: Date.now()
-      });
+      };
+      if (p.mcqAnswer) card.mcqAnswer = p.mcqAnswer;
+      if (p.mcqDistractors) card.mcqDistractors = p.mcqDistractors.slice();
+      cards.push(card);
       added++;
     }
   });
@@ -1494,7 +1557,7 @@ function confirmCardGeneration() {
 }
 
 /* ============================================================
-   MODULO RIPASSO (v2 — SM-2 semplificato, MCQ con distrattori smart)
+   MODULO RIPASSO (v3 — MCQ con distrattori smart)
    ============================================================ */
 const REVIEW_KEY = 'annota.review.v2';
 let reviewState = {};
@@ -1544,7 +1607,7 @@ function reviewStats() {
   return { total: cards.length, newCards, dueNow, scheduled };
 }
 
-/* ---------- Utility per distrattori smart ---------- */
+/* ---------- Utility per distrattori smart (definition cards) ---------- */
 const SIM_STOPWORDS = new Set([
   'il','lo','la','i','gli','le','un','uno','una','di','a','da','in','con','su','per','tra','fra',
   'e','ed','o','od','ma','che','chi','cui','non','più','anche','come','dove','quando','perché',
@@ -1579,46 +1642,29 @@ function similarityScore(a, b) {
   return inter / Math.min(sa.size, sb.size);
 }
 
-function shuffleArr(a) {
-  const arr = a.slice();
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
 function buildMCQ(card) {
-  if (card.type !== 'def' && card.type !== 'fact') return null;
+  // Caso 1: fact card con risposta breve pre-generata
+  if (card.type === 'fact' && card.mcqAnswer && Array.isArray(card.mcqDistractors) && card.mcqDistractors.length >= 3) {
+    const options = shuffleArr([card.mcqAnswer, ...card.mcqDistractors.slice(0, 3)]);
+    return { options, correctIndex: options.indexOf(card.mcqAnswer), short: true };
+  }
+
+  // Caso 2: definition card — distrattori testuali, scelti per similarità
+  if (card.type !== 'def') return null;
   const correct = card.back;
   const pool = [];
 
   const sameDoc = cards.filter(c =>
-    c.id !== card.id && c.type === card.type &&
+    c.id !== card.id && c.type === 'def' &&
     c.docKey === card.docKey && c.back !== correct
   );
   pool.push(...sameDoc.map(c => c.back));
 
   const sameAll = cards.filter(c =>
-    c.id !== card.id && c.type === card.type && c.back !== correct
+    c.id !== card.id && c.type === 'def' && c.back !== correct
   );
   pool.push(...sameAll.map(c => c.back));
 
-  if (card.type === 'fact') {
-    const ym = correct.match(/\b(1\d{3}|20\d{2})\b/);
-    if (ym) {
-      const y = parseInt(ym[1], 10);
-      const offsets = [-1, 1, -2, 2, -3, 3, -5, 5, -7, 7, -10, 10, -17, 17, -25, 25];
-      for (const off of offsets) {
-        const ny = y + off;
-        if (ny >= 1000 && ny <= 2099) {
-          pool.push(correct.replace(new RegExp('\\b' + y + '\\b'), String(ny)));
-        }
-      }
-    }
-  }
-
-  // Dedup
   const seen = new Set([correct.trim()]);
   const distractors = [];
   for (const d of pool) {
@@ -1627,20 +1673,16 @@ function buildMCQ(card) {
     seen.add(t);
     distractors.push(d);
   }
-
   if (distractors.length < 3) return null;
 
-  // Smart selection: ordina per similarità lessicale con la risposta corretta
   const scored = distractors.map(d => ({ d, score: similarityScore(correct, d) }));
   scored.sort((a, b) => b.score - a.score);
-
-  // Prendi i top 6 (i più plausibili), mescola, scegli 3
   const topK = Math.min(6, scored.length);
   const candidatePool = scored.slice(0, topK).map(x => x.d);
   const chosen = shuffleArr(candidatePool).slice(0, 3);
 
   const options = shuffleArr([correct, ...chosen]);
-  return { options, correctIndex: options.indexOf(correct) };
+  return { options, correctIndex: options.indexOf(correct), short: false };
 }
 
 const reviewUI = {
@@ -1688,9 +1730,10 @@ function renderReviewCard() {
     const elapsed = Math.round((Date.now() - reviewUI.startTime) / 1000);
     const acc = reviewUI.done > 0 ? Math.round(100 * reviewUI.correct / reviewUI.done) : 0;
     box.innerHTML = `<div class="empty"><div class="icon">🎉</div>
-      <div class="title">Sessione completata</div>
-      <div class="sub">${reviewUI.done} schede · ${reviewUI.correct} corrette (${acc}%) · ${elapsed}s</div>
-      <div class="row-actions" style="justify-content:center;margin-top:20px">
+      <div class="title">Sessione completata</pxdiv>
+      <div class="sub">${;reviewUI.done} schede · ${reviewUI }
+.correct} corrette ( ${acc}%) · ${el .apsed}s</div>
+     legend <div class="row-actions" style="justify-content:center;margin-top:20px">
         <button class="btn primary" id="btnNewSession">Nuova sessione</button>
       </div></div>`;
     $('btnNewSession').addEventListener('click', () => startReviewSession('all'));
@@ -1703,7 +1746,6 @@ function renderReviewCard() {
   const srcDoc = card.docTitle && card.docTitle.length > 40
     ? card.docTitle.slice(0, 40) + '…' : (card.docTitle || '');
 
-  // Rigenera MCQ solo quando cambia la scheda corrente
   if (reviewUI.mcqForIdx !== reviewUI.idx) {
     reviewUI.mcq = buildMCQ(card);
     reviewUI.mcqForIdx = reviewUI.idx;
@@ -1712,15 +1754,17 @@ function renderReviewCard() {
   }
 
   const usingMCQ = !!reviewUI.mcq;
+  const isShort = usingMCQ && reviewUI.mcq.short;
   let bodyHTML = '';
 
   if (usingMCQ) {
     const { options, correctIndex } = reviewUI.mcq;
     const answered = reviewUI.selectedIndex >= 0;
+    const gridCls = isShort ? 'mcq-options mcq-grid-2' : 'mcq-options';
 
-    bodyHTML = `<div class="mcq-options">
+    bodyHTML = `<div class="${gridCls}">
       ${options.map((opt, i) => {
-        let cls = 'mcq-option';
+        let cls = 'mcq-option' + (isShort ? ' mcq-short' : '');
         if (answered) {
           if (i === correctIndex) cls += ' correct';
           else if (i === reviewUI.selectedIndex) cls += ' wrong';
@@ -1874,7 +1918,7 @@ function openNoteDialog(start, end, cat) {
 }
 
 /* ============================================================
-   UI — SCHEDE (v2)
+   UI — SCHEDE (v3)
    ============================================================ */
 let cardsFilter = new Set(CATEGORIES.map(c => c.id));
 let cardsScope = 'doc';
@@ -2366,8 +2410,7 @@ function exportPDF() {
   mark.c-quote { background: #ffc1cf; } mark.c-list { background: #a9d8ff; } mark.c-def { background: #ffe0b6; }
   mark.c-sentence { background: rgba(255, 201, 160, 0.45); }
   .legend { margin-top: 24px; padding-top: 12px; border-top: 1px solid #d9d2c5; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; font-size: 8.5pt; color: #57534e; display: flex; flex-wrap: wrap; gap: 6px 14px; }
-  .legend .item { display: inline-flex; align-items: center; gap: 5px; }
-  .legend .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.1); }
+  .legend .item { display: inline-flex; align-items: center; gap: 5 .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.1); }
 </style>
 </head>
 <body>
