@@ -114,7 +114,7 @@ body.edit-mode .cat-pill.off{opacity:1;text-decoration:none}
 .cat-pill.sel .count{color:var(--ai);opacity:.75}
 .cat-pill.sel .dot{box-shadow:inset 0 0 0 1px rgba(0,0,0,.15),0 0 0 2px var(--surface)}
 
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;margin-bottom:4px}
 .stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 10px}
 .stat .k{font-size:.62rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .stat .v{font-size:1rem;font-weight:700;margin-top:2px;letter-spacing:-0.01em}
@@ -277,9 +277,6 @@ body.reading .reading-bar{display:flex}
           <span class="pct" id="aiPct"></span>
         </div>
 
-        <!-- Statistiche sopra le categorie -->
-        <div class="stats" id="stats" style="display:none"></div>
-
         <div class="cats-row" id="legend"></div>
 
         <div class="edit-hint">
@@ -324,6 +321,8 @@ body.reading .reading-bar{display:flex}
         </div>
 
         <div class="output-card" id="output"></div>
+
+        <div class="stats" id="stats" style="display:none"></div>
       </div>
     </div>
   </section>
@@ -423,10 +422,6 @@ function applyThemeToMeta(t) {
   const sb = document.getElementById('metaStatusBar');
   if (sb) sb.setAttribute('content', isDark ? 'black' : 'default');
 }
-
-/* ═══════════════════════════════════════════════════════════════════
-   MOTORE STATISTICO UNIVERSALE
-   ═══════════════════════════════════════════════════════════════════ */
 
 const LANG_PROFILES = {
   it:{ name:'Italiano', words:'il lo la i gli le un uno una e ed o od ma però perciò in con su per tra fra da di al allo alla ai agli alle del dello della dei degli delle nel nello nella nei negli nelle sul sullo sulla sui sugli sulle dal dallo dalla dai dagli dalle questo questa questi queste quello quella quelli quelle che chi cui non più anche solo come dove quando perché essere avere sono è era fu sia stata stato stati state viene venga fatto fare può devono deve loro lei lui noi voi egli ella essi esse' },
@@ -760,10 +755,6 @@ function analyzeStatistical(text) {
   return { spans, lang };
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   AI LOCALE
-   ═══════════════════════════════════════════════════════════════════ */
-
 const AI_MODELS = {
   qwen05: { id: 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC', label: 'Qwen 0.5B', tag: '0.5B', size: '~400 MB', desc: 'Velocissimo. Base. Per iPhone più vecchi.' },
   qwen15: { id: 'Qwen2.5-1.5B-Instruct-q4f16_1-MLC', label: 'Qwen 1.5B', tag: '1.5B', size: '~1 GB', desc: 'Bilanciato. Consigliato. Limite su Safari iOS.' },
@@ -935,10 +926,6 @@ async function aiValidateSpans(text, spans, lang, sentences) {
   return [...otherSpans, ...kept, ...remainder];
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   OVERLAP E RENDER
-   ═══════════════════════════════════════════════════════════════════ */
-
 const CAT_PRIORITY = { quote:10, num:9, def:8, list:7, name:6, key:5, sentence:4 };
 
 function buildRuns(text, spans) {
@@ -1048,10 +1035,6 @@ function computeCoverage(text, spans, activeCats) {
   const pct = text.length ? Math.round(100 * hlChars / text.length) : 0;
   return { pct, count };
 }
-
-/* ═══════════════════════════════════════════════════════════════════
-   UI
-   ═══════════════════════════════════════════════════════════════════ */
 
 const LIB_KEY = 'annota.library.v7';
 const SES_KEY = 'annota.session.v7';
