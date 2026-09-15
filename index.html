@@ -6,8 +6,8 @@
 <meta name="theme-color" id="metaThemeColor" content="#f6f3ee">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" id="metaStatusBar" content="default">
-<meta name="apple-mobile-web-app-title" content="Annota">
-<title>Annota · lettura strutturata</title>
+<meta name="apple-mobile-web-app-title" content="ANNOTT">
+<title>ANNOTT · lettura strutturata</title>
 <style>
 :root{
   color-scheme: light;
@@ -40,13 +40,9 @@ button,input,textarea{font-family:inherit;font-size:inherit;color:inherit}
 button{cursor:pointer;border:none;background:none;padding:0}
 ::selection{background:var(--accent-soft)}
 .app{display:flex;flex-direction:column;min-height:100dvh;padding-top:env(safe-area-inset-top)}
-.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:8px;padding:10px 14px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--border)}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:10px 14px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--border)}
 .topbar .brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.02rem;letter-spacing:-0.01em}
 .topbar .brand .dotlogo{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,var(--c-num),var(--c-list) 30%,var(--c-key) 60%,var(--c-name));box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}
-.topbar .lang-badge{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:6px;background:var(--surface-3);color:var(--ink-3);opacity:0;transition:opacity .3s}
-.topbar .lang-badge.show{opacity:1}
-.topbar .model-badge{font-size:.68rem;font-weight:700;letter-spacing:.04em;padding:4px 8px;border-radius:6px;background:var(--ai-soft);color:var(--ai);opacity:0;transition:opacity .3s}
-.topbar .model-badge.show{opacity:1}
 .topbar .spacer{flex:1}
 .iconbtn{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;color:var(--ink-2);transition:background .15s,color .15s}
 .iconbtn:active{background:var(--surface-3)}
@@ -59,9 +55,10 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .input-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow);margin-bottom:14px;display:flex;flex-direction:column}
 .input-card textarea{width:100%;min-height:80px;height:140px;border:none;outline:none;resize:none;background:transparent;font-size:16px;line-height:1.55;color:var(--ink);display:block}
 .input-card textarea::placeholder{color:var(--ink-3)}
-.resize-handle{margin-top:8px;height:28px;display:flex;align-items:center;justify-content:center;cursor:ns-resize;touch-action:none;color:var(--ink-3);border-radius:8px;user-select:none;-webkit-user-select:none;transition:color .15s,background .15s}
-.resize-handle:hover{color:var(--ink-2)}
-.resize-handle.dragging{color:var(--accent);background:var(--surface-3)}
+.resize-handle{margin-top:8px;height:28px;display:flex;align-items:center;justify-content:center;cursor:ns-resize;touch-action:none;color:var(--ai);border-radius:8px;user-select:none;-webkit-user-select:none;transition:color .15s,background .15s,transform .15s}
+.resize-handle:hover{color:var(--ai);transform:scale(1.08)}
+.resize-handle:active{color:var(--ai);transform:scale(1.15)}
+.resize-handle.dragging{color:var(--ai);background:var(--ai-soft)}
 .resize-handle svg{width:26px;height:26px;pointer-events:none}
 
 .actions{display:flex;gap:8px;margin:12px 0 10px;flex-wrap:wrap}
@@ -124,7 +121,6 @@ button{cursor:pointer;border:none;background:none;padding:0}
 [data-theme="dark"] .ai-bar.ready{background:color-mix(in srgb,var(--c-key) 25%,var(--surface));color:#8fdd9a}
 .ai-bar.error{background:color-mix(in srgb,var(--danger) 15%,var(--surface));color:var(--danger);border-color:color-mix(in srgb,var(--danger) 30%,transparent)}
 
-/* Edit mode bar */
 .edit-bar{display:none;background:color-mix(in srgb,var(--ai) 10%,var(--surface));border:1px solid color-mix(in srgb,var(--ai) 25%,transparent);border-radius:12px;padding:10px 12px;margin-bottom:12px;position:sticky;top:60px;z-index:20;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .edit-bar.show{display:block}
 .edit-bar .edit-title{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:var(--ai);margin-bottom:8px;display:flex;align-items:center;gap:6px}
@@ -136,7 +132,6 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .edit-cat.on{border-color:var(--ai);background:var(--ai-soft);color:var(--ai);font-weight:700}
 .edit-cat:active{transform:scale(.96)}
 
-/* Toolbar scorrevole come le categorie */
 .toolbar{display:flex;align-items:center;gap:6px;padding:2px 0 10px;margin-bottom:4px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin-left:-2px;margin-right:-2px}
 .toolbar::-webkit-scrollbar{display:none}
 .tbtn{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:9px;font-size:.82rem;font-weight:500;color:var(--ink-2);background:var(--surface);border:1px solid var(--border);transition:background .15s,color .15s,transform .08s;white-space:nowrap;user-select:none;-webkit-user-select:none}
@@ -220,9 +215,7 @@ body.reading .reading-bar{display:flex}
 
 <div class="app" id="app">
   <header class="topbar">
-    <div class="brand"><span class="dotlogo"></span><span>Annota</span></div>
-    <div class="lang-badge" id="langBadge"></div>
-    <div class="model-badge" id="modelBadge"></div>
+    <div class="brand"><span class="dotlogo"></span><span>ANNOTT</span></div>
     <div class="spacer"></div>
     <button class="iconbtn" id="btnTheme" title="Tema" aria-label="Cambia tema">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -814,13 +807,9 @@ function setAIStatus(kind, message, pct) {
 }
 
 function updateAIButton() {
-  const btn = $('btnAI'), badge = $('modelBadge');
+  const btn = $('btnAI');
   btn.classList.remove('loading');
-  if (ai.loading) { btn.classList.add('loading'); badge.classList.remove('show'); }
-  else if (ai.ready) {
-    const model = AI_MODELS[ai.modelKey] || AI_MODELS.qwen15;
-    badge.textContent = model.tag; badge.classList.add('show');
-  } else badge.classList.remove('show');
+  if (ai.loading) btn.classList.add('loading');
 }
 
 async function initAI(modelKey) {
@@ -1149,7 +1138,6 @@ async function runAnalyze() {
     state.lastStats = null;
     $('output').innerHTML = '';
     $('stats').style.display = 'none';
-    $('langBadge').classList.remove('show');
     setAIStatus('hidden');
     return;
   }
@@ -1173,13 +1161,6 @@ async function runAnalyze() {
   } else setAIStatus('hidden');
   state.spans = spans;
   state.lastStats = computeCategoryStats(text, spans);
-  const badge = $('langBadge');
-  if (result.lang === 'cjk') badge.textContent = 'CJK';
-  else {
-    const prof = LANG_PROFILES[result.lang];
-    badge.textContent = prof ? prof.name : 'EN';
-  }
-  badge.classList.add('show');
   redrawOutput();
   renderStats();
   renderLegend();
@@ -1323,14 +1304,10 @@ function renderLibrary(filter = '') {
     el.className = 'lib-item';
     const date = new Date(it.updatedAt).toLocaleDateString('it-IT', { day:'2-digit', month:'short' });
     const snippet = it.text.slice(0, 160).replace(/\s+/g, ' ');
-    const langLabel = it.lang === 'cjk' ? 'CJK' : ((LANG_PROFILES[it.lang] && LANG_PROFILES[it.lang].name.slice(0,3).toUpperCase()) || 'EN');
-    const aiBadge = it.aiApplied ? '<span class="badge ai">AI</span>' : '';
     const manualCount = (it.manualAdds || []).length;
     const manualBadge = manualCount ? `<span class="badge manual">+${manualCount} ✎</span>` : '';
     el.innerHTML = `
       <div class="row1">
-        <span class="badge">${langLabel}</span>
-        ${aiBadge}
         ${manualBadge}
         <span class="date">${date}</span>
       </div>
@@ -1420,10 +1397,6 @@ function confirmSave() {
   vibrate(10);
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   EXPORT
-   ═══════════════════════════════════════════════════════════════════ */
-
 async function shareOrExport() {
   if (!state.text.trim()) { toast('Nulla da condividere'); return; }
   const html = buildExportHTML();
@@ -1449,10 +1422,9 @@ function buildExportHTML() {
   const model = AI_MODELS[ai.modelKey];
   const aiNote = state.aiApplied ? ` · validato con ${model.label}` : '';
   const styles = `body{font-family:Georgia,serif;max-width:720px;margin:32px auto;padding:0 20px;line-height:1.8;font-size:1.08rem;color:#1b1815;background:#faf7f2}h1{font-size:1.1rem;font-family:system-ui;color:#8a8178;font-weight:600;margin-bottom:4px}.meta{font-family:system-ui;font-size:.78rem;color:#8a8178;margin-bottom:24px}mark{padding:1px 0;border-radius:3px;background:transparent;color:inherit}mark.c-num{background:#ffe680} mark.c-name{background:#d9b8ff}mark.c-key{background:#b6e6b6} mark.c-quote{background:#ffc1cf}mark.c-list{background:#a9d8ff} mark.c-def{background:#ffe0b6}mark.c-sentence{background:rgba(255,201,160,.45)}`;
-  return `<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Annotazione</title><style>${styles}</style></head><body><h1>Annota</h1><div class="meta">${new Date().toLocaleString('it-IT')} · Lingua: ${langName}${aiNote}</div><div>${annotated}</div></body></html>`;
+  return `<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Annotazione</title><style>${styles}</style></head><body><h1>ANNOTT</h1><div class="meta">${new Date().toLocaleString('it-IT')} · Lingua: ${langName}${aiNote}</div><div>${annotated}</div></body></html>`;
 }
 
-/* Genera il PDF tramite il dialogo di stampa di iOS/desktop */
 function exportPDF() {
   if (!state.text.trim()) { toast('Nulla da salvare'); return; }
 
@@ -1461,22 +1433,15 @@ function exportPDF() {
   const model = AI_MODELS[ai.modelKey];
   const aiNote = state.aiApplied ? ` · validato con ${model.label}` : '';
 
-  // Costruisco un documento HTML autonomo ottimizzato per la stampa
   const pdfHTML = `<!doctype html>
 <html lang="it">
 <head>
 <meta charset="utf-8">
 <title>Annotazione · ${new Date().toLocaleDateString('it-IT')}</title>
 <style>
-  @page {
-    size: A4;
-    margin: 18mm 16mm;
-  }
+  @page { size: A4; margin: 18mm 16mm; }
   * { box-sizing: border-box; }
-  html, body {
-    margin: 0;
-    padding: 0;
-  }
+  html, body { margin: 0; padding: 0; }
   body {
     font-family: Georgia, "Times New Roman", serif;
     color: #1b1815;
@@ -1549,7 +1514,7 @@ function exportPDF() {
 </head>
 <body>
   <div class="header">
-    <h1>Annota · lettura strutturata</h1>
+    <h1>ANNOTT · lettura strutturata</h1>
     <div class="meta">${new Date().toLocaleString('it-IT')} · Lingua: ${langName}${aiNote}</div>
   </div>
   <div class="content">${annotated}</div>
@@ -1565,10 +1530,8 @@ function exportPDF() {
 </body>
 </html>`;
 
-  // Apro una nuova finestra con il documento
   const win = window.open('', '_blank');
   if (!win) {
-    // Fallback: usa un iframe nascosto se window.open è bloccato
     const iframe = document.createElement('iframe');
     iframe.style.position = 'fixed';
     iframe.style.right = '0';
@@ -1594,7 +1557,6 @@ function exportPDF() {
   win.document.write(pdfHTML);
   win.document.close();
 
-  // Aspetta il rendering poi avvia il dialogo di stampa
   setTimeout(() => {
     try {
       win.focus();
@@ -1659,10 +1621,6 @@ function openModelPicker() {
   }
   openModal('modalAISetup');
 }
-
-/* ═══════════════════════════════════════════════════════════════════
-   GESTIONE CLICK SUL TESTO IN MODALITÀ MODIFICA
-   ═══════════════════════════════════════════════════════════════════ */
 
 function findTokenAt(text, pos) {
   const tokens = tokenize(text);
@@ -1847,7 +1805,6 @@ function bindEvents() {
     if (state.editMode) toggleEditMode();
     $('output').innerHTML = '';
     $('stats').style.display = 'none';
-    $('langBadge').classList.remove('show');
     setAIStatus('hidden');
     localStorage.removeItem(SES_KEY);
     vibrate(10);
@@ -1932,9 +1889,6 @@ function runStatOnly() {
   redrawOutput();
   renderStats();
   renderLegend();
-  const badge = $('langBadge');
-  badge.textContent = result.lang === 'cjk' ? 'CJK' : (LANG_PROFILES[result.lang]?.name || 'EN');
-  badge.classList.add('show');
 }
 
 function init() {
