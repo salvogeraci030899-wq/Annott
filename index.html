@@ -39,8 +39,8 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
 button,input,textarea{font-family:inherit;font-size:inherit;color:inherit}
 button{cursor:pointer;border:none;background:none;padding:0}
 ::selection{background:var(--accent-soft)}
-.app{display:flex;flex-direction:column;min-height:100dvh;padding-top:env(safe-area-inset-top)}
-.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:10px 14px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--border)}
+.app{display:flex;flex-direction:column;height:100dvh;padding-top:env(safe-area-inset-top)}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:10px 14px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--border);flex:0 0 auto}
 .topbar .brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.02rem;letter-spacing:-0.01em}
 .topbar .brand .dotlogo{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,var(--c-num),var(--c-list) 30%,var(--c-key) 60%,var(--c-name));box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}
 .topbar .spacer{flex:1}
@@ -49,8 +49,20 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .iconbtn svg{width:20px;height:20px}
 .view{display:none;flex:1;flex-direction:column;min-height:0}
 .view.active{display:flex}
-.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px 120px}
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px 16px}
 .wrap{max-width:720px;margin:0 auto}
+
+/* Barra inferiore fissa: contiene edit-hint, searchbar, categorie, toolbar */
+.bottom-bar{
+  flex:0 0 auto;
+  background:color-mix(in srgb,var(--bg) 96%,transparent);
+  backdrop-filter:saturate(180%) blur(14px);
+  -webkit-backdrop-filter:saturate(180%) blur(14px);
+  border-top:1px solid var(--border);
+  padding:8px 14px;
+  z-index:25;
+}
+.bottom-bar .inner{max-width:720px;margin:0 auto}
 
 .input-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--shadow);margin-bottom:14px;display:flex;flex-direction:column}
 .input-card textarea{width:100%;min-height:80px;height:140px;border:none;outline:none;resize:none;background:transparent;font-size:16px;line-height:1.55;color:var(--ink);display:block}
@@ -95,7 +107,7 @@ button{cursor:pointer;border:none;background:none;padding:0}
   animation:shimmer 1.1s infinite;
 }
 
-.cats-row{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;padding:2px 0 12px;margin:0 -2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.cats-row{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;padding:2px 0 8px;margin:0 -2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .cats-row::-webkit-scrollbar{display:none}
 .cat-pill{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;padding:6px 10px 6px 8px;border-radius:999px;font-size:.73rem;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--ink-2);transition:all .15s;white-space:nowrap;line-height:1;user-select:none;-webkit-user-select:none}
 .cat-pill:active{transform:scale(.96)}
@@ -132,11 +144,11 @@ body.edit-mode .cat-pill.off{opacity:1;text-decoration:none}
 [data-theme="dark"] .ai-bar.ready{background:color-mix(in srgb,var(--c-key) 25%,var(--surface));color:#8fdd9a}
 .ai-bar.error{background:color-mix(in srgb,var(--danger) 15%,var(--surface));color:var(--danger);border-color:color-mix(in srgb,var(--danger) 30%,transparent)}
 
-.edit-hint{display:none;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:color-mix(in srgb,var(--ai) 10%,var(--surface));border:1px solid color-mix(in srgb,var(--ai) 22%,transparent);margin-bottom:10px;font-size:.78rem;color:var(--ai);font-weight:500;font-style:italic}
+.edit-hint{display:none;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;background:color-mix(in srgb,var(--ai) 10%,var(--surface));border:1px solid color-mix(in srgb,var(--ai) 22%,transparent);margin-bottom:8px;font-size:.74rem;color:var(--ai);font-weight:500;font-style:italic}
 body.edit-mode .edit-hint{display:flex}
-.edit-hint svg{width:14px;height:14px;flex:0 0 auto;opacity:.85}
+.edit-hint svg{width:13px;height:13px;flex:0 0 auto;opacity:.85}
 
-.toolbar{display:flex;align-items:center;gap:6px;padding:2px 0 10px;margin-bottom:4px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin-left:-2px;margin-right:-2px}
+.toolbar{display:flex;align-items:center;gap:6px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin:0 -2px;padding:0 2px}
 .toolbar::-webkit-scrollbar{display:none}
 .tbtn{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:9px;font-size:.82rem;font-weight:500;color:var(--ink-2);background:var(--surface);border:1px solid var(--border);transition:background .15s,color .15s,transform .08s;white-space:nowrap;user-select:none;-webkit-user-select:none}
 .tbtn:active{transform:scale(.97);background:var(--surface-3);color:var(--ink)}
@@ -158,9 +170,9 @@ body.edit-mode .output-card{cursor:crosshair}
 
 .search-hit{background:#ff6b35 !important;color:white !important;border-radius:3px}
 .search-hit.current{background:#d35400 !important;outline:2px solid #d35400}
-.searchbar{display:flex;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 12px;margin-bottom:12px}
-.searchbar input{flex:1;border:none;outline:none;background:transparent;font-size:15px}
-.searchbar .count{color:var(--ink-3);font-size:.82rem;min-width:40px;text-align:right}
+.searchbar{display:flex;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:6px 10px;margin-bottom:8px}
+.searchbar input{flex:1;border:none;outline:none;background:transparent;font-size:14px}
+.searchbar .count{color:var(--ink-3);font-size:.78rem;min-width:36px;text-align:right}
 .empty{text-align:center;padding:60px 24px;color:var(--ink-3)}
 .empty .icon{font-size:2.6rem;margin-bottom:10px;opacity:.6}
 .empty .title{color:var(--ink-2);font-weight:600;margin-bottom:4px}
@@ -198,20 +210,20 @@ body.edit-mode .output-card{cursor:crosshair}
 .model-option.selected .name{color:var(--ai)}
 .model-option.selected .desc{color:color-mix(in srgb,var(--ai) 70%,var(--ink-2))}
 
-.toast{position:fixed;left:50%;bottom:calc(80px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:.88rem;font-weight:500;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:200;box-shadow:var(--shadow);max-width:90vw;text-align:center}
+.toast{position:fixed;left:50%;bottom:calc(160px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:.88rem;font-weight:500;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:200;box-shadow:var(--shadow);max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.tabbar{position:sticky;bottom:0;z-index:30;display:flex;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom)}
+.tabbar{position:sticky;bottom:0;z-index:30;display:flex;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom);flex:0 0 auto}
 .tabbar .tab{flex:1;padding:10px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ink-3);font-size:.68rem;font-weight:600;transition:color .15s}
 .tabbar .tab svg{width:22px;height:22px}
 .tabbar .tab.active{color:var(--ai)}
-body.reading .topbar,body.reading .tabbar,body.reading .input-card,body.reading .actions,body.reading .toolbar,body.reading .cats-row,body.reading .stats,body.reading .searchbar,body.reading .ai-bar,body.reading .edit-hint{display:none !important}
-body.reading .scroll{padding-top:10px}
+body.reading .topbar,body.reading .tabbar,body.reading .input-card,body.reading .actions,body.reading .bottom-bar,body.reading .stats,body.reading .ai-bar{display:none !important}
+body.reading .scroll{padding:10px 16px 16px}
 body.reading .output-card{font-size:1.18rem;padding:24px 22px;border-radius:0;border:none;box-shadow:none;background:var(--bg)}
-.reading-bar{display:none;position:sticky;top:0;z-index:40;padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top));background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);align-items:center;gap:10px}
+.reading-bar{display:none;position:sticky;top:0;z-index:40;padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top));background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);align-items:center;gap:10px;flex:0 0 auto}
 body.reading .reading-bar{display:flex}
 .reading-bar .progress{flex:1;height:4px;background:var(--surface-3);border-radius:2px;overflow:hidden}
 .reading-bar .progress > i{display:block;height:100%;width:0;background:var(--accent);transition:width .1s}
-@media (min-width:640px){.scroll{padding:22px 22px 120px}}
+@media (min-width:640px){.scroll{padding:22px 22px 22px}}
 </style>
 </head>
 <body>
@@ -277,21 +289,30 @@ body.reading .reading-bar{display:flex}
           <span class="pct" id="aiPct"></span>
         </div>
 
-        <div class="cats-row" id="legend"></div>
+        <div class="output-card" id="output"></div>
 
+        <div class="stats" id="stats" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- Barra inferiore fissa: edit hint + searchbar + categorie + toolbar -->
+    <div class="bottom-bar" id="bottomBar">
+      <div class="inner">
         <div class="edit-hint">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
           <span>Scegli una categoria e tocca le parole per evidenziarle</span>
         </div>
 
         <div class="searchbar" id="searchBar" style="display:none">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--ink-3)"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--ink-3)"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input id="searchInput" type="search" placeholder="Cerca nel testo…" autocomplete="off">
           <span class="count" id="searchCount"></span>
-          <button class="iconbtn" id="btnSearchClose" style="width:30px;height:30px">
+          <button class="iconbtn" id="btnSearchClose" style="width:26px;height:26px">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           </button>
         </div>
+
+        <div class="cats-row" id="legend"></div>
 
         <div class="toolbar" id="toolbar">
           <button class="tbtn" id="btnEdit" title="Modifica manuale" aria-label="Modifica manuale">
@@ -319,10 +340,6 @@ body.reading .reading-bar{display:flex}
             Copia
           </button>
         </div>
-
-        <div class="output-card" id="output"></div>
-
-        <div class="stats" id="stats" style="display:none"></div>
       </div>
     </div>
   </section>
