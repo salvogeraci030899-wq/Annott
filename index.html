@@ -136,9 +136,10 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .edit-cat.on{border-color:var(--ai);background:var(--ai-soft);color:var(--ai);font-weight:700}
 .edit-cat:active{transform:scale(.96)}
 
-.toolbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:2px 4px 8px;margin-bottom:4px}
-.toolbar .spacer{flex:1}
-.tbtn{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:9px;font-size:.82rem;font-weight:500;color:var(--ink-2);background:var(--surface);border:1px solid var(--border);transition:background .15s,color .15s,transform .08s}
+/* Toolbar scorrevole come le categorie */
+.toolbar{display:flex;align-items:center;gap:6px;padding:2px 0 10px;margin-bottom:4px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin-left:-2px;margin-right:-2px}
+.toolbar::-webkit-scrollbar{display:none}
+.tbtn{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:9px;font-size:.82rem;font-weight:500;color:var(--ink-2);background:var(--surface);border:1px solid var(--border);transition:background .15s,color .15s,transform .08s;white-space:nowrap;user-select:none;-webkit-user-select:none}
 .tbtn:active{transform:scale(.97);background:var(--surface-3);color:var(--ink)}
 .tbtn svg{width:15px;height:15px}
 .tbtn.on{background:var(--ai-soft);color:var(--ai);border-color:color-mix(in srgb,var(--ai) 30%,transparent)}
@@ -292,7 +293,6 @@ body.reading .reading-bar{display:flex}
           </button>
         </div>
 
-        <!-- Barra modalità modifica -->
         <div class="edit-bar" id="editBar">
           <div class="edit-title">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
@@ -302,7 +302,6 @@ body.reading .reading-bar{display:flex}
         </div>
 
         <div class="toolbar" id="toolbar">
-          <div class="spacer"></div>
           <button class="tbtn" id="btnEdit" title="Modifica manuale" aria-label="Modifica manuale">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             Modifica
@@ -310,6 +309,10 @@ body.reading .reading-bar{display:flex}
           <button class="tbtn" id="btnSaveLib">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
             Salva
+          </button>
+          <button class="tbtn" id="btnSavePDF">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/><line x1="9" y1="11" x2="15" y2="11"/></svg>
+            PDF
           </button>
           <button class="tbtn" id="btnReading">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
@@ -990,11 +993,9 @@ const CATEGORIES = [
   { id:'sentence', label:'Frasi', color:'--c-sentence' }
 ];
 
-/* Unisce spans automatici + modifiche manuali */
 function combineSpans(autoSpans, manualAdds, manualRemoves) {
   const removeKeys = new Set(manualRemoves.map(s => s.start + ':' + s.end + ':' + s.cat));
   const filteredAuto = autoSpans.filter(s => !removeKeys.has(s.start + ':' + s.end + ':' + s.cat));
-  // Anche i manualAdds potrebbero essere stati rimossi
   const addKeys = new Set();
   const filteredAdds = [];
   for (const s of manualAdds) {
@@ -1111,7 +1112,6 @@ function renderLegend() {
   }
 }
 
-/* Barra categorie modalità modifica */
 function renderEditCats() {
   const box = $('editCats');
   box.innerHTML = '';
@@ -1420,6 +1420,10 @@ function confirmSave() {
   vibrate(10);
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   EXPORT
+   ═══════════════════════════════════════════════════════════════════ */
+
 async function shareOrExport() {
   if (!state.text.trim()) { toast('Nulla da condividere'); return; }
   const html = buildExportHTML();
@@ -1446,6 +1450,159 @@ function buildExportHTML() {
   const aiNote = state.aiApplied ? ` · validato con ${model.label}` : '';
   const styles = `body{font-family:Georgia,serif;max-width:720px;margin:32px auto;padding:0 20px;line-height:1.8;font-size:1.08rem;color:#1b1815;background:#faf7f2}h1{font-size:1.1rem;font-family:system-ui;color:#8a8178;font-weight:600;margin-bottom:4px}.meta{font-family:system-ui;font-size:.78rem;color:#8a8178;margin-bottom:24px}mark{padding:1px 0;border-radius:3px;background:transparent;color:inherit}mark.c-num{background:#ffe680} mark.c-name{background:#d9b8ff}mark.c-key{background:#b6e6b6} mark.c-quote{background:#ffc1cf}mark.c-list{background:#a9d8ff} mark.c-def{background:#ffe0b6}mark.c-sentence{background:rgba(255,201,160,.45)}`;
   return `<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Annotazione</title><style>${styles}</style></head><body><h1>Annota</h1><div class="meta">${new Date().toLocaleString('it-IT')} · Lingua: ${langName}${aiNote}</div><div>${annotated}</div></body></html>`;
+}
+
+/* Genera il PDF tramite il dialogo di stampa di iOS/desktop */
+function exportPDF() {
+  if (!state.text.trim()) { toast('Nulla da salvare'); return; }
+
+  const annotated = renderAnnotated(state.text, state.spans, state.activeCats);
+  const langName = state.lang === 'cjk' ? 'CJK' : ((LANG_PROFILES[state.lang] && LANG_PROFILES[state.lang].name) || 'English');
+  const model = AI_MODELS[ai.modelKey];
+  const aiNote = state.aiApplied ? ` · validato con ${model.label}` : '';
+
+  // Costruisco un documento HTML autonomo ottimizzato per la stampa
+  const pdfHTML = `<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Annotazione · ${new Date().toLocaleDateString('it-IT')}</title>
+<style>
+  @page {
+    size: A4;
+    margin: 18mm 16mm;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: #1b1815;
+    background: #ffffff;
+    font-size: 12pt;
+    line-height: 1.7;
+  }
+  .header {
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #d9d2c5;
+  }
+  .header h1 {
+    margin: 0 0 4px;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    font-size: 14pt;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: #1b1815;
+  }
+  .header .meta {
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    font-size: 9pt;
+    color: #8a8178;
+  }
+  .content {
+    text-align: justify;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+  }
+  mark {
+    padding: 1px 1px;
+    border-radius: 2px;
+    background: transparent;
+    color: inherit;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  mark.c-num { background: #ffe680; }
+  mark.c-name { background: #d9b8ff; }
+  mark.c-key { background: #b6e6b6; }
+  mark.c-quote { background: #ffc1cf; }
+  mark.c-list { background: #a9d8ff; }
+  mark.c-def { background: #ffe0b6; }
+  mark.c-sentence { background: rgba(255, 201, 160, 0.45); }
+  .legend {
+    margin-top: 24px;
+    padding-top: 12px;
+    border-top: 1px solid #d9d2c5;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    font-size: 8.5pt;
+    color: #57534e;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+  }
+  .legend .item { display: inline-flex; align-items: center; gap: 5px; }
+  .legend .swatch {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+</style>
+</head>
+<body>
+  <div class="header">
+    <h1>Annota · lettura strutturata</h1>
+    <div class="meta">${new Date().toLocaleString('it-IT')} · Lingua: ${langName}${aiNote}</div>
+  </div>
+  <div class="content">${annotated}</div>
+  <div class="legend">
+    <span class="item"><span class="swatch" style="background:#ffe680"></span>Numeri</span>
+    <span class="item"><span class="swatch" style="background:#d9b8ff"></span>Nomi</span>
+    <span class="item"><span class="swatch" style="background:#b6e6b6"></span>Concetti</span>
+    <span class="item"><span class="swatch" style="background:#ffe0b6"></span>Definizioni</span>
+    <span class="item"><span class="swatch" style="background:#ffc1cf"></span>Citazioni</span>
+    <span class="item"><span class="swatch" style="background:#a9d8ff"></span>Elenchi</span>
+    <span class="item"><span class="swatch" style="background:rgba(255,201,160,0.45)"></span>Frasi</span>
+  </div>
+</body>
+</html>`;
+
+  // Apro una nuova finestra con il documento
+  const win = window.open('', '_blank');
+  if (!win) {
+    // Fallback: usa un iframe nascosto se window.open è bloccato
+    const iframe = document.createElement('iframe');
+    iframe.style.position = 'fixed';
+    iframe.style.right = '0';
+    iframe.style.bottom = '0';
+    iframe.style.width = '0';
+    iframe.style.height = '0';
+    iframe.style.border = '0';
+    document.body.appendChild(iframe);
+    iframe.contentDocument.open();
+    iframe.contentDocument.write(pdfHTML);
+    iframe.contentDocument.close();
+    setTimeout(() => {
+      try {
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+      } catch (e) { toast('Stampa non disponibile'); }
+      setTimeout(() => { document.body.removeChild(iframe); }, 2000);
+    }, 400);
+    return;
+  }
+
+  win.document.open();
+  win.document.write(pdfHTML);
+  win.document.close();
+
+  // Aspetta il rendering poi avvia il dialogo di stampa
+  setTimeout(() => {
+    try {
+      win.focus();
+      win.print();
+    } catch (e) {
+      toast('Stampa non disponibile. Prova a condividere il file HTML.');
+    }
+  }, 500);
 }
 
 function switchView(v) {
@@ -1507,13 +1664,9 @@ function openModelPicker() {
    GESTIONE CLICK SUL TESTO IN MODALITÀ MODIFICA
    ═══════════════════════════════════════════════════════════════════ */
 
-/* Trova il token che contiene la posizione assoluta nel testo originale */
 function findTokenAt(text, pos) {
   const tokens = tokenize(text);
-  for (const t of tokens) {
-    if (pos >= t.start && pos <= t.end) return t;
-  }
-  // Fallback: il token più vicino
+  for (const t of tokens) if (pos >= t.start && pos <= t.end) return t;
   let best = null, bestDist = Infinity;
   for (const t of tokens) {
     const d = Math.min(Math.abs(t.start - pos), Math.abs(t.end - pos));
@@ -1523,7 +1676,6 @@ function findTokenAt(text, pos) {
   return null;
 }
 
-/* Ottiene la posizione carattere del click nell'output */
 function getClickPosition(outputEl, clientX, clientY) {
   let node = null, offset = 0;
   if (document.caretRangeFromPoint) {
@@ -1535,13 +1687,10 @@ function getClickPosition(outputEl, clientX, clientY) {
   }
   if (!node) return -1;
 
-  // Risale al nodo di testo effettivo
   if (node.nodeType !== 3) {
-    // Se è un elemento, prendi il primo figlio testo
     if (node.firstChild && node.firstChild.nodeType === 3) {
       node = node.firstChild; offset = 0;
     } else {
-      // Prova a trovare un nodo di testo precedente
       let prev = node.firstChild;
       while (prev && prev.nodeType !== 3) prev = prev.firstChild;
       if (!prev) return -1;
@@ -1549,7 +1698,6 @@ function getClickPosition(outputEl, clientX, clientY) {
     }
   }
 
-  // Cammina tutti i nodi di testo sotto outputEl in ordine
   const walker = document.createTreeWalker(outputEl, NodeFilter.SHOW_TEXT, null);
   let abs = 0, n;
   while ((n = walker.nextNode())) {
@@ -1559,58 +1707,35 @@ function getClickPosition(outputEl, clientX, clientY) {
   return -1;
 }
 
-/* Trova se esiste uno span (auto o manual) che copre esattamente [start, end] */
 function findExistingSpanForRange(start, end) {
-  // Cerca negli automatici
-  for (const s of state.spans) {
-    if (s.start === start && s.end === end) return { span: s, source: 'auto' };
-  }
-  // Cerca nei manuali
-  for (const s of state.manualAdds) {
-    if (s.start === start && s.end === end) return { span: s, source: 'manual' };
-  }
+  for (const s of state.spans) if (s.start === start && s.end === end) return { span: s, source: 'auto' };
+  for (const s of state.manualAdds) if (s.start === start && s.end === end) return { span: s, source: 'manual' };
   return null;
 }
 
-/* Applica un toggle di evidenziazione su un token */
 function toggleTokenHighlight(token) {
   const cat = state.editCategory;
   const start = token.start, end = token.end;
-
   const existing = findExistingSpanForRange(start, end);
 
-  // Se esiste uno span con quella categoria → rimuovi
   if (existing && existing.span.cat === cat) {
-    if (existing.source === 'auto') {
-      // Aggiungi ai manualRemoves per sovrascrivere l'auto
-      state.manualRemoves.push({ start, end, cat });
-    } else {
-      // Rimuovi dai manualAdds
-      state.manualAdds = state.manualAdds.filter(s => !(s.start === start && s.end === end && s.cat === cat));
-    }
+    if (existing.source === 'auto') state.manualRemoves.push({ start, end, cat });
+    else state.manualAdds = state.manualAdds.filter(s => !(s.start === start && s.end === end && s.cat === cat));
     vibrate(8);
     return 'removed';
   }
 
-  // Se esiste uno span con categoria diversa → sostituisci (rimuovi quella, aggiungi la nuova)
   if (existing) {
-    if (existing.source === 'auto') {
-      state.manualRemoves.push({ start, end, cat: existing.span.cat });
-    } else {
-      state.manualAdds = state.manualAdds.filter(s => !(s.start === start && s.end === end));
-    }
+    if (existing.source === 'auto') state.manualRemoves.push({ start, end, cat: existing.span.cat });
+    else state.manualAdds = state.manualAdds.filter(s => !(s.start === start && s.end === end));
   }
 
-  // Rimuovi eventuali rimozioni esistenti per questa nuova categoria
   state.manualRemoves = state.manualRemoves.filter(s => !(s.start === start && s.end === end && s.cat === cat));
-
-  // Aggiungi il nuovo span manuale
   state.manualAdds.push({ start, end, cat, w: 10, manual: true });
   vibrate(8);
   return 'added';
 }
 
-/* Click handler sul testo in modalità modifica */
 function onOutputClick(e) {
   if (!state.editMode) return;
   e.preventDefault();
@@ -1728,12 +1853,12 @@ function bindEvents() {
     vibrate(10);
   });
 
-  // Modalità modifica
   $('btnEdit').addEventListener('click', toggleEditMode);
-  // Click sul testo in modalità modifica
   $('output').addEventListener('click', onOutputClick);
 
   $('btnSaveLib').addEventListener('click', saveToLibrary);
+  $('btnSavePDF').addEventListener('click', exportPDF);
+
   $('btnReading').addEventListener('click', () => {
     if (state.editMode) toggleEditMode();
     document.body.classList.add('reading');
