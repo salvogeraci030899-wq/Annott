@@ -102,7 +102,6 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .cat-pill .dot{width:9px;height:9px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.10);flex:0 0 auto}
 .cat-pill.off{opacity:.38;text-decoration:line-through;text-decoration-thickness:1px}
 .cat-pill .count{font-size:.66rem;color:var(--ink-3);font-weight:600;margin-left:1px}
-/* In modalità modifica: la categoria selezionata ha un bordo viola marcato */
 body.edit-mode .cat-pill{cursor:crosshair}
 body.edit-mode .cat-pill.off{opacity:1;text-decoration:none}
 .cat-pill.sel{
@@ -133,7 +132,6 @@ body.edit-mode .cat-pill.off{opacity:1;text-decoration:none}
 [data-theme="dark"] .ai-bar.ready{background:color-mix(in srgb,var(--c-key) 25%,var(--surface));color:#8fdd9a}
 .ai-bar.error{background:color-mix(in srgb,var(--danger) 15%,var(--surface));color:var(--danger);border-color:color-mix(in srgb,var(--danger) 30%,transparent)}
 
-/* Suggerimento in modalità modifica */
 .edit-hint{display:none;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:color-mix(in srgb,var(--ai) 10%,var(--surface));border:1px solid color-mix(in srgb,var(--ai) 22%,transparent);margin-bottom:10px;font-size:.78rem;color:var(--ai);font-weight:500;font-style:italic}
 body.edit-mode .edit-hint{display:flex}
 .edit-hint svg{width:14px;height:14px;flex:0 0 auto;opacity:.85}
@@ -279,14 +277,15 @@ body.reading .reading-bar{display:flex}
           <span class="pct" id="aiPct"></span>
         </div>
 
+        <!-- Statistiche sopra le categorie -->
+        <div class="stats" id="stats" style="display:none"></div>
+
         <div class="cats-row" id="legend"></div>
 
         <div class="edit-hint">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
           <span>Scegli una categoria e tocca le parole per evidenziarle</span>
         </div>
-
-        <div class="stats" id="stats" style="display:none"></div>
 
         <div class="searchbar" id="searchBar" style="display:none">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--ink-3)"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -384,7 +383,7 @@ body.reading .reading-bar{display:flex}
 <div class="modal-bg" id="modalAISetup">
   <div class="modal">
     <h3 id="aiSetupTitle">Scegli il modello AI</h3>
-    <p id="aiSetupDesc">Scaricato una sola volta, resta sul dispositivo. Funziona offline. Scegli in base alla potenza del tuo iPhone.</p>
+    <p id="aiSetupDesc">Scaricato una sola volta, resta sul dispositivo. Funziona offline. Scegli in base alla potenza del tuo dispositivo.</p>
     <div class="model-list" id="modelList"></div>
     <div class="row-actions">
       <button class="btn ghost" id="btnCancelAI">Annulla</button>
@@ -1085,7 +1084,6 @@ function saveActiveCats() {
   try { localStorage.setItem(CATS_KEY, JSON.stringify([...state.activeCats])); } catch {}
 }
 
-/* Legenda unificata: doppio comportamento a seconda della modalità */
 function renderLegend() {
   const box = $('legend');
   box.innerHTML = '';
@@ -1095,7 +1093,6 @@ function renderLegend() {
     const el = document.createElement('button');
 
     if (state.editMode) {
-      // Modalità modifica: tutte le pill sono visibili, la selezionata ha stile viola
       el.className = 'cat-pill' + (state.editCategory === c.id ? ' sel' : '');
       el.innerHTML = `<span class="dot" style="background:var(${c.color})"></span>${c.label}`;
       el.addEventListener('click', e => {
@@ -1105,7 +1102,6 @@ function renderLegend() {
         vibrate(5);
       });
     } else {
-      // Modalità normale: on/off visibilità
       el.className = 'cat-pill' + (state.activeCats.has(c.id) ? '' : ' off');
       const count = catStats[c.id] ? `<span class="count">${catStats[c.id].count}</span>` : '';
       el.innerHTML = `<span class="dot" style="background:var(${c.color})"></span>${c.label}${count}`;
