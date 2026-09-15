@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" id="metaThemeColor" content="#f6f3ee">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="ANNOTT">
 <title>ANNOTT · lettura strutturata</title>
 <style>
@@ -40,8 +40,8 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,Bl
 button,input,textarea{font-family:inherit;font-size:inherit;color:inherit}
 button{cursor:pointer;border:none;background:none;padding:0}
 ::selection{background:var(--accent-soft)}
-.app{display:flex;flex-direction:column;height:100dvh}
-.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:8px;padding:calc(10px + env(safe-area-inset-top)) 14px 10px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--border);flex:0 0 auto}
+.app{display:flex;flex-direction:column;height:100dvh;padding-top:env(safe-area-inset-top)}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:8px;padding:10px 14px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--border);flex:0 0 auto}
 .topbar .brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:1.02rem;letter-spacing:-0.01em}
 .topbar .brand .dotlogo{width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,var(--c-num),var(--c-list) 30%,var(--c-key) 60%,var(--c-name));box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)}
 .topbar .spacer{flex:1}
@@ -231,7 +231,7 @@ body.edit-mode .output-card{cursor:crosshair}
 body.reading .topbar,body.reading .tabbar,body.reading .input-card,body.reading .actions,body.reading .top-controls,body.reading .stats,body.reading .ai-bar{display:none !important}
 body.reading .scroll{padding:10px 16px 16px}
 body.reading .output-card{font-size:1.18rem;padding:24px 22px;border-radius:0;border:none;box-shadow:none;background:var(--bg)}
-.reading-bar{display:none;position:sticky;top:0;z-index:40;padding:calc(10px + env(safe-area-inset-top)) 14px 10px;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);align-items:center;gap:10px;flex:0 0 auto}
+.reading-bar{display:none;position:sticky;top:0;z-index:40;padding:10px 14px;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);align-items:center;gap:10px;flex:0 0 auto}
 body.reading .reading-bar{display:flex}
 .reading-bar .progress{flex:1;height:4px;background:var(--surface-3);border-radius:2px;overflow:hidden}
 .reading-bar .progress > i{display:block;height:100%;width:0;background:var(--accent);transition:width .1s}
@@ -441,17 +441,6 @@ function toast(msg, ms = 2000) {
   toastTimer = setTimeout(() => t.classList.remove('show'), ms);
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   TEMA — segue SEMPRE il sistema operativo
-   
-   Nessuna preferenza manuale. Il tema dell'app e la status bar
-   seguono il tema di iOS. Il sistema imposta:
-   - il color-scheme via data-theme (guarda prefers-color-scheme)
-   - il meta theme-color
-   - e su PWA iOS, la status bar segue automaticamente
-     perché usiamo black-translucent + color-scheme
-   ═══════════════════════════════════════════════════════════════════ */
-
 const THEME_BG = { light: '#f6f3ee', dark: '#14110f' };
 
 function systemTheme() {
@@ -473,7 +462,7 @@ const LANG_PROFILES = {
   fr:{ name:'Français', words:'le la les un une des du de d et ou mais donc or ni car que qui quoi dont où quand comment pourquoi si comme plus moins très trop peu beaucoup tout toute tous toutes ce cet cette ces celui celle ceux celles il elle ils elles nous vous je tu on se son sa ses leur leurs mon ma mes ton ta tes notre nos votre vos est sont était étaient être avoir a ont avait avaient fait faire peut peuvent doit doivent aussi encore déjà toujours jamais même autre autres bien' },
   es:{ name:'Español', words:'el la los las un una unos unas de del y o pero porque por para con sin en a al sobre bajo entre hasta desde que quien cuyo como cuando donde si no más menos muy mucho poco todo toda todos todas este esta estos estas ese esa esos esas aquel aquella aquellos aquellas yo tú él ella nosotros vosotros ellos ellas me te se nos os le les lo mi tu su mis tus sus es son era fueron ser estar haber ha han había habían hace hacer puede pueden debe deben también aún ya siempre nunca mismo otra otro bien' },
   de:{ name:'Deutsch', words:'der die das den dem des ein eine einen einem eines einer und oder aber denn weil wenn als wie dass ob für mit von zu aus bei nach über unter zwischen durch gegen ohne um in an auf vor hinter neben ist sind war waren sein haben hat hatte hatten haben wird werden wurde wurden kann können muss müssen soll sollen darf dürfen auch noch schon immer nie sehr mehr weniger viel wenig alle alle jeder jede jedes diese dieser dieses jener jene man nicht doch nur selbst' },
-  pt:{ name:'Português', words:'o a os as um uma uns umas de do da dos das e ou mas porque por para com sem em no na nos nas ao aos à às pelo pela pelos pelas que quem cujo como quando onde se não mais menos muito pouco todo toda todos todas este esta estes estas esse essa esses essas aquele aquela aqueles aquelas eu tu ele ela nós vós eles elas me te se nos vos lhe lhes é são era foram ser estar haver há houve tinha tem fazer pode podem deve devem também ainda já sempre nunca mesmo outro outra bem' },
+  pt:{ name:'Português', words:'o a os as um uma uns umas de do da dos das e ou mas porque por para com sem em no na nos nas ao aos à às pelo pela pelos pelas que quem cujo como quando onde se não mais menos muito pouco todo toda todos todas este esta estes estas esse essa esses essas aquele aquela aqueles aquelas eu tu ele ela nós vós eles elas me te se nos vos lhe lhes é são era foram ser estar haver há houve tinha tem fazer pode podem deve devem também ancora ancora sempre nunca mesmo outro outra bem' },
   nl:{ name:'Nederlands', words:'de het een en of maar want omdat als dan dat die deze dit van voor met door naar bij uit over onder tussen tegen zonder om in op aan is zijn was waren hebben heeft had kan kunnen moet moeten zal zullen ook nog al altijd nooit zeer meer minder veel weinig alle elk ieder niet toch alleen zelf' },
   ru:{ name:'Русский', words:'и в во не что он на я с со как а то все она так его но да ты к у же вы за бы по только ее мне было вот от меня еще нет о из ему теперь когда даже ну вдруг ли если уже или ни быть был него до вас опять уж вам ведь там потом себя ничего ей может они тут где есть надо ней для мы тебя их чем была сам чтоб без будто чего раз тоже себе под будет ж тогда кто этот того потому этого какой совсем ним здесь этом один почти мой тем чтобы нее сейчас были куда зачем всех никогда можно при наконец два об другой хоть после над больше тот через эти нас про всего них какая много разве три эту моя впрочем хорошо свою этой перед иногда лучше чуть том нельзя такой им более всегда конечно всю между' }
 };
@@ -1918,7 +1907,6 @@ function bindEvents() {
   $('libSearch').addEventListener('input', e => renderLibrary(e.target.value));
   $('scrollAnnotate').addEventListener('scroll', updateReadProgress, { passive: true });
 
-  // Ascolta i cambi di tema del sistema operativo
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applySystemTheme);
 }
 
@@ -1936,7 +1924,6 @@ function runStatOnly() {
 }
 
 function init() {
-  // Applica il tema di sistema subito
   applySystemTheme();
 
   let restored = false;
@@ -1967,18 +1954,4 @@ Napoleone Bonaparte prese il potere nel 1799 con il colpo di stato del 18 brumai
   initResize();
   updateAIButton();
 
-  if (ai.hasEverDownloaded) {
-    setTimeout(() => {
-      if (hasWebGPU()) initAI(ai.modelKey);
-      else updateAIButton();
-    }, 800);
-  } else {
-    runStatOnly();
-  }
-}
-
-document.addEventListener('DOMContentLoaded', init);
-})();
-</script>
-</body>
-</html>
+  if (ai.hasEver
