@@ -10,26 +10,25 @@
 <title>Annota · lettura strutturata</title>
 <style>
 :root{
-  --bg:#f6f3ee; --surface:#ffffff; --surface-2:#fbf9f5; --surface-3:#f1ede6;
-  --ink:#1b1815; --ink-2:#57534e; --ink-3:#a8a29e;
-  --border:#e6e0d6; --border-2:#d9d2c5;
-  --accent:#b8893d; --accent-soft:#f3e6cf; --danger:#c0392b;
+  --bg:#f6f3ee;--surface:#ffffff;--surface-2:#fbf9f5;--surface-3:#f1ede6;
+  --ink:#1b1815;--ink-2:#57534e;--ink-3:#a8a29e;
+  --border:#e6e0d6;--border-2:#d9d2c5;
+  --accent:#b8893d;--accent-soft:#f3e6cf;--danger:#c0392b;
+  --ai:#7c4dff;--ai-soft:#ece5ff;
   --shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px -12px rgba(0,0,0,.10);
-  --c-num:#ffe680; --c-name:#d9b8ff; --c-key:#b6e6b6;
-  --c-quote:#ffc1cf; --c-list:#a9d8ff; --c-def:#ffe0b6; --c-sentence:rgba(255,201,160,.45);
+  --c-num:#ffe680;--c-name:#d9b8ff;--c-key:#b6e6b6;
+  --c-quote:#ffc1cf;--c-list:#a9d8ff;--c-def:#ffe0b6;--c-sentence:rgba(255,201,160,.45);
 }
 [data-theme="dark"]{
-  --bg:#14110f; --surface:#1e1a18; --surface-2:#262120; --surface-3:#2e2826;
-  --ink:#f3efe9; --ink-2:#b6ada3; --ink-3:#6a635c;
-  --border:#302a27; --border-2:#3d3632;
-  --accent:#d4b478; --accent-soft:#3a2f1c; --danger:#e57373;
+  --bg:#14110f;--surface:#1e1a18;--surface-2:#262120;--surface-3:#2e2826;
+  --ink:#f3efe9;--ink-2:#b6ada3;--ink-3:#6a635c;
+  --border:#302a27;--border-2:#3d3632;
+  --accent:#d4b478;--accent-soft:#3a2f1c;--danger:#e57373;
+  --ai:#b39dff;--ai-soft:#2a1f4d;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -12px rgba(0,0,0,.6);
-  --c-num:rgba(255,205,50,.42);
-  --c-name:rgba(200,140,255,.42);
-  --c-key:rgba(100,220,110,.36);
-  --c-quote:rgba(255,140,175,.38);
-  --c-list:rgba(80,170,255,.38);
-  --c-def:rgba(255,180,100,.40);
+  --c-num:rgba(255,205,50,.42);--c-name:rgba(200,140,255,.42);
+  --c-key:rgba(100,220,110,.36);--c-quote:rgba(255,140,175,.38);
+  --c-list:rgba(80,170,255,.38);--c-def:rgba(255,180,100,.40);
   --c-sentence:rgba(255,165,90,.20);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -66,7 +65,7 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .btn:active{transform:scale(.985)}
 .btn.primary{background:var(--ink);color:var(--bg);flex:1 1 auto}
 .btn.primary:active{background:#000}
-.btn.primary.busy{opacity:.7;pointer-events:none}
+.btn.primary.busy{opacity:.85;pointer-events:none}
 .btn.primary.busy::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);animation:shimmer .9s infinite}
 @keyframes shimmer{from{transform:translateX(-100%)}to{transform:translateX(100%)}}
 .btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--border-2)}
@@ -75,6 +74,16 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .btn.danger-icon{color:var(--danger)}
 .btn svg{width:17px;height:17px}
 .btn.icon-only svg{width:20px;height:20px}
+
+/* Bottone AI */
+.btn-ai{flex:0 0 auto;width:52px;padding:13px 0;position:relative}
+.btn-ai svg{width:20px;height:20px}
+.btn-ai.off{color:var(--ink-3)}
+.btn-ai.on{color:var(--ai);background:var(--ai-soft);border-color:transparent}
+.btn-ai.loading{color:var(--ai);background:var(--ai-soft);border-color:transparent}
+.btn-ai.loading svg{animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.9)}}
+.btn-ai .progress-ring{position:absolute;inset:0;pointer-events:none}
 
 .cats-row{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;padding:2px 0 12px;margin:0 -2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .cats-row::-webkit-scrollbar{display:none}
@@ -92,6 +101,17 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .stat.ok .v{color:#3b8f4b}
 [data-theme="dark"] .stat.ok .v{color:#7bd88f}
 
+/* AI status bar */
+.ai-bar{display:none;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:var(--ai-soft);border:1px solid color-mix(in srgb,var(--ai) 25%,transparent);margin-bottom:12px;font-size:.82rem;color:var(--ai);font-weight:500}
+.ai-bar.show{display:flex}
+.ai-bar .spinner{width:14px;height:14px;border:2px solid color-mix(in srgb,var(--ai) 25%,transparent);border-top-color:var(--ai);border-radius:50%;animation:spin .7s linear infinite;flex:0 0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ai-bar .msg{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ai-bar .pct{font-variant-numeric:tabular-nums;font-weight:700}
+.ai-bar.ready{background:color-mix(in srgb,var(--c-key) 30%,var(--surface));color:#2f7d3f;border-color:color-mix(in srgb,#2f7d3f 20%,transparent)}
+[data-theme="dark"] .ai-bar.ready{background:color-mix(in srgb,var(--c-key) 25%,var(--surface));color:#8fdd9a}
+.ai-bar.error{background:color-mix(in srgb,var(--danger) 15%,var(--surface));color:var(--danger);border-color:color-mix(in srgb,var(--danger) 30%,transparent)}
+
 .toolbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:2px 4px 8px;margin-bottom:4px}
 .toolbar .spacer{flex:1}
 .tbtn{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border-radius:9px;font-size:.82rem;font-weight:500;color:var(--ink-2);background:var(--surface);border:1px solid var(--border);transition:background .15s,color .15s,transform .08s}
@@ -102,12 +122,9 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .output-card:empty{display:none}
 .output-card::selection,.output-card *::selection{background:var(--accent-soft)}
 mark{background:transparent;color:inherit;padding:1px 0;border-radius:3px;box-decoration-break:clone;-webkit-box-decoration-break:clone;transition:background .25s}
-mark.c-num{background:var(--c-num)}
-mark.c-name{background:var(--c-name)}
-mark.c-key{background:var(--c-key)}
-mark.c-quote{background:var(--c-quote)}
-mark.c-list{background:var(--c-list)}
-mark.c-def{background:var(--c-def)}
+mark.c-num{background:var(--c-num)} mark.c-name{background:var(--c-name)}
+mark.c-key{background:var(--c-key)} mark.c-quote{background:var(--c-quote)}
+mark.c-list{background:var(--c-list)} mark.c-def{background:var(--c-def)}
 mark.c-sentence{background:var(--c-sentence)}
 .search-hit{background:#ff6b35 !important;color:white !important;border-radius:3px}
 .search-hit.current{background:#d35400 !important;outline:2px solid #d35400}
@@ -123,6 +140,7 @@ mark.c-sentence{background:var(--c-sentence)}
 .lib-item:active{transform:scale(.99);background:var(--surface-2)}
 .lib-item .row1{display:flex;align-items:center;gap:8px;margin-bottom:6px}
 .lib-item .badge{font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.lib-item .badge.ai{background:var(--ai-soft);color:var(--ai)}
 .lib-item .date{font-size:.78rem;color:var(--ink-3);margin-left:auto}
 .lib-item .title{font-weight:600;font-size:.98rem;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
 .lib-item .snippet{font-size:.86rem;color:var(--ink-2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -141,7 +159,7 @@ mark.c-sentence{background:var(--c-sentence)}
 .tabbar .tab{flex:1;padding:10px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ink-3);font-size:.68rem;font-weight:600;transition:color .15s}
 .tabbar .tab svg{width:22px;height:22px}
 .tabbar .tab.active{color:var(--accent)}
-body.reading .topbar,body.reading .tabbar,body.reading .input-card,body.reading .actions,body.reading .toolbar,body.reading .cats-row,body.reading .stats,body.reading .searchbar{display:none !important}
+body.reading .topbar,body.reading .tabbar,body.reading .input-card,body.reading .actions,body.reading .toolbar,body.reading .cats-row,body.reading .stats,body.reading .searchbar,body.reading .ai-bar{display:none !important}
 body.reading .scroll{padding-top:10px}
 body.reading .output-card{font-size:1.18rem;padding:24px 22px;border-radius:0;border:none;box-shadow:none;background:var(--bg)}
 .reading-bar{display:none;position:sticky;top:0;z-index:40;padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top));background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--border);align-items:center;gap:10px}
@@ -193,11 +211,24 @@ body.reading .reading-bar{display:flex}
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
             <span id="analyzeLabel">Annota</span>
           </button>
+          <button class="btn ghost btn-ai off" id="btnAI" title="Attiva AI locale" aria-label="Attiva AI locale">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"/>
+              <path d="M19 17l.9 2.1L22 20l-2.1.9L19 23l-.9-2.1L16 20l2.1-.9L19 17z"/>
+              <path d="M5 17l.7 1.8L7.5 19.5 5.7 20.2 5 22l-.7-1.8L2.5 19.5 4.3 18.8 5 17z"/>
+            </svg>
+          </button>
           <button class="btn ghost icon-only danger-icon" id="btnClear" title="Pulisci" aria-label="Pulisci">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/>
             </svg>
           </button>
+        </div>
+
+        <div class="ai-bar" id="aiBar">
+          <span class="spinner" id="aiSpinner"></span>
+          <span class="msg" id="aiMsg">Preparazione AI…</span>
+          <span class="pct" id="aiPct"></span>
         </div>
 
         <div class="cats-row" id="legend"></div>
@@ -289,6 +320,17 @@ body.reading .reading-bar{display:flex}
   </div>
 </div>
 
+<div class="modal-bg" id="modalAISetup">
+  <div class="modal">
+    <h3 id="aiSetupTitle">Attivare l'AI locale?</h3>
+    <p id="aiSetupText">Scarica un modello AI da ~400 MB direttamente nel browser. Verrà salvato sul dispositivo e riutilizzato offline. Migliorerà la qualità delle annotazioni distinguendo i concetti davvero importanti dal rumore statistico.</p>
+    <div class="row-actions">
+      <button class="btn ghost" id="btnCancelAI">Annulla</button>
+      <button class="btn primary" id="btnConfirmAI" style="background:var(--ai)">Scarica e attiva</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -296,13 +338,12 @@ body.reading .reading-bar{display:flex}
 'use strict';
 
 const $ = id => document.getElementById(id);
-const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
 const escapeHTML = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const escapeRE = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const vibrate = ms => { try { navigator.vibrate && navigator.vibrate(ms); } catch {} };
 
 let toastTimer = null;
-function toast(msg, ms = 1800) {
+function toast(msg, ms = 2000) {
   const t = $('toast');
   t.textContent = msg;
   t.classList.add('show');
@@ -311,56 +352,48 @@ function toast(msg, ms = 1800) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   MOTORE DI ANALISI UNIVERSALE
-   Nessun lessico specifico. Solo proprietà statistiche, strutturali
-   e tipografiche valide in qualsiasi lingua.
+   PARTE 1 — MOTORE STATISTICO UNIVERSALE (invariato)
    ═══════════════════════════════════════════════════════════════════ */
 
-/* --- Lingue supportate per il rilevamento --- */
 const LANG_PROFILES = {
-  it:{ name:'Italiano', chars:'aàbcdeèéfghiìlmnòopqrstuùvz',
+  it:{ name:'Italiano',
        words:'il lo la i gli le un uno una e ed o od ma però perciò in con su per tra fra da di al allo alla ai agli alle del dello della dei degli delle nel nello nella nei negli nelle sul sullo sulla sui sugli sulle dal dallo dalla dai dagli dalle questo questa questi queste quello quella quelli quelle che chi cui non più anche solo come dove quando perché essere avere sono è era fu sia stata stato stati state viene venga fatto fare può devono deve loro lei lui noi voi egli ella essi esse' },
-  en:{ name:'English', chars:'abcdefghijklmnopqrstuvwxyz',
+  en:{ name:'English',
        words:'the a an and or but of in on at to for from by with as is are was were be been being this that these those it its he she they them him her his hers their theirs we us our ours you your yours i me my mine not no so very more most much many few some any all every each both either neither one two who whom whose which what where when why how if then else than too also just only can could will would shall should may might must do does did done have has had having about after before during between into through over under above below again further once here there' },
-  fr:{ name:'Français', chars:'aàâbcçdeéèêëfghiîïjklmnoôpqrstuùûüvwxyz',
+  fr:{ name:'Français',
        words:'le la les un une des du de d et ou mais donc or ni car que qui quoi dont où quand comment pourquoi si comme plus moins très trop peu beaucoup tout toute tous toutes ce cet cette ces celui celle ceux celles il elle ils elles nous vous je tu on se son sa ses leur leurs mon ma mes ton ta tes notre nos votre vos est sont était étaient être avoir a ont avait avaient fait faire peut peuvent doit doivent aussi encore déjà toujours jamais même autre autres bien' },
-  es:{ name:'Español', chars:'aábcdeéfghiíjklmnñoópqrstuúüvwxyz',
+  es:{ name:'Español',
        words:'el la los las un una unos unas de del y o pero porque por para con sin en a al sobre bajo entre hasta desde que quien cuyo como cuando donde si no más menos muy mucho poco todo toda todos todas este esta estos estas ese esa esos esas aquel aquella aquellos aquellas yo tú él ella nosotros vosotros ellos ellas me te se nos os le les lo mi tu su mis tus sus es son era fueron ser estar haber ha han había habían hace hacer puede pueden debe deben también aún ya siempre nunca mismo otra otro bien' },
-  de:{ name:'Deutsch', chars:'aäbcdefghijklmnoöpqrsßtuüvwxyz',
+  de:{ name:'Deutsch',
        words:'der die das den dem des ein eine einen einem eines einer und oder aber denn weil wenn als wie dass ob für mit von zu aus bei nach über unter zwischen durch gegen ohne um in an auf vor hinter neben ist sind war waren sein haben hat hatte hatten haben wird werden wurde wurden kann können muss müssen soll sollen darf dürfen auch noch schon immer nie sehr mehr weniger viel wenig alle alle jeder jede jedes diese dieser dieses jener jene man nicht doch nur selbst' },
-  pt:{ name:'Português', chars:'aáâãàbcçdeéêfghiíjklmnoóôõpqrstuúvwxyz',
+  pt:{ name:'Português',
        words:'o a os as um uma uns umas de do da dos das e ou mas porque por para com sem em no na nos nas ao aos à às pelo pela pelos pelas que quem cujo como quando onde se não mais menos muito pouco todo toda todos todas este esta estes estas esse essa esses essas aquele aquela aqueles aquelas eu tu ele ela nós vós eles elas me te se nos vos lhe lhes é são era foram ser estar haver há houve tinha tem fazer pode podem deve devem também ainda já sempre nunca mesmo outro outra bem' },
-  nl:{ name:'Nederlands', chars:'abcdefghijklmnopqrstuvwxyz',
+  nl:{ name:'Nederlands',
        words:'de het een en of maar want omdat als dan dat die deze dit van voor met door naar bij uit over onder tussen tegen zonder om in op aan is zijn was waren hebben heeft had kan kunnen moet moeten zal zullen ook nog al altijd nooit zeer meer minder veel weinig alle elk ieder niet toch alleen zelf' },
-  ru:{ name:'Русский', chars:'абвгдеёжзийклмнопрстуфхцчшщъыьэюя',
+  ru:{ name:'Русский',
        words:'и в во не что он на я с со как а то все она так его но да ты к у же вы за бы по только ее мне было вот от меня еще нет о из ему теперь когда даже ну вдруг ли если уже или ни быть был него до вас опять уж вам ведь там потом себя ничего ей может они тут где есть надо ней для мы тебя их чем была сам чтоб без будто чего раз тоже себе под будет ж тогда кто этот того потому этого какой совсем ним здесь этом один почти мой тем чтобы нее сейчас были куда зачем всех никогда можно при наконец два об другой хоть после над больше тот через эти нас про всего них какая много разве три эту моя впрочем хорошо свою этой перед иногда лучше чуть том нельзя такой им более всегда конечно всю между' }
 };
 
 const LANG_SIGNATURE = {
   it:['il','lo','la','gli','della','nella','perché','quindi','sono','questo','questa','anche','però','molto','più','già','dopo','prima','stato','viene'],
-  en:['the','and','of','with','that','this','which','their','would','could','should','very','also','from','into','between','through','during','about','which'],
+  en:['the','and','of','with','that','this','which','their','would','could','should','very','also','from','into','between','through','during','about'],
   fr:['le','les','des','dans','avec','pour','qui','que','sont','était','cette','leur','aussi','très','déjà','entre','pendant','depuis','vers','ainsi'],
   es:['el','los','las','pero','porque','para','muy','más','también','según','desde','hasta','aunque','cual','entre','durante','sin','sobre','bajo','hacia'],
   de:['der','die','das','und','mit','auf','für','sind','war','diese','dieser','auch','noch','sehr','schon','zwischen','während','durch','gegen','über'],
   pt:['os','as','para','muito','mais','também','segundo','desde','até','embora','qual','pelos','pelas','pelo','entre','durante','sobre','após','contra','sem'],
   nl:['het','een','van','voor','met','zijn','was','deze','dit','ook','nog','zeer','al','tussen','tijdens','door','tegen','over','onder','zonder'],
-  ru:['что','как','это','или','если','когда','только','очень','уже','ещё','между','через','чтобы','потому','также','после','перед','без','против','через']
+  ru:['что','как','это','или','если','когда','только','очень','уже','ещё','между','через','чтобы','потому','также','после','перед','без','против']
 };
 
 function detectLanguage(text) {
   const lower = text.toLowerCase();
   const words = lower.match(/\p{L}+/gu) || [];
   if (!words.length) return 'en';
-
-  // 1. Prova cirillico → russo
   const cyr = (text.match(/[\u0400-\u04FF]/g) || []).length;
   if (cyr > text.length * 0.10) return 'ru';
-
-  // 2. CJK → non gestito (segnalato)
   const cjk = (text.match(/[\u4E00-\u9FFF\u3040-\u30FF\uAC00-\uD7AF]/g) || []).length;
   if (cjk > text.length * 0.08) return 'cjk';
 
-  // 3. Analisi diacritici — ogni lingua ha caratteri tipici
   const diacritics = {
     it: (text.match(/[àèéìòù]/gi) || []).length,
     fr: (text.match(/[àâçéèêëîïôùûüÿœ]/gi) || []).length,
@@ -369,7 +402,6 @@ function detectLanguage(text) {
     pt: (text.match(/[áâãàçéêíóôõú]/gi) || []).length
   };
 
-  // 4. Signature words
   const sample = new Set(words.slice(0, 300));
   const scores = {};
   for (const [lang, sig] of Object.entries(LANG_SIGNATURE)) {
@@ -377,8 +409,6 @@ function detectLanguage(text) {
     for (const w of sig) if (sample.has(w)) s++;
     scores[lang] = s;
   }
-
-  // Combina signature + diacritici
   for (const lang of ['it','fr','es','de','pt']) {
     if (diacritics[lang]) scores[lang] = (scores[lang] || 0) + diacritics[lang] * 0.5;
   }
@@ -387,27 +417,20 @@ function detectLanguage(text) {
   for (const [lang, s] of Object.entries(scores)) {
     if (s > bestScore) { bestScore = s; best = lang; }
   }
-  if (bestScore < 3) return 'en'; // fallback universale
+  if (bestScore < 3) return 'en';
   return best;
 }
 
-/* --- Tokenizzazione universale --- */
 function tokenize(text) {
   const tokens = [];
   const re = /[\p{L}\p{M}][\p{L}\p{M}''\-]*/gu;
   let m;
   while ((m = re.exec(text)) !== null) {
-    tokens.push({
-      word: m[0],
-      lower: m[0].toLowerCase(),
-      start: m.index,
-      end: m.index + m[0].length
-    });
+    tokens.push({ word: m[0], lower: m[0].toLowerCase(), start: m.index, end: m.index + m[0].length });
   }
   return tokens;
 }
 
-/* --- Segmentazione frasi --- */
 function segmentSentences(text) {
   const sentences = [];
   let start = 0;
@@ -423,47 +446,24 @@ function segmentSentences(text) {
   return sentences;
 }
 
-/* --- Segmentazione paragrafi --- */
-function segmentParagraphs(text) {
-  const paragraphs = [];
-  const re = /\n\s*\n/g;
-  let start = 0, m;
-  while ((m = re.exec(text)) !== null) {
-    if (m.index - start >= 20) paragraphs.push({ start, end: m.index });
-    start = m.index + m[0].length;
-  }
-  if (text.length - start >= 20) paragraphs.push({ start, end: text.length });
-  if (!paragraphs.length && text.length) paragraphs.push({ start: 0, end: text.length });
-  return paragraphs;
-}
-
-/* --- Stop words della lingua rilevata --- */
 function getStopwords(lang) {
   const prof = LANG_PROFILES[lang] || LANG_PROFILES.en;
   return new Set(prof.words.split(/\s+/));
 }
 
-/* --- Salienza statistica (TF + bonus lunghezza + specificità) --- */
 function computeSalience(tokens, stopwords) {
   const freq = new Map();
-  const isStop = stopwords;
-
   for (const t of tokens) {
     if (t.lower.length < 3) continue;
-    if (isStop.has(t.lower)) continue;
+    if (stopwords.has(t.lower)) continue;
     freq.set(t.lower, (freq.get(t.lower) || 0) + 1);
   }
-
   const salient = new Map();
   const total = tokens.length;
   const isLong = total > 200;
-
   for (const [word, count] of freq) {
-    // Bonus di lunghezza: parole più lunghe sono più specifiche
     const lenBonus = Math.min(word.length, 14) / 4.5;
-    // Bonus rarità iniziale: varietà di caratteri
     const uniqueness = new Set(word.split('')).size / word.length;
-
     let score = 0;
     if (isLong) {
       if (count >= 4) score = 6 + lenBonus;
@@ -478,38 +478,27 @@ function computeSalience(tokens, stopwords) {
       else if (word.length >= 7 && uniqueness > 0.55) score = 2.5 + lenBonus;
       else if (count === 2) score = 2 + lenBonus;
     }
-
     if (score > 0) salient.set(word, score);
   }
-
   return salient;
 }
 
-/* --- Bigrammi frequenti = entità composte --- */
 function findBigrams(tokens, stopwords) {
   if (tokens.length < 20) return [];
   const freq = new Map();
   for (let i = 0; i < tokens.length - 1; i++) {
-    const a = tokens[i];
-    const b = tokens[i + 1];
+    const a = tokens[i], b = tokens[i + 1];
     if (a.lower.length < 4 || b.lower.length < 4) continue;
     if (stopwords.has(a.lower) || stopwords.has(b.lower)) continue;
-    // Devono essere adiacenti (solo spazio/apostrofo/trattino tra loro)
-    const between = a.end === b.start ? '' : '';
     if (b.start - a.end > 2) continue;
     const key = a.lower + ' ' + b.lower;
     freq.set(key, (freq.get(key) || 0) + 1);
   }
   const bigrams = [];
-  for (const [key, count] of freq) {
-    if (count >= 2) {
-      bigrams.push(key);
-    }
-  }
+  for (const [key, count] of freq) if (count >= 2) bigrams.push(key);
   return bigrams;
 }
 
-/* --- Numeri (arabi, romani, percentuali, misure) --- */
 function findNumbers(text) {
   const spans = [];
   const re = /(?<![\p{L}\p{M}])\d+(?:[.,]\d+)*(?:\s*(?:%|‰))?(?:\s*[\p{L}]{1,6})?(?![\p{L}\p{M}])/gu;
@@ -525,12 +514,7 @@ function findNumbers(text) {
   return spans;
 }
 
-/* --- Citazioni (coppie di virgolette universali) --- */
-const QUOTE_PAIRS = [
-  ['«','»'],['"','"'],['"','"'],['„','"'],['"','"'],
-  ['"','"'],['「','」'],['『','』'],['‹','›'],['⟨','⟩'],['❝','❞']
-];
-
+const QUOTE_PAIRS = [['«','»'],['"','"'],['"','"'],['„','"'],['"','"'],['"','"'],['「','」'],['『','』'],['‹','›'],['⟨','⟩'],['❝','❞']];
 function findQuotes(text) {
   const spans = [];
   for (const [open, close] of QUOTE_PAIRS) {
@@ -540,9 +524,7 @@ function findQuotes(text) {
         if (text[i] === open) {
           if (openAt < 0) openAt = i;
           else {
-            if (i - openAt >= 8) {
-              spans.push({ start: openAt, end: i + 1, cat: 'quote', w: 5 });
-            }
+            if (i - openAt >= 8) spans.push({ start: openAt, end: i + 1, cat: 'quote', w: 5 });
             openAt = -1;
           }
         }
@@ -554,9 +536,7 @@ function findQuotes(text) {
         const closeIdx = text.indexOf(close, idx + 1);
         if (closeIdx === -1) break;
         const len = closeIdx - idx - 1;
-        if (len >= 8 && len < 600) {
-          spans.push({ start: idx, end: closeIdx + 1, cat: 'quote', w: 5 });
-        }
+        if (len >= 8 && len < 600) spans.push({ start: idx, end: closeIdx + 1, cat: 'quote', w: 5 });
         idx = closeIdx + 1;
       }
     }
@@ -564,7 +544,6 @@ function findQuotes(text) {
   return spans;
 }
 
-/* --- Elenchi strutturali (due punti + lista) --- */
 function findEnumerations(text) {
   const spans = [];
   const colonRe = /[:：]/g;
@@ -575,21 +554,17 @@ function findEnumerations(text) {
     const maxEnd = Math.min(text.length, startList + 700);
     while (endList < maxEnd && !/[.;!?\n]/.test(text[endList])) endList++;
     if (endList - startList < 10) continue;
-
     const listText = text.slice(startList, endList);
     const commaCount = (listText.match(/,/g) || []).length;
     const semiCount = (listText.match(/;/g) || []).length;
     if (commaCount + semiCount < 1) continue;
 
-    // Trigger: dal precedente confine al ":"
     let trigStart = m.index;
     while (trigStart > 0 && !/[.;!?\n]/.test(text[trigStart - 1])) trigStart--;
     while (trigStart < m.index && /\s/.test(text[trigStart])) trigStart++;
     if (m.index - trigStart >= 3 && m.index - trigStart <= 80) {
       spans.push({ start: trigStart, end: m.index + 1, cat: 'list', w: 4 });
     }
-
-    // Spezza sui separatori
     const seps = /[,;]\s*/g;
     let cur = 0, sep;
     const parts = [];
@@ -598,10 +573,8 @@ function findEnumerations(text) {
       cur = sep.index + sep[0].length;
     }
     if (cur < listText.length) parts.push([cur, listText.length]);
-
     for (const [a, b] of parts) {
-      let s = startList + a;
-      let e = startList + b;
+      let s = startList + a, e = startList + b;
       while (s < e && /\s/.test(text[s])) s++;
       while (e > s && /[\s,;]/.test(text[e - 1])) e--;
       if (e - s < 4) continue;
@@ -612,10 +585,8 @@ function findEnumerations(text) {
   return spans;
 }
 
-/* --- Definizioni (pattern "X: Y" corta/lunga e "X is a Y") --- */
 function findDefinitions(text) {
   const spans = [];
-  // Pattern: parola/i breve/i prima di ":" seguite da descrizione lunga
   const defRe = /([\p{L}\p{M}][\p{L}\p{M}\s'\-]{1,40})\s*[:：]\s*([^\n.;]{20,300})/gu;
   let m;
   while ((m = defRe.exec(text)) !== null) {
@@ -623,28 +594,22 @@ function findDefinitions(text) {
     const headEnd = headStart + m[1].length;
     const defStart = headEnd + (m[0].slice(m[1].length).match(/^\s*[:：]\s*/) || [''])[0].length;
     const defEnd = defStart + m[2].length;
-    // Il "termine" deve essere breve (1-5 parole)
     const wordCount = m[1].trim().split(/\s+/).length;
     if (wordCount > 5) continue;
     if (m[1].trim().length < 3) continue;
     spans.push({ start: headStart, end: headEnd, cat: 'def', w: 4 });
-    // La definizione è più lunga: peso inferiore per non sovrastare
     spans.push({ start: defStart, end: defEnd, cat: 'def', w: 2 });
   }
   return spans;
 }
 
-/* --- Nomi propri (universale per lingue con maiuscole) --- */
 function findProperNouns(text, tokens, stopwords, lang) {
   if (lang === 'cjk') return [];
   const spans = [];
-  const isStop = stopwords;
-
   for (let i = 0; i < tokens.length; i++) {
     const t = tokens[i];
     const c0 = t.word[0];
     if (c0 !== c0.toUpperCase() || c0 === c0.toLowerCase()) continue;
-    // Esclude cifre romane isolate
     if (/^[IVXLCDM]+$/.test(t.word) && t.word.length >= 2 && t.word.length <= 6) continue;
 
     let j = i;
@@ -656,59 +621,46 @@ function findProperNouns(text, tokens, stopwords, lang) {
       if (nc === nc.toUpperCase() && nc !== nc.toLowerCase()) j++;
       else break;
     }
-
     const before = text.slice(0, t.start).trim();
-    const atSentenceStart = !before || /[.!?…。！？»"']\s*$/.test(before) || /^[«"„""'「『(\[]/.test(before);
-
+    const atStart = !before || /[.!?…。！？»"']\s*$/.test(before) || /^[«"„""'「『(\[]/.test(before);
     const isMulti = j > i;
-    const isStopWord = isStop.has(t.lower);
+    const isStopWord = stopwords.has(t.lower);
 
     let accept = false;
     if (isMulti) accept = true;
-    else if (!atSentenceStart && !isStopWord) accept = true;
-    else if (atSentenceStart && !isStopWord && t.word.length >= 7) accept = true;
+    else if (!atStart && !isStopWord) accept = true;
+    else if (atStart && !isStopWord && t.word.length >= 7) accept = true;
 
-    if (accept) {
-      spans.push({ start: t.start, end: tokens[j].end, cat: 'name', w: 4 });
-    }
+    if (accept) spans.push({ start: t.start, end: tokens[j].end, cat: 'name', w: 4 });
     i = j;
   }
   return spans;
 }
 
-/* --- Concetti chiave (parole salienti + bigrammi frequenti) --- */
 function findConceptSpans(tokens, salient, bigrams) {
   const spans = [];
   const bigramSet = new Set(bigrams);
-
-  // Bigrammi: priorità più alta
   for (let i = 0; i < tokens.length - 1; i++) {
-    const a = tokens[i];
-    const b = tokens[i + 1];
+    const a = tokens[i], b = tokens[i + 1];
     if (b.start - a.end > 2) continue;
-    const key = a.lower + ' ' + b.lower;
-    if (bigramSet.has(key)) {
-      spans.push({ start: a.start, end: b.end, cat: 'key', w: 4 });
+    if (bigramSet.has(a.lower + ' ' + b.lower)) {
+      spans.push({ start: a.start, end: b.end, cat: 'key', w: 4, _concept: true });
     }
   }
-
-  // Parole singole
   for (const t of tokens) {
     if (salient.has(t.lower)) {
       const score = salient.get(t.lower);
       const w = score >= 5 ? 3 : (score >= 3.5 ? 3 : 2);
-      spans.push({ start: t.start, end: t.end, cat: 'key', w });
+      spans.push({ start: t.start, end: t.end, cat: 'key', w, _concept: true });
     }
   }
   return spans;
 }
 
-/* --- Frasi chiave (alta densità di concetti) --- */
 function findKeySentences(sentences, salient, tokens) {
   const spans = [];
   if (!salient.size) return spans;
   const tokenByPos = tokens.slice().sort((a, b) => a.start - b.start);
-
   for (const s of sentences) {
     let concepts = 0, total = 0;
     for (const t of tokenByPos) {
@@ -719,15 +671,14 @@ function findKeySentences(sentences, salient, tokens) {
     }
     if (total < 6) continue;
     if (concepts >= 4 && concepts / total >= 0.30) {
-      spans.push({ start: s.start, end: s.end, cat: 'sentence', w: 3 });
+      spans.push({ start: s.start, end: s.end, cat: 'sentence', w: 3, _concept: true });
     }
   }
   return spans;
 }
 
-/* --- Analisi principale --- */
-function analyze(text) {
-  if (!text.trim()) return { spans: [], lang: 'en', meta: {} };
+function analyzeStatistical(text) {
+  if (!text.trim()) return { spans: [], lang: 'en' };
   const lang = detectLanguage(text);
   const stopwords = getStopwords(lang);
   const tokens = tokenize(text);
@@ -745,20 +696,280 @@ function analyze(text) {
     ...findKeySentences(sentences, salient, tokens)
   ];
 
-  return { spans, lang, meta: { tokens: tokens.length, salient: salient.size, bigrams: bigrams.length } };
+  return { spans, lang };
 }
 
-/* --- Risoluzione overlap a livello carattere --- */
-const CAT_PRIORITY = {
-  quote: 10, num: 9, def: 8, list: 7, name: 6, key: 5, sentence: 4
+/* ═══════════════════════════════════════════════════════════════════
+   PARTE 2 — LIVELLO AI LOCALE (WebLLM + Qwen 0.5B)
+   ═══════════════════════════════════════════════════════════════════ */
+
+const AI_MODEL = 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC';
+const AI_CDN = 'https://esm.run/@mlc-ai/web-llm';
+
+const ai = {
+  engine: null,
+  loading: false,
+  enabled: JSON.parse(localStorage.getItem('annota.ai.enabled') || 'false'),
+  ready: false,
+  failed: false,
+  lastError: null,
+  progress: 0,
+  lastStatus: ''
 };
+
+/* Controlla WebGPU */
+function hasWebGPU() {
+  return typeof navigator !== 'undefined' && !!navigator.gpu;
+}
+
+/* Aggiorna la barra di stato AI */
+function setAIStatus(kind, message, pct) {
+  const bar = $('aiBar');
+  const msg = $('aiMsg');
+  const pctEl = $('aiPct');
+  const spinner = $('aiSpinner');
+
+  bar.classList.remove('ready', 'error');
+
+  if (kind === 'hidden') {
+    bar.classList.remove('show');
+    return;
+  }
+
+  bar.classList.add('show');
+
+  if (kind === 'loading') {
+    spinner.style.display = 'block';
+    msg.textContent = message || 'Preparazione AI…';
+    pctEl.textContent = pct ? Math.round(pct * 100) + '%' : '';
+  } else if (kind === 'ready') {
+    bar.classList.add('ready');
+    spinner.style.display = 'none';
+    msg.textContent = message || 'AI locale pronta';
+    pctEl.textContent = '';
+    setTimeout(() => { if (bar.classList.contains('ready')) bar.classList.remove('show'); }, 2200);
+  } else if (kind === 'working') {
+    spinner.style.display = 'block';
+    msg.textContent = message || 'Analisi AI in corso…';
+    pctEl.textContent = pct || '';
+  } else if (kind === 'error') {
+    bar.classList.add('error');
+    spinner.style.display = 'none';
+    msg.textContent = message || 'AI non disponibile';
+    pctEl.textContent = '';
+  }
+}
+
+/* Aggiorna il bottone AI */
+function updateAIButton() {
+  const btn = $('btnAI');
+  btn.classList.remove('off', 'on', 'loading');
+  if (ai.loading) btn.classList.add('loading');
+  else if (ai.enabled && ai.ready) btn.classList.add('on');
+  else btn.classList.add('off');
+}
+
+/* Carica il motore LLM */
+async function initAI() {
+  if (ai.engine || ai.loading) return;
+  if (!hasWebGPU()) {
+    toast('WebGPU non disponibile su questo browser');
+    setAIStatus('error', 'WebGPU non supportato su questo dispositivo. Prova Safari aggiornato o Chrome.');
+    ai.failed = true;
+    return;
+  }
+
+  ai.loading = true;
+  updateAIButton();
+  setAIStatus('loading', 'Scaricamento modello AI…', 0);
+
+  try {
+    const webllm = await import(AI_CDN);
+
+    ai.engine = await webllm.CreateMLCEngine(AI_MODEL, {
+      initProgressCallback: (report) => {
+        ai.progress = report.progress || 0;
+        ai.lastStatus = report.text || '';
+        setAIStatus('loading', ai.lastStatus, ai.progress);
+      }
+    });
+
+    ai.ready = true;
+    ai.loading = false;
+    updateAIButton();
+    setAIStatus('ready', 'AI locale pronta');
+    toast('AI locale caricata', 2200);
+  } catch (e) {
+    console.error('AI load error:', e);
+    ai.loading = false;
+    ai.failed = true;
+    ai.lastError = e && e.message ? e.message : String(e);
+    updateAIButton();
+    setAIStatus('error', 'Errore: ' + (ai.lastError || 'caricamento fallito').slice(0, 60));
+    ai.enabled = false;
+    localStorage.setItem('annota.ai.enabled', 'false');
+    updateAIButton();
+  }
+}
+
+/* Chiamata LLM con timeout */
+async function llmChat(prompt, maxTokens = 8) {
+  if (!ai.engine) throw new Error('AI non caricata');
+  const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 25000));
+  const call = ai.engine.chat.completions.create({
+    messages: [{ role: 'user', content: prompt }],
+    temperature: 0,
+    max_tokens: maxTokens,
+    stream: false
+  });
+  const res = await Promise.race([call, timeout]);
+  return (res.choices && res.choices[0] && res.choices[0].message && res.choices[0].message.content) || '';
+}
+
+/* Frasi di contesto per uno span */
+function contextForSpan(text, span, sentences) {
+  for (const s of sentences) {
+    if (span.start >= s.start && span.end <= s.end) return text.slice(s.start, s.end);
+  }
+  // Fallback: estrai 200 char attorno
+  const a = Math.max(0, span.start - 100);
+  const b = Math.min(text.length, span.end + 100);
+  return text.slice(a, b);
+}
+
+/* Prompt di validazione (bilingue per sicurezza) */
+function buildValidationPrompt(lang, snippet, context) {
+  const prompts = {
+    it: `Sei un annotatore. Ti do una frase e un frammento. Il frammento è un concetto chiave della frase? Rispondi SOLO "SÌ" o "NO".
+
+Frase: "${context}"
+Frammento: "${snippet}"
+Risposta:`,
+    en: `You are an annotator. I give you a sentence and a fragment. Is the fragment a key concept of the sentence? Answer ONLY "YES" or "NO".
+
+Sentence: "${context}"
+Fragment: "${snippet}"
+Answer:`,
+    fr: `Tu es un annotateur. Je te donne une phrase et un fragment. Le fragment est-il un concept clé de la phrase ? Réponds SEULEMENT "OUI" ou "NON".
+
+Phrase : "${context}"
+Fragment : "${snippet}"
+Réponse :`,
+    es: `Eres un anotador. Te doy una frase y un fragmento. ¿El fragmento es un concepto clave de la frase? Responde SOLO "SÍ" o "NO".
+
+Frase: "${context}"
+Fragmento: "${snippet}"
+Respuesta:`,
+    de: `Du bist ein Annotator. Ich gebe dir einen Satz und ein Fragment. Ist das Fragment ein Schlüsselkonzept des Satzes? Antworte NUR "JA" oder "NEIN".
+
+Satz: "${context}"
+Fragment: "${snippet}"
+Antwort:`,
+    pt: `Você é um anotador. Dou-lhe uma frase e um fragmento. O fragmento é um conceito-chave da frase? Responda SOMENTE "SIM" ou "NÃO".
+
+Frase: "${context}"
+Fragmento: "${snippet}"
+Resposta:`,
+    nl: `Je bent een annoteerder. Ik geef je een zin en een fragment. Is het fragment een sleutelbegrip van de zin? Antwoord ALLEEN "JA" of "NEE".
+
+Zin: "${context}"
+Fragment: "${snippet}"
+Antwoord:`,
+    ru: `Ты аннотатор. Я даю тебе предложение и фрагмент. Является ли фрагмент ключевым понятием предложения? Отвечай ТОЛЬКО "ДА" или "НЕТ".
+
+Предложение: "${context}"
+Фрагмент: "${snippet}"
+Ответ:`
+  };
+  return prompts[lang] || prompts.en;
+}
+
+function parseYesNo(response, lang) {
+  if (!response) return null;
+  const upper = response.trim().toUpperCase();
+  // Controlla NO/NON/NÃO/NEE/НЕТ per primi (evita match falsi con "SI" in "NON")
+  const noWords = ['NO', 'NON', 'NÃO', 'NEE', 'НЕТ', 'NEIN'];
+  const yesWords = ['SÌ', 'SI', 'YES', 'OUI', 'SÍ', 'JA', 'ДА'];
+  for (const w of noWords) {
+    if (upper.startsWith(w) || upper.includes(' ' + w)) return false;
+  }
+  for (const w of yesWords) {
+    if (upper.startsWith(w)) return true;
+  }
+  // Euristica fallback
+  if (upper.includes('NON') || upper.includes('NO') || upper.includes('NOT')) return false;
+  if (upper.includes('SÌ') || upper.includes('YES') || upper.includes('OUI') || upper.includes('JA') || upper.includes('SI')) return true;
+  return null;
+}
+
+/* Validazione AI: filtra span con _concept:true */
+async function aiValidateSpans(text, spans, lang, sentences) {
+  if (!ai.engine || !ai.ready) return spans;
+
+  const conceptSpans = spans.filter(s => s._concept);
+  const otherSpans = spans.filter(s => !s._concept);
+
+  if (!conceptSpans.length) return spans;
+
+  // Limite massimo di span da validare (per contenere tempi)
+  const MAX = 30;
+  const toValidate = conceptSpans.slice(0, MAX);
+  const remainder = conceptSpans.slice(MAX);
+
+  const kept = [];
+
+  // Deduplica per snippet (evita di processare lo stesso termine più volte)
+  const seen = new Map();
+  for (const s of toValidate) {
+    const snippet = text.slice(s.start, s.end);
+    const key = snippet.toLowerCase();
+    if (!seen.has(key)) seen.set(key, []);
+    seen.get(key).push(s);
+  }
+
+  const entries = [...seen.entries()];
+  let processed = 0;
+  const total = entries.length;
+
+  for (const [key, list] of entries) {
+    processed++;
+    if (processed % 3 === 0 || processed === total) {
+      setAIStatus('working', `Validazione concetti (${processed}/${total})…`, `${Math.round(processed/total*100)}%`);
+    }
+
+    const sample = list[0];
+    const snippet = text.slice(sample.start, sample.end);
+    const context = contextForSpan(text, sample, sentences);
+    const prompt = buildValidationPrompt(lang, snippet, context);
+
+    let keep = true;
+    try {
+      const response = await llmChat(prompt, 5);
+      const verdict = parseYesNo(response, lang);
+      // Null = incerto → manteniamo (conservativo)
+      keep = verdict === null ? true : verdict;
+    } catch (e) {
+      // Su errore, mantieni per non perdere informazione
+      keep = true;
+    }
+
+    if (keep) kept.push(...list);
+  }
+
+  return [...otherSpans, ...kept, ...remainder];
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PARTE 3 — OVERLAP E RENDER
+   ═══════════════════════════════════════════════════════════════════ */
+
+const CAT_PRIORITY = { quote:10, num:9, def:8, list:7, name:6, key:5, sentence:4 };
 
 function buildRuns(text, spans) {
   const n = text.length;
   const owner = new Uint16Array(n);
   const weight = new Uint8Array(n);
   const catIndex = {};
-
   for (const s of spans) {
     const priority = (CAT_PRIORITY[s.cat] || 1) * 10 + (s.w || 1);
     for (let i = s.start; i < s.end; i++) {
@@ -769,7 +980,6 @@ function buildRuns(text, spans) {
       }
     }
   }
-
   const runs = [];
   let i = 0;
   while (i < n) {
@@ -788,26 +998,22 @@ function catIdFromIdx(catIndex, idx) {
   return null;
 }
 
-const CAT_TO_CLASS = {
-  num:'c-num', name:'c-name', key:'c-key',
-  quote:'c-quote', list:'c-list', def:'c-def', sentence:'c-sentence'
-};
+const CAT_TO_CLASS = { num:'c-num', name:'c-name', key:'c-key', quote:'c-quote', list:'c-list', def:'c-def', sentence:'c-sentence' };
 
 const CATEGORIES = [
-  { id:'num',      label:'Numeri',    color:'--c-num'      },
-  { id:'name',     label:'Nomi',      color:'--c-name'     },
-  { id:'key',      label:'Concetti',  color:'--c-key'      },
-  { id:'def',      label:'Definizioni',color:'--c-def'     },
-  { id:'quote',    label:'Citazioni', color:'--c-quote'    },
-  { id:'list',     label:'Elenchi',   color:'--c-list'     },
-  { id:'sentence', label:'Frasi',     color:'--c-sentence' }
+  { id:'num',      label:'Numeri',     color:'--c-num'      },
+  { id:'name',     label:'Nomi',       color:'--c-name'     },
+  { id:'key',      label:'Concetti',   color:'--c-key'      },
+  { id:'def',      label:'Definizioni',color:'--c-def'      },
+  { id:'quote',    label:'Citazioni',  color:'--c-quote'    },
+  { id:'list',     label:'Elenchi',    color:'--c-list'     },
+  { id:'sentence', label:'Frasi',      color:'--c-sentence' }
 ];
 
 function renderAnnotated(text, spans, activeCats) {
   if (!spans.length) return escapeHTML(text);
   const { runs, catIndex } = buildRuns(text, spans);
   if (!runs.length) return escapeHTML(text);
-
   let html = '';
   let cursor = 0;
   for (const r of runs) {
@@ -825,7 +1031,6 @@ function renderAnnotated(text, spans, activeCats) {
   return html;
 }
 
-/* --- Statistiche per categoria --- */
 function computeCategoryStats(text, spans) {
   const { runs, catIndex } = buildRuns(text, spans);
   const stats = {};
@@ -855,18 +1060,18 @@ function computeCoverage(text, spans, activeCats) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   UI
+   PARTE 4 — UI
    ═══════════════════════════════════════════════════════════════════ */
-const LIB_KEY = 'annota.library.v3';
-const SES_KEY = 'annota.session.v3';
+
+const LIB_KEY = 'annota.library.v4';
+const SES_KEY = 'annota.session.v4';
 const THEME_KEY = 'annota.theme.v1';
 const INPUT_H_KEY = 'annota.inputHeight.v1';
 const CATS_KEY = 'annota.cats.v1';
 
 function loadLibrary() { try { return JSON.parse(localStorage.getItem(LIB_KEY) || '[]'); } catch { return []; } }
 function saveLibrary(list) {
-  try { localStorage.setItem(LIB_KEY, JSON.stringify(list)); }
-  catch { toast('Spazio esaurito'); }
+  try { localStorage.setItem(LIB_KEY, JSON.stringify(list)); } catch { toast('Spazio esaurito'); }
 }
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
 
@@ -874,7 +1079,7 @@ const state = {
   text: '', activeCats: new Set(), spans: [],
   lang: 'en', library: loadLibrary(), view: 'annotate',
   currentLibId: null, searchHits: [], searchIdx: -1,
-  lastStats: null
+  lastStats: null, aiApplied: false
 };
 
 try {
@@ -908,7 +1113,7 @@ function renderLegend() {
   }
 }
 
-function runAnalyze() {
+async function runAnalyze(useAI) {
   const text = state.text;
   if (!text.trim()) {
     state.spans = [];
@@ -916,23 +1121,45 @@ function runAnalyze() {
     $('output').innerHTML = '';
     $('stats').style.display = 'none';
     $('langBadge').classList.remove('show');
+    setAIStatus('hidden');
     return;
   }
 
-  const result = analyze(text);
-  state.spans = result.spans;
+  // Fase 1: analisi statistica
+  const result = analyzeStatistical(text);
   state.lang = result.lang;
-  state.lastStats = computeCategoryStats(text, result.spans);
+  let spans = result.spans;
 
-  // Aggiorna badge lingua
-  if (result.lang === 'cjk') {
-    $('langBadge').textContent = 'CJK';
-    $('langBadge').classList.add('show');
+  // Fase 2: validazione AI (opzionale)
+  state.aiApplied = false;
+  if (useAI && ai.ready && ai.enabled) {
+    const sentences = segmentSentences(text);
+    const before = spans.filter(s => s._concept).length;
+    setAIStatus('working', 'Validazione concetti con AI…', '0%');
+    try {
+      spans = await aiValidateSpans(text, spans, result.lang, sentences);
+      state.aiApplied = true;
+      const after = spans.filter(s => s._concept).length;
+      setAIStatus('ready', `AI ha validato: ${after}/${before} concetti mantenuti`);
+    } catch (e) {
+      console.error('AI validation error:', e);
+      setAIStatus('error', 'Errore durante la validazione AI');
+    }
   } else {
-    const prof = LANG_PROFILES[result.lang];
-    $('langBadge').textContent = prof ? prof.name : 'EN';
-    $('langBadge').classList.add('show');
+    setAIStatus('hidden');
   }
+
+  state.spans = spans;
+  state.lastStats = computeCategoryStats(text, spans);
+
+  // Badge lingua
+  const badge = $('langBadge');
+  if (result.lang === 'cjk') badge.textContent = 'CJK';
+  else {
+    const prof = LANG_PROFILES[result.lang];
+    badge.textContent = prof ? prof.name : 'EN';
+  }
+  badge.classList.add('show');
 
   redrawOutput();
   renderStats();
@@ -1082,9 +1309,11 @@ function renderLibrary(filter = '') {
     const date = new Date(it.updatedAt).toLocaleDateString('it-IT', { day:'2-digit', month:'short' });
     const snippet = it.text.slice(0, 160).replace(/\s+/g, ' ');
     const langLabel = it.lang === 'cjk' ? 'CJK' : ((LANG_PROFILES[it.lang] && LANG_PROFILES[it.lang].name.slice(0,3).toUpperCase()) || 'EN');
+    const aiBadge = it.aiApplied ? '<span class="badge ai">AI</span>' : '';
     el.innerHTML = `
       <div class="row1">
         <span class="badge">${langLabel}</span>
+        ${aiBadge}
         <span class="date">${date}</span>
       </div>
       <div class="title">${escapeHTML(it.title || 'Senza titolo')}</div>
@@ -1110,7 +1339,7 @@ function openFromLibrary(id) {
   state.text = it.text;
   state.currentLibId = it.id;
   $('input').value = it.text;
-  runAnalyze();
+  runAnalyze(false);
   switchView('annotate');
   $('scrollAnnotate').scrollTop = 0;
   toast('Aperto dalla libreria');
@@ -1153,13 +1382,13 @@ function confirmSave() {
   if (state.currentLibId) {
     const it = state.library.find(x => x.id === state.currentLibId);
     if (it) Object.assign(it, {
-      title, text: state.text, lang: state.lang,
+      title, text: state.text, lang: state.lang, aiApplied: state.aiApplied,
       pct: cov.pct, updatedAt: Date.now()
     });
   } else {
     const id = uid();
     state.library.push({
-      id, title, text: state.text, lang: state.lang,
+      id, title, text: state.text, lang: state.lang, aiApplied: state.aiApplied,
       pct: cov.pct, createdAt: Date.now(), updatedAt: Date.now()
     });
     state.currentLibId = id;
@@ -1193,6 +1422,7 @@ async function shareOrExport() {
 function buildExportHTML() {
   const annotated = renderAnnotated(state.text, state.spans, state.activeCats);
   const langName = state.lang === 'cjk' ? 'CJK' : ((LANG_PROFILES[state.lang] && LANG_PROFILES[state.lang].name) || 'English');
+  const aiNote = state.aiApplied ? ' · validato con AI locale' : '';
   const styles = `
     body{font-family:Georgia,serif;max-width:720px;margin:32px auto;padding:0 20px;line-height:1.8;font-size:1.08rem;color:#1b1815;background:#faf7f2}
     h1{font-size:1.1rem;font-family:system-ui;color:#8a8178;font-weight:600;margin-bottom:4px}
@@ -1206,15 +1436,15 @@ function buildExportHTML() {
   return `<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Annotazione</title>
 <style>${styles}</style></head><body>
 <h1>Annota</h1>
-<div class="meta">${new Date().toLocaleString('it-IT')} · Lingua: ${langName}</div>
+<div class="meta">${new Date().toLocaleString('it-IT')} · Lingua: ${langName}${aiNote}</div>
 <div>${annotated}</div>
 </body></html>`;
 }
 
 function switchView(v) {
   state.view = v;
-  $$('.view').forEach(el => el.classList.toggle('active', el.id === 'view-' + v));
-  $$('.tabbar .tab').forEach(t => t.classList.toggle('active', t.dataset.view === v));
+  document.querySelectorAll('.view').forEach(el => el.classList.toggle('active', el.id === 'view-' + v));
+  document.querySelectorAll('.tabbar .tab').forEach(t => t.classList.toggle('active', t.dataset.view === v));
   if (v === 'library') renderLibrary($('libSearch').value);
 }
 
@@ -1239,6 +1469,35 @@ function updateReadProgress() {
   $('readProgress').style.width = p + '%';
 }
 
+/* Toggle AI */
+async function toggleAI() {
+  if (ai.loading) return;
+
+  if (ai.enabled && ai.ready) {
+    // Disattiva
+    ai.enabled = false;
+    localStorage.setItem('annota.ai.enabled', 'false');
+    updateAIButton();
+    toast('AI disattivata');
+    // Ri-analizza senza AI
+    if (state.text.trim()) runAnalyze(false);
+    return;
+  }
+
+  if (!ai.ready) {
+    // Primo utilizzo: mostra conferma
+    openModal('modalAISetup');
+    return;
+  }
+
+  // Riattiva
+  ai.enabled = true;
+  localStorage.setItem('annota.ai.enabled', 'true');
+  updateAIButton();
+  toast('AI attivata');
+  if (state.text.trim()) runAnalyze(true);
+}
+
 function bindEvents() {
   $('btnTheme').addEventListener('click', () => {
     const cur = document.documentElement.dataset.theme;
@@ -1247,7 +1506,7 @@ function bindEvents() {
   });
   $('btnShare').addEventListener('click', shareOrExport);
 
-  $$('.tabbar .tab').forEach(t => {
+  document.querySelectorAll('.tabbar .tab').forEach(t => {
     t.addEventListener('click', () => { switchView(t.dataset.view); vibrate(5); });
   });
 
@@ -1257,20 +1516,26 @@ function bindEvents() {
     state.text = input.value;
     state.currentLibId = null;
     clearTimeout(timer);
-    timer = setTimeout(() => { if (state.text.trim().length > 60) runAnalyze(); }, 500);
+    timer = setTimeout(() => {
+      if (state.text.trim().length > 60) runAnalyze(ai.enabled && ai.ready);
+    }, 500);
   });
 
-  $('btnAnalyze').addEventListener('click', () => {
+  $('btnAnalyze').addEventListener('click', async () => {
     const btn = $('btnAnalyze');
     btn.classList.add('busy');
+    $('analyzeLabel').textContent = (ai.enabled && ai.ready) ? 'Analisi AI…' : 'Annota';
     requestAnimationFrame(() => {
-      setTimeout(() => {
-        runAnalyze();
+      setTimeout(async () => {
+        await runAnalyze(ai.enabled && ai.ready);
         btn.classList.remove('busy');
+        $('analyzeLabel').textContent = 'Annota';
         vibrate(10);
       }, 10);
     });
   });
+
+  $('btnAI').addEventListener('click', () => { toggleAI(); vibrate(8); });
 
   $('btnClear').addEventListener('click', () => {
     input.value = '';
@@ -1278,9 +1543,11 @@ function bindEvents() {
     state.spans = [];
     state.currentLibId = null;
     state.lastStats = null;
+    state.aiApplied = false;
     $('output').innerHTML = '';
     $('stats').style.display = 'none';
     $('langBadge').classList.remove('show');
+    setAIStatus('hidden');
     localStorage.removeItem(SES_KEY);
     vibrate(10);
   });
@@ -1318,6 +1585,16 @@ function bindEvents() {
   $('btnConfirmSave').addEventListener('click', confirmSave);
   $('saveTitle').addEventListener('keydown', e => { if (e.key === 'Enter') confirmSave(); });
   $('btnCancelConfirm').addEventListener('click', () => closeModal('modalConfirm'));
+
+  // Modale AI
+  $('btnCancelAI').addEventListener('click', () => closeModal('modalAISetup'));
+  $('btnConfirmAI').addEventListener('click', async () => {
+    closeModal('modalAISetup');
+    ai.enabled = true;
+    localStorage.setItem('annota.ai.enabled', 'true');
+    await initAI();
+    if (ai.ready && state.text.trim()) runAnalyze(true);
+  });
 
   $('searchInput').addEventListener('input', e => runSearch(e.target.value));
   $('btnSearchClose').addEventListener('click', () => {
@@ -1362,7 +1639,22 @@ Napoleone Bonaparte prese il potere nel 1799 con il colpo di Stato del 18 brumai
   renderLegend();
   bindEvents();
   initResize();
-  runAnalyze();
+  updateAIButton();
+  runAnalyze(false);
+
+  // Se l'utente aveva attivato l'AI in precedenza, prova a ricaricarla
+  if (ai.enabled) {
+    // Carica in background dopo un breve ritardo
+    setTimeout(() => {
+      if (!hasWebGPU()) {
+        ai.enabled = false;
+        localStorage.setItem('annota.ai.enabled', 'false');
+        updateAIButton();
+        return;
+      }
+      initAI();
+    }, 800);
+  }
 }
 
 document.addEventListener('DOMContentLoaded', init);
