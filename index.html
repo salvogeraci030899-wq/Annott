@@ -77,16 +77,35 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .btn svg{width:17px;height:17px}
 .btn.icon-only svg{width:20px;height:20px}
 
-.btn-ai{flex:0 0 auto;width:52px;padding:13px 0;position:relative}
-.btn-ai svg{width:20px;height:20px}
-.btn-ai.off{color:var(--ink-3)}
-.btn-ai.on{color:var(--ai);background:var(--ai-soft);border-color:transparent}
-.btn-ai.loading{color:var(--ai);background:var(--ai-soft);border-color:transparent}
-.btn-ai.loading svg{animation:pulse 1.2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.9)}}
-.btn-ai .model-tag{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);font-size:.55rem;font-weight:700;letter-spacing:.02em;opacity:.85;pointer-events:none}
-.btn-ai.on .model-tag{color:var(--ai)}
-.btn-ai.off .model-tag{color:var(--ink-3)}
+/* Bottone AI principale (ex Annota) */
+.btn-ai-main{
+  touch-action: manipulation;
+  -webkit-user-select: none; user-select: none;
+  -webkit-touch-callout: none;
+}
+.btn-ai-main .model-tag{
+  font-size:.62rem;
+  font-weight:700;
+  letter-spacing:.04em;
+  padding:2px 6px;
+  border-radius:5px;
+  background:rgba(255,255,255,.18);
+  margin-left:4px;
+  opacity:.9;
+}
+.btn-ai-main.loading{
+  pointer-events:none;
+  opacity:.85;
+}
+.btn-ai-main.loading::after{
+  content:"";
+  position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(124,77,255,.45),transparent);
+  animation:shimmer 1.1s infinite;
+}
+.btn-ai-main .ai-icon{color:var(--ai);width:19px;height:19px}
+.btn.primary .ai-icon{color:var(--ai-soft)}
+[data-theme="dark"] .btn.primary .ai-icon{color:var(--ai)}
 
 .cats-row{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;padding:2px 0 12px;margin:0 -2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .cats-row::-webkit-scrollbar{display:none}
@@ -224,17 +243,20 @@ body.reading .reading-bar{display:flex}
         </div>
 
         <div class="actions">
-          <button class="btn primary" id="btnAnalyze">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            <span id="analyzeLabel">Annota</span>
-          </button>
-          <button class="btn ghost btn-ai off" id="btnAI" title="Attiva AI locale" aria-label="Attiva AI locale">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <button class="btn primary btn-ai-main" id="btnAI" aria-label="Annota con AI">
+            <svg class="ai-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"/>
               <path d="M19 17l.9 2.1L22 20l-2.1.9L19 23l-.9-2.1L16 20l2.1-.9L19 17z"/>
               <path d="M5 17l.7 1.8L7.5 19.5 5.7 20.2 5 22l-.7-1.8L2.5 19.5 4.3 18.8 5 17z"/>
             </svg>
-            <span class="model-tag" id="modelTag"></span>
+            <span id="aiLabel">Annota</span>
+            <span class="model-tag" id="modelTag">1.5B</span>
+          </button>
+          <button class="btn ghost icon-only" id="btnPaste" title="Incolla" aria-label="Incolla">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="8" y="2" width="8" height="4" rx="1"/>
+              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+            </svg>
           </button>
           <button class="btn ghost icon-only danger-icon" id="btnClear" title="Pulisci" aria-label="Pulisci">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -341,11 +363,11 @@ body.reading .reading-bar{display:flex}
 <div class="modal-bg" id="modalAISetup">
   <div class="modal">
     <h3 id="aiSetupTitle">Scegli il modello AI</h3>
-    <p>Scaricato una sola volta, resta sul dispositivo. Funziona offline. Scegli in base alla potenza del tuo iPhone.</p>
+    <p id="aiSetupDesc">Scaricato una sola volta, resta sul dispositivo. Funziona offline. Scegli in base alla potenza del tuo iPhone.</p>
     <div class="model-list" id="modelList"></div>
     <div class="row-actions">
       <button class="btn ghost" id="btnCancelAI">Annulla</button>
-      <button class="btn primary" id="btnConfirmAI" style="background:var(--ai)">Scarica e attiva</button>
+      <button class="btn primary" id="btnConfirmAI" style="background:var(--ai)">Conferma</button>
     </div>
   </div>
 </div>
@@ -371,7 +393,7 @@ function toast(msg, ms = 2000) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   TEMA — sincronizza data-theme, theme-color e status-bar-style
+   TEMA
    ═══════════════════════════════════════════════════════════════════ */
 
 const THEME_BG = { light: '#f6f3ee', dark: '#14110f' };
@@ -379,19 +401,10 @@ const THEME_BG = { light: '#f6f3ee', dark: '#14110f' };
 function applyThemeToMeta(t) {
   const isDark = t === 'dark';
   const bg = isDark ? THEME_BG.dark : THEME_BG.light;
-
-  // 1. theme-color: colora la chrome del browser (iOS Safari, Android Chrome)
   let meta = document.getElementById('metaThemeColor');
-  if (!meta) {
-    meta = document.querySelector('meta[name="theme-color"]');
-  }
+  if (!meta) meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.setAttribute('content', bg);
-
-  // 2. Rimuovi eventuali theme-color aggiuntivi con media query
   document.querySelectorAll('meta[name="theme-color"][media]').forEach(m => m.remove());
-
-  // 3. apple-mobile-web-app-status-bar-style per PWA installate
-  //    (iOS accetta solo "default", "black", "black-translucent")
   const sb = document.getElementById('metaStatusBar');
   if (sb) sb.setAttribute('content', isDark ? 'black' : 'default');
 }
@@ -438,7 +451,6 @@ function detectLanguage(text) {
   if (cyr > text.length * 0.10) return 'ru';
   const cjk = (text.match(/[\u4E00-\u9FFF\u3040-\u30FF\uAC00-\uD7AF]/g) || []).length;
   if (cjk > text.length * 0.08) return 'cjk';
-
   const diacritics = {
     it: (text.match(/[àèéìòù]/gi) || []).length,
     fr: (text.match(/[àâçéèêëîïôùûüÿœ]/gi) || []).length,
@@ -446,7 +458,6 @@ function detectLanguage(text) {
     de: (text.match(/[äöüß]/gi) || []).length,
     pt: (text.match(/[áâãàçéêíóôõú]/gi) || []).length
   };
-
   const sample = new Set(words.slice(0, 300));
   const scores = {};
   for (const [lang, sig] of Object.entries(LANG_SIGNATURE)) {
@@ -457,7 +468,6 @@ function detectLanguage(text) {
   for (const lang of ['it','fr','es','de','pt']) {
     if (diacritics[lang]) scores[lang] = (scores[lang] || 0) + diacritics[lang] * 0.5;
   }
-
   let best = 'en', bestScore = -1;
   for (const [lang, s] of Object.entries(scores)) {
     if (s > bestScore) { bestScore = s; best = lang; }
@@ -570,7 +580,6 @@ function findNumbers(text) {
   const spans = [];
   const used = new Uint8Array(text.length);
   let m;
-
   const dateRe = new RegExp(
     '\\b\\d{1,2}\\s+' + MONTHS_RE + '\\s+\\d{3,4}\\b' +
     '|\\b' + MONTHS_RE + '\\s+\\d{1,2}(?:,)?\\s+\\d{3,4}\\b',
@@ -580,32 +589,26 @@ function findNumbers(text) {
     spans.push({ start: m.index, end: m.index + m[0].length, cat: 'num', w: 5 });
     for (let i = m.index; i < m.index + m[0].length; i++) used[i] = 1;
   }
-
   const numRe = /(?<![\p{L}\p{M}])\d+(?:[.,]\d+)*(?:\s*(?:%|‰))?(?![\p{L}\p{M}])/gu;
   while ((m = numRe.exec(text)) !== null) {
     if (used[m.index]) continue;
     const start = m.index;
     let end = m.index + m[0].length;
-
     const after = text.slice(end);
     const unitMatch = after.match(/^\s*([a-zA-ZÀ-ÿ°µ€$£¥]{1,6})\b/);
     if (unitMatch) {
       const unit = unitMatch[1].toLowerCase();
-      if (UNIT_WHITELIST.has(unit)) {
-        end += unitMatch[0].length;
-      }
+      if (UNIT_WHITELIST.has(unit)) end += unitMatch[0].length;
     }
     spans.push({ start, end, cat: 'num', w: 5 });
     for (let i = start; i < end; i++) used[i] = 1;
   }
-
   const romanRe = /(?<![\p{L}\p{M}])[IVXLCDM]{3,}(?![\p{L}\p{M}])/g;
   while ((m = romanRe.exec(text)) !== null) {
     if (used[m.index]) continue;
     spans.push({ start: m.index, end: m.index + m[0].length, cat: 'num', w: 4 });
     for (let i = m.index; i < m.index + m[0].length; i++) used[i] = 1;
   }
-
   return spans;
 }
 
@@ -653,7 +656,6 @@ function findEnumerations(text) {
     const commaCount = (listText.match(/,/g) || []).length;
     const semiCount = (listText.match(/;/g) || []).length;
     if (commaCount + semiCount < 1) continue;
-
     let trigStart = m.index;
     while (trigStart > 0 && !/[.;!?\n]/.test(text[trigStart - 1])) trigStart--;
     while (trigStart < m.index && /\s/.test(text[trigStart])) trigStart++;
@@ -706,7 +708,6 @@ function findProperNouns(text, tokens, stopwords, lang) {
     const c0 = t.word[0];
     if (c0 !== c0.toUpperCase() || c0 === c0.toLowerCase()) continue;
     if (/^[IVXLCDM]+$/.test(t.word) && t.word.length >= 2 && t.word.length <= 6) continue;
-
     let j = i;
     while (j + 1 < tokens.length) {
       const next = tokens[j + 1];
@@ -720,12 +721,10 @@ function findProperNouns(text, tokens, stopwords, lang) {
     const atStart = !before || /[.!?…。！？»"']\s*$/.test(before) || /^[«"„""'「『(\[]/.test(before);
     const isMulti = j > i;
     const isStopWord = stopwords.has(t.lower);
-
     let accept = false;
     if (isMulti) accept = true;
     else if (!atStart && !isStopWord) accept = true;
     else if (atStart && !isStopWord && t.word.length >= 7) accept = true;
-
     if (accept) spans.push({ start: t.start, end: tokens[j].end, cat: 'name', w: 4 });
     i = j;
   }
@@ -780,7 +779,6 @@ function analyzeStatistical(text) {
   const sentences = segmentSentences(text);
   const salient = computeSalience(tokens, stopwords);
   const bigrams = findBigrams(tokens, stopwords);
-
   const spans = [
     ...findNumbers(text),
     ...findQuotes(text),
@@ -794,7 +792,7 @@ function analyzeStatistical(text) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   AI LOCALE
+   AI LOCALE — sempre attiva, non disattivabile
    ═══════════════════════════════════════════════════════════════════ */
 
 const AI_MODELS = {
@@ -806,11 +804,13 @@ const AI_MODELS = {
 
 const AI_CDN = 'https://esm.run/@mlc-ai/web-llm';
 
+const savedModelKey = localStorage.getItem('annota.ai.model');
+
 const ai = {
   engine: null,
   loading: false,
-  enabled: JSON.parse(localStorage.getItem('annota.ai.enabled') || 'false'),
-  modelKey: localStorage.getItem('annota.ai.model') || 'qwen15',
+  modelKey: savedModelKey || 'qwen15',
+  hasEverDownloaded: !!savedModelKey,
   ready: false,
   readyModelKey: null,
   failed: false,
@@ -856,10 +856,14 @@ function setAIStatus(kind, message, pct) {
 function updateAIButton() {
   const btn = $('btnAI');
   const tag = $('modelTag');
-  btn.classList.remove('off', 'on', 'loading');
-  if (ai.loading) btn.classList.add('loading');
-  else if (ai.enabled && ai.ready) btn.classList.add('on');
-  else btn.classList.add('off');
+  const label = $('aiLabel');
+  btn.classList.remove('loading');
+  if (ai.loading) {
+    btn.classList.add('loading');
+    label.textContent = 'Preparazione…';
+  } else {
+    label.textContent = 'Annota';
+  }
   const model = AI_MODELS[ai.modelKey] || AI_MODELS.qwen15;
   tag.textContent = model.tag;
 }
@@ -867,23 +871,28 @@ function updateAIButton() {
 async function initAI(modelKey) {
   if (ai.loading) return;
   if (ai.ready && ai.readyModelKey === modelKey) return;
+
   if (ai.engine) {
     try { await ai.engine.unload(); } catch {}
     ai.engine = null;
     ai.ready = false;
   }
+
   if (!hasWebGPU()) {
     toast('WebGPU non disponibile su questo browser');
     setAIStatus('error', 'WebGPU non supportato. Serve iOS 26+ con Safari o Chrome 113+.');
     ai.failed = true;
     return;
   }
+
   const model = AI_MODELS[modelKey] || AI_MODELS.qwen15;
   ai.loading = true;
   ai.modelKey = modelKey;
+  ai.hasEverDownloaded = true;
   localStorage.setItem('annota.ai.model', modelKey);
   updateAIButton();
   setAIStatus('loading', `Scaricamento ${model.label}…`, 0);
+
   try {
     const webllm = await import(AI_CDN);
     ai.engine = await webllm.CreateMLCEngine(model.id, {
@@ -899,6 +908,8 @@ async function initAI(modelKey) {
     updateAIButton();
     setAIStatus('ready', `${model.label} pronta`);
     toast(`${model.label} caricata`, 2200);
+    // Se c'è testo, analizza subito con AI
+    if (state.text.trim()) runAnalyze();
   } catch (e) {
     console.error('AI load error:', e);
     ai.loading = false;
@@ -907,10 +918,7 @@ async function initAI(modelKey) {
     updateAIButton();
     const shortErr = (ai.lastError || 'caricamento fallito').slice(0, 80);
     setAIStatus('error', 'Errore: ' + shortErr);
-    ai.enabled = false;
-    localStorage.setItem('annota.ai.enabled', 'false');
-    updateAIButton();
-    toast('Modello troppo grande per questo dispositivo? Prova il più piccolo.', 3500);
+    toast('Modello troppo grande per questo dispositivo? Tieni premuto per cambiare.', 3500);
   }
 }
 
@@ -1157,8 +1165,8 @@ function computeCoverage(text, spans, activeCats) {
    UI
    ═══════════════════════════════════════════════════════════════════ */
 
-const LIB_KEY = 'annota.library.v5';
-const SES_KEY = 'annota.session.v5';
+const LIB_KEY = 'annota.library.v6';
+const SES_KEY = 'annota.session.v6';
 const THEME_KEY = 'annota.theme.v1';
 const INPUT_H_KEY = 'annota.inputHeight.v1';
 const CATS_KEY = 'annota.cats.v1';
@@ -1207,7 +1215,7 @@ function renderLegend() {
   }
 }
 
-async function runAnalyze(useAI) {
+async function runAnalyze() {
   const text = state.text;
   if (!text.trim()) {
     state.spans = [];
@@ -1218,11 +1226,13 @@ async function runAnalyze(useAI) {
     setAIStatus('hidden');
     return;
   }
+
   const result = analyzeStatistical(text);
   state.lang = result.lang;
   let spans = result.spans;
+
   state.aiApplied = false;
-  if (useAI && ai.ready && ai.enabled) {
+  if (ai.ready) {
     const sentences = segmentSentences(text);
     const before = spans.filter(s => s._concept).length;
     setAIStatus('working', 'Validazione concetti con AI…', '0%');
@@ -1238,8 +1248,10 @@ async function runAnalyze(useAI) {
   } else {
     setAIStatus('hidden');
   }
+
   state.spans = spans;
   state.lastStats = computeCategoryStats(text, spans);
+
   const badge = $('langBadge');
   if (result.lang === 'cjk') badge.textContent = 'CJK';
   else {
@@ -1247,9 +1259,11 @@ async function runAnalyze(useAI) {
     badge.textContent = prof ? prof.name : 'EN';
   }
   badge.classList.add('show');
+
   redrawOutput();
   renderStats();
   renderLegend();
+
   try { localStorage.setItem(SES_KEY, JSON.stringify({ text, ts: Date.now() })); } catch {}
 }
 
@@ -1417,7 +1431,7 @@ function openFromLibrary(id) {
   state.text = it.text;
   state.currentLibId = it.id;
   $('input').value = it.text;
-  runAnalyze(false);
+  runAnalyze();
   switchView('annotate');
   $('scrollAnnotate').scrollTop = 0;
   toast('Aperto dalla libreria');
@@ -1568,26 +1582,21 @@ function renderModelList() {
   }
 }
 
-async function toggleAI() {
+/* Apre il selettore del modello */
+function openModelPicker() {
   if (ai.loading) return;
-  if (ai.enabled && ai.ready) {
-    ai.enabled = false;
-    localStorage.setItem('annota.ai.enabled', 'false');
-    updateAIButton();
-    toast('AI disattivata');
-    if (state.text.trim()) runAnalyze(false);
-    return;
+  renderModelList();
+  // Adatta il testo della modale
+  if (ai.hasEverDownloaded) {
+    $('aiSetupTitle').textContent = 'Cambia modello AI';
+    $('aiSetupDesc').textContent = 'Il nuovo modello verrà scaricato (una sola volta). Il vecchio verrà rimosso dalla memoria.';
+    $('btnConfirmAI').textContent = 'Cambia modello';
+  } else {
+    $('aiSetupTitle').textContent = 'Scegli il modello AI';
+    $('aiSetupDesc').textContent = 'Scaricato una sola volta, resta sul dispositivo. Funziona offline. Scegli in base alla potenza del tuo iPhone.';
+    $('btnConfirmAI').textContent = 'Scarica e attiva';
   }
-  if (!ai.ready) {
-    renderModelList();
-    openModal('modalAISetup');
-    return;
-  }
-  ai.enabled = true;
-  localStorage.setItem('annota.ai.enabled', 'true');
-  updateAIButton();
-  toast('AI attivata');
-  if (state.text.trim()) runAnalyze(true);
+  openModal('modalAISetup');
 }
 
 function bindEvents() {
@@ -1609,26 +1618,115 @@ function bindEvents() {
     state.currentLibId = null;
     clearTimeout(timer);
     timer = setTimeout(() => {
-      if (state.text.trim().length > 60) runAnalyze(ai.enabled && ai.ready);
+      if (state.text.trim().length > 60 && ai.ready) runAnalyze();
+      else if (state.text.trim().length > 60 && !ai.ready) {
+        // Analisi statistica istantanea senza AI
+        const result = analyzeStatistical(state.text);
+        state.spans = result.spans;
+        state.lang = result.lang;
+        state.lastStats = computeCategoryStats(state.text, result.spans);
+        state.aiApplied = false;
+        redrawOutput();
+        renderStats();
+        renderLegend();
+        const badge = $('langBadge');
+        badge.textContent = result.lang === 'cjk' ? 'CJK' : (LANG_PROFILES[result.lang]?.name || 'EN');
+        badge.classList.add('show');
+      }
     }, 500);
   });
 
-  $('btnAnalyze').addEventListener('click', async () => {
-    const btn = $('btnAnalyze');
-    btn.classList.add('busy');
-    $('analyzeLabel').textContent = (ai.enabled && ai.ready) ? 'Analisi AI…' : 'Annota';
+  // ═══════ TASTO AI: tap = analizza, long press = cambia modello ═══════
+  const btnAI = $('btnAI');
+  let longPressTimer = null;
+  let longPressFired = false;
+
+  const cancelLongPress = () => {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      longPressTimer = null;
+    }
+  };
+
+  btnAI.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    longPressFired = false;
+    cancelLongPress();
+    longPressTimer = setTimeout(() => {
+      longPressFired = true;
+      vibrate(20);
+      openModelPicker();
+    }, 500);
+  });
+
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev => {
+    btnAI.addEventListener(ev, cancelLongPress);
+  });
+
+  btnAI.addEventListener('contextmenu', e => e.preventDefault());
+
+  btnAI.addEventListener('click', async e => {
+    if (longPressFired) {
+      e.preventDefault();
+      e.stopPropagation();
+      longPressFired = false;
+      return;
+    }
+    // Tap normale: comportamento del vecchio tasto "Annota"
+    if (ai.loading) return;
+
+    if (!ai.ready) {
+      // Modello non ancora caricato: apri il picker
+      openModelPicker();
+      return;
+    }
+
+    // Modello pronto: esegui l'analisi completa
+    btnAI.classList.add('busy');
+    $('aiLabel').textContent = 'Analisi…';
     requestAnimationFrame(() => {
       setTimeout(async () => {
-        await runAnalyze(ai.enabled && ai.ready);
-        btn.classList.remove('busy');
-        $('analyzeLabel').textContent = 'Annota';
+        await runAnalyze();
+        btnAI.classList.remove('busy');
+        $('aiLabel').textContent = 'Annota';
         vibrate(10);
       }, 10);
     });
   });
 
-  $('btnAI').addEventListener('click', () => { toggleAI(); vibrate(8); });
+  // ═══════ Tasto Incolla ═══════
+  $('btnPaste').addEventListener('click', async () => {
+    try {
+      const t = await navigator.clipboard.readText();
+      if (t) {
+        input.value = t;
+        state.text = t;
+        state.currentLibId = null;
+        if (ai.ready) runAnalyze();
+        else {
+          // Analisi statistica base se AI non pronta
+          const result = analyzeStatistical(t);
+          state.spans = result.spans;
+          state.lang = result.lang;
+          state.lastStats = computeCategoryStats(t, result.spans);
+          state.aiApplied = false;
+          redrawOutput();
+          renderStats();
+          renderLegend();
+          const badge = $('langBadge');
+          badge.textContent = result.lang === 'cjk' ? 'CJK' : (LANG_PROFILES[result.lang]?.name || 'EN');
+          badge.classList.add('show');
+        }
+        vibrate(8);
+      } else {
+        toast('Appunti vuoti');
+      }
+    } catch {
+      toast('Incolla manualmente (tieni premuto nel campo)');
+    }
+  });
 
+  // ═══════ Tasto Cestino ═══════
   $('btnClear').addEventListener('click', () => {
     input.value = '';
     state.text = '';
@@ -1681,10 +1779,14 @@ function bindEvents() {
   $('btnCancelAI').addEventListener('click', () => closeModal('modalAISetup'));
   $('btnConfirmAI').addEventListener('click', async () => {
     closeModal('modalAISetup');
-    ai.enabled = true;
-    localStorage.setItem('annota.ai.enabled', 'true');
+    const wasReady = ai.ready;
+    const modelChanged = ai.readyModelKey !== ai.modelKey;
+    if (wasReady && !modelChanged) {
+      // Nulla da fare, stesso modello già pronto
+      if (state.text.trim()) runAnalyze();
+      return;
+    }
     await initAI(ai.modelKey);
-    if (ai.ready && state.text.trim()) runAnalyze(true);
   });
 
   $('searchInput').addEventListener('input', e => runSearch(e.target.value));
@@ -1701,7 +1803,6 @@ function bindEvents() {
   $('libSearch').addEventListener('input', e => renderLibrary(e.target.value));
   $('scrollAnnotate').addEventListener('scroll', updateReadProgress, { passive: true });
 
-  // Segue i cambi di tema del sistema SOLO se l'utente non ha mai scelto manualmente
   if (!localStorage.getItem(THEME_KEY)) {
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
       if (!localStorage.getItem(THEME_KEY)) {
@@ -1731,7 +1832,7 @@ function init() {
 
 Di conseguenza, il 14 luglio 1789 il popolo parigino insorse contro la monarchia. La Dichiarazione dei Diritti dell'Uomo e del Cittadino, approvata nell'agosto dello stesso anno, costituisce uno dei documenti fondamentali della storia moderna.
 
-Napoleone Bonaparte prese il potere nel 1799 con il colpo di Stato del 18 brumaio, ponendo fine alla fase rivoluzionaria. Il Consolato, instaurato nel 1799, diede origine a un nuovo ordine istituzionale che portò alla proclamazione dell'Impero nel 1804.`;
+Napoleone Bonaparte prese il potere nel 1799 con il colpo di stato del 18 brumaio, ponendo fine alla fase rivoluzionaria. Il Consolato, instaurato nel 1799, diede origine a un nuovo ordine istituzionale che portò alla proclamazione dell'Impero nel 1804.`;
     state.text = sample;
     $('input').value = sample;
   }
@@ -1740,18 +1841,16 @@ Napoleone Bonaparte prese il potere nel 1799 con il colpo di Stato del 18 brumai
   bindEvents();
   initResize();
   updateAIButton();
-  runAnalyze(false);
 
-  if (ai.enabled) {
+  // Se l'utente ha già scaricato un modello in passato, ricarica in background
+  if (ai.hasEverDownloaded) {
     setTimeout(() => {
-      if (!hasWebGPU()) {
-        ai.enabled = false;
-        localStorage.setItem('annota.ai.enabled', 'false');
-        updateAIButton();
-        return;
-      }
-      initAI(ai.modelKey);
+      if (hasWebGPU()) initAI(ai.modelKey);
+      else updateAIButton();
     }, 800);
+  } else {
+    // Primo avvio: analisi statistica
+    runAnalyze();
   }
 }
 
