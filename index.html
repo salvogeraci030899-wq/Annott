@@ -79,7 +79,6 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .btn svg{width:17px;height:17px}
 .btn.icon-only svg{width:20px;height:20px}
 
-/* Tasto AI principale: viola, solo icona */
 .btn-ai-main{
   touch-action: manipulation;
   -webkit-user-select: none; user-select: none;
@@ -199,7 +198,7 @@ mark.c-sentence{background:var(--c-sentence)}
 .tabbar{position:sticky;bottom:0;z-index:30;display:flex;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-top:1px solid var(--border);padding-bottom:env(safe-area-inset-bottom)}
 .tabbar .tab{flex:1;padding:10px 8px 12px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ink-3);font-size:.68rem;font-weight:600;transition:color .15s}
 .tabbar .tab svg{width:22px;height:22px}
-.tabbar .tab.active{color:var(--accent)}
+.tabbar .tab.active{color:var(--ai)}
 body.reading .topbar,body.reading .tabbar,body.reading .input-card,body.reading .actions,body.reading .toolbar,body.reading .cats-row,body.reading .stats,body.reading .searchbar,body.reading .ai-bar{display:none !important}
 body.reading .scroll{padding-top:10px}
 body.reading .output-card{font-size:1.18rem;padding:24px 22px;border-radius:0;border:none;box-shadow:none;background:var(--bg)}
@@ -396,10 +395,6 @@ function toast(msg, ms = 2000) {
   toastTimer = setTimeout(() => t.classList.remove('show'), ms);
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   TEMA
-   ═══════════════════════════════════════════════════════════════════ */
-
 const THEME_BG = { light: '#f6f3ee', dark: '#14110f' };
 
 function applyThemeToMeta(t) {
@@ -412,10 +407,6 @@ function applyThemeToMeta(t) {
   const sb = document.getElementById('metaStatusBar');
   if (sb) sb.setAttribute('content', isDark ? 'black' : 'default');
 }
-
-/* ═══════════════════════════════════════════════════════════════════
-   MOTORE STATISTICO UNIVERSALE
-   ═══════════════════════════════════════════════════════════════════ */
 
 const LANG_PROFILES = {
   it:{ name:'Italiano',
@@ -795,10 +786,6 @@ function analyzeStatistical(text) {
   return { spans, lang };
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   AI LOCALE
-   ═══════════════════════════════════════════════════════════════════ */
-
 const AI_MODELS = {
   qwen05: { id: 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC', label: 'Qwen 0.5B', tag: '0.5B', size: '~400 MB', desc: 'Velocissimo. Base. Per iPhone più vecchi.' },
   qwen15: { id: 'Qwen2.5-1.5B-Instruct-q4f16_1-MLC', label: 'Qwen 1.5B', tag: '1.5B', size: '~1 GB', desc: 'Bilanciato. Consigliato. Limite su Safari iOS.' },
@@ -807,7 +794,6 @@ const AI_MODELS = {
 };
 
 const AI_CDN = 'https://esm.run/@mlc-ai/web-llm';
-
 const savedModelKey = localStorage.getItem('annota.ai.model');
 
 const ai = {
@@ -1065,10 +1051,6 @@ async function aiValidateSpans(text, spans, lang, sentences) {
   return [...otherSpans, ...kept, ...remainder];
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   OVERLAP E RENDER
-   ═══════════════════════════════════════════════════════════════════ */
-
 const CAT_PRIORITY = { quote:10, num:9, def:8, list:7, name:6, key:5, sentence:4 };
 
 function buildRuns(text, spans) {
@@ -1165,10 +1147,6 @@ function computeCoverage(text, spans, activeCats) {
   return { pct, count };
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   UI
-   ═══════════════════════════════════════════════════════════════════ */
-
 const LIB_KEY = 'annota.library.v6';
 const SES_KEY = 'annota.session.v6';
 const THEME_KEY = 'annota.theme.v1';
@@ -1230,11 +1208,9 @@ async function runAnalyze() {
     setAIStatus('hidden');
     return;
   }
-
   const result = analyzeStatistical(text);
   state.lang = result.lang;
   let spans = result.spans;
-
   state.aiApplied = false;
   if (ai.ready) {
     const sentences = segmentSentences(text);
@@ -1252,10 +1228,8 @@ async function runAnalyze() {
   } else {
     setAIStatus('hidden');
   }
-
   state.spans = spans;
   state.lastStats = computeCategoryStats(text, spans);
-
   const badge = $('langBadge');
   if (result.lang === 'cjk') badge.textContent = 'CJK';
   else {
@@ -1263,11 +1237,9 @@ async function runAnalyze() {
     badge.textContent = prof ? prof.name : 'EN';
   }
   badge.classList.add('show');
-
   redrawOutput();
   renderStats();
   renderLegend();
-
   try { localStorage.setItem(SES_KEY, JSON.stringify({ text, ts: Date.now() })); } catch {}
 }
 
