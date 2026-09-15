@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
-<meta name="theme-color" content="#f7f4ef">
+<meta name="theme-color" id="metaThemeColor" content="#f6f3ee">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" id="metaStatusBar" content="default">
 <meta name="apple-mobile-web-app-title" content="Annota">
 <title>Annota · lettura strutturata</title>
 <style>
 :root{
+  color-scheme: light;
   --bg:#f6f3ee;--surface:#ffffff;--surface-2:#fbf9f5;--surface-3:#f1ede6;
   --ink:#1b1815;--ink-2:#57534e;--ink-3:#a8a29e;
   --border:#e6e0d6;--border-2:#d9d2c5;
@@ -20,6 +21,7 @@
   --c-quote:#ffc1cf;--c-list:#a9d8ff;--c-def:#ffe0b6;--c-sentence:rgba(255,201,160,.45);
 }
 [data-theme="dark"]{
+  color-scheme: dark;
   --bg:#14110f;--surface:#1e1a18;--surface-2:#262120;--surface-3:#2e2826;
   --ink:#f3efe9;--ink-2:#b6ada3;--ink-3:#6a635c;
   --border:#302a27;--border-2:#3d3632;
@@ -369,6 +371,32 @@ function toast(msg, ms = 2000) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
+   TEMA — sincronizza data-theme, theme-color e status-bar-style
+   ═══════════════════════════════════════════════════════════════════ */
+
+const THEME_BG = { light: '#f6f3ee', dark: '#14110f' };
+
+function applyThemeToMeta(t) {
+  const isDark = t === 'dark';
+  const bg = isDark ? THEME_BG.dark : THEME_BG.light;
+
+  // 1. theme-color: colora la chrome del browser (iOS Safari, Android Chrome)
+  let meta = document.getElementById('metaThemeColor');
+  if (!meta) {
+    meta = document.querySelector('meta[name="theme-color"]');
+  }
+  if (meta) meta.setAttribute('content', bg);
+
+  // 2. Rimuovi eventuali theme-color aggiuntivi con media query
+  document.querySelectorAll('meta[name="theme-color"][media]').forEach(m => m.remove());
+
+  // 3. apple-mobile-web-app-status-bar-style per PWA installate
+  //    (iOS accetta solo "default", "black", "black-translucent")
+  const sb = document.getElementById('metaStatusBar');
+  if (sb) sb.setAttribute('content', isDark ? 'black' : 'default');
+}
+
+/* ═══════════════════════════════════════════════════════════════════
    MOTORE STATISTICO UNIVERSALE
    ═══════════════════════════════════════════════════════════════════ */
 
@@ -516,11 +544,6 @@ function findBigrams(tokens, stopwords) {
   return bigrams;
 }
 
-/* ───── NUMERI E DATE — versione corretta ─────
-   Le date complete diventano un unico span.
-   I numeri si estendono solo su unità di misura reali (whitelist).
-   Gli articoli e le parole funzionali non vengono più inglobati. */
-
 const UNIT_WHITELIST = new Set([
   '%','‰','°','°c','°f','°k','€','$','£','¥',
   'km','hm','dam','dm','cm','mm','nm','µm','mi','ft','yd','in',
@@ -548,7 +571,6 @@ function findNumbers(text) {
   const used = new Uint8Array(text.length);
   let m;
 
-  // ── 1. Date complete: "14 luglio 1789" o "July 14, 1789" ──
   const dateRe = new RegExp(
     '\\b\\d{1,2}\\s+' + MONTHS_RE + '\\s+\\d{3,4}\\b' +
     '|\\b' + MONTHS_RE + '\\s+\\d{1,2}(?:,)?\\s+\\d{3,4}\\b',
@@ -559,14 +581,12 @@ function findNumbers(text) {
     for (let i = m.index; i < m.index + m[0].length; i++) used[i] = 1;
   }
 
-  // ── 2. Numeri con eventuale unità di misura (solo whitelist) ──
   const numRe = /(?<![\p{L}\p{M}])\d+(?:[.,]\d+)*(?:\s*(?:%|‰))?(?![\p{L}\p{M}])/gu;
   while ((m = numRe.exec(text)) !== null) {
     if (used[m.index]) continue;
     const start = m.index;
     let end = m.index + m[0].length;
 
-    // Estendi SOLO se la parola successiva è una vera unità di misura
     const after = text.slice(end);
     const unitMatch = after.match(/^\s*([a-zA-ZÀ-ÿ°µ€$£¥]{1,6})\b/);
     if (unitMatch) {
@@ -579,7 +599,6 @@ function findNumbers(text) {
     for (let i = start; i < end; i++) used[i] = 1;
   }
 
-  // ── 3. Numeri romani (min 3 caratteri, per evitare MI/CD/CV) ──
   const romanRe = /(?<![\p{L}\p{M}])[IVXLCDM]{3,}(?![\p{L}\p{M}])/g;
   while ((m = romanRe.exec(text)) !== null) {
     if (used[m.index]) continue;
@@ -775,38 +794,14 @@ function analyzeStatistical(text) {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   AI LOCALE — WebLLM
+   AI LOCALE
    ═══════════════════════════════════════════════════════════════════ */
 
 const AI_MODELS = {
-  qwen05: {
-    id: 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC',
-    label: 'Qwen 0.5B',
-    tag: '0.5B',
-    size: '~400 MB',
-    desc: 'Velocissimo. Base. Per iPhone più vecchi.'
-  },
-  qwen15: {
-    id: 'Qwen2.5-1.5B-Instruct-q4f16_1-MLC',
-    label: 'Qwen 1.5B',
-    tag: '1.5B',
-    size: '~1 GB',
-    desc: 'Bilanciato. Consigliato. Limite su Safari iOS.'
-  },
-  qwen3: {
-    id: 'Qwen2.5-3B-Instruct-q4f16_1-MLC',
-    label: 'Qwen 3B',
-    tag: '3B',
-    size: '~1.8 GB',
-    desc: 'Massima qualità. Solo desktop o iPad recenti.'
-  },
-  llama3: {
-    id: 'Llama-3.2-3B-Instruct-q4f16_1-MLC',
-    label: 'Llama 3.2 3B',
-    tag: 'L3',
-    size: '~1.9 GB',
-    desc: 'Alternativa a Qwen 3B. Ottimo su testi inglesi.'
-  }
+  qwen05: { id: 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC', label: 'Qwen 0.5B', tag: '0.5B', size: '~400 MB', desc: 'Velocissimo. Base. Per iPhone più vecchi.' },
+  qwen15: { id: 'Qwen2.5-1.5B-Instruct-q4f16_1-MLC', label: 'Qwen 1.5B', tag: '1.5B', size: '~1 GB', desc: 'Bilanciato. Consigliato. Limite su Safari iOS.' },
+  qwen3:  { id: 'Qwen2.5-3B-Instruct-q4f16_1-MLC',   label: 'Qwen 3B',   tag: '3B',   size: '~1.8 GB', desc: 'Massima qualità. Solo desktop o iPad recenti.' },
+  llama3: { id: 'Llama-3.2-3B-Instruct-q4f16_1-MLC', label: 'Llama 3.2 3B', tag: 'L3', size: '~1.9 GB', desc: 'Alternativa a Qwen 3B. Ottimo su testi inglesi.' }
 };
 
 const AI_CDN = 'https://esm.run/@mlc-ai/web-llm';
@@ -833,11 +828,9 @@ function setAIStatus(kind, message, pct) {
   const msg = $('aiMsg');
   const pctEl = $('aiPct');
   const spinner = $('aiSpinner');
-
   bar.classList.remove('ready', 'error');
   if (kind === 'hidden') { bar.classList.remove('show'); return; }
   bar.classList.add('show');
-
   if (kind === 'loading') {
     spinner.style.display = 'block';
     msg.textContent = message || 'Preparazione AI…';
@@ -867,7 +860,6 @@ function updateAIButton() {
   if (ai.loading) btn.classList.add('loading');
   else if (ai.enabled && ai.ready) btn.classList.add('on');
   else btn.classList.add('off');
-
   const model = AI_MODELS[ai.modelKey] || AI_MODELS.qwen15;
   tag.textContent = model.tag;
 }
@@ -875,27 +867,23 @@ function updateAIButton() {
 async function initAI(modelKey) {
   if (ai.loading) return;
   if (ai.ready && ai.readyModelKey === modelKey) return;
-
   if (ai.engine) {
     try { await ai.engine.unload(); } catch {}
     ai.engine = null;
     ai.ready = false;
   }
-
   if (!hasWebGPU()) {
     toast('WebGPU non disponibile su questo browser');
     setAIStatus('error', 'WebGPU non supportato. Serve iOS 26+ con Safari o Chrome 113+.');
     ai.failed = true;
     return;
   }
-
   const model = AI_MODELS[modelKey] || AI_MODELS.qwen15;
   ai.loading = true;
   ai.modelKey = modelKey;
   localStorage.setItem('annota.ai.model', modelKey);
   updateAIButton();
   setAIStatus('loading', `Scaricamento ${model.label}…`, 0);
-
   try {
     const webllm = await import(AI_CDN);
     ai.engine = await webllm.CreateMLCEngine(model.id, {
@@ -1031,12 +1019,10 @@ async function aiValidateSpans(text, spans, lang, sentences) {
   const conceptSpans = spans.filter(s => s._concept);
   const otherSpans = spans.filter(s => !s._concept);
   if (!conceptSpans.length) return spans;
-
   const MAX = 40;
   const toValidate = conceptSpans.slice(0, MAX);
   const remainder = conceptSpans.slice(MAX);
   const kept = [];
-
   const seen = new Map();
   for (const s of toValidate) {
     const snippet = text.slice(s.start, s.end);
@@ -1044,33 +1030,26 @@ async function aiValidateSpans(text, spans, lang, sentences) {
     if (!seen.has(key)) seen.set(key, []);
     seen.get(key).push(s);
   }
-
   const entries = [...seen.entries()];
   let processed = 0;
   const total = entries.length;
-
   for (const [, list] of entries) {
     processed++;
     if (processed % 2 === 0 || processed === total) {
       setAIStatus('working', `Validazione AI (${processed}/${total})…`, `${Math.round(processed/total*100)}%`);
     }
-
     const sample = list[0];
     const snippet = text.slice(sample.start, sample.end);
     const context = contextForSpan(text, sample, sentences);
     const prompt = buildValidationPrompt(lang, snippet, context);
-
     let keep = true;
     try {
       const response = await llmChat(prompt, 6);
       const verdict = parseYesNo(response);
       keep = verdict === null ? true : verdict;
-    } catch (e) {
-      keep = true;
-    }
+    } catch (e) { keep = true; }
     if (keep) kept.push(...list);
   }
-
   return [...otherSpans, ...kept, ...remainder];
 }
 
@@ -1239,11 +1218,9 @@ async function runAnalyze(useAI) {
     setAIStatus('hidden');
     return;
   }
-
   const result = analyzeStatistical(text);
   state.lang = result.lang;
   let spans = result.spans;
-
   state.aiApplied = false;
   if (useAI && ai.ready && ai.enabled) {
     const sentences = segmentSentences(text);
@@ -1261,10 +1238,8 @@ async function runAnalyze(useAI) {
   } else {
     setAIStatus('hidden');
   }
-
   state.spans = spans;
   state.lastStats = computeCategoryStats(text, spans);
-
   const badge = $('langBadge');
   if (result.lang === 'cjk') badge.textContent = 'CJK';
   else {
@@ -1272,11 +1247,9 @@ async function runAnalyze(useAI) {
     badge.textContent = prof ? prof.name : 'EN';
   }
   badge.classList.add('show');
-
   redrawOutput();
   renderStats();
   renderLegend();
-
   try { localStorage.setItem(SES_KEY, JSON.stringify({ text, ts: Date.now() })); } catch {}
 }
 
@@ -1291,7 +1264,6 @@ function renderStats() {
   const sentences = segmentSentences(text).length;
   const warn = cov.pct > 45;
   const ok = cov.pct >= 5 && cov.pct <= 35;
-
   const box = $('stats');
   box.style.display = 'grid';
   box.innerHTML = `
@@ -1307,7 +1279,6 @@ function initResize() {
   const handle = $('resizeHandle');
   const saved = parseInt(localStorage.getItem(INPUT_H_KEY) || '0', 10);
   if (saved && saved >= 80 && saved <= 2000) ta.style.height = saved + 'px';
-
   let dragging = false, startY = 0, startH = 0;
   const onDown = e => {
     e.preventDefault();
@@ -1355,7 +1326,6 @@ function runSearch(q) {
   const nodes = [];
   let n;
   while ((n = walker.nextNode())) nodes.push(n);
-
   for (const node of nodes) {
     const s = node.nodeValue;
     let m;
@@ -1379,7 +1349,6 @@ function runSearch(q) {
     if (cur < s.length) frag.appendChild(document.createTextNode(s.slice(cur)));
     node.parentNode.replaceChild(frag, node);
   }
-
   state.searchHits = [...out.querySelectorAll('mark.search-hit')];
   $('searchCount').textContent = state.searchHits.length ? `1/${state.searchHits.length}` : '0';
   if (state.searchHits.length) { state.searchIdx = 0; focusHit(); }
@@ -1396,7 +1365,6 @@ function renderLibrary(filter = '') {
   const list = $('libList');
   const empty = $('libEmpty');
   list.innerHTML = '';
-
   let items = [...state.library].sort((a, b) => b.updatedAt - a.updatedAt);
   if (filter.trim()) {
     const f = filter.toLowerCase();
@@ -1404,7 +1372,6 @@ function renderLibrary(filter = '') {
       it.title.toLowerCase().includes(f) || it.text.toLowerCase().includes(f)
     );
   }
-
   if (!items.length) {
     empty.style.display = 'block';
     empty.querySelector('.title').textContent = filter ? 'Nessun risultato' : 'Libreria vuota';
@@ -1414,7 +1381,6 @@ function renderLibrary(filter = '') {
     return;
   }
   empty.style.display = 'none';
-
   for (const it of items) {
     const el = document.createElement('div');
     el.className = 'lib-item';
@@ -1490,7 +1456,6 @@ function saveToLibrary() {
 function confirmSave() {
   const title = $('saveTitle').value.trim() || state.text.trim().slice(0, 60).replace(/\s+/g, ' ');
   const cov = computeCoverage(state.text, state.spans, state.activeCats);
-
   if (state.currentLibId) {
     const it = state.library.find(x => x.id === state.currentLibId);
     if (it) Object.assign(it, {
@@ -1516,7 +1481,6 @@ async function shareOrExport() {
   const html = buildExportHTML();
   const blob = new Blob([html], { type: 'text/html' });
   const file = new File([blob], `annotazione-${Date.now()}.html`, { type: 'text/html' });
-
   if (navigator.canShare && navigator.canShare({ files: [file] })) {
     try {
       await navigator.share({ files: [file], title: 'Annotazione', text: state.text.slice(0, 120) });
@@ -1564,7 +1528,7 @@ function switchView(v) {
 function setTheme(t) {
   document.documentElement.dataset.theme = t;
   localStorage.setItem(THEME_KEY, t);
-  document.querySelector('meta[name=theme-color]').setAttribute('content', t === 'dark' ? '#14110f' : '#f6f3ee');
+  applyThemeToMeta(t);
 }
 
 function toggleSearch() {
@@ -1606,7 +1570,6 @@ function renderModelList() {
 
 async function toggleAI() {
   if (ai.loading) return;
-
   if (ai.enabled && ai.ready) {
     ai.enabled = false;
     localStorage.setItem('annota.ai.enabled', 'false');
@@ -1615,13 +1578,11 @@ async function toggleAI() {
     if (state.text.trim()) runAnalyze(false);
     return;
   }
-
   if (!ai.ready) {
     renderModelList();
     openModal('modalAISetup');
     return;
   }
-
   ai.enabled = true;
   localStorage.setItem('annota.ai.enabled', 'true');
   updateAIButton();
@@ -1739,12 +1700,21 @@ function bindEvents() {
 
   $('libSearch').addEventListener('input', e => renderLibrary(e.target.value));
   $('scrollAnnotate').addEventListener('scroll', updateReadProgress, { passive: true });
+
+  // Segue i cambi di tema del sistema SOLO se l'utente non ha mai scelto manualmente
+  if (!localStorage.getItem(THEME_KEY)) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+      if (!localStorage.getItem(THEME_KEY)) {
+        setTheme(e.matches ? 'dark' : 'light');
+      }
+    });
+  }
 }
 
 function init() {
   const savedTheme = localStorage.getItem(THEME_KEY);
   if (savedTheme) setTheme(savedTheme);
-  else if (window.matchMedia?.('(prefers-color-scheme: dark)').matches) setTheme('dark');
+  else setTheme(window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
   let restored = false;
   try {
