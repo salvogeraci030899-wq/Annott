@@ -31,17 +31,9 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .view.active{display:flex}
 .scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px;padding-bottom:120px}
 .wrap{max-width:760px;margin:0 auto}
-.input-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;display:flex;flex-direction:column;overflow:hidden}
-.input-card textarea{width:100%;border:none;outline:none;background:transparent;font-size:15px;line-height:1.55;resize:none;padding:12px 14px;min-height:90px;height:120px;display:block}
+.input-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.input-card textarea{width:100%;border:none;outline:none;background:transparent;font-size:15px;line-height:1.55;resize:none;padding:14px;min-height:100px;max-height:500px;display:block;overflow-y:auto}
 .input-card textarea::placeholder{color:var(--ink-3)}
-.input-footer{display:flex;align-items:center;padding:6px 10px 8px;gap:8px;border-top:1px solid var(--border)}
-.resize-handle{flex:1;height:24px;display:flex;align-items:center;justify-content:center;cursor:ns-resize;touch-action:none;color:var(--ink-3);border-radius:6px;user-select:none;-webkit-user-select:none}
-.resize-handle:active,.resize-handle.dragging{background:var(--ai-soft);color:var(--ai)}
-.resize-handle svg{width:20px;height:20px;pointer-events:none}
-.analyze-btn{width:36px;height:36px;border-radius:50%;background:var(--ai);color:#fff;display:grid;place-items:center;flex:0 0 auto}
-.analyze-btn:active{transform:scale(.92)}
-.analyze-btn svg{width:20px;height:20px}
-[data-theme="dark"] .analyze-btn{color:#1a0f3d}
 .actions{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding:0 2px;scrollbar-width:none}
 .actions::-webkit-scrollbar{display:none}
 .tbtn{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:9px;font-size:.82rem;font-weight:500;color:var(--ink-2);background:var(--surface);border:1px solid var(--border);white-space:nowrap}
@@ -49,9 +41,6 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .tbtn.on{background:var(--ai-soft);color:var(--ai);border-color:color-mix(in srgb,var(--ai) 30%,transparent)}
 .tbtn svg{width:15px;height:15px}
 .tbtn.danger{color:var(--danger)}
-.tbtn.ai-mode{background:var(--ai);color:#fff;border-color:var(--ai)}
-.tbtn.ai-mode:active{filter:brightness(.92)}
-[data-theme="dark"] .tbtn.ai-mode{color:#1a0f3d}
 .cats-row{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none}
 .cats-row::-webkit-scrollbar{display:none}
 .cat-pill{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;padding:5px 9px 5px 7px;border-radius:999px;font-size:.7rem;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--ink-2);white-space:nowrap;line-height:1}
@@ -176,15 +165,7 @@ body.edit-mode .edit-hint{display:block}
     <div class="scroll" id="scrollText">
       <div class="wrap">
         <div class="input-card">
-          <textarea id="input" placeholder="Incolla un testo per evidenziarlo…"></textarea>
-          <div class="input-footer">
-            <div class="resize-handle" id="resizeHandle" title="Trascina per allungare">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 9 12 5 16 9"/><line x1="12" y1="5" x2="12" y2="19"/><polyline points="8 15 12 19 16 15"/></svg>
-            </div>
-            <button class="analyze-btn" id="btnAnalyze" title="Analizza e evidenzia">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="5 12 12 19 19 12"/></svg>
-            </button>
-          </div>
+          <textarea id="input" placeholder="Incolla un testo per evidenziarlo…" rows="3"></textarea>
         </div>
 
         <div class="cats-row" id="legend"></div>
@@ -438,8 +419,8 @@ function fsrsNext(card, rating, now){
 }
 function fsrsInterval(S){ var d = (S / FFACTOR) * (Math.pow(FTARGET, 1 / FDECAY) - 1); return Math.max(1, Math.round(d)); }
 
-var KEY = 'hl.v7.data';
-var DATA = { version: 7, docs: {}, highlights: {}, cards: {}, review: {}, activeDocId: null, settings: { activeCats: [] } };
+var KEY = 'hl.v71.data';
+var DATA = { version: 71, docs: {}, highlights: {}, cards: {}, review: {}, activeDocId: null, settings: { activeCats: [] } };
 function load(){
   try {
     var raw = localStorage.getItem(KEY);
@@ -1025,9 +1006,6 @@ function segmentSentences(text){
   return out;
 }
 
-// ============================================================
-// DIZIONARIO-BASED proposal (fast, offline)
-// ============================================================
 function proposeFromDict(doc){
   var hls = highlightsForDoc(doc.id).filter(function(h){ return h.start >= 0; });
   var sents = segmentSentences(doc.text);
@@ -1085,9 +1063,6 @@ function proposeFromDict(doc){
   return out;
 }
 
-// ============================================================
-// AI — WebLLM + estrazione entità
-// ============================================================
 var AI_CDN = 'https://esm.run/@mlc-ai/web-llm';
 var AI_MODELS = {
   qwen05: { id: 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC', label: 'Qwen 0.5B', size: '~400 MB', desc: 'Veloce, per telefoni modesti.' },
@@ -1099,7 +1074,7 @@ var ai = {
   loading: false,
   ready: false,
   failed: false,
-  modelKey: localStorage.getItem('hl.v7.model') || 'qwen15'
+  modelKey: localStorage.getItem('hl.v71.model') || 'qwen15'
 };
 function hasWebGPU(){ return typeof navigator !== 'undefined' && !!navigator.gpu; }
 
@@ -1139,7 +1114,7 @@ function loadAIModel(key){
   if (!model) return Promise.resolve(false);
   ai.loading = true;
   ai.failed = false;
-  localStorage.setItem('hl.v7.model', key);
+  localStorage.setItem('hl.v71.model', key);
   setMainStatus('loading', 'Scaricamento ' + model.label + '…', 0);
   setModalStatus('loading', 'Scaricamento ' + model.label + '…', 0);
   return import(/* @vite-ignore */ AI_CDN).then(function(webllm){
@@ -1174,9 +1149,7 @@ function loadAIModel(key){
 }
 
 function unloadAIModel(){
-  if (ai.engine && ai.engine.unload){
-    try { ai.engine.unload(); } catch(e){}
-  }
+  if (ai.engine && ai.engine.unload){ try { ai.engine.unload(); } catch(e){} }
   ai.engine = null;
   ai.ready = false;
   ai.loading = false;
@@ -1220,15 +1193,14 @@ function refreshAIModalButtons(){
   }
 }
 
-// Prompt semplice per 1.5B — chiede di ESTRARRE, non di generare
 function buildExtractPrompt(text){
   return 'Leggi questo testo ed estrai i fatti. Per ogni fatto scrivi un oggetto JSON con 3 campi: entita, tipo, soggetto.\n\n' +
     'Tipi ammessi: anno, data, percentuale, numero, nome.\n' +
     'Regole: entita deve essere breve (1-8 parole). soggetto è la parte di frase prima dell\'entità.\n\n' +
     'Testo:\n' + text + '\n\n' +
     'Esempio di risposta valida:\n' +
-    '[{"entita":"1948","tipo":"anno","soggetto":"La Costituzione entrò in vigore il"},{"entita":"1 gennaio 1948","tipo":"data","soggetto":"entrò in vigore il"}]\n\n' +
-    'Rispondi SOLO con array JSON, nessun testo prima o dopo:';
+    '[{"entita":"1948","tipo":"anno","soggetto":"La Costituzione entrò in vigore il"}]\n\n' +
+    'Rispondi SOLO con array JSON:';
 }
 
 function parseExtract(raw){
@@ -1264,7 +1236,6 @@ function splitChunks(text, maxWords){
   return chunks.filter(function(c){ return c.length > 40; });
 }
 
-// Chiama AI per estrarre entità residue non coperte dal dizionario
 function proposeFromAI(doc, onProgress){
   var chunks = splitChunks(doc.text, 100);
   if (!chunks.length) return Promise.resolve([]);
@@ -1282,29 +1253,18 @@ function proposeFromAI(doc, onProgress){
         if (!it || !it.entita || !it.tipo) continue;
         var entita = String(it.entita).trim();
         var tipo = String(it.tipo).trim().toLowerCase();
-        // normalizza tipo
         if (tipo === 'cifra') tipo = 'numero';
         if (tipo === 'nome' || tipo === 'persona') tipo = 'nome_proprio';
         if (['anno','data','percentuale','numero','nome_proprio'].indexOf(tipo) === -1) continue;
-        // riclassifica per sicurezza
         var verified = classifyEntity(entita);
         if (verified !== 'sconosciuto') tipo = verified;
-        // trova posizione nel testo
         var idx = doc.text.indexOf(entita);
         if (idx < 0) continue;
-        // salta se già presente un highlight che copre quest'area
-        var already = false;
-        var hls = highlightsForDoc(doc.id);
-        for (var k = 0; k < hls.length; k++){
-          if (Math.abs(hls[k].start - idx) < 3) { already = true; break; }
-        }
-        // frase contenitrice
         var sent = null;
         for (var s2 = 0; s2 < sents.length; s2++) if (idx >= sents[s2].start && idx < sents[s2].end){ sent = sents[s2]; break; }
         if (!sent) continue;
         var frase = doc.text.slice(sent.start, sent.end);
         if (frase.length < 20 || frase.length > 400) continue;
-        // costruisci domanda
         var domanda = null;
         var tipoCard = tipo;
         if (tipo === 'nome_proprio'){
@@ -1316,7 +1276,6 @@ function proposeFromAI(doc, onProgress){
           domanda = costruisciDomanda(tipo, entita, frase);
         }
         if (!domanda || domanda.length < 10 || domanda.length > 220) continue;
-        // distrattori: dizionario -> perturbazione -> altri highlight -> altri estratti AI
         var distr = null;
         if (tipoCard !== 'cloze'){
           distr = distrattoriDizionario(tipoCard, entita, 3);
@@ -1369,9 +1328,6 @@ function validateProposal(p){
   return true;
 }
 
-// ============================================================
-// CARD PREVIEW
-// ============================================================
 var pending = [];
 function openCardPreview(useAI){
   var doc = getActiveDoc();
@@ -1379,13 +1335,11 @@ function openCardPreview(useAI){
   var hls = highlightsForDoc(doc.id).filter(function(h){ return h.start >= 0; });
   if (!hls.length){ toast('Evidenzia prima qualcosa'); return; }
 
-  // Step 1: dizionario (immediato)
   var dictProps = proposeFromDict(doc).filter(validateProposal);
   var dictCount = dictProps.length;
   var dictContentIds = {};
   for (var i = 0; i < dictProps.length; i++) dictContentIds[dictProps[i].contentId] = true;
 
-  // Se non serve AI o non è pronta, mostra subito il risultato
   if (!useAI || !ai.ready || !hasWebGPU()){
     if (!dictProps.length){ toast('Nessuna domanda generabile'); return; }
     if (useAI && !ai.ready) toast('AI non attiva · uso solo dizionario');
@@ -1393,14 +1347,11 @@ function openCardPreview(useAI){
     return;
   }
 
-  // Step 2: AI (lenta), mostra progresso
-  setMainStatus('working', 'Dizionario: ' + dictCount + ' domande · preparo AI…');
+  setMainStatus('working', 'Dizionario: ' + dictCount + ' · AI in corso…');
   proposeFromAI(doc, function(cur, tot){
     setMainStatus('working', 'AI estrazione ' + cur + '/' + tot + '…');
   }).then(function(aiProps){
-    var validAI = aiProps.filter(validateProposal).filter(function(p){
-      return !dictContentIds[p.contentId];
-    });
+    var validAI = aiProps.filter(validateProposal).filter(function(p){ return !dictContentIds[p.contentId]; });
     var all = dictProps.concat(validAI);
     setMainStatus('hidden');
     if (!all.length){ toast('Nessuna domanda generata'); return; }
@@ -1436,8 +1387,7 @@ function renderPending(){
     var type = p.type.replace('fact-', '').replace('concept-', '');
     var origin = p.origin === 'ai' ? '<span class="badge ai">AI</span>' : '<span class="badge tpl">Template</span>';
     el.innerHTML =
-      '<div class="card-head">' +
-        origin +
+      '<div class="card-head">' + origin +
         '<span class="badge">' + esc(type) + '</span>' +
         (p.alreadyExists ? '<span style="font-size:.72rem;color:var(--ink-3);margin-left:auto">già presente</span>' : '') +
         '<label style="margin-left:auto;display:flex;align-items:center;gap:6px">' +
@@ -1470,9 +1420,6 @@ function confirmCards(){
   redraw();
 }
 
-// ============================================================
-// LIBRARY / REVIEW / VIEWS
-// ============================================================
 function renderLibrary(filter){
   filter = (filter || '').toLowerCase();
   var list = $('libList');
@@ -1510,6 +1457,7 @@ function openDoc(id){
   DATA.activeDocId = id;
   save();
   $('input').value = d.text;
+  autoGrowInput();
   redraw();
   switchView('text');
   $('scrollText').scrollTop = 0;
@@ -1673,30 +1621,11 @@ function initAnalysis(){
   }
   save();
 }
-function initResize(){
+function autoGrowInput(){
   var ta = $('input');
-  var handle = $('resizeHandle');
-  var savedH = parseInt(localStorage.getItem('hl.v7.inputH') || '0', 10);
-  if (savedH && savedH >= 60 && savedH <= 2000) ta.style.height = savedH + 'px';
-  var dragging = false, startY = 0, startH = 0;
-  handle.addEventListener('pointerdown', function(e){
-    e.preventDefault();
-    dragging = true; startY = e.clientY; startH = ta.offsetHeight;
-    handle.classList.add('dragging');
-    try { handle.setPointerCapture(e.pointerId); } catch(err){}
-  });
-  handle.addEventListener('pointermove', function(e){
-    if (!dragging) return;
-    ta.style.height = clamp(startH + (e.clientY - startY), 60, 2000) + 'px';
-  });
-  handle.addEventListener('pointerup', function(e){
-    if (!dragging) return;
-    dragging = false;
-    handle.classList.remove('dragging');
-    try { handle.releasePointerCapture(e.pointerId); } catch(err){}
-    localStorage.setItem('hl.v7.inputH', String(ta.offsetHeight));
-  });
-  handle.addEventListener('pointercancel', function(){ dragging = false; handle.classList.remove('dragging'); });
+  ta.style.height = 'auto';
+  var h = Math.min(ta.scrollHeight, 500);
+  ta.style.height = h + 'px';
 }
 
 function renderModelList(){
@@ -1711,7 +1640,7 @@ function renderModelList(){
       el.addEventListener('click', function(){
         if (ai.loading) return;
         ai.modelKey = k;
-        localStorage.setItem('hl.v7.model', k);
+        localStorage.setItem('hl.v71.model', k);
         renderModelList();
         vib(4);
       });
@@ -1725,32 +1654,46 @@ function bindEvents(){
     t.addEventListener('click', function(){ switchView(t.dataset.view); vib(4); });
   });
 
-  $('btnAnalyze').addEventListener('click', function(){
-    var text = $('input').value.trim();
-    if (!text){ toast('Incolla un testo'); return; }
-    var doc = getActiveDoc();
-    if (!doc) newDoc(text);
-    else updateDoc(doc.id, { text: text });
-    initAnalysis();
-    redraw();
-    toast('Analizzato');
-    vib(8);
-  });
-
+  // AUTO-ANALISI: input event con debounce
   var inputTimer = null;
-  $('input').addEventListener('input', function(){
+  var input = $('input');
+  input.addEventListener('input', function(){
+    autoGrowInput();
     clearTimeout(inputTimer);
     inputTimer = setTimeout(function(){
+      var text = input.value;
       var doc = getActiveDoc();
-      if (!doc) return;
-      var newText = $('input').value;
-      if (newText === doc.text) return;
-      doc.text = newText;
-      doc.updatedAt = Date.now();
-      save();
+      if (!text.trim()){
+        if (doc){
+          for (var hid in DATA.highlights) if (DATA.highlights[hid].docId === doc.id) delete DATA.highlights[hid];
+          doc.text = '';
+          save();
+          redraw();
+        }
+        return;
+      }
+      if (!doc) doc = newDoc(text);
+      else if (doc.text !== text) updateDoc(doc.id, { text: text });
       initAnalysis();
       redraw();
-    }, 700);
+    }, 800);
+  });
+
+  // Anche paste accelerato
+  input.addEventListener('paste', function(){
+    setTimeout(function(){
+      autoGrowInput();
+      clearTimeout(inputTimer);
+      inputTimer = setTimeout(function(){
+        var text = input.value;
+        var doc = getActiveDoc();
+        if (!text.trim()) return;
+        if (!doc) doc = newDoc(text);
+        else if (doc.text !== text) updateDoc(doc.id, { text: text });
+        initAnalysis();
+        redraw();
+      }, 150);
+    }, 20);
   });
 
   $('btnEdit').addEventListener('click', function(){
@@ -1793,6 +1736,7 @@ function bindEvents(){
   $('btnNew').addEventListener('click', function(){
     newDoc('', 'Senza titolo');
     $('input').value = '';
+    $('input').style.height = '100px';
     $('output').innerHTML = '';
     $('stats').style.display = 'none';
     redraw();
@@ -1811,6 +1755,7 @@ function bindEvents(){
       for (var cid in DATA.cards){ if (DATA.cards[cid].docId === doc.id){ delete DATA.cards[cid]; delete DATA.review[cid]; } }
       doc.text = '';
       $('input').value = '';
+      $('input').style.height = '100px';
       saveNow();
       redraw();
       $('modalConfirm').classList.remove('open');
@@ -1883,7 +1828,6 @@ function init(){
     initTheme();
     initBrand();
     initSelection();
-    initResize();
     bindEvents();
     updateAIIcon();
     refreshAIModalButtons();
@@ -1895,6 +1839,7 @@ function init(){
       initAnalysis();
     }
     $('input').value = doc.text;
+    autoGrowInput();
     redraw();
     updateBadge();
   } catch(err){
