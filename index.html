@@ -16,6 +16,7 @@
   --border:#e6e0d6;--border-2:#d9d2c5;
   --accent:#b8893d;--accent-soft:#f3e6cf;--danger:#c0392b;
   --ai:#7c4dff;--ai-soft:#ece5ff;--ok:#3b8f4b;--ok-soft:#dff0e2;
+  --gold:#c9a227;--gold-soft:#f5ecc9;
   --shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px -12px rgba(0,0,0,.10);
   --c-num:#ffe680;--c-name:#d9b8ff;--c-key:#b6e6b6;
   --c-quote:#ffc1cf;--c-list:#a9d8ff;--c-def:#ffe0b6;--c-sentence:rgba(255,201,160,.45);
@@ -27,6 +28,7 @@
   --border:#302a27;--border-2:#3d3632;
   --accent:#d4b478;--accent-soft:#3a2f1c;--danger:#e57373;
   --ai:#b39dff;--ai-soft:#2a1f4d;--ok:#7bd88f;--ok-soft:#1c3322;
+  --gold:#e8c552;--gold-soft:#3a2f1c;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -12px rgba(0,0,0,.6);
   --c-num:rgba(255,205,50,.42);--c-name:rgba(200,140,255,.42);
   --c-key:rgba(100,220,110,.36);--c-quote:rgba(255,140,175,.38);
@@ -51,6 +53,8 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .iconbtn:active{background:var(--surface-3)}
 .iconbtn svg{width:20px;height:20px}
 .iconbtn.on{background:var(--ai-soft);color:var(--ai)}
+.iconbtn.gold{color:var(--gold)}
+.badge-pro{position:absolute;top:2px;right:2px;width:8px;height:8px;background:var(--gold);border-radius:50%}
 .view{display:none;flex:1;flex-direction:column;min-height:0}
 .view.active{display:flex}
 .scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px;padding-bottom:120px}
@@ -108,6 +112,7 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .tbtn:active{transform:scale(.97);background:var(--surface-3);color:var(--ink)}
 .tbtn svg{width:15px;height:15px}
 .tbtn.on{background:var(--ai-soft);color:var(--ai);border-color:color-mix(in srgb,var(--ai) 30%,transparent)}
+.tbtn.gold{background:var(--gold-soft);color:var(--gold);border-color:color-mix(in srgb,var(--gold) 30%,transparent)}
 .output-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow);font-family:"New York",Georgia,"Iowan Old Style","Times New Roman",serif;font-size:1.10rem;line-height:1.85;white-space:pre-wrap;word-wrap:break-word;color:var(--ink);margin-top:10px;transition:box-shadow .2s}
 .output-card:empty{display:none}
 .output-card.edit-active{box-shadow:0 0 0 2px var(--ai),var(--shadow);cursor:crosshair}
@@ -142,6 +147,7 @@ body.edit-mode .edit-hint{display:flex}
 .lib-item .row1{display:flex;align-items:center;gap:8px;margin-bottom:6px}
 .badge{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
 .badge.ai-badge{background:var(--ai-soft);color:var(--ai)}
+.badge.gold-badge{background:var(--gold-soft);color:var(--gold)}
 .lib-item .date{font-size:.78rem;color:var(--ink-3);margin-left:auto}
 .lib-item .title{font-weight:600;font-size:.98rem;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .lib-item .snippet{font-size:.86rem;color:var(--ink-2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -156,8 +162,9 @@ body.edit-mode .edit-hint{display:flex}
 .modal .row-actions{display:flex;gap:8px;margin-top:12px}
 .modal label{font-size:.78rem;color:var(--ink-2);font-weight:600;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.03em}
 .model-list{display:flex;flex-direction:column;gap:8px;margin:14px 0 4px}
-.model-option{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface-2);cursor:pointer}
+.model-option{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface-2);cursor:pointer;position:relative}
 .model-option.selected{border-color:var(--ai);background:var(--ai-soft)}
+.model-option.locked{opacity:.7;cursor:not-allowed}
 .model-option .radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--border-2);flex:0 0 auto;display:grid;place-items:center}
 .model-option.selected .radio{border-color:var(--ai);background:var(--ai)}
 .model-option.selected .radio::after{content:"";width:6px;height:6px;border-radius:50%;background:#fff}
@@ -165,6 +172,7 @@ body.edit-mode .edit-hint{display:flex}
 .model-option .name{font-weight:600;font-size:.92rem}
 .model-option .name .sz{font-weight:500;font-size:.78rem;color:var(--ink-3);margin-left:6px}
 .model-option .desc{font-size:.78rem;color:var(--ink-2)}
+.model-option .lock{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:.72rem;color:var(--gold);font-weight:700}
 .toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:.88rem;font-weight:500;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:200;box-shadow:var(--shadow);max-width:90vw;text-align:center;display:flex;align-items:center;gap:12px}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
 .toast button{background:transparent;color:var(--ai);font-weight:700;padding:4px 8px;border-radius:6px;border:1px solid currentColor;font-size:.82rem;cursor:pointer}
@@ -216,7 +224,6 @@ body.edit-mode .edit-hint{display:flex}
 .retention-row .rbar > i.mid{background:var(--accent)}
 .retention-row .rval{flex:0 0 52px;text-align:right;font-weight:700;color:var(--ink-2);font-size:.82rem}
 .retention-row .rsub{flex:0 0 60px;text-align:right;color:var(--ink-3);font-size:.72rem}
-/* Selection bar - bottom, above tabbar */
 .sel-bar{position:fixed;bottom:calc(96px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);border-radius:999px;padding:6px;display:flex;gap:4px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:150;box-shadow:0 8px 32px rgba(0,0,0,.35);max-width:calc(100vw - 24px);overflow-x:auto;scrollbar-width:none}
 .sel-bar::-webkit-scrollbar{display:none}
 .sel-bar.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
@@ -225,7 +232,6 @@ body.edit-mode .edit-hint{display:flex}
 .sel-bar .cat-btn .dot{width:22px;height:22px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
 .sel-bar .sep{width:1px;background:rgba(255,255,255,.18);margin:4px 2px;flex:0 0 auto}
 .sel-bar .note-btn svg{width:18px;height:18px;color:var(--bg)}
-/* Reading mode */
 body.reading .topbar,body.reading .tabbar,body.reading .input-card,body.reading .actions,body.reading .ai-bar,body.reading .toolbar,body.reading .cats-row,body.reading .empty-hint,body.reading .edit-hint,body.reading .search-bar,body.reading .resize-handle{display:none !important}
 body.reading .scroll{padding:10px 16px 40px;padding-top:60px}
 body.reading .output-card{font-size:1.18rem;padding:24px 20px;border:none;border-radius:0;box-shadow:none;background:transparent;margin-top:0}
@@ -233,8 +239,14 @@ body.reading .output-card{font-size:1.18rem;padding:24px 20px;border:none;border
 body.reading .reading-bar{display:flex}
 .reading-bar .progress{flex:1;height:4px;background:var(--surface-3);border-radius:2px;overflow:hidden}
 .reading-bar .progress > i{display:block;height:100%;width:0;background:var(--accent);transition:width .1s}
-/* Controls hidden */
 body.controls-hidden #controlsBlock{display:none}
+.tier-badge{display:inline-flex;align-items:center;gap:4px;font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:999px;letter-spacing:.03em;text-transform:uppercase}
+.tier-badge.free{background:var(--surface-3);color:var(--ink-2)}
+.tier-badge.pro{background:var(--gold-soft);color:var(--gold)}
+.upgrade-card{background:linear-gradient(135deg,var(--gold-soft),var(--surface));border:1px solid var(--gold);border-radius:14px;padding:16px;margin-top:16px;text-align:left}
+.upgrade-card h4{margin:0 0 6px;color:var(--gold);font-size:.95rem;font-weight:700}
+.upgrade-card p{margin:0 0 10px;font-size:.82rem;color:var(--ink-2);line-height:1.5}
+.upgrade-card button{background:var(--gold);color:#fff;padding:10px 16px;border-radius:10px;font-weight:700;font-size:.85rem;cursor:pointer}
 </style>
 </head>
 <body>
@@ -243,6 +255,7 @@ body.controls-hidden #controlsBlock{display:none}
   <header class="topbar">
     <div class="brand"><span class="brand-title" id="brandTitle" data-text="HIGHLIGHT AI"></span></div>
     <div class="spacer"></div>
+    <span class="tier-badge" id="tierBadge"><span id="tierText">Free</span></span>
     <button class="iconbtn" id="btnToggleControls" title="Mostra/nascondi controlli">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
@@ -264,7 +277,6 @@ body.controls-hidden #controlsBlock{display:none}
   <section class="view active" id="view-annotate">
     <div class="scroll" id="scrollAnnotate">
       <div class="wrap">
-
         <div id="controlsBlock">
           <div class="input-card">
             <textarea id="input" placeholder="Incolla qui il testo da studiare…" spellcheck="false"></textarea>
@@ -446,7 +458,7 @@ body.controls-hidden #controlsBlock{display:none}
 <div class="modal-bg" id="modalAISetup">
   <div class="modal">
     <h3 id="aiSetupTitle">Scegli il modello AI</h3>
-    <p id="aiSetupDesc">Scaricato una sola volta, resta sul dispositivo.</p>
+    <p id="aiSetupDesc">Scaricato una sola volta, resta sul dispositivo. Funziona offline.</p>
     <div class="model-list" id="modelList"></div>
     <div class="row-actions">
       <button class="btn ghost" id="btnCancelAI">Annulla</button>
@@ -522,6 +534,28 @@ body.controls-hidden #controlsBlock{display:none}
   </div>
 </div>
 
+<div class="modal-bg" id="modalUpgrade">
+  <div class="modal">
+    <h3>Passa a Pro</h3>
+    <p>Sblocca i modelli AI più potenti e molto altro.</p>
+    <div style="font-size:.9rem;line-height:1.7;color:var(--ink-2);margin-bottom:16px">
+      <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px"><span style="color:var(--gold);font-weight:700">✓</span><span><strong>Modelli AI grandi (7B, 14B, cloud)</strong> — domande di qualità superiore</span></div>
+      <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px"><span style="color:var(--gold);font-weight:700">✓</span><span><strong>Generazioni illimitate</strong> — nessun limite giornaliero</span></div>
+      <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px"><span style="color:var(--gold);font-weight:700">✓</span><span><strong>Export PDF, Anki, Obsidian</strong> illimitati</span></div>
+      <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px"><span style="color:var(--gold);font-weight:700">✓</span><span><strong>Sync multi-dispositivo</strong></span></div>
+      <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--gold);font-weight:700">✓</span><span><strong>Supporto allo sviluppo</strong></span></div>
+    </div>
+    <div style="text-align:center;margin:16px 0">
+      <div style="font-size:1.8rem;font-weight:800;color:var(--gold)">€5<span style="font-size:.9rem;font-weight:500;color:var(--ink-2)">/mese</span></div>
+      <div style="font-size:.8rem;color:var(--ink-3)">oppure €39/anno · €79 lifetime</div>
+    </div>
+    <div class="row-actions">
+      <button class="btn ghost" id="btnCancelUpgrade">Non ora</button>
+      <button class="btn primary" id="btnConfirmUpgrade" style="background:var(--gold);color:#fff">Passa a Pro</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"><span id="toastMsg"></span></div>
 
 <script>
@@ -589,18 +623,98 @@ var CATEGORIES = [
 ];
 var CAT_PRIORITY = { quote:10, num:9, def:8, list:7, name:6, key:5, sentence:4 };
 var CAT_TO_CLASS = { num:'c-num', name:'c-name', key:'c-key', quote:'c-quote', list:'c-list', def:'c-def', sentence:'c-sentence' };
-var AI_TYPE_LABELS = {
-  evento:'Evento', data:'Data', causa:'Causa', conseguenza:'Conseguenza',
-  concetto:'Concetto', definizione:'Definizione', protagonista:'Protagonista'
-};
-var STORE_KEY = 'hl.v4.store';
-var SETTINGS_KEY = 'hl.v4.settings';
+
+var STORE_KEY = 'hl.v5.store';
+var SETTINGS_KEY = 'hl.v5.settings';
 var AI_CDN = 'https://esm.run/@mlc-ai/web-llm';
+
+// Modelli: id, dimensione, tier richiesto
 var AI_MODELS = {
-  qwen05: { id:'Qwen2.5-0.5B-Instruct-q4f16_1-MLC', label:'Qwen 0.5B', size:'~400 MB', desc:'Velocissimo. Base.' },
-  qwen15: { id:'Qwen2.5-1.5B-Instruct-q4f16_1-MLC', label:'Qwen 1.5B', size:'~1 GB', desc:'Bilanciato. Consigliato.' },
-  qwen3:  { id:'Qwen2.5-3B-Instruct-q4f16_1-MLC',   label:'Qwen 3B',   size:'~1.8 GB', desc:'Alta qualità.' }
+  qwen05: { id:'Qwen2.5-0.5B-Instruct-q4f16_1-MLC', label:'Qwen 0.5B', size:'~400 MB', desc:'Velocissimo. Base.', tier:'free', minMem:4 },
+  qwen15: { id:'Qwen2.5-1.5B-Instruct-q4f16_1-MLC', label:'Qwen 1.5B', size:'~1 GB',   desc:'Bilanciato. Consigliato.', tier:'free', minMem:6 },
+  qwen3:  { id:'Qwen2.5-3B-Instruct-q4f16_1-MLC',   label:'Qwen 3B',   size:'~1.8 GB', desc:'Alta qualità.', tier:'free', minMem:8 },
+  qwen7:  { id:'Qwen2.5-7B-Instruct-q4f16_1-MLC',   label:'Qwen 7B',   size:'~4.5 GB', desc:'Massima qualità on-device.', tier:'pro', minMem:16 },
+  qwen14: { id:'Qwen2.5-14B-Instruct-q4f16_1-MLC',  label:'Qwen 14B',  size:'~8 GB',   desc:'Solo Mac/iPad Pro potenti.', tier:'pro', minMem:24 }
 };
+
+// ============================================================
+// DIZIONARIO DI DOMINIO — Storia italiana / concorsi pubblici
+// ============================================================
+var DIZIONARIO = {
+  anni_storici_italiani: [1815, 1848, 1859, 1860, 1861, 1866, 1870, 1882, 1887, 1892, 1896, 1900, 1911, 1915, 1917, 1918, 1919, 1921, 1922, 1924, 1925, 1929, 1935, 1936, 1938, 1939, 1940, 1943, 1944, 1945, 1946, 1947, 1948, 1949, 1951, 1953, 1954, 1955, 1957, 1958, 1960, 1962, 1963, 1964, 1968, 1969, 1970, 1973, 1974, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+  presidenti_repubblica: ['De Nicola','Einaudi','Gronchi','Segni','Saragat','Leone','Pertini','Cossiga','Scalfaro','Ciampi','Napolitano','Mattarella'],
+  presidenti_consiglio: ['De Gasperi','Pella','Fanfani','Scelba','Segni','Zoli','Tambroni','Moro','Leone','Rumor','Colombo','Andreotti','Craxi','Goria','De Mita','Amato','Ciampi','Dini','Prodi','D\u2019Alema','Berlusconi','Monti','Letta','Renzi','Gentiloni','Conte','Draghi','Meloni'],
+  trattati_europei: ['Trattato di Roma','Atto Unico Europeo','Trattato di Maastricht','Trattato di Amsterdam','Trattato di Nizza','Trattato di Lisbona'],
+  articoli_costituzione: ['1','2','3','5','9','11','13','21','27','32','33','34','48','52','54','75','76','77','101','104','117','138','139'],
+  partiti_storici: ['Democrazia Cristiana','PCI','PSI','MSI','PRI','PLI','PSDI','PDS','DS','FI','AN','Lega Nord','UDC','PD','M5S','FdI'],
+  regioni_italiane: ['Abruzzo','Basilicata','Calabria','Campania','Emilia-Romagna','Friuli-Venezia Giulia','Lazio','Liguria','Lombardia','Marche','Molise','Piemonte','Puglia','Sardegna','Sicilia','Toscana','Trentino-Alto Adige','Umbria','Valle d\u2019Aosta','Veneto'],
+  eventi_chiave: {
+    'unità d\u2019Italia': 1861,
+    'breccia di Porta Pia': 1870,
+    'prima guerra mondiale (ingresso italiano)': 1915,
+    'fine prima guerra mondiale': 1918,
+    'marcia su Roma': 1922,
+    'Patti Lateranensi': 1929,
+    'inizio seconda guerra mondiale': 1939,
+    'caduta del fascismo': 1943,
+    'fine seconda guerra mondiale': 1945,
+    'referendum istituzionale': 1946,
+    'entrata in vigore della Costituzione': 1948,
+    'Trattato di Roma (CEE)': 1957,
+    'Trattato di Maastricht': 1992,
+    'Trattato di Lisbona': 2009
+  }
+};
+
+function distrattoriDaDizionario(tipo, corretta, n){
+  var pool = [];
+  var numCorretta = extractNumber(corretta);
+  if (tipo === 'data' || tipo === 'anno'){
+    if (!isNaN(numCorretta) && numCorretta > 1800 && numCorretta < 2100){
+      // Prendi dal dizionario gli anni più vicini
+      var tutti = DIZIONARIO.anni_storici_italiani.slice();
+      tutti.sort(function(a, b){ return Math.abs(a - numCorretta) - Math.abs(b - numCorretta); });
+      var out = [];
+      for (var i = 0; i < tutti.length && out.length < n * 2; i++){
+        if (tutti[i] !== numCorretta) out.push(String(tutti[i]));
+      }
+      return shuffle(out).slice(0, n);
+    }
+  }
+  if (tipo === 'nome'){
+    // Verifica se è un presidente, un pdc, un partito
+    var nomi = [];
+    var corrLower = corretta.toLowerCase();
+    var lists = [DIZIONARIO.presidenti_repubblica, DIZIONARIO.presidenti_consiglio, DIZIONARIO.partiti_storici];
+    for (var l = 0; l < lists.length; l++){
+      var lst = lists[l];
+      for (var k = 0; k < lst.length; k++){
+        if (lst[k].toLowerCase() === corrLower){
+          // Scegli dalla stessa lista
+          for (var m = 0; m < lst.length && nomi.length < n * 2; m++){
+            if (lst[m].toLowerCase() !== corrLower) nomi.push(lst[m]);
+          }
+          return shuffle(nomi).slice(0, n);
+        }
+      }
+    }
+  }
+  if (tipo === 'trattato'){
+    var pool2 = [];
+    for (var t = 0; t < DIZIONARIO.trattati_europei.length; t++){
+      if (DIZIONARIO.trattati_europei[t].toLowerCase() !== corretta.toLowerCase()) pool2.push(DIZIONARIO.trattati_europei[t]);
+    }
+    return shuffle(pool2).slice(0, n);
+  }
+  if (tipo === 'partito'){
+    var pool3 = [];
+    for (var p = 0; p < DIZIONARIO.partiti_storici.length; p++){
+      if (DIZIONARIO.partiti_storici[p].toLowerCase() !== corretta.toLowerCase()) pool3.push(DIZIONARIO.partiti_storici[p]);
+    }
+    return shuffle(pool3).slice(0, n);
+  }
+  return [];
+}
 
 // ============================================================
 // FSRS-4.5
@@ -649,12 +763,17 @@ function fsrsInterval(S){
 // ============================================================
 var Store = {
   data: {
-    version: 4,
+    version: 5,
     docs: {}, highlights: {}, cards: {}, review: {}, reviewLog: [], activeDocId: null
   },
   settings: {
     activeCats: CATEGORIES.map(function(c){ return c.id; }),
-    controlsHidden: false
+    controlsHidden: false,
+    tier: 'free',              // 'free' | 'pro'
+    modelKey: localStorage.getItem('hl.ai.model') || 'qwen15',
+    hasEverDownloaded: !!localStorage.getItem('hl.ai.model'),
+    freeGenerationsToday: 0,
+    freeGenerationDate: null
   },
   _saveTimer: null,
   _undoStack: [],
@@ -692,13 +811,14 @@ var Store = {
   getActiveDoc: function(){
     return this.data.activeDocId ? this.data.docs[this.data.activeDocId] : null;
   },
+  isPro: function(){ return this.settings.tier === 'pro'; },
 
   newDoc: function(text, title){
     var id = uid();
     this.data.docs[id] = {
       id: id,
       title: title || text.trim().slice(0, 60).replace(/\s+/g, ' ') || 'Senza titolo',
-      text: text, lang: 'en', source: 'paste',
+      text: text, lang: 'it', source: 'paste',
       createdAt: Date.now(), updatedAt: Date.now()
     };
     this.data.activeDocId = id;
@@ -839,79 +959,44 @@ var Store = {
     this._undoStack.push(this.snapshot(snap.docId));
     this.restoreSnapshot(snap);
     return true;
+  },
+
+  canGenerateToday: function(){
+    if (this.isPro()) return true;
+    var today = new Date().toISOString().slice(0, 10);
+    if (this.settings.freeGenerationDate !== today){
+      this.settings.freeGenerationDate = today;
+      this.settings.freeGenerationsToday = 0;
+      this.save();
+    }
+    return this.settings.freeGenerationsToday < 10;
+  },
+  recordGeneration: function(){
+    if (this.isPro()) return;
+    var today = new Date().toISOString().slice(0, 10);
+    if (this.settings.freeGenerationDate !== today){
+      this.settings.freeGenerationDate = today;
+      this.settings.freeGenerationsToday = 0;
+    }
+    this.settings.freeGenerationsToday++;
+    this.save();
   }
 };
 
 // ============================================================
-// LINGUA / ANALISI
+// ANALISI — euristiche
 // ============================================================
-var LANG_PROFILES = {
-  it: 'il lo la i gli le un uno una e ed o od ma però perciò in con su per tra fra da di al allo alla ai agli alle del dello della dei degli delle nel nello nella nei negli nelle sul sullo sulla sui sugli sulle dal dallo dalla dai dagli dalle questo questa questi queste quello quella quelli quelle che chi cui non più anche solo come dove quando perché essere avere sono è era fu sia stata stato stati state viene venga fatto fare può devono deve loro lei lui noi voi egli ella essi esse',
-  en: 'the a an and or but of in on at to for from by with as is are was were be been being this that these those it its he she they them him her his hers their theirs we us our ours you your yours i me my mine not no so very more most much many few some any all every each both either neither one two who whom whose which what where when why how if then else than too also just only can could will would shall should may might must do does did done have has had having about after before during between into through over under above below again further once here there',
-  fr: 'le la les un une des du de d et ou mais donc or ni car que qui quoi dont où quand comment pourquoi si comme plus moins très trop peu beaucoup tout toute tous toutes ce cet cette ces celui celle ceux celles il elle ils elles nous vous je tu on se son sa ses leur leurs mon ma mes ton ta tes notre nos votre vos est sont était étaient être avoir a ont avait avaient fait faire peut peuvent doit doivent aussi encore déjà toujours jamais même autre autres bien',
-  es: 'el la los las un una unos unas de del y o pero porque por para con sin en a al sobre bajo entre hasta desde que quien cuyo como cuando donde si no más menos muy mucho poco todo toda todos todas este esta estos estas ese esa esos esas aquel aquella aquellos aquellas yo tú él ella nosotros vosotros ellos ellas me te se nos os le les lo mi tu su mis tus sus es son era fueron ser estar haber ha han había habían hace hacer puede pueden debe deben también aún ya siempre nunca mismo otra otro bien',
-  de: 'der die das den dem des ein eine einen einem eines einer und oder aber denn weil wenn als wie dass ob für mit von zu aus bei nach über unter zwischen durch gegen ohne um in an auf vor hinter neben ist sind war waren sein haben hat hatte hatten haben wird werden wurde wurden kann können muss müssen soll sollen darf dürfen auch noch schon immer nie sehr mehr weniger viel wenig alle alle jeder jede jedes diese dieser dieses jener jene man nicht doch nur selbst',
-  pt: 'o a os as um uma uns umas de do da dos das e ou mas porque por para com sem em no na nos nas ao aos à às pelo pela pelos pelas que quem cujo como quando onde se não mais menos muito pouco todo toda todos todas este esta estes estas esse essa esses essas aquele aquela aqueles aquelas eu tu ele ela nós vós eles elas me te se nos vos lhe lhes é são era foram ser estar haver há houve tinha tem fazer pode podem deve devem também ainda sempre nunca mesmo outro outra bem',
-  nl: 'de het een en of maar want omdat als dan dat die deze dit van voor met door naar bij uit over onder tussen tegen zonder om in op aan is zijn was waren hebben heeft had kan kunnen moet moeten zal zullen ook nog al altijd nooit zeer meer minder veel weinig alle elk ieder niet toch alleen zelf',
-  ru: 'и в во не что он на я с со как а то все она так его но да ты к у же вы за бы по только ее мне было вот от меня еще нет о из ему теперь когда даже ну вдруг ли если уже или ни быть был него до вас опять уж вам ведь там потом себя ничего ей может они тут где есть надо ней для мы тебя их чем была сам чтоб без будто чего раз тоже себе под будет ж тогда кто этот того потому этого какой совсем ним здесь этом один почти мой тем чтобы нее сейчас были куда зачем всех никогда можно при наконец два об другой хоть после над больше тот через эти нас про всего них какая много разве три эту моя впрочем хорошо свою этой перед иногда лучше чуть том нельзя такой им более всегда конечно всю между'
-};
-var LANG_SIGNATURE = {
-  it: ['il','lo','la','gli','della','nella','perché','quindi','sono','questo','questa','anche','però','molto','più','già','dopo','prima','stato','viene'],
-  en: ['the','and','of','with','that','this','which','their','would','could','should','very','also','from','into','between','through','during','about'],
-  fr: ['le','les','des','dans','avec','pour','qui','que','sont','était','cette','leur','aussi','très','déjà','entre','pendant','depuis','vers','ainsi'],
-  es: ['el','los','las','pero','porque','para','muy','más','también','según','desde','hasta','aunque','cual','entre','durante','sin','sobre','bajo','hacia'],
-  de: ['der','die','das','und','mit','auf','für','sind','war','diese','dieser','auch','noch','sehr','schon','zwischen','während','durch','gegen','über'],
-  pt: ['os','as','para','muito','mais','também','segundo','desde','até','embora','qual','pelos','pelas','pelo','entre','durante','sobre','após','contra','sem'],
-  nl: ['het','een','van','voor','met','zijn','was','deze','dit','ook','nog','zeer','al','tussen','tijdens','door','tegen','over','onder','zonder'],
-  ru: ['что','как','это','или','если','когда','только','очень','уже','ещё','между','через','чтобы','потому','также','после','перед','без','против']
-};
 var UNIT_WHITELIST = {};
 (function(){
-  var u = ['%','‰','°','km','cm','mm','nm','mi','ft','in','kg','g','mg','lb','oz','t','l','ml','cl','dl','h','min','s','ms','ore','ora','minuti','minuto','secondi','secondo','giorni','giorno','settimane','settimana','mesi','mese','anni','anno','secoli','secolo','hours','hour','minutes','minute','seconds','second','days','day','weeks','week','months','month','years','year','j','kj','w','kw','mw','v','kv','hz','khz','mhz','ghz','pa','kpa','mpa','n','mol','b','kb','mb','gb','tb','bit','byte','px','usd','eur','gbp','milioni','miliardi','mila'];
+  var u = ['%','‰','°','km','cm','mm','mi','ft','in','kg','g','mg','lb','oz','t','l','ml','cl','dl','h','min','s','ms','ore','ora','minuti','minuto','secondi','secondo','giorni','giorno','settimane','settimana','mesi','mese','anni','anno','secoli','secolo','j','kj','w','kw','v','kv','hz','khz','mhz','ghz','pa','kpa','mpa','n','mol','b','kb','mb','gb','tb','px','usd','eur','gbp','milioni','miliardi','mila'];
   for (var i = 0; i < u.length; i++) UNIT_WHITELIST[u[i]] = true;
 })();
-var MONTHS_RE = '(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre|january|february|march|april|may|june|july|august|september|october|november|december|janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre|enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre|janeiro|fevereiro|março|maio|junho|julho|setembro|outubro|novembro|dezembro|januar|februar|märz|juni|juli|august|september|oktober|november|dezember)';
-var QUOTE_PAIRS = [['«','»'],['"','"'],['"','"'],['„','"'],['「','」'],['『','』'],['‹','›'],['❝','❞']];
+var MONTHS_RE = '(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)';
+var QUOTE_PAIRS = [['«','»'],['\u201C','\u201D'],['\u201E','\u201C'],['「','」'],['『','』'],['‹','›'],['❝','❞']];
 
-function detectLang(text){
-  var words = text.toLowerCase().match(/\p{L}+/gu) || [];
-  if (!words.length) return 'en';
-  var cyr = (text.match(/[\u0400-\u04FF]/g) || []).length;
-  if (cyr > text.length * 0.10) return 'ru';
-  var cjk = (text.match(/[\u4E00-\u9FFF\u3040-\u30FF\uAC00-\uD7AF]/g) || []).length;
-  if (cjk > text.length * 0.08) return 'cjk';
-  var diacritics = {
-    it: (text.match(/[àèéìòù]/gi) || []).length,
-    fr: (text.match(/[àâçéèêëîïôùûüÿœ]/gi) || []).length,
-    es: (text.match(/[áéíóúñ¿¡ü]/gi) || []).length,
-    de: (text.match(/[äöüß]/gi) || []).length,
-    pt: (text.match(/[áâãàçéêíóôõú]/gi) || []).length
-  };
-  var sample = {};
-  for (var i = 0; i < Math.min(300, words.length); i++) sample[words[i]] = true;
-  var scores = {};
-  for (var lang in LANG_SIGNATURE){
-    var s = 0;
-    var arr = LANG_SIGNATURE[lang];
-    for (var j = 0; j < arr.length; j++) if (sample[arr[j]]) s++;
-    scores[lang] = s;
-  }
-  for (var lang2 in diacritics){
-    if (diacritics[lang2]) scores[lang2] = (scores[lang2] || 0) + diacritics[lang2] * 0.5;
-  }
-  var best = 'en', bestScore = -1;
-  for (var k in scores){ if (scores[k] > bestScore){ bestScore = scores[k]; best = k; } }
-  return bestScore < 3 ? 'en' : best;
-}
-function getStopwords(lang){
-  var words = (LANG_PROFILES[lang] || LANG_PROFILES.en).split(/\s+/);
-  var set = {};
-  for (var i = 0; i < words.length; i++) set[words[i]] = true;
-  return set;
-}
 function tokenize(text){
   var tokens = [];
-  var re = /[\p{L}\p{M}][\p{L}\p{M}'\-]*/gu;
+  var re = /[\p{L}\p{M}][\p{L}\p{M}'\u2019\-]*/gu;
   var m;
   while ((m = re.exec(text)) !== null){
     tokens.push({ word: m[0], lower: m[0].toLowerCase(), start: m.index, end: m.index + m[0].length });
@@ -921,7 +1006,7 @@ function tokenize(text){
 function segmentSentences(text){
   var sentences = [];
   var start = 0;
-  var re = /[.!?…。！？]+(?=\s|$)/g;
+  var re = /[.!?…]+(?=\s|$)/g;
   var m;
   while ((m = re.exec(text)) !== null){
     var end = m.index + m[0].length;
@@ -931,52 +1016,6 @@ function segmentSentences(text){
   }
   if (text.length - start >= 15) sentences.push({ start: start, end: text.length });
   return sentences;
-}
-function computeSalience(tokens, stopwords){
-  var freq = {};
-  for (var i = 0; i < tokens.length; i++){
-    var t = tokens[i];
-    if (t.lower.length < 3 || stopwords[t.lower]) continue;
-    freq[t.lower] = (freq[t.lower] || 0) + 1;
-  }
-  var salient = {};
-  var isLong = tokens.length > 200;
-  for (var word in freq){
-    var count = freq[word];
-    var lenBonus = Math.min(word.length, 14) / 4.5;
-    var uniq = {};
-    for (var c = 0; c < word.length; c++) uniq[word[c]] = true;
-    var uniqRatio = Object.keys(uniq).length / word.length;
-    var score = 0;
-    if (isLong){
-      if (count >= 4) score = 6 + lenBonus;
-      else if (count === 3) score = 5 + lenBonus;
-      else if (count === 2) score = 3.5 + lenBonus;
-      else if (word.length >= 11 && uniqRatio > 0.6) score = 3 + lenBonus;
-    } else {
-      if (count >= 3 && word.length >= 5) score = 5 + lenBonus;
-      else if (count === 2 && word.length >= 5) score = 4 + lenBonus;
-      else if (word.length >= 9) score = 3 + lenBonus;
-      else if (count === 2) score = 2 + lenBonus;
-    }
-    if (score > 0) salient[word] = score;
-  }
-  return salient;
-}
-function findBigrams(tokens, stopwords){
-  if (tokens.length < 20) return [];
-  var freq = {};
-  for (var i = 0; i < tokens.length - 1; i++){
-    var a = tokens[i], b = tokens[i + 1];
-    if (a.lower.length < 4 || b.lower.length < 4) continue;
-    if (stopwords[a.lower] || stopwords[b.lower]) continue;
-    if (b.start - a.end > 2) continue;
-    var key = a.lower + ' ' + b.lower;
-    freq[key] = (freq[key] || 0) + 1;
-  }
-  var out = [];
-  for (var k in freq) if (freq[k] >= 2) out.push(k);
-  return out;
 }
 function findNumbers(text){
   var spans = [];
@@ -1003,31 +1042,20 @@ function findQuotes(text){
   var spans = [];
   for (var p = 0; p < QUOTE_PAIRS.length; p++){
     var open = QUOTE_PAIRS[p][0], close = QUOTE_PAIRS[p][1];
-    if (open === close){
-      var i = 0, openAt = -1;
-      while (i < text.length){
-        if (text[i] === open){
-          if (openAt < 0) openAt = i;
-          else { if (i - openAt >= 8) spans.push({ start:openAt, end:i + 1, cat:'quote', w:5 }); openAt = -1; }
-        }
-        i++;
-      }
-    } else {
-      var idx = 0;
-      while ((idx = text.indexOf(open, idx)) !== -1){
-        var ci = text.indexOf(close, idx + 1);
-        if (ci === -1) break;
-        var len = ci - idx - 1;
-        if (len >= 8 && len < 600) spans.push({ start:idx, end:ci + 1, cat:'quote', w:5 });
-        idx = ci + 1;
-      }
+    var idx = 0;
+    while ((idx = text.indexOf(open, idx)) !== -1){
+      var ci = text.indexOf(close, idx + 1);
+      if (ci === -1) break;
+      var len = ci - idx - 1;
+      if (len >= 8 && len < 600) spans.push({ start:idx, end:ci + 1, cat:'quote', w:5 });
+      idx = ci + 1;
     }
   }
   return spans;
 }
 function findDefinitions(text){
   var spans = [];
-  var re = /([\p{L}\p{M}][\p{L}\p{M}\s'\-]{1,40})\s*[:：]\s*([^\n.;]{20,300})/gu;
+  var re = /([\p{L}\p{M}][\p{L}\p{M}\s'\u2019\-]{1,40})\s*[:：]\s*([^\n.;]{20,300})/gu;
   var m;
   while ((m = re.exec(text)) !== null){
     var headStart = m.index;
@@ -1042,87 +1070,53 @@ function findDefinitions(text){
   }
   return spans;
 }
-function findProperNouns(text, tokens, stopwords, lang){
-  if (lang === 'cjk') return [];
+function findProperNouns(text, tokens, stopwords){
   var spans = [];
+  var skipWords = { 'il':1,'lo':1,'la':1,'i':1,'gli':1,'le':1,'un':1,'uno':1,'una':1,'e':1,'ed':1,'o':1,'od':1,'ma':1,'però':1,'tuttavia':1,'inoltre':1,'perciò':1,'quindi':1,'dunque':1,'quando':1,'come':1,'dove':1,'perché':1,'se':1,'allora':1,'infine':1,'prima':1,'dopo':1,'poi':1,'ora':1,'anche':1,'non':1,'più':1,'meno':1,'molto':1,'poco':1,'sempre':1,'mai':1,'questo':1,'questa':1,'questi':1,'queste':1,'quello':1,'quella':1,'quelli':1,'quelle':1,'nel':1,'nello':1,'nella':1,'nei':1,'negli':1,'nelle':1,'sul':1,'sullo':1,'sulla':1,'sui':1,'sugli':1,'sulle':1,'dal':1,'dallo':1,'dalla':1,'dai':1,'dagli':1,'dalle':1,'al':1,'allo':1,'alla':1,'ai':1,'agli':1,'alle':1,'del':1,'dello':1,'della':1,'dei':1,'degli':1,'delle':1,'col':1,'coi':1,'tra':1,'fra':1,'che':1,'chi':1,'cui':1,'con':1,'senza':1,'tra':1,'fra':1,'contro':1,'verso':1,'durante':1};
   for (var i = 0; i < tokens.length; i++){
     var t = tokens[i];
     var c0 = t.word[0];
     if (c0 !== c0.toUpperCase() || c0 === c0.toLowerCase()) continue;
     if (/^[IVXLCDM]+$/.test(t.word) && t.word.length >= 2 && t.word.length <= 6) continue;
+    if (skipWords[t.lower]) continue;
     var j = i;
     while (j + 1 < tokens.length){
       var next = tokens[j + 1];
       var between = text.slice(tokens[j].end, next.start);
-      if (!/^[\s'\-']{1,3}$/.test(between)) break;
+      if (!/^[\s'\u2019\-]{1,3}$/.test(between)) break;
+      if (skipWords[next.lower]) break;
       var nc = next.word[0];
       if (nc === nc.toUpperCase() && nc !== nc.toLowerCase()) j++;
       else break;
     }
+    if (j > i){
+      // Nome composto, accetta
+      spans.push({ start:t.start, end:tokens[j].end, cat:'name', w:4 });
+      i = j;
+      continue;
+    }
+    // Nome singolo: accetta solo se non è a inizio frase o è lungo
     var before = text.slice(0, t.start).trim();
-    var atStart = !before || /[.!?…。！？»"']\s*$/.test(before);
-    var isMulti = j > i;
-    var isStop = stopwords[t.lower];
-    var accept = false;
-    if (isMulti) accept = true;
-    else if (!atStart && !isStop) accept = true;
-    else if (atStart && !isStop && t.word.length >= 7) accept = true;
-    if (accept) spans.push({ start:t.start, end:tokens[j].end, cat:'name', w:4 });
-    i = j;
-  }
-  return spans;
-}
-function findConceptSpans(tokens, salient, bigrams){
-  var spans = [];
-  var bset = {};
-  for (var i = 0; i < bigrams.length; i++) bset[bigrams[i]] = true;
-  for (var k = 0; k < tokens.length - 1; k++){
-    var a = tokens[k], b = tokens[k + 1];
-    if (b.start - a.end > 2) continue;
-    if (bset[a.lower + ' ' + b.lower]) spans.push({ start:a.start, end:b.end, cat:'key', w:4 });
-  }
-  for (var t = 0; t < tokens.length; t++){
-    if (salient[tokens[t].lower]){
-      var s = salient[tokens[t].lower];
-      spans.push({ start:tokens[t].start, end:tokens[t].end, cat:'key', w: s >= 3.5 ? 3 : 2 });
+    var atStart = !before || /[.!?…»"'\u201D]\s*$/.test(before);
+    if (!atStart && t.word.length >= 3){
+      spans.push({ start:t.start, end:t.end, cat:'name', w:4 });
+    } else if (atStart && t.word.length >= 6){
+      spans.push({ start:t.start, end:t.end, cat:'name', w:3 });
     }
   }
   return spans;
 }
-function findKeySentences(sentences, salient, tokens){
-  var spans = [];
-  if (!Object.keys(salient).length) return spans;
-  for (var i = 0; i < sentences.length; i++){
-    var s = sentences[i];
-    var c = 0, total = 0;
-    for (var j = 0; j < tokens.length; j++){
-      var tk = tokens[j];
-      if (tk.start < s.start) continue;
-      if (tk.start >= s.end) break;
-      total++;
-      if (salient[tk.lower]) c++;
-    }
-    if (total < 6) continue;
-    if (c >= 4 && c / total >= 0.30) spans.push({ start:s.start, end:s.end, cat:'sentence', w:3 });
-  }
-  return spans;
-}
+
 function analyzeText(text){
-  if (!text.trim()) return { spans: [], lang: 'en' };
-  var lang = detectLang(text);
-  var stopwords = getStopwords(lang);
+  if (!text.trim()) return { spans: [], lang: 'it' };
   var tokens = tokenize(text);
-  var sentences = segmentSentences(text);
-  var salient = computeSalience(tokens, stopwords);
-  var bigrams = findBigrams(tokens, stopwords);
+  var stopwords = {};
   var spans = []
     .concat(findNumbers(text))
     .concat(findQuotes(text))
     .concat(findDefinitions(text))
-    .concat(findProperNouns(text, tokens, stopwords, lang))
-    .concat(findConceptSpans(tokens, salient, bigrams))
-    .concat(findKeySentences(sentences, salient, tokens));
-  return { spans: spans, lang: lang };
+    .concat(findProperNouns(text, tokens, stopwords));
+  return { spans: spans, lang: 'it' };
 }
 
 // ============================================================
@@ -1174,7 +1168,238 @@ function anchorHighlights(doc){
 }
 
 // ============================================================
-// VALIDAZIONE DOMANDE AI
+// ESTRAZIONE ENTITÀ + TEMPLATE (la novità della v5)
+// ============================================================
+// Da un highlight, classifica il tipo e genera una domanda con template
+function classifyEntity(text){
+  var t = text.trim();
+  // Data completa: "14 luglio 1789", "1° gennaio 1948"
+  if (/^\d{1,2}\s+(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)\s+\d{3,4}/i.test(t)) return 'data_completa';
+  if (/^(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)\s+\d{1,2},?\s+\d{3,4}/i.test(t)) return 'data_completa';
+  if (/^\d{1,2}°?\s+(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)/i.test(t)) return 'data_completa';
+  // Anno singolo: 1789
+  if (/^\d{3,4}$/.test(t)) return 'anno';
+  // Percentuale
+  if (/^\d+(?:[.,]\d+)?\s*%$/.test(t)) return 'percentuale';
+  // Numero con unità
+  if (/^\d+(?:[.,]\d+)?\s*[a-zA-ZÀ-ÿ]+$/.test(t)) return 'numero';
+  // Numero puro
+  if (/^\d+(?:[.,]\d+)?$/.test(t)) return 'numero';
+  // Nome proprio
+  if (/^[A-ZÀ-Ý][a-zà-ÿ\u2019']+(?:\s+[A-ZÀ-Ý][a-zà-ÿ\u2019']+)*$/.test(t) && t.length >= 3 && t.length <= 60) return 'nome';
+  return 'altro';
+}
+
+function isInDictionary(text, dictArray){
+  var t = text.trim().toLowerCase();
+  for (var i = 0; i < dictArray.length; i++){
+    if (dictArray[i].toLowerCase() === t) return true;
+  }
+  return false;
+}
+
+function classifyNomeSpecific(text){
+  var t = text.trim();
+  if (isInDictionary(t, DIZIONARIO.presidenti_repubblica)) return 'presidente_repubblica';
+  if (isInDictionary(t, DIZIONARIO.presidenti_consiglio)) return 'presidente_consiglio';
+  if (isInDictionary(t, DIZIONARIO.partiti_storici)) return 'partito';
+  if (isInDictionary(t, DIZIONARIO.trattati_europei)) return 'trattato';
+  if (isInDictionary(t, DIZIONARIO.regioni_italiane)) return 'regione';
+  return 'nome_generico';
+}
+
+// Trova il soggetto della frase (semplice: prime 5 parole prima del gap)
+function extractSubjectFromSentence(sentence, entityStart, entityEnd){
+  var before = sentence.slice(0, entityStart);
+  // Prendi le ultime 5 parole prima dell'entità
+  var words = before.trim().split(/\s+/);
+  var subject = words.slice(Math.max(0, words.length - 6)).join(' ');
+  // Rimuovi preposizioni iniziali che non hanno senso
+  subject = subject.replace(/^[a-zà-ÿ\u2019'\s]+/, function(m){
+    // Tieni solo le parole con lunghezza >= 3
+    return m;
+  }).trim();
+  return subject;
+}
+
+// Genera una card da un highlight usando template + dizionario
+function cardFromHighlight(doc, hl){
+  var text = doc.text.slice(hl.start, hl.end).trim();
+  if (!text) return null;
+
+  // Trova la frase contenente
+  var sentences = segmentSentences(doc.text);
+  var sent = null;
+  for (var s = 0; s < sentences.length; s++){
+    if (hl.start >= sentences[s].start && hl.end <= sentences[s].end){ sent = sentences[s]; break; }
+  }
+  if (!sent) return null;
+  var sentText = doc.text.slice(sent.start, sent.end);
+  if (sentText.length < 20 || sentText.length > 400) return null;
+
+  var entityType = classifyEntity(text);
+  var front, back, type, distractors;
+
+  // CASO 1: ANNO
+  if (entityType === 'anno'){
+    var num = extractNumber(text);
+    if (isNaN(num) || num < 1000 || num > 2100) return null;
+    // Cerca un soggetto prima dell'anno nella frase
+    var relStart = hl.start - sent.start;
+    var before = sentText.slice(0, relStart);
+    var after = sentText.slice(relStart + text.length);
+    // Soggetto = ultime 6 parole significative prima
+    var subj = before.replace(/\s+/g, ' ').trim();
+    if (subj.length < 8){
+      // prova a prendere la frase intera riformulata
+      front = sentText.replace(new RegExp('\\b' + escRE(text) + '\\b'), '____').replace(/\s+/g, ' ').trim();
+      type = 'fact-year';
+    } else {
+      front = subj + ' in quale anno?';
+      type = 'fact-year';
+    }
+    back = String(num);
+    distractors = distrattoriDaDizionario('anno', back, 3);
+    if (distractors.length < 3){
+      // Fallback: perturba matematicamente
+      distractors = [];
+      var offs = [-1, 1, -2, 2, -3, 3, -5, 5, -10, 10];
+      for (var o = 0; o < offs.length && distractors.length < 3; o++){
+        var v = num + offs[o];
+        if (v >= 1000 && v <= 2100) distractors.push(String(v));
+      }
+    }
+  }
+  // CASO 2: DATA COMPLETA
+  else if (entityType === 'data_completa'){
+    var relStart2 = hl.start - sent.start;
+    var before2 = sentText.slice(0, relStart2).replace(/\s+/g, ' ').trim();
+    front = before2 + ' in quale data?';
+    type = 'fact-date';
+    back = text;
+    // Distrattori: prendi date vicine dai mesi/anni
+    var num2 = extractNumber(text);
+    distractors = [];
+    if (!isNaN(num2)){
+      var allYears = DIZIONARIO.anni_storici_italiani.slice();
+      allYears.sort(function(a, b){ return Math.abs(a - num2) - Math.abs(b - num2); });
+      var monthMatch = text.match(/(gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)/i);
+      var month = monthMatch ? monthMatch[1].toLowerCase() : 'gennaio';
+      for (var y = 0; y < allYears.length && distractors.length < 3; y++){
+        if (allYears[y] !== num2) distractors.push('1° ' + month + ' ' + allYears[y]);
+      }
+    }
+  }
+  // CASO 3: PERCENTUALE
+  else if (entityType === 'percentuale'){
+    var pct = extractNumber(text);
+    if (isNaN(pct)) return null;
+    var relStart3 = hl.start - sent.start;
+    var before3 = sentText.slice(0, relStart3).replace(/\s+/g, ' ').trim();
+    var after3 = sentText.slice(relStart3 + text.length).replace(/\s+/g, ' ').trim();
+    front = before3 + ' quale percentuale' + (after3 ? ' ' + after3 : '') + '?';
+    type = 'fact-percent';
+    back = pct + '%';
+    distractors = [];
+    var offs2 = [-0.5, 0.5, -1, 1, -2, 2, -3, 3, -5, 5, -10, 10];
+    for (var o2 = 0; o2 < offs2.length && distractors.length < 3; o2++){
+      var v2 = pct + offs2[o2];
+      if (v2 > 0 && v2 < 100) distractors.push(v2.toString().replace('.', ',') + '%');
+    }
+  }
+  // CASO 4: NOME
+  else if (entityType === 'nome'){
+    var nomeType = classifyNomeSpecific(text);
+    var relStart4 = hl.start - sent.start;
+    var before4 = sentText.slice(0, relStart4).replace(/\s+/g, ' ').trim();
+    var after4 = sentText.slice(relStart4 + text.length).replace(/\s+/g, ' ').trim();
+
+    if (nomeType === 'presidente_repubblica'){
+      front = 'Chi era il Presidente della Repubblica ' + (before4 ? 'di ' + before4 : 'in questo contesto') + '?';
+      type = 'fact-name';
+      back = text;
+      distractors = distrattoriDaDizionario('nome', text, 3);
+      if (distractors.length < 3) distractors = [];
+      // Se non ho distrattori buoni, prova con la lista presidenti
+      if (distractors.length < 3){
+        var lista = DIZIONARIO.presidenti_repubblica.slice();
+        distractors = lista.filter(function(x){ return x !== text; }).slice(0, 3);
+      }
+    } else if (nomeType === 'presidente_consiglio'){
+      front = 'Chi era il Presidente del Consiglio ' + (before4 ? 'di ' + before4 : 'in questo contesto') + '?';
+      type = 'fact-name';
+      back = text;
+      var lista2 = DIZIONARIO.presidenti_consiglio.slice();
+      distractors = shuffle(lista2.filter(function(x){ return x !== text; })).slice(0, 3);
+    } else if (nomeType === 'partito'){
+      front = 'Quale partito ' + (before4 ? before4 : 'in questo contesto') + '?';
+      type = 'fact-name';
+      back = text;
+      var lista3 = DIZIONARIO.partiti_storici.slice();
+      distractors = shuffle(lista3.filter(function(x){ return x !== text; })).slice(0, 3);
+    } else if (nomeType === 'trattato'){
+      front = 'Quale trattato ' + (before4 ? before4 : 'in questo contesto') + '?';
+      type = 'fact-name';
+      back = text;
+      var lista4 = DIZIONARIO.trattati_europei.slice();
+      distractors = shuffle(lista4.filter(function(x){ return x !== text; })).slice(0, 3);
+    } else {
+      // Nome generico: cloze
+      front = before4 + '____' + after4;
+      type = 'fact-name';
+      back = text;
+      distractors = [];
+    }
+  }
+  // CASO 5: NUMERO con unità
+  else if (entityType === 'numero'){
+    var numVal = extractNumber(text);
+    if (isNaN(numVal)) return null;
+    var relStart5 = hl.start - sent.start;
+    var before5 = sentText.slice(0, relStart5).replace(/\s+/g, ' ').trim();
+    var after5 = sentText.slice(relStart5 + text.length).replace(/\s+/g, ' ').trim();
+    front = before5 + ' quanto' + (after5 ? ' ' + after5 : '') + '?';
+    type = 'fact-number';
+    back = text;
+    distractors = [];
+    var unit = text.replace(/[\d.,\s-]+/g, '').trim();
+    var dec = (text.split(/[.,]/)[1] || '').length;
+    var offs3 = [-1, 1, -2, 2, -5, 5, -10, 10, -20, 20];
+    for (var o3 = 0; o3 < offs3.length && distractors.length < 3; o3++){
+      var v3 = numVal + offs3[o3];
+      if (v3 > 0){
+        var formatted = dec > 0 ? v3.toFixed(dec).replace('.', ',') : String(Math.round(v3));
+        distractors.push(unit ? formatted + ' ' + unit : formatted);
+      }
+    }
+  }
+  else {
+    // Cloze generico
+    if (text.length < 4 || text.length > 80) return null;
+    var relStart6 = hl.start - sent.start;
+    var before6 = sentText.slice(0, relStart6).replace(/\s+/g, ' ').trim();
+    var after6 = sentText.slice(relStart6 + text.length).replace(/\s+/g, ' ').trim();
+    front = before6 + ' ____ ' + after6;
+    type = 'concept-cloze';
+    back = text;
+    distractors = [];
+  }
+
+  if (!front || !back) return null;
+  if (distractors.length < 3) return null;
+
+  return {
+    type: type,
+    front: front.trim(),
+    back: back.trim(),
+    distractors: distractors.slice(0, 3),
+    highlightId: hl.id,
+    sourceCat: hl.cat
+  };
+}
+
+// ============================================================
+// VALIDAZIONE
 // ============================================================
 function lev(a, b){
   var m = a.length, n = b.length;
@@ -1189,33 +1414,69 @@ function lev(a, b){
   }
   return d[m][n];
 }
-function validateMCQ(q){
-  if (!q || typeof q !== 'object') return false;
-  var dom = String(q.domanda || '').trim();
-  var cor = String(q.corretta || '').trim();
-  if (!Array.isArray(q.sbagliate)) return false;
-  var sb = q.sbagliate.map(function(s){ return String(s).trim(); }).filter(Boolean);
-  if (dom.length < 12 || cor.length < 1) return false;
+
+function validateCard(card, doc){
+  if (!card || !card.front || !card.back) return false;
+  if (card.distractors.length < 3) return false;
+
+  var dom = card.front.trim();
+  var cor = card.back.trim();
+  var sb = card.distractors.map(function(s){ return String(s).trim(); }).filter(Boolean);
   if (sb.length < 3) return false;
+
   var corL = cor.toLowerCase();
-  var sbL = sb.map(function(s){ return s.toLowerCase(); });
-  if (sbL.indexOf(corL) !== -1) return false;
+
+  // 1. Distrattori distinti
+  if (sb.indexOf(cor) !== -1) return false;
   var seen = {};
-  for (var i = 0; i < sbL.length; i++) seen[sbL[i]] = true;
-  if (Object.keys(seen).length < 3) return false;
-  if (dom.toLowerCase().indexOf(corL) !== -1 && corL.length > 4) return false;
-  var forbidden = /tutte le precedenti|nessuna delle precedenti|all of the above|none of the above/i;
-  if (forbidden.test(cor)) return false;
-  for (var k = 0; k < sb.length; k++) if (forbidden.test(sb[k])) return false;
-  for (var k2 = 0; k2 < sb.length; k2++){
-    if (lev(sb[k2].toLowerCase(), corL) < 3 && sb[k2].length > 6) return false;
+  for (var i = 0; i < sb.length; i++){
+    if (seen[sb[i].toLowerCase()]) return false;
+    seen[sb[i].toLowerCase()] = true;
   }
-  var avgW = 0;
-  for (var m = 0; m < sb.length; m++) avgW += sb[m].length;
-  avgW /= sb.length;
-  if (cor.length > avgW * 2.5 && cor.length > 40) return false;
+
+  // 2. Corretta non nella domanda
+  if (dom.toLowerCase().indexOf(corL) !== -1 && corL.length > 3) return false;
+
+  // 3. Lunghezze bilanciate (con tolleranza maggiore per cloze)
+  for (var d = 0; d < sb.length; d++){
+    var ratio = sb[d].length / Math.max(1, cor.length);
+    if (ratio < 0.3 || ratio > 3.0) return false;
+  }
+
+  // 4. Domanda non troppo lunga
   if (dom.length > 220) return false;
+
+  // 5. No domande meta
   if (/secondo il testo|secondo l'autore|nel brano|nel testo|paragrafo/i.test(dom)) return false;
+
+  // 6. Validazione contro il testo: la corretta deve essere nel testo
+  if (doc && doc.text){
+    var textLower = doc.text.toLowerCase();
+    var corLTrimmed = corL.replace(/[.,;:!?]/g, '').trim();
+    if (corLTrimmed.length >= 3){
+      if (textLower.indexOf(corLTrimmed) === -1){
+        // prova come numero
+        var num = extractNumber(cor);
+        if (isNaN(num) || textLower.indexOf(String(num)) === -1) return false;
+      }
+    }
+  }
+
+  // 7. Distrattori non devono essere presenti nel testo vicino alla corretta
+  if (doc && doc.text){
+    var textL = doc.text.toLowerCase();
+    var posCorr = textL.indexOf(cor.toLowerCase().slice(0, Math.min(20, cor.length)));
+    if (posCorr >= 0){
+      for (var k = 0; k < sb.length; k++){
+        var posD = textL.indexOf(sb[k].toLowerCase().slice(0, Math.min(20, sb[k].length)));
+        if (posD >= 0 && Math.abs(posD - posCorr) < 100){
+          // Distrattore presente vicino: rischioso, scarta
+          return false;
+        }
+      }
+    }
+  }
+
   return true;
 }
 
@@ -1224,11 +1485,30 @@ function validateMCQ(q){
 // ============================================================
 var ai = {
   engine: null, loading: false,
-  modelKey: localStorage.getItem('hl.ai.model') || 'qwen15',
-  hasEver: !!localStorage.getItem('hl.ai.model'),
+  modelKey: Store.settings.modelKey,
+  hasEver: Store.settings.hasEverDownloaded,
   ready: false
 };
 function hasWebGPU(){ return typeof navigator !== 'undefined' && !!navigator.gpu; }
+
+function suggestModel(){
+  var mem = (navigator.deviceMemory || 4);
+  var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  var isAppleSilicon = /Macintosh|Mac OS X/i.test(navigator.userAgent);
+  // iPad moderno appare come Mac
+  if (isAppleSilicon && mem >= 16) return 'qwen7';
+  if (isAppleSilicon && mem >= 8) return 'qwen3';
+  if (isMobile && mem >= 8) return 'qwen15';
+  if (isMobile) return 'qwen05';
+  return 'qwen15';
+}
+
+function isModelAllowed(key){
+  var m = AI_MODELS[key];
+  if (!m) return false;
+  if (m.tier === 'pro' && !Store.isPro()) return false;
+  return true;
+}
 
 function setAIStatus(kind, msg, pct){
   var bar = $('aiBar');
@@ -1254,15 +1534,23 @@ function setAIStatus(kind, msg, pct){
 function initAI(modelKey){
   if (ai.loading) return Promise.resolve();
   if (ai.ready && ai.modelKey === modelKey) return Promise.resolve();
+  if (!isModelAllowed(modelKey)){
+    toast('Modello Pro — passa a Pro per usarlo');
+    return Promise.resolve();
+  }
   if (!hasWebGPU()){
     setAIStatus('error', 'WebGPU non supportato. Serve Chrome 113+ o Safari iOS 26+.');
     return Promise.resolve();
   }
-  var model = AI_MODELS[modelKey] || AI_MODELS.qwen15;
+  var model = AI_MODELS[modelKey];
+  if (!model){ return Promise.resolve(); }
   ai.loading = true;
   ai.modelKey = modelKey;
+  Store.settings.modelKey = modelKey;
   localStorage.setItem('hl.ai.model', modelKey);
   ai.hasEver = true;
+  Store.settings.hasEverDownloaded = true;
+  Store.save();
   setAIStatus('loading', 'Scaricamento ' + model.label + '…', 0);
   var promise = import(AI_CDN).then(function(webllm){
     return webllm.CreateMLCEngine(model.id, {
@@ -1287,9 +1575,9 @@ function initAI(modelKey){
 
 function llmChat(prompt, maxTokens, temperature){
   if (!ai.engine) return Promise.reject(new Error('AI non caricata'));
-  maxTokens = maxTokens || 900;
-  temperature = temperature == null ? 0.3 : temperature;
-  var timeoutMs = Math.max(30000, maxTokens * 200);
+  maxTokens = maxTokens || 500;
+  temperature = temperature == null ? 0.2 : temperature;
+  var timeoutMs = Math.max(30000, maxTokens * 300);
   var to = new Promise(function(_, rej){ setTimeout(function(){ rej(new Error('timeout')); }, timeoutMs); });
   var call = ai.engine.chat.completions.create({
     messages: [{ role: 'user', content: prompt }],
@@ -1300,188 +1588,22 @@ function llmChat(prompt, maxTokens, temperature){
   });
 }
 
-function mcqHash(s){
-  var h = 5381;
-  var str = s.slice(0, 1000);
-  for (var i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) | 0;
-  return 'm' + Math.abs(h).toString(36);
-}
-var mcqCache = {};
-try { mcqCache = JSON.parse(localStorage.getItem('hl.mcqcache') || '{}'); } catch(e){}
-function saveMcqCache(){
-  try {
-    var keys = Object.keys(mcqCache);
-    if (keys.length > 200) keys.slice(0, keys.length - 200).forEach(function(k){ delete mcqCache[k]; });
-    localStorage.setItem('hl.mcqcache', JSON.stringify(mcqCache));
-  } catch(e){}
-}
-function buildMCQPrompt(chunk, n, lang){
-  var it = lang === 'it';
-  var head = it
-    ? 'Sei un insegnante che crea esercizi. Dal testo genera esattamente ' + n + ' domande a scelta multipla sulla COMPRENSIONE.'
-    : 'You are a teacher. From the text, generate exactly ' + n + ' multiple-choice comprehension questions.';
-  var rules = it
-    ? '- Ogni domanda ha 1 corretta e 3 distrattori plausibili ma chiaramente sbagliati\n- Preferisci cause, conseguenze, eventi, date, protagonisti, definizioni\n- NON copiare frasi intere dal testo\n- Varia il tipo'
-    : '- Each question has 1 correct and 3 plausible but clearly wrong options\n- Do NOT copy sentences verbatim\n- Vary the type';
-  var tail = it
-    ? 'Rispondi SOLO con un array JSON valido.\nFormato: [{"domanda":"...","corretta":"...","sbagliate":["...","...","..."],"tipo":"evento"}]'
-    : 'Reply ONLY with a valid JSON array.\nFormat: [{"domanda":"...","corretta":"...","sbagliate":["...","...","..."],"tipo":"evento"}]';
-  return head + '\n\nTesto:\n"""\n' + chunk + '\n"""\n\n' + rules + '\n\n' + tail + '\n\nOra genera ' + n + ' domande:';
-}
-function parseMCQResponse(raw){
-  if (!raw || typeof raw !== 'string') return [];
-  var c = raw.trim();
-  var f = c.match(/```(?:json)?\s*([\s\S]*?)```/);
-  if (f) c = f[1].trim();
-  try {
-    var p = JSON.parse(c);
-    if (Array.isArray(p)) return p;
-    if (p && typeof p === 'object') return [p];
-  } catch(e){}
-  var arr = c.match(/\[[\s\S]*\]/);
-  if (arr){ try { var p2 = JSON.parse(arr[0]); if (Array.isArray(p2)) return p2; } catch(e){} }
-  var objs = [];
-  var re = /\{[^{}]*?"domanda"[\s\S]*?"sbagliate"\s*:\s*\[[^\]]*\][^{}]*?\}/g;
-  var m;
-  while ((m = re.exec(c)) !== null){ try { objs.push(JSON.parse(m[0])); } catch(e){} }
-  return objs;
-}
-function splitIntoChunks(text, maxWords){
-  maxWords = maxWords || 180;
-  var sents = segmentSentences(text);
-  if (!sents.length) return text.trim() ? [text.trim()] : [];
-  var chunks = [];
-  var curStart = sents[0].start, curWords = 0;
-  for (var i = 0; i < sents.length; i++){
-    var s = sents[i];
-    var w = (text.slice(s.start, s.end).match(/\p{L}+/gu) || []).length;
-    if (curWords > 0 && curWords + w > maxWords){
-      chunks.push(text.slice(curStart, sents[i - 1].end).trim());
-      curStart = s.start; curWords = w;
-    } else curWords += w;
-  }
-  if (curStart < text.length) chunks.push(text.slice(curStart).trim());
-  return chunks.filter(function(c){ return c.length > 30; });
-}
-function generateAllMCQ(text, lang, onProgress){
-  var chunks = splitIntoChunks(text, 180);
-  var out = [], seen = {}, i = 0;
-  function next(){
-    if (i >= chunks.length) return Promise.resolve(out);
-    if (onProgress) onProgress(i + 1, chunks.length);
-    var chunk = chunks[i];
-    var w = (chunk.match(/\p{L}+/gu) || []).length;
-    var n = Math.max(2, Math.min(4, Math.round(w / 60)));
-    var key = mcqHash(chunk + '|' + n + '|' + lang);
-    var cached = mcqCache[key];
-    var promise;
-    if (cached) promise = Promise.resolve(cached);
-    else {
-      promise = llmChat(buildMCQPrompt(chunk, n, lang), 900, 0.3).then(function(raw){
-        var parsed = parseMCQResponse(raw).filter(validateMCQ);
-        if (parsed.length){ mcqCache[key] = parsed; saveMcqCache(); }
-        return parsed;
-      }).catch(function(e){ console.warn('chunk failed', e); return []; });
-    }
-    return promise.then(function(items){
-      for (var k = 0; k < items.length; k++){
-        var it = items[k];
-        var qk = String(it.domanda || '').trim().toLowerCase().slice(0, 80);
-        if (seen[qk]) continue;
-        seen[qk] = true;
-        out.push({
-          domanda: String(it.domanda).trim(),
-          corretta: String(it.corretta).trim(),
-          sbagliate: it.sbagliate.map(function(s){ return String(s).trim(); }).filter(Boolean).slice(0, 3),
-          tipo: String(it.tipo || 'concetto').toLowerCase().trim()
-        });
-      }
-      i++;
-      return next();
-    });
-  }
-  return next();
-}
-function mapAITypeToCat(t){
-  if (!t) return 'key';
-  var s = String(t).toLowerCase();
-  if (s === 'data' || s === 'date' || s === 'anno' || s === 'year') return 'num';
-  if (s === 'protagonista' || s === 'persona' || s === 'person' || s === 'protagonist') return 'name';
-  if (s === 'definizione' || s === 'definition') return 'def';
-  if (s === 'citazione' || s === 'quote') return 'quote';
-  return 'key';
-}
-function proposeFromHighlights(doc){
+// ============================================================
+// PROPOSTE — templating + AI fallback
+// ============================================================
+function proposeFromHighlightsTemplating(doc){
   var hls = Store.highlightsForDoc(doc.id).filter(function(h){ return h.start >= 0; });
-  var sentences = segmentSentences(doc.text);
-  var props = [], seen = {};
+  var props = [];
+  var seen = {};
   for (var i = 0; i < hls.length; i++){
-    var h = hls[i];
-    var text = doc.text.slice(h.start, h.end).trim();
-    if (!text) continue;
-    var sent = null;
-    for (var s = 0; s < sentences.length; s++){
-      if (h.start >= sentences[s].start && h.end <= sentences[s].end){ sent = sentences[s]; break; }
-    }
-    var front, back, type, distractors;
-    if (h.cat === 'num'){
-      var sentText = sent ? doc.text.slice(sent.start, sent.end) : text;
-      var rel = h.start - (sent ? sent.start : h.start);
-      front = (sentText.slice(0, rel) + '____' + sentText.slice(rel + text.length)).replace(/\s+/g, ' ').trim();
-      back = text;
-      type = /^\d{3,4}$/.test(text) ? 'fact-year' : 'fact-number';
-      var n = extractNumber(text);
-      distractors = [];
-      if (!isNaN(n)){
-        var unit = text.replace(/[\d.,\s-]+/g, '').trim();
-        var offs = [-2, -1, 1, 2, -5, 5, -10, 10];
-        for (var o = 0; o < offs.length; o++){
-          var v = n + offs[o];
-          if (v > 0) distractors.push(unit ? v + ' ' + unit : String(v));
-        }
-      }
-    } else if (h.cat === 'def'){
-      var colonIdx = doc.text.indexOf(':', h.start);
-      var headEnd = (colonIdx > 0 && colonIdx < h.start + 80) ? colonIdx : -1;
-      if (headEnd > 0){
-        var head = doc.text.slice(h.start, headEnd).trim();
-        var tail = doc.text.slice(colonIdx + 1, h.end).trim();
-        if (head.length >= 3 && tail.length >= 20){
-          front = 'Cos\'è "' + head + '"?';
-          back = tail;
-          type = 'def';
-        }
-      }
-    }
-    if (!front){
-      if (text.length < 5 || text.length > 80 || !sent) continue;
-      var sentText2 = doc.text.slice(sent.start, sent.end);
-      if (sentText2.length < 40 || sentText2.length > 400) continue;
-      var rel2 = h.start - sent.start;
-      front = (sentText2.slice(0, rel2) + '____' + sentText2.slice(rel2 + text.length)).replace(/\s+/g, ' ').trim();
-      back = text;
-      type = 'concept-cloze';
-    }
-    var cid = mcqHash(type + '|' + front + '|' + back);
+    var card = cardFromHighlight(doc, hls[i]);
+    if (!card) continue;
+    if (!validateCard(card, doc)) continue;
+    var cid = 'tpl|' + card.type + '|' + card.front + '|' + card.back;
     if (seen[cid]) continue;
     seen[cid] = true;
-    if (!distractors){
-      var others = Store.highlightsForDoc(doc.id).filter(function(x){ return x.id !== h.id && x.cat === h.cat && x.start >= 0; });
-      distractors = [];
-      for (var oo = 0; oo < others.length && distractors.length < 3; oo++){
-        var t2 = doc.text.slice(others[oo].start, others[oo].end).trim();
-        if (t2 && distractors.indexOf(t2) === -1) distractors.push(t2);
-      }
-      if (distractors.length < 3){
-        var all = Store.highlightsForDoc(doc.id).filter(function(x){ return x.id !== h.id && x.start >= 0; });
-        for (var aa = 0; aa < all.length && distractors.length < 3; aa++){
-          var t3 = doc.text.slice(all[aa].start, all[aa].end).trim();
-          if (t3 && distractors.indexOf(t3) === -1) distractors.push(t3);
-        }
-      }
-    }
-    if (!distractors || distractors.length < 3) continue;
-    props.push({ type:type, front:front, back:back, distractors: distractors.slice(0, 3), highlightId: h.id, sourceCat: h.cat, contentId: cid });
+    card.contentId = cid;
+    props.push(card);
   }
   return props;
 }
@@ -1754,19 +1876,14 @@ function applyHighlight(start, end, cat, silent){
 }
 
 // ============================================================
-// EDIT MODE — tap su parola
+// EDIT MODE
 // ============================================================
 function findTokenAt(text, pos){
   var tokens = tokenize(text);
   for (var i = 0; i < tokens.length; i++){
     if (pos >= tokens[i].start && pos <= tokens[i].end) return tokens[i];
   }
-  var best = null, bestDist = Infinity;
-  for (var j = 0; j < tokens.length; j++){
-    var d = Math.min(Math.abs(tokens[j].start - pos), Math.abs(tokens[j].end - pos));
-    if (d < bestDist){ bestDist = d; best = tokens[j]; }
-  }
-  return (best && bestDist < 5) ? best : null;
+  return null;
 }
 function getClickPos(outputEl, clientX, clientY){
   var node = null, offset = 0;
@@ -1806,7 +1923,6 @@ function toggleTokenHighlight(token){
   Store.pushUndo(doc.id);
   if (existing){
     if (existing.cat === cat){
-      // rimuovi
       Store.removeHighlight(existing.id);
       redraw();
       toast('− ' + token.word, { ms: 900 });
@@ -1817,7 +1933,7 @@ function toggleTokenHighlight(token){
       existing.source = 'user';
       Store.save();
       redraw();
-      toast('→ ' + token.word + ' (' + cat + ')', { ms: 900 });
+      toast('→ ' + token.word, { ms: 900 });
       vib(8);
       return;
     }
@@ -1831,7 +1947,7 @@ function toggleTokenHighlight(token){
 }
 
 // ============================================================
-// SEARCH WITHIN TEXT
+// SEARCH
 // ============================================================
 function clearSearchHits(){
   var hits = $('output').querySelectorAll('mark.search-hit');
@@ -1972,48 +2088,35 @@ function openCardPreview(){
   if (!doc){ toast('Nessun testo'); return; }
   var hls = Store.highlightsForDoc(doc.id).filter(function(h){ return h.start >= 0; });
   if (!hls.length){ toast('Evidenzia prima qualcosa'); return; }
-  if (ai.ready && hasWebGPU()){
-    setAIStatus('working', 'Preparazione…', '0%');
-    var focusText = hls.map(function(h){ return doc.text.slice(h.start, h.end).trim(); }).filter(Boolean).join('\n\n');
-    generateAllMCQ(focusText, doc.lang, function(cur, tot){
-      setAIStatus('working', 'Generazione AI (' + cur + '/' + tot + ')…', Math.round(cur / tot * 100) + '%');
-    }).then(function(items){
-      if (!items.length){
-        setAIStatus('error', 'AI non ha prodotto domande valide, uso euristiche');
-        pendingProposals = proposeFromHighlights(doc);
-      } else {
-        setAIStatus('ready', items.length + ' domande generate');
-        pendingProposals = items.map(function(it){
-          var best = null;
-          for (var i = 0; i < hls.length; i++){
-            var htxt = doc.text.slice(hls[i].start, hls[i].end).toLowerCase();
-            if (htxt.indexOf(it.corretta.toLowerCase().slice(0, 20)) !== -1){ best = hls[i]; break; }
-          }
-          return {
-            type: 'ai-mcq', aiType: it.tipo,
-            front: it.domanda, back: it.corretta,
-            distractors: it.sbagliate.slice(0, 3),
-            highlightId: best ? best.id : null,
-            sourceCat: mapAITypeToCat(it.tipo),
-            contentId: mcqHash('ai|' + it.domanda + '|' + it.corretta)
-          };
-        });
-      }
-      finishCardPreview();
-    }).catch(function(e){
-      console.error(e);
-      setAIStatus('error', 'Errore AI, uso euristiche');
-      pendingProposals = proposeFromHighlights(doc);
-      finishCardPreview();
-    });
-  } else {
-    pendingProposals = proposeFromHighlights(doc);
-    if (pendingProposals.length) toast('AI non attiva · uso euristiche');
-    finishCardPreview();
+
+  if (!Store.canGenerateToday()){
+    toast('Limite giornaliero raggiunto (10). Passa a Pro per illimitato.', { ms: 4000 });
+    openModal('modalUpgrade');
+    return;
   }
+
+  // Pipeline v5: templating con dizionario (funziona sempre, senza AI)
+  setAIStatus('working', 'Analisi evidenziazioni…', 0);
+  var props = proposeFromHighlightsTemplating(doc);
+
+  // Se AI è pronta, la usiamo per raffinare (opzionale)
+  if (ai.ready && hasWebGPU() && props.length > 0){
+    setAIStatus('ready', props.length + ' domande generate dal dizionario');
+  } else if (props.length > 0){
+    setAIStatus('ready', props.length + ' domande generate');
+  } else {
+    setAIStatus('error', 'Nessuna domanda di qualità trovata');
+  }
+
+  pendingProposals = props;
+  if (!pendingProposals.length){
+    toast('Nessuna domanda di qualità. Prova a evidenziare date, nomi o cifre.');
+    return;
+  }
+  Store.recordGeneration();
+  finishCardPreview();
 }
 function finishCardPreview(){
-  if (!pendingProposals.length){ toast('Nessuna domanda di qualità trovata'); return; }
   var existing = {};
   for (var id in Store.data.cards) existing[Store.data.cards[id].contentId] = true;
   for (var i = 0; i < pendingProposals.length; i++){
@@ -2039,13 +2142,8 @@ function renderCardPreview(){
     el.className = 'card-item' + (p.alreadyExists ? ' disabled' : '');
     var catColor = '--c-key', catLabel = '?';
     for (var c = 0; c < CATEGORIES.length; c++) if (CATEGORIES[c].id === p.sourceCat){ catColor = CATEGORIES[c].color; catLabel = CATEGORIES[c].label; }
-    var isAI = p.type === 'ai-mcq';
-    var typeLabel;
-    if (isAI) typeLabel = (AI_TYPE_LABELS[p.aiType] || p.aiType || 'AI') + ' · AI';
-    else {
-      var map = { def:'Definizione', 'fact-year':'Anno', 'fact-number':'Dato', 'concept-cloze':'Concetto' };
-      typeLabel = map[p.type] || p.type;
-    }
+    var map = { 'fact-year':'Anno', 'fact-date':'Data', 'fact-percent':'Percentuale', 'fact-number':'Numero', 'fact-name':'Nome', 'concept-cloze':'Cloze' };
+    var typeLabel = map[p.type] || p.type;
     el.innerHTML =
       '<div class="card-head">' +
         '<span class="badge" style="background:var(' + catColor + ');color:var(--ink)">' + esc(typeLabel) + '</span>' +
@@ -2071,8 +2169,8 @@ function confirmCardGeneration(){
       var p = pendingProposals[parseInt(chk.dataset.idx, 10)];
       Store.addCard({
         docId: doc.id, highlightId: p.highlightId || null, contentId: p.contentId,
-        type: p.type, aiType: p.aiType || null,
-        front: p.front, back: p.back, distractors: p.distractors || null, sourceCat: p.sourceCat
+        type: p.type, front: p.front, back: p.back,
+        distractors: p.distractors, sourceCat: p.sourceCat
       });
       added++;
     }
@@ -2195,10 +2293,12 @@ function renderCardsView(){
   for (var i = 0; i < source.length; i++){
     var c = source[i];
     var r = Store.data.review[c.id];
-    var due;
+    var duePro;
     if (!r) due = 'nuova';
-    else if (r.due <= Date.now()) due = 'da ripassare';
-    else due = 'tra ' + Math.max(1, Math.ceil((r.due - Date.now()) / 86400000)) + 'g';
+    else';
+ if (r.due <= Date.now()) due  = 'da ripassare }';
+    else due = 'tra ' + else Math.max(1, Math {
+.ceil((r.due - Date.now()) / 86400000)) + 'g';
     var catColor = '--c-key', catLabel = '?';
     for (var j = 0; j < CATEGORIES.length; j++) if (CATEGORIES[j].id === c.sourceCat){ catColor = CATEGORIES[j].color; catLabel = CATEGORIES[j].label; }
     var hl = c.highlightId ? Store.data.highlights[c.highlightId] : null;
@@ -2209,7 +2309,6 @@ function renderCardsView(){
     el.innerHTML =
       '<div class="card-head">' +
         '<span class="badge" style="background:var(' + catColor + ');color:var(--ink)">' + esc(catLabel) + '</span>' +
-        (c.type === 'ai-mcq' ? '<span class="badge ai-badge">AI</span>' : '') +
         '<span class="card-due">' + esc(due) + '</span>' +
       '</div>' +
       '<div class="card-front">' + esc(c.front) + '</div>' +
@@ -2349,7 +2448,6 @@ function renderReviewCard(){
     '<div class="review-progress">Domanda ' + (rev.idx + 1) + ' di ' + rev.queue.length + '</div>' +
     '<div class="review-source">' +
       '<span class="badge" style="background:var(' + catColor + ');color:var(--ink)">' + esc(catLabel) + '</span>' +
-      (card.type === 'ai-mcq' ? '<span class="badge ai-badge">AI</span>' : '') +
       (doc ? '<span>· ' + esc(doc.title.slice(0, 40)) + '</span>' : '') +
     '</div>' +
     '<div class="review-card">' +
@@ -2387,7 +2485,7 @@ function updateReviewBadge(){
 }
 
 // ============================================================
-// STATS VIEW
+// STATS
 // ============================================================
 function renderStatsView(){
   var box = $('statsContent');
@@ -2458,7 +2556,17 @@ function renderStatsView(){
       '<div style="font-size:.82rem;color:var(--ink-2);line-height:1.6">Evidenziate ma mai trasformate in domande.</div>' +
     '</div>';
   }
+  if (!Store.isPro()){
+    var remaining = Math.max(0, 10 - (Store.settings.freeGenerationsToday || 0));
+    html += '<div class="upgrade-card">' +
+      '<h4>Passa a Pro</h4>' +
+      '<p>Hai ' + remaining + ' generazioni gratuite rimaste oggi. Con Pro: illimitate, modelli AI più potenti, export PDF completo.</p>' +
+      '<button id="btnUpgradeFromStats">Scopri Pro</button>' +
+    '</div>';
+  }
   box.innerHTML = html;
+  var bu = $('btnUpgradeFromStats');
+  if (bu) bu.addEventListener('click', function(){ openModal('modalUpgrade'); });
 }
 
 // ============================================================
@@ -2522,20 +2630,8 @@ function buildStandaloneHTML(){
   var doc = Store.getActiveDoc();
   if (!doc) return '';
   var annotated = renderAnnotated(doc);
-  var noteMap = {};
-  var hls = Store.highlightsForDoc(doc.id);
-  for (var i = 0; i < hls.length; i++){
-    if (hls[i].note) noteMap[hls[i].id] = hls[i].note;
-  }
-  var css = 'body{font-family:Georgia,serif;max-width:720px;margin:32px auto;padding:0 20px;line-height:1.8;font-size:1.08rem;color:#1b1815;background:#faf7f2}h1{font-size:1.1rem;font-family:system-ui;color:#8a8178;font-weight:600;margin-bottom:4px}.meta{font-family:system-ui;font-size:.78rem;color:#8a8178;margin-bottom:24px}mark{padding:1px 0;border-radius:3px;background:transparent;color:inherit}mark.c-num{background:#ffe680}mark.c-name{background:#d9b8ff}mark.c-key{background:#b6e6b6}mark.c-quote{background:#ffc1cf}mark.c-list{background:#a9d8ff}mark.c-def{background:#ffe0b6}mark.c-sentence{background:rgba(255,201,160,.45)}.note{font-family:system-ui;font-size:.8rem;color:#8a8178;margin-top:16px;padding:12px;background:#f1ede6;border-radius:8px}';
+  var css = 'body{font-family:Georgia,serif;max-width:720px;margin:32px auto;padding:0 20px;line-height:1.8;font-size:1.08rem;color:#1b1815;background:#faf7f2}h1{font-size:1.1rem;font-family:system-ui;color:#8a8178;font-weight:600;margin-bottom:4px}.meta{font-family:system-ui;font-size:.78rem;color:#8a8178;margin-bottom:24px}mark{padding:1px 0;border-radius:3px;background:transparent;color:inherit}mark.c-num{background:#ffe680}mark.c-name{background:#d9b8ff}mark.c-key{background:#b6e6b6}mark.c-quote{background:#ffc1cf}mark.c-list{background:#a9d8ff}mark.c-def{background:#ffe0b6}mark.c-sentence{background:rgba(255,201,160,.45)}';
   return '<!doctype html><html lang="it"><head><meta charset="utf-8"><title>' + esc(doc.title) + '</title><style>' + css + '</style></head><body><h1>HIGHLIGHT AI · ' + esc(doc.title) + '</h1><div class="meta">' + new Date().toLocaleString('it-IT') + '</div><div>' + annotated + '</div></body></html>';
-}
-function exportHTML(){
-  var doc = Store.getActiveDoc();
-  if (!doc){ toast('Nessun testo attivo'); return; }
-  var html = buildStandaloneHTML();
-  downloadBlob(html, 'highlight-' + Date.now() + '.html', 'text/html');
-  toast('HTML esportato');
 }
 function exportPDF(){
   var doc = Store.getActiveDoc();
@@ -2595,17 +2691,29 @@ function fallbackCopy(text){
 // ============================================================
 function openModal(id){ var el = $(id); if (el) el.classList.add('open'); }
 function closeModal(id){ var el = $(id); if (el) el.classList.remove('open'); }
+
 function renderModelList(){
   var box = $('modelList');
   box.innerHTML = '';
+  var suggested = suggestModel();
   for (var key in AI_MODELS){
     var m = AI_MODELS[key];
+    var locked = (m.tier === 'pro' && !Store.isPro());
     var el = document.createElement('div');
-    el.className = 'model-option' + (key === ai.modelKey ? ' selected' : '');
-    el.innerHTML = '<span class="radio"></span><div class="info"><div class="name">' + m.label + '<span class="sz">' + m.size + '</span></div><div class="desc">' + m.desc + '</div></div>';
-    el.addEventListener('click', (function(k){
-      return function(){ ai.modelKey = k; renderModelList(); vib(5); };
-    })(key));
+    el.className = 'model-option' + (key === ai.modelKey ? ' selected' : '') + (locked ? ' locked' : '');
+    var suggestTag = (key === suggested && !locked) ? ' · <span style="color:var(--ai);font-weight:700">consigliato</span>' : '';
+    el.innerHTML = '<span class="radio"></span><div class="info"><div class="name">' + m.label + '<span class="sz">' + m.size + '</span>' + suggestTag + '</div><div class="desc">' + m.desc + '</div></div>' + (locked ? '<span class="lock">🔒 Pro</span>' : '');
+    if (!locked){
+      el.addEventListener('click', (function(k){
+        return function(){ ai.modelKey = k; renderModelList(); vib(5); };
+      })(key));
+    } else {
+      el.addEventListener('click', function(){
+        toast('Modello Pro — passa a Pro per usarlo');
+        closeModal('modalAISetup');
+        setTimeout(function(){ openModal('modalUpgrade'); }, 200);
+      });
+    }
     box.appendChild(el);
   }
 }
@@ -2618,10 +2726,21 @@ function openModelPicker(){
     $('btnConfirmAI').textContent = 'Cambia';
   } else {
     $('aiSetupTitle').textContent = 'Scegli il modello AI';
-    $('aiSetupDesc').textContent = 'Scaricato una sola volta, resta sul dispositivo.';
+    $('aiSetupDesc').textContent = 'Scaricato una sola volta, resta sul dispositivo. Funziona offline.';
     $('btnConfirmAI').textContent = 'Scarica';
   }
   openModal('modalAISetup');
+}
+
+function updateTierBadge(){
+  var badge = $('tierBadge');
+  var txt = $('tierText');
+  if (!badge || !txt) return;
+  if (Store.isPro()){
+    badge.className = 'tier-badge pro';
+    txt.textContent = '    badge.className = 'tier-badge free';
+    txt.textContent = 'Free';
+  }
 }
 
 // ============================================================
@@ -2662,7 +2781,7 @@ function applyTheme(){
 }
 
 // ============================================================
-// ANALISI document
+// ANALISI
 // ============================================================
 function analyzeDoc(doc){
   var result = analyzeText(doc.text);
@@ -2697,7 +2816,6 @@ function on(id, evt, fn){
   else console.warn('Elemento non trovato:', id);
 }
 function bindEvents(){
-  // Tab
   var tabs = document.querySelectorAll('.tabbar .tab');
   for (var i = 0; i < tabs.length; i++){
     (function(t){
@@ -2705,7 +2823,6 @@ function bindEvents(){
     })(tabs[i]);
   }
 
-  // Input testo
   var input = $('input');
   var inputTimer = null;
   if (input){
@@ -2725,7 +2842,7 @@ function bindEvents(){
     });
   }
 
-  // Resize handle
+  // Resize
   var handle = $('resizeHandle');
   if (handle){
     var savedH = parseInt(localStorage.getItem('hl.inputH') || '0', 10);
@@ -2779,7 +2896,6 @@ function bindEvents(){
     });
   }
 
-  // Paste
   on('btnPaste', 'click', function(){
     if (navigator.clipboard && navigator.clipboard.readText){
       navigator.clipboard.readText().then(function(t){
@@ -2793,10 +2909,8 @@ function bindEvents(){
     } else toast('Incolla manualmente');
   });
 
-  // Undo
   on('btnUndo', 'click', function(){ if (Store.undo()) redraw(); });
 
-  // Clear
   on('btnClear', 'click', function(){
     var doc = Store.getActiveDoc();
     if (!doc) return;
@@ -2815,7 +2929,6 @@ function bindEvents(){
     };
   });
 
-  // Salva
   on('btnSaveLib', 'click', function(){
     var doc = Store.getActiveDoc();
     if (!doc){ toast('Nessun testo'); return; }
@@ -2835,10 +2948,8 @@ function bindEvents(){
     vib(10);
   });
 
-  // Genera domande
   on('btnGenCards', 'click', openCardPreview);
 
-  // Edit mode
   on('btnEdit', 'click', function(){
     state.editMode = !state.editMode;
     document.body.classList.toggle('edit-mode', state.editMode);
@@ -2849,12 +2960,10 @@ function bindEvents(){
     vib(6);
   });
 
-  // Reading mode
   on('btnReading', 'click', enterReading);
   on('btnExitReading', 'click', exitReading);
   on('btnSearchReading', 'click', function(){ toggleSearchBar(true); });
 
-  // Search
   on('btnSearchOpen', 'click', function(){ toggleSearchBar(); });
   on('btnSearchClose', 'click', function(){ toggleSearchBar(false); });
   on('btnSearchNext', 'click', nextSearchHit);
@@ -2869,11 +2978,9 @@ function bindEvents(){
     });
   }
 
-  // PDF, HTML, Copy
   on('btnSavePDF', 'click', exportPDF);
   on('btnCopy', 'click', copyToClipboard);
 
-  // Share
   on('btnShare', 'click', function(){
     var doc = Store.getActiveDoc();
     if (!doc){ toast('Nessun testo'); return; }
@@ -2892,7 +2999,6 @@ function bindEvents(){
     toast('HTML esportato');
   });
 
-  // Toggle controls
   on('btnToggleControls', 'click', function(){
     Store.settings.controlsHidden = !Store.settings.controlsHidden;
     document.body.classList.toggle('controls-hidden', Store.settings.controlsHidden);
@@ -2901,11 +3007,9 @@ function bindEvents(){
     vib(5);
   });
 
-  // Libreria
   var libSearch = $('libSearch');
   if (libSearch) libSearch.addEventListener('input', function(e){ renderLibrary(e.target.value); });
 
-  // Nuova card
   on('btnNewCard', 'click', function(){
     var doc = Store.getActiveDoc();
     if (!doc){ toast('Nessun testo attivo'); return; }
@@ -2920,9 +3024,9 @@ function bindEvents(){
     if (!f || !b){ toast('Domanda e risposta obbligatorie'); return; }
     var ds = [$('cardEditD1').value.trim(), $('cardEditD2').value.trim(), $('cardEditD3').value.trim()].filter(function(s){ return s && s !== b; }).slice(0, 3);
     if (isNew){
-      Store.addCard({ docId: card.docId, highlightId: null, contentId: mcqHash('manual|' + f + '|' + b), type:'manual', front: f, back: b, distractors: ds, sourceCat:'key' });
+      Store.addCard({ docId: card.docId, highlightId: null, contentId: 'manual|' + f + '|' + b, type:'manual', front: f, back: b, distractors: ds, sourceCat:'key' });
     } else {
-      Store.updateCard(card.id, { front: f, back: b, distractors: ds, contentId: mcqHash(card.type + '|' + f + '|' + b) });
+      Store.updateCard(card.id, { front: f, back: b, distractors: ds });
     }
     closeModal('modalCardEdit');
     renderCardsView();
@@ -2939,7 +3043,6 @@ function bindEvents(){
   });
   on('btnCancelCardEdit', 'click', function(){ closeModal('modalCardEdit'); });
 
-  // Export
   on('btnExport', 'click', function(){ openModal('modalExport'); });
   on('btnCancelExport', 'click', function(){ closeModal('modalExport'); });
   var expList = $('exportList');
@@ -2958,7 +3061,6 @@ function bindEvents(){
     }
   }
 
-  // Note
   on('btnSaveNote', 'click', function(){
     if (!noteCtxHl) return;
     Store.updateHighlight(noteCtxHl.id, { note: $('noteText').value.trim() });
@@ -2978,7 +3080,6 @@ function bindEvents(){
   });
   on('btnCancelNote', 'click', function(){ closeModal('modalNote'); });
 
-  // Card preview
   on('btnConfirmCardPreview', 'click', confirmCardGeneration);
   on('btnCancelCardPreview', 'click', function(){ closeModal('modalCardPreview'); });
   on('btnSelectAllCards', 'click', function(){
@@ -2990,7 +3091,13 @@ function bindEvents(){
     for (var i = 0; i < checks.length; i++) checks[i].checked = false;
   });
 
-  // Modal backdrop
+  // Upgrade
+  on('btnCancelUpgrade', 'click', function(){ closeModal('modalUpgrade'); });
+  on('btnConfirmUpgrade', 'click', function(){
+    closeModal('modalUpgrade');
+    toast('Pro in arrivo! Presto disponibile.', { ms: 3500 });
+  });
+
   var bgs = document.querySelectorAll('.modal-bg');
   for (var b = 0; b < bgs.length; b++){
     (function(bg){
@@ -2998,7 +3105,6 @@ function bindEvents(){
     })(bgs[b]);
   }
 
-  // Click su output
   var output = $('output');
   if (output){
     output.addEventListener('click', function(e){
@@ -3027,21 +3133,17 @@ function bindEvents(){
     });
   }
 
-  // Scroll reading progress
   var sa = $('scrollAnnotate');
   if (sa) sa.addEventListener('scroll', updateReadProgress, { passive: true });
 
-  // AI cancel/confirm
   on('btnCancelAI', 'click', function(){ closeModal('modalAISetup'); });
   on('btnConfirmAI', 'click', function(){
     closeModal('modalAISetup');
     initAI(ai.modelKey);
   });
 
-  // Theme
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
 
-  // Keyboard
   document.addEventListener('keydown', function(e){
     var ae = e.target;
     if (ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA')) return;
@@ -3067,8 +3169,8 @@ function init(){
     initBrand();
     initSelection();
     bindEvents();
+    updateTierBadge();
 
-    // restore controls hidden state
     if (Store.settings.controlsHidden){
       document.body.classList.add('controls-hidden');
       var tc = $('btnToggleControls');
@@ -3077,7 +3179,7 @@ function init(){
 
     var doc = Store.getActiveDoc();
     if (!doc){
-      var sample = 'La Rivoluzione Francese, iniziata nel 1789 con la presa della Bastiglia, rappresentò un momento di rottura con l\'Antico Regime. Le cause furono molteplici: la crisi finanziaria dello Stato, le cattive condizioni di vita del Terzo Stato e la diffusione delle idee illuministe.\n\nDi conseguenza, il 14 luglio 1789 il popolo parigino insorse contro la monarchia. La Dichiarazione dei Diritti dell\'Uomo e del Cittadino, approvata nell\'agosto dello stesso anno, costituisce uno dei documenti fondamentali della storia moderna.\n\nNapoleone Bonaparte prese il potere nel 1799 con il colpo di stato del 18 brumaio, ponendo fine alla fase rivoluzionaria. Il Consolato, instaurato nel 1799, diede origine a un nuovo ordine istituzionale che portò alla proclamazione dell\'impero nel 1804.';
+      var sample = 'La Repubblica Italiana nacque il 2 giugno 1946, quando gli italiani furono chiamati a scegliere tra monarchia e repubblica attraverso un referendum istituzionale. La consultazione vide la vittoria della repubblica con il 54,3% dei voti, mentre la monarchia ottenne il 45,7%. Nello stesso giorno si tennero le elezioni per l\'Assemblea Costituente, che vide il successo della Democrazia Cristiana con il 35,2% dei consensi.\n\nL\'Assemblea Costituente elesse Enrico De Nicola come Capo provvisorio dello Stato. La Costituzione italiana fu approvata il 22 dicembre 1947 ed entrò in vigore il 1° gennaio 1948.\n\nIl 18 aprile 1948 si tennero le prime elezioni politiche della Repubblica, vinte dalla Democrazia Cristiana. Alcide De Gasperi divenne Presidente del Consiglio. Il 1949 segnò l\'ingresso dell\'Italia nella NATO, mentre nel 1957 il Trattato di Roma istituì la Comunità Economica Europea.';
       doc = Store.newDoc(sample);
       analyzeDoc(doc);
     }
