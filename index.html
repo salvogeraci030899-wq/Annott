@@ -14,19 +14,15 @@
    ============================================================ */
 :root {
   color-scheme: light;
-
   --bg: #f6f3ee;
   --surface: #ffffff;
   --surface-2: #fbf9f5;
   --surface-3: #f1ede6;
-
   --ink: #1b1815;
   --ink-2: #57534e;
   --ink-3: #a8a29e;
-
   --border: #e6e0d6;
   --border-2: #d9d2c5;
-
   --accent: #b8893d;
   --accent-soft: #f3e6cf;
   --danger: #c0392b;
@@ -34,7 +30,6 @@
   --ai-soft: #ece5ff;
   --ok: #3b8f4b;
   --ok-soft: #dff0e2;
-
   --c-number: #ffe680;
   --c-name: #d9b8ff;
   --c-concept: #b6e6b6;
@@ -46,19 +41,15 @@
 
 [data-theme="dark"] {
   color-scheme: dark;
-
   --bg: #14110f;
   --surface: #1e1a18;
   --surface-2: #262120;
   --surface-3: #2e2826;
-
   --ink: #f3efe9;
   --ink-2: #b6ada3;
   --ink-3: #6a635c;
-
   --border: #302a27;
   --border-2: #3d3632;
-
   --accent: #d4b478;
   --accent-soft: #3a2f1c;
   --danger: #e57373;
@@ -66,7 +57,6 @@
   --ai-soft: #2a1f4d;
   --ok: #7bd88f;
   --ok-soft: #1c3322;
-
   --c-number: rgba(255, 205, 50, 0.42);
   --c-name: rgba(200, 140, 255, 0.42);
   --c-concept: rgba(100, 220, 110, 0.36);
@@ -81,8 +71,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-html,
-body {
+html, body {
   height: 100%;
   margin: 0;
 }
@@ -96,9 +85,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-button,
-input,
-textarea {
+button, input, textarea {
   font-family: inherit;
   font-size: inherit;
   color: inherit;
@@ -177,22 +164,10 @@ button {
   transition: color 0.2s;
 }
 
-.iconbtn:active {
-  background: var(--surface-3);
-}
-
-.iconbtn svg {
-  width: 20px;
-  height: 20px;
-}
-
-.iconbtn.ai-active {
-  color: var(--ai);
-}
-
-.spacer {
-  flex: 1;
-}
+.iconbtn:active { background: var(--surface-3); }
+.iconbtn svg { width: 20px; height: 20px; }
+.iconbtn.ai-active { color: var(--ai); }
+.spacer { flex: 1; }
 
 .view {
   display: none;
@@ -201,9 +176,7 @@ button {
   min-height: 0;
 }
 
-.view.active {
-  display: flex;
-}
+.view.active { display: flex; }
 
 .scroll {
   flex: 1;
@@ -240,9 +213,7 @@ button {
   overflow-y: auto;
 }
 
-.input-card textarea::placeholder {
-  color: var(--ink-3);
-}
+.input-card textarea::placeholder { color: var(--ink-3); }
 
 .actions {
   display: flex;
@@ -253,9 +224,7 @@ button {
   scrollbar-width: none;
 }
 
-.actions::-webkit-scrollbar {
-  display: none;
-}
+.actions::-webkit-scrollbar { display: none; }
 
 .tbtn {
   flex: 0 0 auto;
@@ -272,9 +241,7 @@ button {
   white-space: nowrap;
 }
 
-.tbtn:active {
-  background: var(--surface-3);
-}
+.tbtn:active { background: var(--surface-3); }
 
 .tbtn.on {
   background: var(--ai-soft);
@@ -282,14 +249,8 @@ button {
   border-color: color-mix(in srgb, var(--ai) 30%, transparent);
 }
 
-.tbtn svg {
-  width: 15px;
-  height: 15px;
-}
-
-.tbtn.danger {
-  color: var(--danger);
-}
+.tbtn svg { width: 15px; height: 15px; }
+.tbtn.danger { color: var(--danger); }
 
 .tbtn.primary {
   background: var(--ink);
@@ -298,9 +259,7 @@ button {
   font-weight: 600;
 }
 
-.tbtn.primary:active {
-  background: var(--ink);
-}
+.tbtn.primary:active { background: var(--ink); }
 
 .cats-row {
   display: flex;
@@ -310,9 +269,7 @@ button {
   scrollbar-width: none;
 }
 
-.cats-row::-webkit-scrollbar {
-  display: none;
-}
+.cats-row::-webkit-scrollbar { display: none; }
 
 .cat-pill {
   flex: 0 0 auto;
@@ -330,9 +287,7 @@ button {
   line-height: 1;
 }
 
-.cat-pill:active {
-  transform: scale(0.96);
-}
+.cat-pill:active { transform: scale(0.96); }
 
 .cat-pill .dot {
   width: 8px;
@@ -366,13 +321,8 @@ button {
   min-height: 100px;
 }
 
-.output-card:empty {
-  display: none;
-}
-
-.output-card > span.seg {
-  display: inline;
-}
+.output-card:empty { display: none; }
+.output-card > span.seg { display: inline; }
 
 mark {
   background: transparent;
@@ -428,9 +378,7 @@ mark.has-note {
   cursor: pointer;
 }
 
-.lib-item:active {
-  background: var(--surface-2);
-}
+.lib-item:active { background: var(--surface-2); }
 
 .lib-item .title {
   font-weight: 600;
@@ -549,9 +497,7 @@ mark.has-note {
   justify-content: space-between;
 }
 
-.section-title:first-child {
-  margin-top: 0;
-}
+.section-title:first-child { margin-top: 0; }
 
 .section-title button {
   font-size: 0.72rem;
@@ -611,9 +557,7 @@ mark.has-note {
   line-height: 1.5;
 }
 
-.mcq-option:not(:disabled):active {
-  transform: scale(0.995);
-}
+.mcq-option:not(:disabled):active { transform: scale(0.995); }
 
 .mcq-label {
   flex: 0 0 auto;
@@ -659,9 +603,7 @@ mark.has-note {
   color: white;
 }
 
-.mcq-option.dim {
-  opacity: 0.4;
-}
+.mcq-option.dim { opacity: 0.4; }
 
 .mcq-feedback {
   padding: 12px 16px;
@@ -699,13 +641,8 @@ mark.has-note {
   scrollbar-width: none;
 }
 
-.sel-bar::-webkit-scrollbar {
-  display: none;
-}
-
-.sel-bar.show {
-  display: flex;
-}
+.sel-bar::-webkit-scrollbar { display: none; }
+.sel-bar.show { display: flex; }
 
 .sel-bar .cat-btn {
   width: 36px;
@@ -716,9 +653,7 @@ mark.has-note {
   flex: 0 0 auto;
 }
 
-.sel-bar .cat-btn:active {
-  transform: scale(0.9);
-}
+.sel-bar .cat-btn:active { transform: scale(0.9); }
 
 .sel-bar .cat-btn .dot {
   width: 22px;
@@ -752,9 +687,7 @@ mark.has-note {
   box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.2);
 }
 
-.edit-panel.show {
-  display: block;
-}
+.edit-panel.show { display: block; }
 
 .edit-panel-inner {
   display: flex;
@@ -766,9 +699,7 @@ mark.has-note {
   margin: 0 auto;
 }
 
-.edit-panel-inner::-webkit-scrollbar {
-  display: none;
-}
+.edit-panel-inner::-webkit-scrollbar { display: none; }
 
 .edit-panel .hint {
   color: rgba(255, 255, 255, 0.6);
@@ -789,9 +720,7 @@ mark.has-note {
   flex: 0 0 auto;
 }
 
-.edit-panel .color-btn:active {
-  transform: scale(0.9);
-}
+.edit-panel .color-btn:active { transform: scale(0.9); }
 
 .edit-panel .color-btn .dot {
   width: 28px;
@@ -830,14 +759,8 @@ mark.has-note {
   position: relative;
 }
 
-.tabbar .tab svg {
-  width: 22px;
-  height: 22px;
-}
-
-.tabbar .tab.active {
-  color: var(--ai);
-}
+.tabbar .tab svg { width: 22px; height: 22px; }
+.tabbar .tab.active { color: var(--ai); }
 
 .tabbar .badge-dot {
   position: absolute;
@@ -865,9 +788,7 @@ mark.has-note {
   justify-content: center;
 }
 
-.modal-bg.open {
-  display: flex;
-}
+.modal-bg.open { display: flex; }
 
 .modal {
   background: var(--surface);
@@ -940,9 +861,7 @@ mark.has-note {
 .btn.danger   { background: var(--danger); color: white; }
 .btn.ai       { background: var(--ai); color: white; }
 
-[data-theme="dark"] .btn.ai {
-  color: #1a0f3d;
-}
+[data-theme="dark"] .btn.ai { color: #1a0f3d; }
 
 .model-option {
   display: flex;
@@ -961,10 +880,7 @@ mark.has-note {
   background: var(--ai-soft);
 }
 
-.model-option .info {
-  flex: 1;
-  min-width: 0;
-}
+.model-option .info { flex: 1; min-width: 0; }
 
 .model-option .name {
   font-weight: 600;
@@ -1003,9 +919,7 @@ mark.has-note {
   text-align: center;
 }
 
-.toast.show {
-  opacity: 1;
-}
+.toast.show { opacity: 1; }
 
 .ai-bar {
   display: none;
@@ -1021,9 +935,7 @@ mark.has-note {
   font-weight: 500;
 }
 
-.ai-bar.show {
-  display: flex;
-}
+.ai-bar.show { display: flex; }
 
 .ai-bar .spinner {
   width: 14px;
@@ -1035,9 +947,7 @@ mark.has-note {
   flex: 0 0 auto;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 .ai-bar .msg {
   flex: 1;
@@ -1114,7 +1024,6 @@ mark.has-note {
 <div id="error-banner"></div>
 
 <div class="app">
-
   <header class="topbar">
     <div class="brand-title" id="brand-title"></div>
     <div class="spacer"></div>
@@ -1300,9 +1209,6 @@ mark.has-note {
 (function () {
   'use strict';
 
-  // ============================================================
-  // GLOBAL ERROR HANDLER
-  // ============================================================
   var errorBanner = document.getElementById('error-banner');
   window.addEventListener('error', function (event) {
     errorBanner.style.display = 'block';
@@ -1313,9 +1219,7 @@ mark.has-note {
   // UTILITIES
   // ============================================================
 
-  function $(id) {
-    return document.getElementById(id);
-  }
+  function $(id) { return document.getElementById(id); }
 
   function escapeHtml(text) {
     return String(text).replace(/[&<>"']/g, function (character) {
@@ -1334,9 +1238,7 @@ mark.has-note {
   }
 
   function vibrate(ms) {
-    try {
-      if (navigator.vibrate) navigator.vibrate(ms);
-    } catch (error) {}
+    try { if (navigator.vibrate) navigator.vibrate(ms); } catch (error) {}
   }
 
   function clamp(value, min, max) {
@@ -1352,6 +1254,22 @@ mark.has-note {
       copy[j] = temp;
     }
     return copy;
+  }
+
+  /**
+   * Fast 32-bit FNV-1a hash. Returns a short string key.
+   * Used to fingerprint paragraph text for the incremental
+   * analysis cache. Collisions are astronomically unlikely
+   * for the sizes involved, and the length is appended as a
+   * secondary discriminator.
+   */
+  function hashString(str) {
+    var h = 2166136261;
+    for (var i = 0; i < str.length; i++) {
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return (h >>> 0).toString(36) + '_' + str.length;
   }
 
   var toastTimer = null;
@@ -1545,9 +1463,7 @@ mark.has-note {
     if (words.length < 3) return 'en';
 
     var sample = {};
-    for (var i = 0; i < Math.min(200, words.length); i++) {
-      sample[words[i]] = true;
-    }
+    for (var i = 0; i < Math.min(200, words.length); i++) sample[words[i]] = true;
 
     var itSignals = ['il', 'lo', 'la', 'gli', 'della', 'nella', 'perché',
       'quindi', 'sono', 'questo', 'questa', 'anche', 'però', 'molto',
@@ -1582,8 +1498,7 @@ mark.has-note {
     var S = Math.max(0.1, FSRS_PARAMS[rating - 1]);
     var D = clamp(
       FSRS_PARAMS[4] - Math.exp(FSRS_PARAMS[5] * (rating - 1)) + 1,
-      1,
-      10
+      1, 10
     );
     return {
       stability: S,
@@ -1600,7 +1515,6 @@ mark.has-note {
     var S = Math.max(0.1, card.stability);
     var D = clamp(card.difficulty, 1, 10);
     var elapsedDays = Math.max(0, (now - (card.lastReview || now)) / 86400000);
-
     var R = Math.exp(Math.log(FSRS_TARGET) * elapsedDays / S);
 
     var newD = clamp(D - FSRS_PARAMS[6] * (rating - 3), 1, 10);
@@ -1616,7 +1530,6 @@ mark.has-note {
     if (useShortTerm) {
       newS = S * Math.exp(FSRS_PARAMS[17] * (rating - 3 + FSRS_PARAMS[18]));
       newS = Math.max(0.1, newS);
-
       if (rating === 1) {
         newLapses++;
         newState = 'relearning';
@@ -1667,7 +1580,7 @@ mark.has-note {
   }
 
   // ============================================================
-  // STORE — per-document persistence
+  // STORE — data persistence, per-document
   // ============================================================
   var STORAGE_INDEX_KEY = 'highlight-ai.v131.index';
   var STORAGE_DOC_PREFIX = 'highlight-ai.v131.doc.';
@@ -1767,19 +1680,12 @@ mark.has-note {
     }
   }
 
-  function saveData() {
-    scheduleFlush();
-  }
-
-  function saveDataNow() {
-    flushSaves();
-  }
+  function saveData() { scheduleFlush(); }
+  function saveDataNow() { flushSaves(); }
 
   function loadData() {
     var indexRaw = null;
-    try {
-      indexRaw = localStorage.getItem(STORAGE_INDEX_KEY);
-    } catch (e) {}
+    try { indexRaw = localStorage.getItem(STORAGE_INDEX_KEY); } catch (e) {}
 
     if (indexRaw) {
       try {
@@ -1814,9 +1720,7 @@ mark.has-note {
     } else {
       var oldRaw = null;
       try { oldRaw = localStorage.getItem(STORAGE_OLD_KEY); } catch (e) {}
-      if (oldRaw) {
-        migrateFromLegacy(oldRaw);
-      }
+      if (oldRaw) migrateFromLegacy(oldRaw);
     }
 
     if (!DATA.settings) {
@@ -1855,6 +1759,10 @@ mark.has-note {
       console.warn('Migration failed:', error);
     }
   }
+
+  // ------------------------------------------------------------
+  // DATA ACCESS
+  // ------------------------------------------------------------
 
   function getActiveDocument() {
     return DATA.activeDocId ? DATA.docs[DATA.activeDocId] : null;
@@ -2000,12 +1908,8 @@ mark.has-note {
   }
 
   // ============================================================
-  // ANALYZER — entity detection primitives
-  // ===========================================================
-=
-  // These operate on plain strings and return block-relative spans.
-  // The document-level driver (analyzeIncremental) is responsible
-  // for chunking the text and adding the block offset.
+  // ANALYZER — universal entity detection
+  // ============================================================
 
   function findNumbers(text) {
     var spans = [];
@@ -2159,261 +2063,146 @@ mark.has-note {
   // ============================================================
   // INCREMENTAL ANALYZER
   // ============================================================
-  // The text is split into blocks (paragraphs, with automatic
-  // sub-splitting of very long paragraphs at sentence boundaries).
-  // Each block is hashed. On re-analysis, blocks whose hash matches
-  // a cached block reuse its spans and frequency map. Only the
-  // blocks that actually changed are re-analyzed.
+  // The text is split into paragraphs (split on \n). Each paragraph
+  // is hashed. The results of the four expensive regex passes
+  // (numbers, quotes, definitions, proper nouns) are cached per
+  // paragraph hash. Only paragraphs whose text actually changed
+  // re-run those passes.
+  //
+  // Concepts are always recomputed because their inclusion depends
+  // on the global word frequency across the whole document. The
+  // cost is a single tokenization pass per paragraph, which is
+  // much cheaper than the four regex passes combined.
 
-  var analysisCache = { docId: null, blocks: [] };
-  var MAX_BLOCK_CHARS = 2500;
+  var paragraphCache = {};
 
-  function blockHash(text) {
-    var hash = 5381;
-    for (var i = 0; i < text.length; i++) {
-      hash = ((hash << 5) + hash + text.charCodeAt(i)) | 0;
-    }
-    return hash.toString(36);
-  }
-
-  function splitIntoSentences(text) {
-    var sentences = [];
+  function splitIntoParagraphs(text) {
+    var parts = [];
+    var n = text.length;
     var start = 0;
-    var match;
-    var regex = /[.!?…]+(?=\s|$)/g;
+    var i = 0;
 
-    while ((match = regex.exec(text)) !== null) {
-      var end = match.index + match[0].length;
-      if (end - start >= 15) sentences.push({ start: start, end: end });
-      start = end;
-      while (start < text.length && /\s/.test(text[start])) start++;
-    }
-    if (text.length - start >= 15) sentences.push({ start: start, end: text.length });
-    return sentences;
-  }
-
-  function computeBlocks(text) {
-    // First pass: split on blank lines
-    var rawRanges = [];
-    var pos = 0;
-    var re = /\n{2,}/g;
-    var match;
-    while ((match = re.exec(text)) !== null) {
-      if (match.index > pos) rawRanges.push({ start: pos, end: match.index });
-      pos = match.index + match[0].length;
-    }
-    if (pos < text.length) rawRanges.push({ start: pos, end: text.length });
-
-    // Second pass: sub-split oversized paragraphs at sentence boundaries
-    var blocks = [];
-    for (var i = 0; i < rawRanges.length; i++) {
-      var rb = rawRanges[i];
-      var len = rb.end - rb.start;
-      if (len <= MAX_BLOCK_CHARS) {
-        var t = text.slice(rb.start, rb.end);
-        blocks.push({ start: rb.start, end: rb.end, text: t, hash: blockHash(t) });
-        continue;
-      }
-
-      var subText = text.slice(rb.start, rb.end);
-      var sentences = splitIntoSentences(subText);
-      if (sentences.length < 2) {
-        blocks.push({ start: rb.start, end: rb.end, text: subText, hash: blockHash(subText) });
-        continue;
-      }
-
-      var subStart = 0;
-      for (var s = 0; s < sentences.length; s++) {
-        var sent = sentences[s];
-        if (sent.end - subStart > MAX_BLOCK_CHARS && subStart < sent.start) {
-          var subEnd = sentences[s - 1].end;
-          var st = subText.slice(subStart, subEnd);
-          blocks.push({
-            start: rb.start + subStart,
-            end: rb.start + subEnd,
-            text: st,
-            hash: blockHash(st)
-          });
-          subStart = sent.start;
+    while (i < n) {
+      if (text.charCodeAt(i) === 10) {
+        if (i > start) {
+          parts.push({ start: start, end: i, text: text.slice(start, i) });
         }
-      }
-      var lastText = subText.slice(subStart);
-      if (lastText.length) {
-        blocks.push({
-          start: rb.start + subStart,
-          end: rb.end,
-          text: lastText,
-          hash: blockHash(lastText)
-        });
-      }
-    }
-
-    return blocks;
-  }
-
-  function analyzeIncremental(doc) {
-    var text = doc.text;
-
-    // 1. Build the new block list
-    var newBlocks = computeBlocks(text);
-
-    // 2. Index the cached blocks by hash so we can reuse them
-    var oldByHash = {};
-    if (analysisCache.docId === doc.id) {
-      for (var i = 0; i < analysisCache.blocks.length; i++) {
-        var ob = analysisCache.blocks[i];
-        if (!oldByHash[ob.hash]) oldByHash[ob.hash] = [];
-        oldByHash[ob.hash].push(ob);
-      }
-    }
-
-    // 3. Match each new block against the cache by content hash
-    var dirty = [];
-    for (var j = 0; j < newBlocks.length; j++) {
-      var nb = newBlocks[j];
-      var cands = oldByHash[nb.hash];
-      var reused = null;
-      if (cands && cands.length) {
-        reused = cands.shift();
-      }
-      if (reused) {
-        nb.spans = reused.spans;
-        nb.freqMap = reused.freqMap;
+        i++;
+        while (i < n && text.charCodeAt(i) === 10) i++;
+        start = i;
       } else {
-        nb.spans = null;
-        nb.freqMap = null;
-        dirty.push(nb);
+        i++;
       }
     }
-
-    // 4. Tokenize dirty blocks once, keep tokens around for step 6
-    var pendingTokens = [];
-    for (var k = 0; k < dirty.length; k++) {
-      var d = dirty[k];
-      var tokens = tokenize(d.text);
-      var freqMap = {};
-      for (var t = 0; t < tokens.length; t++) {
-        var tl = tokens[t].lower;
-        if (tl.length < 6 || STOPWORD_SET[tl]) continue;
-        freqMap[tl] = (freqMap[tl] || 0) + 1;
-      }
-      d.freqMap = freqMap;
-      pendingTokens.push(tokens);
+    if (start < n) {
+      parts.push({ start: start, end: n, text: text.slice(start) });
     }
+    return parts;
+  }
 
-    // 5. Build the global frequency map from all blocks' freq maps    //    (cheap — proportional to unique tokens, not text length)
-    var globalFreq = {};
-    for (var b = 0; b < newBlocks.length; b++) {
-      var fm = newBlocks[b].freqMap;
-      if (!fm) continue;
-      for (var tok in fm) {
-        globalFreq[tok] = (globalFreq[tok] || 0) + fm[tok];
+  function computeGlobalWordCounts(paragraphs) {
+    var counts = {};
+    for (var i = 0; i < paragraphs.length; i++) {
+      var tokens = tokenize(paragraphs[i].text);
+      for (var j = 0; j < tokens.length; j++) {
+        var w = tokens[j].lower;
+        if (w.length < 6 || STOPWORD_SET[w]) continue;
+        counts[w] = (counts[w] || 0) + 1;
       }
     }
+    return counts;
+  }
 
-    // 6. Analyze dirty blocks with full detectors + global-freq concepts
-    for (var m = 0; m < dirty.length; m++) {
-      var dm = dirty[m];
-      var tks = pendingTokens[m];
-      var spans = [].concat(
-        findNumbers(dm.text),
-        findQuotes(dm.text),
-        findDefinitions(dm.text),
-        findProperNouns(dm.text)
-      );
-      for (var n = 0; n < tks.length; n++) {
-        var tk = tks[n];
-        if (tk.lower.length < 6 || STOPWORD_SET[tk.lower]) continue;
-        if ((globalFreq[tk.lower] || 0) >= 2) {
-          spans.push({ start: tk.start, end: tk.end, cat: 'key', w: 3 });
-        }
-      }
-      dm.spans = spans;
-    }
-
-    // 7. Store the new cache
-    analysisCache = { docId: doc.id, blocks: newBlocks };
-
-    // 8. Collect document-relative spans
-    var result = [];
-    for (var p = 0; p < newBlocks.length; p++) {
-      var blk = newBlocks[p];
-      for (var q = 0; q < blk.spans.length; q++) {
-        var s = blk.spans[q];
-        result.push({
-          start: blk.start + s.start,
-          end: blk.start + s.end,
-          cat: s.cat,
-          w: s.w
-        });
+  function findConceptsFromGlobal(text, globalCounts) {
+    var spans = [];
+    var tokens = tokenize(text);
+    for (var j = 0; j < tokens.length; j++) {
+      var tk = tokens[j];
+      if (globalCounts[tk.lower] >= 2 && tk.lower.length >= 6) {
+        spans.push({ start: tk.start, end: tk.end, cat: 'key', w: 3 });
       }
     }
-    return result;
+    return spans;
   }
 
   /**
-   * Reconcile the auto highlights with the new span set.
-   * Highlights whose (start, end, cat) matches an existing auto
-   * highlight keep their ID — that is what lets the incremental
-   * renderer skip re-rendering their segments.
-   * User-created highlights are never touched.
+   * Analyze a text with per-paragraph caching.
+   *
+   * @param {string} text
+   * @returns {Array} spans with absolute positions in `text`.
    */
-  function reconcileAutoHighlights(doc, spans) {
-    var highlights = highlightsForDocument(doc.id);
-    var oldAuto = {};
-    for (var i = 0; i < highlights.length; i++) {
-      var h = highlights[i];
-      if (h.source === 'auto') {
-        oldAuto[h.start + ':' + h.end + ':' + h.cat] = h;
+  function analyzeTextIncremental(text) {
+    if (!text.trim()) {
+      paragraphCache = {};
+      return [];
+    }
+
+    var paragraphs = splitIntoParagraphs(text);
+    var globalCounts = computeGlobalWordCounts(paragraphs);
+    var newCache = {};
+    var spans = [];
+
+    for (var i = 0; i < paragraphs.length; i++) {
+      var para = paragraphs[i];
+      var h = hashString(para.text);
+
+      var paraSpans = paragraphCache[h];
+      if (!paraSpans) {
+        paraSpans = [].concat(
+          findNumbers(para.text),
+          findQuotes(para.text),
+          findDefinitions(para.text),
+          findProperNouns(para.text)
+        );
+      }
+      newCache[h] = paraSpans;
+
+      // Offset cached non-concept spans to absolute positions
+      for (var j = 0; j < paraSpans.length; j++) {
+        spans.push({
+          start: paraSpans[j].start + para.start,
+          end: paraSpans[j].end + para.start,
+          cat: paraSpans[j].cat,
+          w: paraSpans[j].w
+        });
+      }
+
+      // Concepts are recomputed every time using the current
+      // global word counts. This keeps them accurate when other
+      // paragraphs change the frequency of a term.
+      var conceptSpans = findConceptsFromGlobal(para.text, globalCounts);
+      for (var k = 0; k < conceptSpans.length; k++) {
+        spans.push({
+          start: conceptSpans[k].start + para.start,
+          end: conceptSpans[k].end + para.start,
+          cat: 'key',
+          w: 3
+        });
       }
     }
 
-    var usedKeys = {};
-    var keep = {};
+    paragraphCache = newCache;
+    return spans;
+  }
 
-    for (var j = 0; j < spans.length; j++) {
-      var span = spans[j];
-      var key = span.start + ':' + span.end + ':' + span.cat;
-      if (oldAuto[key] && !usedKeys[key]) {
-        usedKeys[key] = true;
-        var reuse = oldAuto[key];
-        keep[reuse.id] = true;
-        reuse.before = doc.text.slice(Math.max(0, span.start - 30), span.start);
-        reuse.after = doc.text.slice(span.end, span.end + 30);
-      } else {
-        var id = generateId();
-        DATA.highlights[id] = {
-          id: id,
-          docId: doc.id,
-          start: span.start,
-          end: span.end,
-          cat: span.cat,
-          source: 'auto',
-          before: doc.text.slice(Math.max(0, span.start - 30), span.start),
-          after: doc.text.slice(span.end, span.end + 30),
-          note: '',
-          createdAt: Date.now()
-        };
-      }
-    }
-
-    // Drop auto highlights that were not matched by any new span
-    for (var k = 0; k < highlights.length; k++) {
-      var hh = highlights[k];
-      if (hh.source === 'auto' && !keep[hh.id]) {
-        delete DATA.highlights[hh.id];
-      }
-    }
+  /**
+   * Legacy single-pass analyzer, kept for reference and use by
+   * code paths that do not benefit from caching (e.g. tiny texts).
+   */
+  function analyzeText(text) {
+    if (!text.trim()) return [];
+    return [].concat(
+      findNumbers(text),
+      findQuotes(text),
+      findDefinitions(text),
+      findProperNouns(text),
+      findConceptsFromGlobal(text, computeGlobalWordCounts(splitIntoParagraphs(text)))
+    );
   }
 
   // ============================================================
-  // INCREMENTAL RENDERER
+  // INCREMENTAL RENDER
   // ============================================================
-  // The output is a flat list of <span class="seg"> children, one
-  // per line + one per newline character. Each child stores the
-  // hash of what it last rendered. On redraw, only children whose
-  // hash changed are rebuilt.
-
   function splitSegments(text) {
     var segs = [];
     var last = 0;
@@ -2562,9 +2351,9 @@ mark.has-note {
       output.removeChild(output.lastChild);
     }
 
-    for (var j = 0; j < segments.length; j++) {
-      var seg = segments[j];
-      var child = output.children[j];
+    for (var i = 0; i < segments.length; i++) {
+      var seg = segments[i];
+      var child = output.children[i];
       if (!child) {
         child = document.createElement('span');
         child.className = 'seg';
@@ -3133,6 +2922,22 @@ mark.has-note {
     return null;
   }
 
+  function splitIntoSentences(text) {
+    var sentences = [];
+    var start = 0;
+    var match;
+    var regex = /[.!?…]+(?=\s|$)/g;
+
+    while ((match = regex.exec(text)) !== null) {
+      var end = match.index + match[0].length;
+      if (end - start >= 15) sentences.push({ start: start, end: end });
+      start = end;
+      while (start < text.length && /\s/.test(text[start])) start++;
+    }
+    if (text.length - start >= 15) sentences.push({ start: start, end: text.length });
+    return sentences;
+  }
+
   function proposeFromAnalyzer(doc) {
     var highlights = highlightsForDocument(doc.id).filter(function (h) { return h.start >= 0; });
     var sentences = splitIntoSentences(doc.text);
@@ -3161,8 +2966,10 @@ mark.has-note {
       var sentenceText = doc.text.slice(containerSentence.start, containerSentence.end);
       if (sentenceText.length < 20 || sentenceText.length > 400) continue;
 
-      var question = buildUniversalQuestion(type, surface, sentenceText, language);
+      var question = null;
       var cardType = type;
+
+      question = buildUniversalQuestion(type, surface, sentenceText, language);
 
       if (!question) {
         var relative = highlight.start - containerSentence.start;
@@ -3819,7 +3626,6 @@ mark.has-note {
         }
       }
       if (DATA.activeDocId === id) DATA.activeDocId = null;
-      if (analysisCache.docId === id) analysisCache = { docId: null, blocks: [] };
 
       pendingDocSaves[id] = true;
       markIndexDirty();
@@ -4306,27 +4112,39 @@ mark.has-note {
   }
 
   // ============================================================
-  // AUTO ANALYSIS — entry point
+  // AUTO ANALYSIS (incremental)
   // ============================================================
   function analyzeCurrentDocument() {
     var doc = getActiveDocument();
-    if (!doc) return;
-    if (!doc.text.trim()) {
-      // Reset cache when the document becomes empty
-      if (analysisCache.docId === doc.id) {
-        analysisCache = { docId: doc.id, blocks: [] };
-      }
-      return;
-    }
+    if (!doc || !doc.text.trim()) return;
 
     doc.lang = detectLanguage(doc.text);
+    var spans = analyzeTextIncremental(doc.text);
+    var highlights = highlightsForDocument(doc.id);
 
-    if (analysisCache.docId !== doc.id) {
-      analysisCache = { docId: doc.id, blocks: [] };
+    for (var i = 0; i < highlights.length; i++) {
+      if (highlights[i].source === 'auto') {
+        delete DATA.highlights[highlights[i].id];
+      }
     }
 
-    var spans = analyzeIncremental(doc);
-    reconcileAutoHighlights(doc, spans);
+    for (var j = 0; j < spans.length; j++) {
+      var span = spans[j];
+      var id = generateId();
+      DATA.highlights[id] = {
+        id: id,
+        docId: doc.id,
+        start: span.start,
+        end: span.end,
+        cat: span.cat,
+        source: 'auto',
+        before: doc.text.slice(Math.max(0, span.start - 30), span.start),
+        after: doc.text.slice(span.end, span.end + 30),
+        note: '',
+        createdAt: Date.now()
+      };
+    }
+
     markDocDirty(doc.id);
   }
 
@@ -4427,7 +4245,6 @@ mark.has-note {
     $('btn-new').addEventListener('click', function () {
       var sample = SAMPLE_TEXTS[Math.floor(Math.random() * SAMPLE_TEXTS.length)];
       createDocument(sample.text, sample.title);
-      analysisCache = { docId: null, blocks: [] };
       $('input').value = sample.text;
       analyzeCurrentDocument();
       redraw();
@@ -4454,9 +4271,6 @@ mark.has-note {
           }
         }
         doc.text = '';
-        if (analysisCache.docId === doc.id) {
-          analysisCache = { docId: doc.id, blocks: [] };
-        }
         $('input').value = '';
         markDocDirty(doc.id);
         saveDataNow();
