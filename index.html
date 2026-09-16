@@ -210,6 +210,7 @@ body.edit-mode .output-card{cursor:crosshair}
 .modal p{margin:0 0 16px;color:var(--ink-2);font-size:.9rem}
 .modal .input-name{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border-2);background:var(--surface-2);font-size:16px;outline:none;margin-bottom:12px}
 .modal .row-actions{display:flex;gap:8px;margin-top:12px}
+.modal label{font-size:.78rem;color:var(--ink-2);font-weight:600;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.03em}
 
 .model-list{display:flex;flex-direction:column;gap:8px;margin:14px 0 4px}
 .model-option{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface-2);cursor:pointer;transition:all .15s;user-select:none;-webkit-user-select:none}
@@ -241,60 +242,78 @@ body.reading .reading-bar{display:flex}
 @media (min-width:640px){.scroll{padding:22px 22px 22px}}
 
 .badge{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.badge.gray{background:var(--surface-3);color:var(--ink-3)}
 
 .card-item{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow)}
 .card-item.disabled{opacity:.5;background:var(--surface-2)}
+.card-item.disabled .card-back{opacity:.6}
 .card-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .card-due{font-size:.75rem;color:var(--ink-3);margin-left:auto;font-weight:600}
-.card-front{font-weight:600;margin-bottom:10px;font-size:.95rem;white-space:pre-wrap;line-height:1.5}
-.card-options-mini{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
-.card-opt-mini{font-size:.83rem;padding:7px 10px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border);line-height:1.4;white-space:pre-wrap}
-.card-opt-mini.correct{border-color:#3b8f4b;background:color-mix(in srgb,#3b8f4b 12%,var(--surface));color:#2f7d3f;font-weight:600}
+.card-front{font-weight:600;margin-bottom:8px;font-size:.95rem;white-space:pre-wrap;line-height:1.5}
+.card-back{color:var(--accent);font-size:.92rem;margin-bottom:10px;font-family:Georgia,serif;white-space:pre-wrap}
 .card-actions{display:flex;gap:6px}
 .card-actions .tbtn{font-size:.75rem;padding:6px 10px}
-#cardPreviewList{display:flex;flex-direction:column;gap:10px;padding-right:4px;max-height:55dvh;overflow-y:auto}
+#cardPreviewList{display:flex;flex-direction:column;gap:10px;padding-right:4px;max-height:50dvh;overflow-y:auto}
 #modalCardPreview .modal,#modalCardEdit .modal{max-width:600px}
 #cardEditFront,#cardEditBack{font-family:inherit;line-height:1.5;resize:vertical}
-#cardEditFront{min-height:70px}
-#cardEditBack{min-height:50px}
+#cardEditFront{min-height:60px}
+#cardEditBack{min-height:70px}
+#cardEditD1,#cardEditD2,#cardEditD3{min-height:auto}
 
-.review-progress{text-align:center;font-size:.85rem;color:var(--ink-3);margin-bottom:12px;font-weight:600;font-variant-numeric:tabular-nums}
+/* === Ripasso MCQ === */
+.review-progress{text-align:center;font-size:.82rem;color:var(--ink-3);margin-bottom:14px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.review-source{text-align:center;font-size:.75rem;color:var(--ink-3);margin-bottom:14px}
 .review-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow);margin-bottom:14px}
-.review-head{margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.review-front{font-size:1.05rem;line-height:1.6;font-family:Georgia,serif;white-space:pre-wrap}
-.review-front em{color:var(--accent);font-style:normal;font-weight:600}
+.review-head{margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.review-front{font-size:1.05rem;line-height:1.65;font-family:Georgia,serif;white-space:pre-wrap}
+.review-front .blank{
+  display:inline-block;min-width:60px;text-align:center;
+  border-bottom:2px solid var(--ai);
+  font-weight:700;color:var(--ai);
+  padding:0 4px;margin:0 2px;
+}
 
-.mcq-options{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.mcq-options{display:flex;flex-direction:column;gap:10px;margin-top:6px}
 .mcq-option{
+  display:flex;align-items:flex-start;gap:12px;
   padding:14px 16px;border-radius:12px;
   border:1.5px solid var(--border);background:var(--surface);
-  text-align:left;font-family:inherit;font-size:.92rem;line-height:1.5;
-  font-weight:500;color:var(--ink);
-  transition:all .15s;cursor:pointer;white-space:pre-wrap;
+  text-align:left;font-family:inherit;font-size:.95rem;line-height:1.5;
+  color:var(--ink);
+  transition:all .15s;cursor:pointer;
+  width:100%;
 }
-.mcq-option.short{
-  text-align:center;font-size:1.15rem;font-weight:700;
-  padding:16px 12px;font-variant-numeric:tabular-nums;
+.mcq-option:not(:disabled):active{transform:scale(.995)}
+.mcq-option:not(:disabled):hover{border-color:var(--border-2);background:var(--surface-2)}
+.mcq-label{
+  flex:0 0 auto;width:26px;height:26px;border-radius:50%;
+  background:var(--surface-3);color:var(--ink-2);
+  display:grid;place-items:center;font-weight:700;font-size:.78rem;
+  transition:all .15s;
 }
-.mcq-option:not(:disabled):active{transform:scale(.99)}
-.mcq-option:not(:disabled):hover{border-color:var(--border-2)}
+.mcq-text{flex:1;min-width:0;white-space:pre-wrap;word-wrap:break-word}
 .mcq-option.correct{
   border-color:#3b8f4b;
-  background:color-mix(in srgb,#3b8f4b 15%,var(--surface));
-  color:#2f7d3f;font-weight:600;
+  background:color-mix(in srgb,#3b8f4b 12%,var(--surface));
 }
-.mcq-option.short.correct{font-weight:800}
+.mcq-option.correct .mcq-label{background:#3b8f4b;color:#fff}
+.mcq-option.correct .mcq-text{color:#2f7d3f;font-weight:600}
 .mcq-option.wrong{
   border-color:var(--danger);
-  background:color-mix(in srgb,var(--danger) 12%,var(--surface));
-  color:var(--danger);
-  text-decoration:line-through;text-decoration-thickness:1px;opacity:.85;
+  background:color-mix(in srgb,var(--danger) 10%,var(--surface));
 }
-.mcq-option.dim{opacity:.4}
+.mcq-option.wrong .mcq-label{background:var(--danger);color:#fff}
+.mcq-option.wrong .mcq-text{color:var(--danger);opacity:.9}
+.mcq-option.dim{opacity:.45}
 .mcq-option:disabled{cursor:default}
-.mcq-feedback{text-align:center;font-weight:700;font-size:1rem;margin:14px 0}
-.mcq-feedback.ok{color:#3b8f4b}
-.mcq-feedback.ko{color:var(--danger)}
+
+.mcq-feedback{
+  display:flex;align-items:center;gap:8px;
+  font-weight:700;font-size:.95rem;
+  padding:12px 16px;border-radius:12px;margin:16px 0;
+}
+.mcq-feedback.ok{background:color-mix(in srgb,#3b8f4b 12%,var(--surface));color:#2f7d3f}
+.mcq-feedback.ko{background:color-mix(in srgb,var(--danger) 10%,var(--surface));color:var(--danger)}
 
 #modalNote textarea.input-name{min-height:110px;resize:vertical;font-family:inherit;line-height:1.5}
 #modalNote p em{font-style:normal;color:var(--ink-2)}
@@ -441,6 +460,9 @@ body.reading .reading-bar{display:flex}
       <div class="wrap">
         <div class="actions">
           <button class="btn primary" id="btnGenCards">Genera schede</button>
+          <button class="btn ghost icon-only" id="btnNewCard" title="Nuova scheda">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
           <button class="btn ghost icon-only" id="btnExport" title="Esporta">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           </button>
@@ -566,12 +588,16 @@ body.reading .reading-bar{display:flex}
 <div class="modal-bg" id="modalCardEdit">
   <div class="modal">
     <h3 id="cardEditTitle">Modifica scheda</h3>
-    <label style="font-size:.8rem;color:var(--ink-2);font-weight:600;display:block;margin-bottom:4px">Fronte (domanda)</label>
+    <label>Fronte (domanda)</label>
     <textarea class="input-name" id="cardEditFront" placeholder="Domanda…" autocomplete="off"></textarea>
-    <label style="font-size:.8rem;color:var(--ink-2);font-weight:600;display:block;margin-bottom:4px">Risposta corretta</label>
+    <label>Risposta corretta</label>
     <textarea class="input-name" id="cardEditBack" placeholder="Risposta…" autocomplete="off"></textarea>
-    <label style="font-size:.8rem;color:var(--ink-2);font-weight:600;display:block;margin-bottom:4px">Distrattori (separati da riga vuota)</label>
-    <textarea class="input-name" id="cardEditDistractors" placeholder="Una risposta sbagliata per riga" autocomplete="off"></textarea>
+    <div id="cardEditDistractorsSection" style="display:none">
+      <label>Risposte sbagliate (3 obbligatorie per scheda manuale)</label>
+      <input class="input-name" id="cardEditD1" placeholder="Risposta sbagliata 1" autocomplete="off">
+      <input class="input-name" id="cardEditD2" placeholder="Risposta sbagliata 2" autocomplete="off">
+      <input class="input-name" id="cardEditD3" placeholder="Risposta sbagliata 3" autocomplete="off">
+    </div>
     <div class="row-actions">
       <button class="btn ghost danger-icon" id="btnDeleteCard">Elimina</button>
       <div style="flex:1"></div>
@@ -749,7 +775,7 @@ function findBigrams(tokens, stopwords) {
   return bigrams;
 }
 
-const UNIT_WHITELIST = new Set(['%','‰','°','°c','°f','°k','€','$','£','¥','km','hm','dam','dm','cm','mm','nm','µm','mi','ft','yd','in','kg','hg','dag','dg','cg','mg','lb','oz','t','q','l','dl','cl','ml','hl','gal','pt','qt','fl','h','min','s','ms','µs','ns','ore','ora','minuti','minuto','secondi','secondo','giorni','giorno','settimane','settimana','mesi','mese','anni','anno','secoli','secolo','millenni','millennio','decenni','decennio','hours','hour','minutes','minute','seconds','second','days','day','weeks','week','months','month','years','year','centuries','century','jahr','jahre','tag','tage','woche','wochen','monat','monate','jahrhundert','jahrhunderte','heure','heures','jour','jours','semaine','semaines','mois','an','ans','année','années','siècle','siècles','hora','horas','día','días','dias','semana','semanas','mes','meses','año','años','siglo','siglos','j','kj','mj','w','kw','mw','v','kv','a','ma','hz','khz','mhz','ghz','pa','kpa','mpa','n','kn','mol','mmhg','atm','b','kb','mb','gb','tb','pb','bit','byte','pixel','px','usd','eur','gbp','jpy','chf']);
+const UNIT_WHITELIST = new Set(['%','‰','°','°c','°f','°k','€','$','£','¥','km','hm','dam','dm','cm','mm','nm','µm','mi','ft','yd','in','kg','hg','dag','dg','cg','mg','lb','oz','t','q','l','dl','cl','ml','hl','gal','pt','qt','fl','h','min','s','ms','µs','ns','ore','ora','minuti','minuto','secondi','secondo','giorni','giorno','settimane','settimana','mesi','mese','anni','anno','secoli','secolo','millenni','millennio','decenni','decennio','hours','hour','minutes','minute','seconds','second','days','day','weeks','week','months','month','years','year','centuries','century','jahr','jahre','tag','tage','woche','wochen','monat','monate','jahrhundert','jahrhunderte','heure','heures','jour','jours','semaine','semaines','mois','an','ans','année','années','siècle','siècles','hora','horas','día','días','dias','semana','semanas','mes','meses','año','años','siglo','siglos','j','kj','mj','w','kw','mw','v','kv','a','ma','hz','khz','mhz','ghz','pa','kpa','mpa','n','kn','mol','mmhg','atm','b','kb','mb','gb','tb','pb','bit','byte','pixel','px','usd','eur','gbp','jpy','chf','milioni','miliardi','mila','milione','miliardo','million','billions','billion','million','millions']);
 
 const MONTHS_RE = '(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre|january|february|march|april|may|june|july|august|september|october|november|december|janvier|février|fevrier|mars|avril|mai|juin|juillet|août|aout|septembre|octobre|novembre|décembre|decembre|enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre|janeiro|fevereiro|março|marco|maio|junho|julho|setembro|outubro|novembro|dezembro|januar|februar|märz|maerz|juni|juli|august|september|oktober|november|dezember)';
 
@@ -759,7 +785,7 @@ function findNumbers(text) {
   let m;
   const dateRe = new RegExp('\\b\\d{1,2}\\s+' + MONTHS_RE + '\\s+\\d{3,4}\\b' + '|\\b' + MONTHS_RE + '\\s+\\d{1,2}(?:,)?\\s+\\d{3,4}\\b', 'giu');
   while ((m = dateRe.exec(text)) !== null) {
-    spans.push({ start: m.index, end: m.index + m[0].length, cat: 'num', w: 5, isDate: true });
+    spans.push({ start: m.index, end: m.index + m[0].length, cat: 'num', w: 5 });
     for (let i = m.index; i < m.index + m[0].length; i++) used[i] = 1;
   }
   const numRe = /(?<![\p{L}\p{M}])\d+(?:[.,]\d+)*(?:\s*(?:%|‰))?(?![\p{L}\p{M}])/gu;
@@ -768,7 +794,7 @@ function findNumbers(text) {
     const start = m.index;
     let end = m.index + m[0].length;
     const after = text.slice(end);
-    const unitMatch = after.match(/^\s*([a-zA-ZÀ-ÿ°µ€$£¥]{1,6})\b/);
+    const unitMatch = after.match(/^\s*([a-zA-ZÀ-ÿ°µ€$£¥]{1,12})\b/);
     if (unitMatch) {
       const unit = unitMatch[1].toLowerCase();
       if (UNIT_WHITELIST.has(unit)) end += unitMatch[0].length;
@@ -1280,8 +1306,7 @@ function setNote(s, e, c, text) {
 }
 
 /* ============================================================
-   MODULO SCHEDE (v4 — MCQ garantito)
-   Ogni scheda ha 4 opzioni. I distrattori sono pre-calcolati.
+   MODULO SCHEDE (v4 — MCQ only)
    ============================================================ */
 const CARDS_KEY = 'annota.cards.v4';
 let cards = [];
@@ -1303,6 +1328,15 @@ function docTitle(text) {
 
 const labelForCat = id => (CATEGORIES.find(x => x.id === id) || { label: id }).label;
 
+const TYPE_LABELS = {
+  'def': 'Definizione',
+  'fact-year': 'Anno',
+  'fact-number': 'Dato',
+  'fact-percent': 'Percentuale',
+  'concept-cloze': 'Concetto',
+  'manual': 'Manuale'
+};
+
 function cardContentId(type, front, back) {
   let h = 5381;
   const s = type + '|' + front + '|' + back;
@@ -1310,386 +1344,126 @@ function cardContentId(type, front, back) {
   return 'c' + Math.abs(h).toString(36);
 }
 
-function shuffleArr(a) {
-  const arr = a.slice();
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
-/* ---------- Indici ---------- */
-function buildIndices(text, spans) {
-  const idx = {
-    terms: [],       // {term, def}
-    names: [],       // {value, span}
-    years: [],       // {value, span}
-    percents: [],    // {value, span}
-    numbers: []      // {value, unit, span}
-  };
-
-  // Definizioni: coppie consecutive (term, def)
+function proposeDefinitionCards(text, spans) {
+  const props = [];
   const defSpans = spans.filter(s => s.cat === 'def').sort((a, b) => a.start - b.start);
-  for (let i = 0; i < defSpans.length - 1; i += 2) {
-    const term = defSpans[i], def = defSpans[i + 1];
+  for (let i = 0; i < defSpans.length - 1; i++) {
+    const term = defSpans[i];
+    const def = defSpans[i + 1];
     const between = text.slice(term.end, def.start);
     if (!/^\s*[:：]\s*$/.test(between)) continue;
     const termText = text.slice(term.start, term.end).trim();
     const defText = text.slice(def.start, def.end).trim();
     if (termText.length < 3 || termText.length > 60) continue;
-    if (defText.length < 20 || defText.length > 400) continue;
-    idx.terms.push({ term: termText, def: defText });
-  }
-
-  // Nomi
-  const nameSpans = spans.filter(s => s.cat === 'name');
-  for (const s of nameSpans) {
-    const v = text.slice(s.start, s.end).trim();
-    if (v.length < 4 || v.length > 40) continue;
-    idx.names.push({ value: v, span: s });
-  }
-
-  // Numeri / anni / percentuali
-  const numSpans = spans.filter(s => s.cat === 'num' && !s.isDate);
-  for (const s of numSpans) {
-    const v = text.slice(s.start, s.end).trim();
-    if (v.length > 40) continue;
-    if (/^(1\d{3}|20\d{2})$/.test(v)) {
-      idx.years.push({ value: v, span: s });
-      continue;
-    }
-    const pm = v.match(/^(\d+(?:[.,]\d+)?)\s*%$/);
-    if (pm) {
-      idx.percents.push({ value: pm[1], span: s });
-      continue;
-    }
-    const nm = v.match(/^(\d+(?:[.,]\d+)?)\s*(.*)$/);
-    if (nm) {
-      const unit = nm[2].trim();
-      if (unit.length > 0 && !UNIT_WHITELIST.has(unit.toLowerCase())) continue;
-      idx.numbers.push({ value: nm[1], unit, span: s });
-    }
-  }
-
-  return idx;
-}
-
-/* ---------- Generator: Definizione ---------- */
-function proposeDefinitionCards(idx) {
-  const props = [];
-  if (idx.terms.length < 4) return props; // servono almeno 4 termini per 3 distrattori
-  for (const t of idx.terms) {
-    const others = idx.terms.filter(x => x.term !== t.term && x.def !== t.def);
-    if (others.length < 3) continue;
-    const distractors = shuffleArr(others.map(x => x.def)).slice(0, 3);
-    const front = `Cos'è "${t.term}"?`;
+    if (defText.length < 20 || defText.length > 300) continue;
+    const front = `Cos'è "${termText}"?`;
     props.push({
       type: 'def',
-      clozeKind: null,
       front,
-      back: t.def,
-      distractors,
+      back: defText,
       sourceCat: 'def',
-      contentId: cardContentId('def', front, t.def)
+      contentId: cardContentId('def', front, defText)
     });
   }
   return props;
 }
 
-/* ---------- Generator: Termine inverso ---------- */
-function proposeReverseCards(idx) {
+function proposeConceptCards(text, spans, sentences, lang) {
+  const stopwords = getStopwords(lang);
   const props = [];
-  if (idx.terms.length < 4) return props;
-  for (const t of idx.terms) {
-    const others = idx.terms.filter(x => x.term !== t.term && x.def !== t.def);
-    if (others.length < 3) continue;
-    const distractors = shuffleArr(others.map(x => x.term)).slice(0, 3);
-    const defDisplay = t.def.length > 260 ? t.def.slice(0, 260).trim() + '…' : t.def;
-    const front = `Quale termine corrisponde a:\n\n«${defDisplay}»`;
-    props.push({
-      type: 'reverse',
-      clozeKind: null,
-      front,
-      back: t.term,
-      distractors,
-      sourceCat: 'def',
-      contentId: cardContentId('reverse', front, t.term)
-    });
+  const keySpans = spans.filter(s => s.cat === 'key');
+  const groups = new Map();
+  for (const s of keySpans) {
+    const w = text.slice(s.start, s.end).trim();
+    const wl = w.toLowerCase();
+    if (wl.length < 4) continue;
+    if (stopwords.has(wl)) continue;
+    if (!groups.has(wl)) groups.set(wl, { word: w, occurrences: [] });
+    groups.get(wl).occurrences.push(s);
   }
-  return props;
-}
-
-/* ---------- Helper: altre num spans nella stessa frase? ---------- */
-function sentenceHasOtherNumSpans(sent, thisSpan, numSpans) {
-  for (const s of numSpans) {
-    if (s.start === thisSpan.start && s.end === thisSpan.end) continue;
-    if (s.start >= sent.start && s.end <= sent.end) return true;
-  }
-  return false;
-}
-
-/* ---------- Generator: Cloze (anno) ---------- */
-function proposeYearCloze(text, sentences, idx, numSpans) {
-  const props = [];
-  const usedSentences = new Set();
-  const usedValues = new Set();
-
-  for (const y of idx.years) {
-    if (usedValues.has(y.value)) continue;
-    const sent = sentences.find(s => y.span.start >= s.start && y.span.end <= s.end);
-    if (!sent) continue;
-    const sk = sent.start + ':' + sent.end;
-    if (usedSentences.has(sk)) continue;
-    // Salta se ci sono altri num nella frase (confondono)
-    if (sentenceHasOtherNumSpans(sent, y.span, numSpans)) continue;
-
-    const sentText = text.slice(sent.start, sent.end).replace(/[.!?…]+\s*$/, '').trim();
-    if (sentText.length < 20 || sentText.length > 400) continue;
-
-    const rel = y.span.start - sent.start;
-    const relEnd = y.span.end - sent.start;
-    const before = sentText.slice(0, rel);
-    const after = sentText.slice(relEnd);
-
-    // Rimuovi preposizione prima dell'anno
-    const prepMatch = before.match(/\s+(nel|nello|nella|nei|negli|nelle|in|del|dello|della|dei|degli|delle|al|allo|alla|ai|agli|alle|dal|dallo|dalla|dai|dagli|dalle)\s*$/i);
-    const cleanBefore = prepMatch ? before.slice(0, before.length - prepMatch[0].length) : before;
-    const cleanAfter = after.replace(/\s+/g, ' ').trim();
-    const body = (cleanBefore + ' ' + cleanAfter).replace(/\s+/g, ' ').trim();
-    if (body.length < 15) continue;
-
-    const yv = parseInt(y.value, 10);
-    const cands = [];
-    for (const off of [-1, 1, -2, 2, -3, 3, -5, 5, -7, 7, -10, 10]) {
-      const ny = yv + off;
-      if (ny >= 1000 && ny <= 2099) cands.push(String(ny));
-    }
-    // Anche altri anni del doc
-    for (const oy of idx.years) {
-      if (oy.value !== y.value) cands.push(oy.value);
-    }
-    // Dedup
-    const seen = new Set([y.value]);
-    const uniq = [];
-    for (const c of cands) {
-      if (!c || seen.has(c)) continue;
-      seen.add(c);
-      uniq.push(c);
-    }
-    if (uniq.length < 3) continue;
-    // Ordina per vicinanza numerica, prendi i 6 più vicini
-    uniq.sort((a, b) => Math.abs(parseInt(a, 10) - yv) - Math.abs(parseInt(b, 10) - yv));
-    const top = uniq.slice(0, Math.min(6, uniq.length));
-    const distractors = shuffleArr(top).slice(0, 3);
-
-    usedValues.add(y.value);
-    usedSentences.add(sk);
-
-    props.push({
-      type: 'cloze',
-      clozeKind: 'year',
-      front: `${body} (nel…)`,
-      back: y.value,
-      distractors,
-      sourceCat: 'num',
-      contentId: cardContentId('cloze_year', body, y.value)
-    });
-  }
-  return props;
-}
-
-/* ---------- Generator: Cloze (percentuale) ---------- */
-function proposePercentCloze(text, sentences, idx, numSpans) {
-  const props = [];
-  const usedSentences = new Set();
-  const usedValues = new Set();
-
-  for (const p of idx.percents) {
-    if (usedValues.has(p.value)) continue;
-    const sent = sentences.find(s => p.span.start >= s.start && p.span.end <= s.end);
-    if (!sent) continue;
-    const sk = sent.start + ':' + sent.end;
-    if (usedSentences.has(sk)) continue;
-    if (sentenceHasOtherNumSpans(sent, p.span, numSpans)) continue;
-
-    const sentText = text.slice(sent.start, sent.end).replace(/[.!?…]+\s*$/, '').trim();
-    if (sentText.length < 20 || sentText.length > 400) continue;
-
-    const rel = p.span.start - sent.start;
-    const relEnd = p.span.end - sent.start;
-    const body = (sentText.slice(0, rel) + ' ' + sentText.slice(relEnd)).replace(/\s+/g, ' ').trim();
-    if (body.length < 15) continue;
-
-    const pv = parseFloat(p.value.replace(',', '.'));
-    const cands = [];
-    for (const off of [-0.5, 0.5, -1, 1, -2, 2, -3, 3, -5, 5, -10, 10]) {
-      const np = pv + off;
-      if (np > 0 && np < 100) cands.push(np.toString().replace('.', ',') + '%');
-    }
-    for (const op of idx.percents) {
-      if (op.value !== p.value) cands.push(op.value + '%');
-    }
-    const seen = new Set([p.value + '%']);
-    const uniq = [];
-    for (const c of cands) {
-      if (!c || seen.has(c)) continue;
-      seen.add(c);
-      uniq.push(c);
-    }
-    if (uniq.length < 3) continue;
-    uniq.sort((a, b) => Math.abs(parseFloat(a.replace(',', '.')) - pv) - Math.abs(parseFloat(b.replace(',', '.')) - pv));
-    const distractors = shuffleArr(uniq.slice(0, Math.min(6, uniq.length))).slice(0, 3);
-
-    usedValues.add(p.value);
-    usedSentences.add(sk);
-
-    props.push({
-      type: 'cloze',
-      clozeKind: 'percent',
-      front: `Quale valore? ${body}`,
-      back: p.value + '%',
-'      distractors,
-      sourceCat: 'num',
-      contentId :: cardContentId('cloze_pct', body, p.value + '%')
-    ' });
-  }
-  return props;
-}
-
-/* ---------- Generator:');
- Cloze (numero con unit   à) ---------- */
-function proposeNumberCloze(text, sentences, idx, numSpans) {
-  const props = [];
-  const usedSentences = new Set();
-
-  for (const n of idx.numbers) {
-    const sent = sentences.find(s => n.span.start >= s.start && n.span.end <= s.end);
-    if (!sent) continue;
-    const sk = sent.start + ':' + sent.end;
-    if (usedSentences.has(sk)) continue;
-    if (sentenceHasOtherNumSpans(sent, n.span, numSpans)) continue;
-
-    const sentText = text.slice(sent.start, sent.end).replace(/[.!?…]+\s*$/, '').trim();
-    if (sentText.length < 20 || sentText.length > 400) continue;
-
-    const rel = n.span.start - sent.start;
-    const relEnd = n.span.end - sent.start;
-    const body = (sentText.slice(0, rel) + ' [___] ' + sentText.slice(relEnd)).replace(/\s+/g, ' ').trim();
-    if (body.length < 15) continue;
-
-    const fullCorrect = n.unit ? `${n.value} ${n.unit}` : n.value;
-    const nv = parseFloat(n.value.replace(',', '.'));
-    const dec = (n.value.split(/[.,]/)[1] || '').length;
-    const cands = [];
-    for (const off of [-1, 1, -2, 2, -3, 3, -5, 5, -10, 10, -20, 20]) {
-      const nn = nv + off;
-      if (nn > 0) {
-        const s = dec > 0 ? nn.toFixed(dec).replace('.', ',') : String(Math.round(nn));
-        cands.push(n.unit ? `${s} ${n.unit}` : s);
+  for (const { word, occurrences } of groups.values()) {
+    if (occurrences.length < 2) continue;
+    let chosenSent = null;
+    for (const occ of occurrences) {
+      const sent = sentences.find(x => occ.start >= x.start && occ.end <= x.end);
+      if (!sent) continue;
+      const sentText = text.slice(sent.start, sent.end);
+      if (sentText.length >= 40 && sentText.length <= 200) {
+        chosenSent = sent;
+        break;
       }
     }
-    const seen = new Set([fullCorrect]);
-    const uniq = [];
-    for (const c of cands) {
-      if (!c || seen.has(c)) continue;
-      seen.add(c);
-      uniq.push(c);
-    }
-    if (uniq.length < 3) continue;
-    uniq.sort((a, b) => {
-      const av = parseFloat(a.replace(/[^\d,.]/g, '').replace(',', '.'));
-      const bv = parseFloat(b.replace(/[^\d,.]/g, '').replace(',', '.'));
-      return Math.abs(av - nv) - Math.abs(bv - nv);
-    });
-    const distractors = shuffleArr(uniq.slice(0, Math.min(6, uniq.length))).slice(0, 3);
-
-    usedSentences.add(sk);
-
+    if (!chosenSent) continue;
+    const sentText = text.slice(chosenSent.start, chosenSent.end);
+    const regex = new RegExp('\\b' + escapeRE(word) + '\\b', 'gi');
+    const blanked = sentText.replace(regex, '____').replace(/\s+/g, ' ').trim();
+    if (blanked === sentText) continue;
     props.push({
-      type: 'cloze',
-      clozeKind: 'number',
-      front: `Completa: ${body}`,
-      back: fullCorrect,
-      distractors,
-      sourceCat: 'num',
-      contentId: cardContentId('cloze_num', body, fullCorrect)
+      type: 'concept-cloze',
+      front: blanked,
+      back: word,
+      sourceCat: 'key',
+      contentId: cardContentId('concept-cloze', blanked, word)
     });
   }
   return props;
 }
 
-/* ---------- Generator: Cloze (nome proprio) ---------- */
-function proposeNameCloze(text, sentences, idx) {
+function proposeFactCards(text, spans, sentences) {
   const props = [];
-  const usedSentences = new Set();
-  const usedNames = new Set();
-  // Limita a 5 nomi per non saturare
-  const namesToUse = idx.names.slice(0, 5);
-
-  for (const n of namesToUse) {
-    if (usedNames.has(n.value)) continue;
-    const sent = sentences.find(s => n.span.start >= s.start && n.span.end <= s.end);
+  const numSpans = spans.filter(s => s.cat === 'num');
+  const bySentence = new Map();
+  for (const s of numSpans) {
+    const sent = sentences.find(x => s.start >= x.start && s.end <= x.end);
     if (!sent) continue;
-    const sk = sent.start + ':' + sent.end;
-    if (usedSentences.has(sk)) continue;
-
-    const sentText = text.slice(sent.start, sent.end).replace(/[.!?…]+\s*$/, '').trim();
-    if (sentText.length < 25 || sentText.length > 400) continue;
-
-    const rel = n.span.start - sent.start;
-    const relEnd = n.span.end - sent.start;
-    const body = (sentText.slice(0, rel) + ' [___] ' + sentText.slice(relEnd)).replace(/\s+/g, ' ').trim();
-    if (body.length < 15) continue;
-
-    // Distrattori: altri nomi con lunghezza simile
-    const correctLen = n.value.length;
-    const otherNames = idx.names.filter(x => x.value !== n.value);
-    // Preferisci nomi con lunghezza simile
-    const sorted = otherNames.slice().sort((a, b) =>
-      Math.abs(a.value.length - correctLen) - Math.abs(b.value.length - correctLen));
-    const cands = [];
-    const seen = new Set([n.value]);
-    for (const o of sorted) {
-      if (seen.has(o.value)) continue;
-      // Evita nomi contenuti nel corretto o viceversa
-      if (o.value.toLowerCase().includes(n.value.toLowerCase()) ||
-          n.value.toLowerCase().includes(o.value.toLowerCase())) continue;
-      seen.add(o.value);
-      cands.push(o.value);
+    const key = sent.start + ':' + sent.end;
+    if (!bySentence.has(key)) bySentence.set(key, { sent, spans: [] });
+    bySentence.get(key).spans.push(s);
+  }
+  for (const { sent, spans: numList } of bySentence.values()) {
+    const sentText = text.slice(sent.start, sent.end);
+    if (sentText.length < 30 || sentText.length > 500) continue;
+    const candidates = [];
+    for (const s of numList) {
+      const val = text.slice(s.start, s.end).trim();
+      let kind = 'other';
+      const pure = val.replace(/[.,]/g, (m, i) => m).trim();
+      if (/^(1\d{3}|20\d{2})$/.test(val)) kind = 'year';
+      else if (/^\d+(?:[.,]\d+)?\s*%$/.test(val)) kind = 'percent';
+      else if (/^\d+(?:[.,]\d+)?\s*[a-zA-ZÀ-ÿ°µ€$£¥]+$/.test(val) && parseFloat(val) >= 100) kind = 'number';
+      else if (/^\d+(?:[.,]\d+)?$/.test(val) && parseFloat(val) >= 100) kind = 'number';
+      if (kind === 'other') continue;
+      candidates.push({ span: s, val, kind });
     }
-    if (cands.length < 3) continue;
-    // Prendi i 6 più simili, mescola, scegli 3
-    const distractors = shuffleArr(cands.slice(0, Math.min(6, cands.length))).slice(0, 3);
-
-    usedNames.add(n.value);
-    usedSentences.add(sk);
-
+    if (!candidates.length) continue;
+    const priority = { year: 3, percent: 2, number: 1 };
+    candidates.sort((a, b) => priority[b.kind] - priority[a.kind]);
+    const chosen = candidates[0];
+    const relStart = chosen.span.start - sent.start;
+    const relEnd = chosen.span.end - sent.start;
+    const before = sentText.slice(0, relStart);
+    const after = sentText.slice(relEnd);
+    const blanked = (before + '____' + after).replace(/\s+/g, ' ').trim();
+    let type;
+    if (chosen.kind === 'year') type = 'fact-year';
+    else if (chosen.kind === 'percent') type = 'fact-percent';
+    else type = 'fact-number';
     props.push({
-      type: 'cloze',
-      clozeKind: 'name',
-      front: `Completa: ${body}`,
-      back: n.value,
-      distractors,
-      sourceCat: 'name',
-      contentId: cardContentId('cloze_name', body, n.value)
+      type,
+      front: blanked,
+      back: chosen.val,
+      sourceCat: 'num',
+      contentId: cardContentId(type, blanked, chosen.val)
     });
   }
   return props;
 }
 
-/* ---------- Orchestratore ---------- */
 function proposeAllCards(text, spans, sentences, lang) {
-  const idx = buildIndices(text, spans);
-  const numSpans = spans.filter(s => s.cat === 'num');
-
   const all = [
-    ...proposeDefinitionCards(idx),
-    ...proposeReverseCards(idx),
-    ...proposeYearCloze(text, sentences, idx, numSpans),
-    ...proposePercentCloze(text, sentences, idx, numSpans),
-    ...proposeNumberCloze(text, sentences, idx, numSpans),
-    ...proposeNameCloze(text, sentences, idx)
+    ...proposeDefinitionCards(text, spans),
+    ...proposeConceptCards(text, spans, sentences, lang),
+    ...proposeFactCards(text, spans, sentences)
   ];
   const seen = new Set();
   const out = [];
@@ -1698,9 +1472,6 @@ function proposeAllCards(text, spans, sentences, lang) {
     seen.add(p.contentId);
     out.push(p);
   }
-  // Ordina: prima def/reverse, poi cloze
-  const order = { def: 0, reverse: 1, cloze: 2 };
-  out.sort((a, b) => (order[a.type] - order[b.type]) || a.front.localeCompare(b.front));
   return out;
 }
 
@@ -1710,22 +1481,13 @@ function openCardPreview(text, spans, lang) {
   const sentences = segmentSentences(text);
   pendingProposals = proposeAllCards(text, spans, sentences, lang);
   if (!pendingProposals.length) {
-    toast('Nessuna scheda di qualità trovata. Serve un testo con definizioni, nomi propri o numeri.');
+    toast('Nessuna scheda di qualità trovata nel testo');
     return;
   }
   const existingIds = new Set(cards.map(c => c.contentId));
   for (const p of pendingProposals) p.alreadyExists = existingIds.has(p.contentId);
   renderCardPreview();
   openModal('modalCardPreview');
-}
-
-function typeLabelFor(p) {
-  if (p.type === 'def') return 'Definizione';
-  if (p.type === 'reverse') return 'Termine';
-  if (p.type === 'cloze') {
-    return { year: 'Anno', number: 'Numero', percent: 'Percentuale', name: 'Nome' }[p.clozeKind] || 'Cloze';
-  }
-  return p.type;
 }
 
 function renderCardPreview() {
@@ -1742,19 +1504,17 @@ function renderCardPreview() {
   for (let i = 0; i < pendingProposals.length; i++) {
     const p = pendingProposals[i];
     const el = document.createElement('div');
-    el.className = 'card-item' + (p.alreadyExists ? ' disabled const options = shuffleArr([p.back, ...p.distractors]);
+    el.className = 'card-item' + (p.alreadyExists ? ' disabled' : '');
     el.innerHTML = `
       <div class="card-head">
-        <span class="badge">${typeLabelFor(p)}</span>
+        <span class="badge" style="background:var(${CATEGORIES.find(x=>x.id===p.sourceCat)?.color});color:var(--ink)">${TYPE_LABELS[p.type] || p.type}</span>
         ${p.alreadyExists ? '<span class="card-due">già presente</span>' : ''}
         <label style="margin-left:auto;display:flex;align-items:center;gap:6px;cursor:pointer">
           <input type="checkbox" data-idx="${i}" ${p.alreadyExists ? 'disabled' : 'checked'} style="width:18px;height:18px;accent-color:var(--ai)">
         </label>
       </div>
       <div class="card-front">${escapeHTML(p.front)}</div>
-      <div class="card-options-mini">
-        ${options.map(o => `<div class="card-opt-mini${o === p.back ? ' correct' : ''}">${escapeHTML(o)}</div>`).join('')}
-      </div>`;
+      <div class="card-back">${escapeHTML(p.back)}</div>`;
     box.appendChild(el);
   }
 }
@@ -1774,27 +1534,22 @@ function confirmCardGeneration() {
         docTitle: title,
         sourceCat: p.sourceCat,
         type: p.type,
-        clozeKind: p.clozeKind || null,
         front: p.front,
         back: p.back,
-        distractors: p.distractors.slice(0, 3),
+        distractors: p.distractors || null,
         createdAt: Date.now()
       });
       added++;
     }
   });
-  if (added) {
-    saveCards();
-    toast(`${added} schede aggiunte`);
-  } else {
-    toast('Nessuna scheda selezionata');
-  }
+  if (added) { saveCards(); toast(`${added} schede aggiunte`); }
+  else toast('Nessuna scheda selezionata');
   closeModal('modalCardPreview');
   renderCardsView();
 }
 
 /* ============================================================
-   MODULO RIPASSO (v4)
+   MODULO RIPASSO (v4 — MCQ only, distrattori seri)
    ============================================================ */
 const REVIEW_KEY = 'annota.review.v4';
 let reviewState = {};
@@ -1824,39 +1579,166 @@ function gradeCard(cardId, grade) {
   return 'ok';
 }
 
+const SIM_STOPWORDS = new Set([
+  'il','lo','la','i','gli','le','un','uno','una','di','a','da','in','con','su','per','tra','fra',
+  'e','ed','o','od','ma','che','chi','cui','non','più','anche','come','dove','quando','perché',
+  'questo','questa','questi','queste','quello','quella','quelli','quelle','del','dello','della',
+  'dei','degli','delle','al','allo','alla','ai','agli','alle','dal','dallo','dalla','dai','dagli',
+  'dalle','nel','nello','nella','nei','negli','nelle','sul','sullo','sulla','sui','sugli','sulle',
+  'the','a','an','and','or','of','to','in','on','at','for','with','by','from','as','is','are',
+  'was','were','be','been','being','that','this','these','those','it','its','their','there','then',
+  'than','but','not','no','so','very','also','just','only','can','could','will','would','should',
+  'may','might','must','do','does','did','done','have','has','had','having','about','after','before',
+  'during','between','into','through','over','under','above','below','again','further','once','here'
+]);
+
+function tokensForSim(s) {
+  const tokens = (String(s).toLowerCase().match(/\p{L}+/gu) || []);
+  return new Set(tokens.filter(w => w.length > 3 && !SIM_STOPWORDS.has(w)));
+}
+
+function similarityScore(a, b) {
+  const sa = tokensForSim(a);
+  const sb = tokensForSim(b);
+  if (!sa.size || !sb.size) return 0;
+  let inter = 0;
+  for (const w of sa) if (sb.has(w)) inter++;
+  return inter / Math.min(sa.size, sb.size);
+}
+
+function shuffleArr(a) {
+  const arr = a.slice();
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function extractNumber(s) {
+  const m = String(s).replace(',', '.').match(/-?\d+(?:\.\d+)?/);
+  return m ? parseFloat(m[0]) : NaN;
+}
+
+function buildMCQ(card) {
+  const correct = card.back;
+  const pool = [];
+
+  if (Array.isArray(card.distractors)) {
+    pool.push(...card.distractors);
+  }
+
+  const sameDoc = cards.filter(c => c.id !== card.id && c.type === card.type && c.docKey === card.docKey);
+  pool.push(...sameDoc.map(c => c.back));
+
+  const sameAll = cards.filter(c => c.id !== card.id && c.type === card.type);
+  pool.push(...sameAll.map(c => c.back));
+
+  if (card.type === 'fact-year') {
+    const m = correct.match(/^(1\d{3}|20\d{2})$/);
+    if (m) {
+      const y = parseInt(m[1], 10);
+      for (const off of [-1, 1, -2, 2, -3, 3, -5, 5, -7, 7, -10, 10, -17, 17, -25, 25]) {
+        const ny = y + off;
+        if (ny >= 1000 && ny <= 2099) pool.push(String(ny));
+      }
+    }
+  } else if (card.type === 'fact-percent') {
+    const m = correct.match(/^(\d+(?:[.,]\d+)?)\s*%$/);
+    if (m) {
+      const p = parseFloat(m[1].replace(',', '.'));
+      for (const off of [-0.5, 0.5, -1, 1, -2, 2, -3, 3, -5, 5, -10, 10]) {
+        const np = p + off;
+        if (np > 0 && np < 100) pool.push(`${np.toString().replace('.', ',')}%`);
+      }
+    }
+  } else if (card.type === 'fact-number') {
+    const m = correct.match(/^(\d+(?:[.,]\d+)?)\s*(.*)$/);
+    if (m) {
+      const n = parseFloat(m[1].replace(',', '.'));
+      const dec = (m[1].split(/[.,]/)[1] || '').length;
+      const unit = (m[2] || '').trim();
+      const fmt = v => {
+        const s = dec > 0 ? v.toFixed(dec).replace('.', ',') : String(Math.round(v));
+        return unit ? `${s} ${unit}` : s;
+      };
+      for (const off of [-1, 1, -2, 2, -5, 5, -10, 10, -20, 20, -50, 50]) {
+        const nn = n + off;
+        if (nn > 0) pool.push(fmt(nn));
+      }
+    }
+  }
+
+  const seen = new Set([correct.trim()]);
+  const distractors = [];
+  for (const d of pool) {
+    const t = (d || '').trim();
+    if (!t || seen.has(t)) continue;
+    seen.add(t);
+    distractors.push(t);
+  }
+
+  if (distractors.length < 3) return null;
+
+  let sorted;
+  if (card.type === 'fact-year' || card.type === 'fact-percent' || card.type === 'fact-number') {
+    const cn = extractNumber(correct);
+    sorted = distractors.map(d => {
+      const dn = extractNumber(d);
+      let score = 0;
+      if (!isNaN(cn) && !isNaN(dn)) score = -Math.abs(dn - cn);
+      return { d, score };
+    }).sort((a, b) => b.score - a.score);
+  } else if (card.type === 'concept-cloze') {
+    const cLen = correct.length;
+    sorted = distractors.map(d => {
+      const lenDiff = Math.abs(d.length - cLen);
+      const firstMatch = d[0] && correct[0] && d[0].toLowerCase() === correct[0].toLowerCase() ? 1 : 0;
+      return { d, score: -lenDiff * 0.1 + firstMatch * 2 };
+    }).sort((a, b) => b.score - a.score);
+  } else {
+    sorted = distractors.map(d => ({ d, score: similarityScore(correct, d) }))
+      .sort((a, b) => b.score - a.score);
+  }
+
+  const topK = Math.min(6, sorted.length);
+  const candidatePool = sorted.slice(0, topK).map(x => x.d);
+  const chosen = shuffleArr(candidatePool).slice(0, 3);
+
+  const options = shuffleArr([correct, ...chosen]);
+  return { options, correctIndex: options.indexOf(correct) };
+}
+
+function isReviewable(card) {
+  return buildMCQ(card) !== null;
+}
+
 function dueCardsAll() {
   const now = Date.now();
   return cards.filter(c => {
-    if (!c.distractors || c.distractors.length < 3) return false;
     const r = reviewState[c.id];
-    return !r || r.due <= now;
+    if (r && r.due > now) return false;
+    return isReviewable(c);
   });
 }
 
 function reviewStats() {
   const now = Date.now();
-  let newCards = 0, dueNow = 0, scheduled = 0;
+  let newCards = 0, dueNow = 0, scheduled = 0, notReviewable = 0;
   for (const c of cards) {
-    if (!c.distractors || c.distractors.length < 3) continue;
+    if (!isReviewable(c)) { notReviewable++; continue; }
     const r = reviewState[c.id];
     if (!r) newCards++;
     else if (r.due <= now) dueNow++;
     else scheduled++;
   }
-  return { total: cards.length, newCards, dueNow, scheduled };
-}
-
-/* Costruisce le 4 opzioni mescolate per una scheda */
-function buildMCQ(card) {
-  if (!card.distractors || card.distractors.length < 3) return null;
-  const opts = shuffleArr([card.back, ...card.distractors.slice(0, 3)]);
-  return { options: opts, correctIndex: opts.indexOf(card.back) };
+  return { total: cards.length, newCards, dueNow, scheduled, notReviewable };
 }
 
 const reviewUI = {
   queue: [], idx: 0,
   done: 0, correct: 0, startTime: 0, requeueCount: 0,
-  mcq: null, mcqForCardId: null, selectedIndex: -1
+  mcq: null, mcqForIdx: -1, selectedIndex: -1
 };
 
 function startReviewSession(scope) {
@@ -1869,7 +1751,7 @@ function startReviewSession(scope) {
     $('reviewContent').innerHTML = `<div class="empty"><div class="icon">✓</div>
       <div class="title">Tutto in pari</div>
       <div class="sub">Nessuna scheda dovuta${doc}.<br>
-        ${st.scheduled} in programma · ${st.newCards} nuove${scope === 'doc' ? '' : ' totali'}.</div>
+        ${st.scheduled} in programma · ${st.newCards} nuove${st.notReviewable ? ` · ${st.notReviewable} non ripassabili` : ''}.</div>
       <div class="row-actions" style="justify-content:center;margin-top:20px">
         ${scope === 'doc' && reviewStats().dueNow > 0 ? '<button class="btn primary" id="btnReviewAll">Ripassa tutti i documenti</button>' : ''}
       </div></div>`;
@@ -1885,7 +1767,7 @@ function startReviewSession(scope) {
   reviewUI.startTime = Date.now();
   reviewUI.requeueCount = 0;
   reviewUI.mcq = null;
-  reviewUI.mcqForCardId = null;
+  reviewUI.mcqForIdx = -1;
   reviewUI.selectedIndex = -1;
   renderReviewCard();
 }
@@ -1896,9 +1778,9 @@ function renderReviewCard() {
   if (reviewUI.idx >= reviewUI.queue.length) {
     const elapsed = Math.round((Date.now() - reviewUI.startTime) / 1000);
     const acc = reviewUI.done > 0 ? Math.round(100 * reviewUI.correct / reviewUI.done) : 0;
-    box.innerHTML = `<div class="empty"><div class="icon">🎉</div>
+    box.innerHTML = `<div class="empty"><div class="icon">✓</div>
       <div class="title">Sessione completata</div>
-      <div class="sub">${reviewUI.done} schede · ${reviewUI.correct} corrette (${acc}%) · ${elapsed}s</div>
+      <div class="sub">${reviewUI.done} domande · ${reviewUI.correct} corrette (${acc}%) · ${elapsed}s</div>
       <div class="row-actions" style="justify-content:center;margin-top:20px">
         <button class="btn primary" id="btnNewSession">Nuova sessione</button>
       </div></div>`;
@@ -1912,49 +1794,61 @@ function renderReviewCard() {
   const srcDoc = card.docTitle && card.docTitle.length > 40
     ? card.docTitle.slice(0, 40) + '…' : (card.docTitle || '');
 
-  if (reviewUI.mcqForCardId !== card.id) {
+  if (reviewUI.mcqForIdx !== reviewUI.idx) {
     reviewUI.mcq = buildMCQ(card);
-    reviewUI.mcqForCardId = card.id;
+    reviewUI.mcqForIdx = reviewUI.idx;
     reviewUI.selectedIndex = -1;
+  }
+
+  if (!reviewUI.mcq) {
+    // Sicurezza: se per qualche motivo non è MCQ, salta
+    reviewUI.idx++;
+    renderReviewCard();
+    return;
   }
 
   const { options, correctIndex } = reviewUI.mcq;
   const answered = reviewUI.selectedIndex >= 0;
-  const allShort = options.every(o => o.length <= 25);
+  const letters = ['A', 'B', 'C', 'D'];
 
-  const optionsHTML = `<div class="mcq-options">
-    ${options.map((opt, i) => {
-      let cls = 'mcq-option' + (allShort ? ' short' : '');
-      if (answered) {
-        if (i === correctIndex) cls += ' correct';
-        else if (i === reviewUI.selectedIndex) cls += ' wrong';
-        else cls += ' dim';
-      }
-      return `<button class="${cls}" data-opt="${i}" ${answered ? 'disabled' : ''}>${escapeHTML(opt)}</button>`;
-    }).join('')}
-  </div>`;
+  // Rendering fronte con eventuale ____ evidenziato
+  let frontHTML = escapeHTML(card.front);
+  // Sostituisci "____" con uno span stilizzato (dopo escape, "____" resta invariato)
+  frontHTML = frontHTML.replace(/____/g, '<span class="blank">?</span>');
 
-  const feedbackHTML = answered
-    ? `<div class="mcq-feedback ${reviewUI.selectedIndex === correctIndex ? 'ok' : 'ko'}">
-        ${reviewUI.selectedIndex === correctIndex ? '✓ Corretto' : '✗ Sbagliato'}
-      </div>
-      <button class="btn primary" id="btnContinue" style="width:100%">Continua</button>`
-    : '';
+  const optionsHTML = options.map((opt, i) => {
+    let cls = 'mcq-option';
+    if (answered) {
+      if (i === correctIndex) cls += ' correct';
+      else if (i === reviewUI.selectedIndex) cls += ' wrong';
+      else cls += ' dim';
+    }
+    return `<button class="${cls}" data-opt="${i}" ${answered ? 'disabled' : ''}>
+      <span class="mcq-label">${letters[i]}</span>
+      <span class="mcq-text">${escapeHTML(opt)}</span>
+    </button>`;
+  }).join('');
+
+  let feedbackHTML = '';
+  if (answered) {
+    const wasCorrect = reviewUI.selectedIndex === correctIndex;
+    feedbackHTML = `<div class="mcq-feedback ${wasCorrect ? 'ok' : 'ko'}">
+      ${wasCorrect ? '✓ Risposta corretta' : '✗ Risposta sbagliata'}
+    </div>
+    <button class="btn primary" id="btnContinue" style="width:100%">Continua</button>`;
+  }
 
   box.innerHTML = `
-    <div class="review-progress">
-      ${reviewUI.idx + 1} / ${reviewUI.queue.length}
-      ${reviewUI.requeueCount > 0 ? ` · ${reviewUI.requeueCount} in coda` : ''}
+    <div class="review-progress">Domanda ${reviewUI.idx + 1} di ${reviewUI.queue.length}</div>
+    <div class="review-source">
+      <span class="badge" style="background:var(${CATEGORIES.find(x=>x.id===card.sourceCat)?.color});color:var(--ink)">${TYPE_LABELS[card.type] || card.type}</span>
+      ${srcDoc ? ` · da ${escapeHTML(srcDoc)}` : ''}
+      ${prevInfo ? ` · ${prevInfo}` : ''}
     </div>
     <div class="review-card">
-      <div class="review-head">
-        <span class="badge">${typeLabelFor(card)}</span>
-        <span class="card-due">${prevInfo}</span>
-      </div>
-      <div class="review-front">${escapeHTML(card.front)}</div>
+      <div class="review-front">${frontHTML}</div>
     </div>
-    ${card.docTitle ? `<div style="text-align:center;font-size:.75rem;color:var(--ink-3);margin-bottom:12px">da: ${escapeHTML(srcDoc)}</div>` : ''}
-    ${optionsHTML}
+    <div class="mcq-options">${optionsHTML}</div>
     ${feedbackHTML}`;
 
   if (!answered) {
@@ -1962,7 +1856,7 @@ function renderReviewCard() {
       btn.addEventListener('click', () => {
         const idx = parseInt(btn.dataset.opt, 10);
         reviewUI.selectedIndex = idx;
-        const wasCorrect = idx === reviewUI.mcq.correctIndex;
+        const wasCorrect = idx === correctIndex;
         reviewUI.done++;
         if (wasCorrect) reviewUI.correct++;
         const result = gradeCard(card.id, wasCorrect ? 4 : 0);
@@ -1997,11 +1891,8 @@ function downloadBlob(content, filename, mime) {
 function exportAnkiCSV() {
   const cs = cards.filter(c => c.docKey === docKey(state.text));
   if (!cs.length) { toast('Nessuna scheda da esportare'); return; }
-  const rows = [['Front','Back','Extra','Tags']];
-  for (const c of cs) {
-    const extra = (c.distractors || []).join(' | ');
-    rows.push([c.front, c.back, extra, `ANNOTT::${c.sourceCat}::${c.type}`]);
-  }
+  const rows = [['Front','Back','Tags']];
+  for (const c of cs) rows.push([c.front, c.back, `ANNOTT::${c.sourceCat}::${c.type}`]);
   const csv = rows.map(r => r.map(f => `"${String(f).replace(/"/g,'""')}"`).join(',')).join('\n');
   downloadBlob('\ufeff' + csv, `annott-anki-${Date.now()}.csv`, 'text/csv');
   toast(`${cs.length} schede esportate per Anki`);
@@ -2023,12 +1914,7 @@ function exportMarkdown(obsidian = false) {
   }
   if (cs.length) {
     md += '## Schede\n\n';
-    for (const c of cs) {
-      md += `### ${c.front}\n\n**${c.back}**\n\n`;
-      if (c.distractors && c.distractors.length) {
-        md += `_Distrattori: ${c.distractors.join(' · ')}_\n\n`;
-      }
-    }
+    for (const c of cs) md += `### ${c.front}\n\n${c.back}\n\n`;
   }
   downloadBlob(md, `annott-${Date.now()}.md`, 'text/markdown');
   toast(obsidian ? 'Obsidian esportato' : 'Markdown esportato');
@@ -2109,19 +1995,17 @@ function renderCardsView() {
     const due = !r ? 'nuova'
       : (r.due <= Date.now() ? 'da ripassare'
       : `tra ${Math.max(1, Math.ceil((r.due - Date.now()) / 86400000))}g`);
-    const opts = shuffleArr([c.back, ...(c.distractors || [])]);
+    const reviewable = isReviewable(c);
     const el = document.createElement('div');
     el.className = 'card-item';
     el.innerHTML = `
       <div class="card-head">
-        <span class="badge">${typeLabelFor(c)}</span>
-        <span class="card-due">${due}</span>
+        <span class="badge" style="background:var(${CATEGORIES.find(x=>x.id===c.sourceCat)?.color});color:var(--ink)">${TYPE_LABELS[c.type] || c.type}</span>
+        <span class="card-due">${due}${!reviewable ? ' · non ripassabile' : ''}</span>
       </div>
       <div class="card-front">${escapeHTML(c.front)}</div>
-      <div class="card-options-mini">
-        ${opts.map(o => `<div class="card-opt-mini${o === c.back ? ' correct' : ''}">${escapeHTML(o)}</div>`).join('')}
-      </div>
-      ${cardsScope === 'all' && c.docTitle ? `<div style="font-size:.75rem;color:var(--ink-3);margin-bottom:8px">da: ${escapeHTML(c.docTitle.slice(0,60))}</div>` : ''}
+      <div class="card-back">${escapeHTML(c.back)}</div>
+      ${cardsScope === 'all' && c.docTitle ? `<div style="font-size:.75rem;color:var(--ink-3);margin-top:6px">da: ${escapeHTML(c.docTitle.slice(0,60))}</div>` : ''}
       <div class="card-actions">
         <button class="tbtn card-edit">Modifica</button>
         <button class="tbtn card-delete" style="color:var(--danger)">Elimina</button>
@@ -2143,14 +2027,25 @@ function openCardEditor(card, isNew) {
   $('cardEditTitle').textContent = isNew ? 'Nuova scheda' : 'Modifica scheda';
   $('cardEditFront').value = card.front;
   $('cardEditBack').value = card.back;
-  $('cardEditDistractors').value = (card.distractors || []).join('\n');
+  const isManual = card.type === 'manual';
+  $('cardEditDistractorsSection').style.display = isManual ? 'block' : 'none';
+  if (isManual) {
+    const d = card.distractors || [];
+    $('cardEditD1').value = d[0] || '';
+    $('cardEditD2').value = d[1] || '';
+    $('cardEditD3').value = d[2] || '';
+  } else {
+    $('cardEditD1').value = '';
+    $('cardEditD2').value = '';
+    $('cardEditD3').value = '';
+  }
   $('btnDeleteCard').style.display = isNew ? 'none' : 'inline-flex';
   openModal('modalCardEdit');
   setTimeout(() => $('cardEditFront').focus(), 100);
 }
 
 /* ============================================================
-   FINE NUOVI MODULI
+   UTILITY (invariate)
    ============================================================ */
 
 function updateControlsToggle() {
@@ -2187,10 +2082,8 @@ function renderLegend() {
   const box = $('legend');
   box.innerHTML = '';
   const catStats = state.lastStats || {};
-
   for (const c of CATEGORIES) {
     const el = document.createElement('button');
-
     if (state.editMode) {
       el.className = 'cat-pill' + (state.editCategory === c.id ? ' sel' : '');
       el.innerHTML = `<span class="dot" style="background:var(${c.color})"></span>${c.label}`;
@@ -2213,7 +2106,6 @@ function renderLegend() {
         vibrate(5);
       });
     }
-
     box.appendChild(el);
   }
 }
@@ -2907,6 +2799,21 @@ function bindEvents() {
     if (!state.text.trim() || !state.spans.length) { toast('Analizza prima un testo'); return; }
     openCardPreview(state.text, state.spans, state.lang);
   });
+  $('btnNewCard').addEventListener('click', () => {
+    const manual = {
+      id: uid(),
+      contentId: 'manual_' + uid(),
+      docKey: docKey(state.text),
+      docTitle: docTitle(state.text),
+      sourceCat: 'key',
+      type: 'manual',
+      front: '',
+      back: '',
+      distractors: [],
+      createdAt: Date.now()
+    };
+    openCardEditor(manual, true);
+  });
   $('btnExport').addEventListener('click', () => openModal('modalExport'));
   $('btnCancelExport').addEventListener('click', () => closeModal('modalExport'));
   $('exportList').querySelectorAll('.model-option').forEach(o => {
@@ -2919,7 +2826,6 @@ function bindEvents() {
     });
   });
 
-  /* --- Card preview modal --- */
   $('btnCancelCardPreview').addEventListener('click', () => closeModal('modalCardPreview'));
   $('btnConfirmCardPreview').addEventListener('click', confirmCardGeneration);
   $('btnSelectAllCards').addEventListener('click', () => {
@@ -2929,37 +2835,47 @@ function bindEvents() {
     $('cardPreviewList').querySelectorAll('input[type=checkbox]:not(:disabled)').forEach(c => c.checked = false);
   });
 
-  /* --- Card edit modal --- */
   $('btnSaveCard').addEventListener('click', () => {
     if (!cardEditCtx) return;
-    const { card } = cardEditCtx;
+    const { card, isNew } = cardEditCtx;
     const f = $('cardEditFront').value.trim();
     const b = $('cardEditBack').value.trim();
-    const distractorsRaw = $('cardEditDistractors').value.split('\n').map(s => s.trim()).filter(Boolean);
-    if (!f || !b) { toast('Fronte e risposta obbligatori'); return; }
-    if (distractorsRaw.length < 3) { toast('Servono 3 distrattori (uno per riga)'); return; }
+    if (!f || !b) { toast('Fronte e risposta sono obbligatori'); return; }
     card.front = f;
     card.back = b;
-    card.distractors = distractorsRaw.slice(0, 3);
+    if (card.type === 'manual') {
+      const ds = [$('cardEditD1').value, $('cardEditD2').value, $('cardEditD3').value]
+        .map(s => s.trim()).filter(s => s && s !== b);
+      card.distractors = ds;
+    }
     card.contentId = cardContentId(card.type || 'manual', f, b);
+    if (isNew) {
+      card.docKey = docKey(state.text);
+      card.docTitle = docTitle(state.text);
+      card.sourceCat = card.sourceCat || 'key';
+      card.type = card.type || 'manual';
+      card.createdAt = Date.now();
+      cards.push(card);
+    }
     saveCards();
     closeModal('modalCardEdit');
     renderCardsView();
-    toast('Scheda aggiornata');
+    toast(isNew ? 'Scheda creata' : 'Scheda aggiornata');
   });
   $('btnDeleteCard').addEventListener('click', () => {
     if (!cardEditCtx) return;
-    const { card } = cardEditCtx;
-    cards = cards.filter(x => x.id !== card.id);
-    delete reviewState[card.id];
-    saveCards(); saveReview();
+    const { card, isNew } = cardEditCtx;
+    if (!isNew) {
+      cards = cards.filter(x => x.id !== card.id);
+      delete reviewState[card.id];
+      saveCards(); saveReview();
+    }
     closeModal('modalCardEdit');
     renderCardsView();
     toast('Eliminata');
   });
   $('btnCancelCardEdit').addEventListener('click', () => closeModal('modalCardEdit'));
 
-  /* --- Note --- */
   $('btnSaveNote').addEventListener('click', () => {
     if (!noteDialogCtx) return;
     setNote(noteDialogCtx.start, noteDialogCtx.end, noteDialogCtx.cat, $('noteText').value);
