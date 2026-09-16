@@ -9,17 +9,30 @@
 <meta name="apple-mobile-web-app-title" content="HIGHLIGHT AI">
 <title>HIGHLIGHT AI</title>
 <style>
+/* ============================================================
+   CSS VARIABLES
+   Change these to modify the global look of the app.
+   Light theme is default; dark theme overrides below.
+   ============================================================ */
 :root {
   color-scheme: light;
+
+  /* Backgrounds */
   --bg: #f6f3ee;
   --surface: #ffffff;
   --surface-2: #fbf9f5;
   --surface-3: #f1ede6;
+
+  /* Text colors */
   --ink: #1b1815;
   --ink-2: #57534e;
   --ink-3: #a8a29e;
+
+  /* Borders */
   --border: #e6e0d6;
   --border-2: #d9d2c5;
+
+  /* Accents */
   --accent: #b8893d;
   --accent-soft: #f3e6cf;
   --danger: #c0392b;
@@ -27,6 +40,8 @@
   --ai-soft: #ece5ff;
   --ok: #3b8f4b;
   --ok-soft: #dff0e2;
+
+  /* Highlight category colors */
   --c-number: #ffe680;
   --c-name: #d9b8ff;
   --c-concept: #b6e6b6;
@@ -35,17 +50,22 @@
   --c-list: #a9d8ff;
   --c-sentence: rgba(255, 201, 160, 0.45);
 }
+
 [data-theme="dark"] {
   color-scheme: dark;
+
   --bg: #14110f;
   --surface: #1e1a18;
   --surface-2: #262120;
   --surface-3: #2e2826;
+
   --ink: #f3efe9;
   --ink-2: #b6ada3;
   --ink-3: #6a635c;
+
   --border: #302a27;
   --border-2: #3d3632;
+
   --accent: #d4b478;
   --accent-soft: #3a2f1c;
   --danger: #e57373;
@@ -53,6 +73,7 @@
   --ai-soft: #2a1f4d;
   --ok: #7bd88f;
   --ok-soft: #1c3322;
+
   --c-number: rgba(255, 205, 50, 0.42);
   --c-name: rgba(200, 140, 255, 0.42);
   --c-concept: rgba(100, 220, 110, 0.36);
@@ -61,14 +82,21 @@
   --c-list: rgba(80, 170, 255, 0.38);
   --c-sentence: rgba(255, 165, 90, 0.20);
 }
+
+/* ============================================================
+   RESET AND BASE STYLES
+   ============================================================ */
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
-html, body {
+
+html,
+body {
   height: 100%;
   margin: 0;
 }
+
 body {
   background: var(--bg);
   color: var(--ink);
@@ -77,23 +105,32 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
-button, input, textarea {
+
+button,
+input,
+textarea {
   font-family: inherit;
   font-size: inherit;
   color: inherit;
 }
+
 button {
   cursor: pointer;
   border: none;
   background: none;
   padding: 0;
 }
+
+/* ============================================================
+   APP SHELL
+   ============================================================ */
 .app {
   display: flex;
   flex-direction: column;
   height: 100dvh;
   padding-top: env(safe-area-inset-top);
 }
+
 .topbar {
   display: flex;
   align-items: center;
@@ -102,6 +139,10 @@ button {
   border-bottom: 1px solid var(--border);
   flex: 0 0 auto;
 }
+
+/* ============================================================
+   ANIMATED BRAND TITLE
+   ============================================================ */
 .brand-title {
   font-weight: 800;
   font-size: 1.02rem;
@@ -109,6 +150,7 @@ button {
   display: inline-flex;
   align-items: center;
 }
+
 .brand-title span.letter {
   display: inline-block;
   padding: 1px 3px;
@@ -117,10 +159,12 @@ button {
   color: var(--ink);
   animation: brandColorCycle 6s linear infinite;
 }
+
 .brand-title span.space {
   display: inline-block;
   width: 0.35em;
 }
+
 @keyframes brandColorCycle {
   0%   { background-color: var(--c-number); }
   14%  { background-color: var(--c-name); }
@@ -131,12 +175,17 @@ button {
   85%  { background-color: var(--c-sentence); }
   100% { background-color: var(--c-number); }
 }
+
 @media (prefers-reduced-motion: reduce) {
   .brand-title span.letter {
     animation: none;
     background-color: var(--c-number);
   }
 }
+
+/* ============================================================
+   ICON BUTTONS
+   ============================================================ */
 .iconbtn {
   width: 38px;
   height: 38px;
@@ -146,28 +195,38 @@ button {
   color: var(--ink-3);
   transition: color 0.2s;
 }
+
 .iconbtn:active {
   background: var(--surface-3);
 }
+
 .iconbtn svg {
   width: 20px;
   height: 20px;
 }
+
 .iconbtn.ai-active {
   color: var(--ai);
 }
+
 .spacer {
   flex: 1;
 }
+
+/* ============================================================
+   VIEWS (tab containers)
+   ============================================================ */
 .view {
   display: none;
   flex: 1;
   flex-direction: column;
   min-height: 0;
 }
+
 .view.active {
   display: flex;
 }
+
 .scroll {
   flex: 1;
   overflow-y: auto;
@@ -175,10 +234,15 @@ button {
   padding: 14px;
   padding-bottom: 160px;
 }
+
 .wrap {
   max-width: 760px;
   margin: 0 auto;
 }
+
+/* ============================================================
+   TEXT INPUT
+   ============================================================ */
 .input-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -186,6 +250,7 @@ button {
   margin-bottom: 12px;
   overflow: hidden;
 }
+
 .input-card textarea {
   width: 100%;
   border: none;
@@ -199,9 +264,14 @@ button {
   display: block;
   overflow-y: auto;
 }
+
 .input-card textarea::placeholder {
   color: var(--ink-3);
 }
+
+/* ============================================================
+   TOOLBAR
+   ============================================================ */
 .actions {
   display: flex;
   gap: 6px;
@@ -210,9 +280,11 @@ button {
   padding: 0 2px;
   scrollbar-width: none;
 }
+
 .actions::-webkit-scrollbar {
   display: none;
 }
+
 .tbtn {
   flex: 0 0 auto;
   display: inline-flex;
@@ -227,30 +299,40 @@ button {
   border: 1px solid var(--border);
   white-space: nowrap;
 }
+
 .tbtn:active {
   background: var(--surface-3);
 }
+
 .tbtn.on {
   background: var(--ai-soft);
   color: var(--ai);
   border-color: color-mix(in srgb, var(--ai) 30%, transparent);
 }
+
 .tbtn svg {
   width: 15px;
   height: 15px;
 }
+
 .tbtn.danger {
   color: var(--danger);
 }
+
 .tbtn.primary {
   background: var(--ink);
   color: var(--bg);
   border-color: var(--ink);
   font-weight: 600;
 }
+
 .tbtn.primary:active {
   background: var(--ink);
 }
+
+/* ============================================================
+   CATEGORY LEGEND
+   ============================================================ */
 .cats-row {
   display: flex;
   gap: 6px;
@@ -258,9 +340,11 @@ button {
   padding: 2px 0 10px;
   scrollbar-width: none;
 }
+
 .cats-row::-webkit-scrollbar {
   display: none;
 }
+
 .cat-pill {
   flex: 0 0 auto;
   display: inline-flex;
@@ -276,25 +360,37 @@ button {
   white-space: nowrap;
   line-height: 1;
 }
+
 .cat-pill:active {
   transform: scale(0.96);
 }
+
 .cat-pill .dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   flex: 0 0 auto;
 }
+
 .cat-pill.off {
   opacity: 0.35;
   text-decoration: line-through;
 }
+
 .cat-pill .count {
   font-size: 0.62rem;
   color: var(--ink-3);
   margin-left: 1px;
   font-weight: 600;
 }
+
+/* ============================================================
+   ANNOTATED OUTPUT
+   The output is now composed of many inline <span class="seg">
+   segments, one per line plus one per newline character. The
+   redraw logic reuses existing spans and only rewrites the ones
+   whose content or highlight structure changed.
+   ============================================================ */
 .output-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -307,9 +403,15 @@ button {
   word-wrap: break-word;
   min-height: 100px;
 }
+
 .output-card:empty {
   display: none;
 }
+
+.output-card > span.seg {
+  display: inline;
+}
+
 mark {
   background: transparent;
   color: inherit;
@@ -319,6 +421,7 @@ mark {
   -webkit-box-decoration-break: clone;
   cursor: pointer;
 }
+
 mark.c-num       { background: var(--c-number); }
 mark.c-name      { background: var(--c-name); }
 mark.c-key       { background: var(--c-concept); }
@@ -326,37 +429,41 @@ mark.c-quote     { background: var(--c-quote); }
 mark.c-list      { background: var(--c-list); }
 mark.c-def       { background: var(--c-definition); }
 mark.c-sentence  { background: var(--c-sentence); }
+
 mark.has-note {
   box-shadow: inset 0 -3px 0 0 var(--ai);
 }
-/* Off category: keep the mark in the DOM so toggling a category is a
-   cheap class change (no innerHTML rebuild), but make it visually
-   invisible and non-interactive like plain text. */
-mark.off {
-  background: transparent !important;
-  box-shadow: none !important;
-  pointer-events: none;
-}
+
+/* ============================================================
+   EMPTY STATES
+   ============================================================ */
 .empty {
   text-align: center;
   padding: 60px 24px;
   color: var(--ink-3);
 }
+
 .empty .title {
   color: var(--ink-2);
   font-weight: 600;
   margin-bottom: 4px;
   font-size: 1rem;
 }
+
 .empty .sub {
   font-size: 0.88rem;
   line-height: 1.5;
 }
+
+/* ============================================================
+   LIBRARY LIST
+   ============================================================ */
 .lib-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 .lib-item {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -364,9 +471,11 @@ mark.off {
   padding: 14px 16px;
   cursor: pointer;
 }
+
 .lib-item:active {
   background: var(--surface-2);
 }
+
 .lib-item .title {
   font-weight: 600;
   font-size: 0.95rem;
@@ -375,6 +484,7 @@ mark.off {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .lib-item .snippet {
   font-size: 0.85rem;
   color: var(--ink-2);
@@ -384,6 +494,7 @@ mark.off {
   overflow: hidden;
   line-height: 1.5;
 }
+
 .lib-item .meta {
   display: flex;
   gap: 12px;
@@ -392,6 +503,10 @@ mark.off {
   margin-top: 8px;
   flex-wrap: wrap;
 }
+
+/* ============================================================
+   BADGES
+   ============================================================ */
 .badge {
   display: inline-block;
   font-size: 0.66rem;
@@ -404,11 +519,16 @@ mark.off {
   color: var(--accent);
   margin-right: 4px;
 }
+
 .badge.ai      { background: var(--ai-soft); color: var(--ai); }
 .badge.tpl     { background: var(--ok-soft); color: var(--ok); }
 .badge.due     { background: var(--danger); color: white; }
 .badge.sched   { background: var(--surface-3); color: var(--ink-2); }
 .badge.new     { background: var(--accent-soft); color: var(--accent); }
+
+/* ============================================================
+   CARDS
+   ============================================================ */
 .card-item {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -416,6 +536,7 @@ mark.off {
   padding: 14px 16px;
   margin-bottom: 10px;
 }
+
 .card-head {
   display: flex;
   align-items: center;
@@ -423,6 +544,7 @@ mark.off {
   margin-bottom: 8px;
   flex-wrap: wrap;
 }
+
 .card-front {
   font-weight: 600;
   margin-bottom: 8px;
@@ -430,6 +552,7 @@ mark.off {
   white-space: pre-wrap;
   line-height: 1.5;
 }
+
 .card-back {
   color: var(--accent);
   font-size: 0.92rem;
@@ -437,16 +560,19 @@ mark.off {
   white-space: pre-wrap;
   margin-bottom: 10px;
 }
+
 .card-actions {
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
   margin-top: 10px;
 }
+
 .card-actions .tbtn {
   font-size: 0.75rem;
   padding: 6px 10px;
 }
+
 #card-preview-list {
   display: flex;
   flex-direction: column;
@@ -454,11 +580,16 @@ mark.off {
   max-height: 50dvh;
   overflow-y: auto;
 }
+
 #all-questions-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
+/* ============================================================
+   SECTION TITLES
+   ============================================================ */
 .section-title {
   font-size: 0.7rem;
   font-weight: 700;
@@ -470,9 +601,11 @@ mark.off {
   align-items: center;
   justify-content: space-between;
 }
+
 .section-title:first-child {
   margin-top: 0;
 }
+
 .section-title button {
   font-size: 0.72rem;
   color: var(--ai);
@@ -480,6 +613,10 @@ mark.off {
   text-transform: none;
   letter-spacing: 0;
 }
+
+/* ============================================================
+   REVIEW
+   ============================================================ */
 .review-progress {
   text-align: center;
   font-size: 0.82rem;
@@ -489,6 +626,7 @@ mark.off {
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
+
 .review-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -496,12 +634,14 @@ mark.off {
   padding: 22px;
   margin-bottom: 14px;
 }
+
 .review-front {
   font-size: 1.06rem;
   line-height: 1.7;
   font-family: Georgia, serif;
   white-space: pre-wrap;
 }
+
 .review-front .blank {
   display: inline-block;
   min-width: 60px;
@@ -511,6 +651,10 @@ mark.off {
   color: var(--ai);
   padding: 0 4px;
 }
+
+/* ============================================================
+   MCQ OPTIONS
+   ============================================================ */
 .mcq-option {
   display: flex;
   align-items: flex-start;
@@ -525,9 +669,11 @@ mark.off {
   font-size: 0.94rem;
   line-height: 1.5;
 }
+
 .mcq-option:not(:disabled):active {
   transform: scale(0.995);
 }
+
 .mcq-label {
   flex: 0 0 auto;
   width: 26px;
@@ -540,34 +686,42 @@ mark.off {
   font-weight: 700;
   font-size: 0.78rem;
 }
+
 .mcq-text {
   flex: 1;
   text-align: left;
   white-space: pre-wrap;
 }
+
 .mcq-option.correct {
   border-color: var(--ok);
   background: var(--ok-soft);
 }
+
 .mcq-option.correct .mcq-label {
   background: var(--ok);
   color: white;
 }
+
 .mcq-option.correct .mcq-text {
   color: var(--ok);
   font-weight: 600;
 }
+
 .mcq-option.wrong {
   border-color: var(--danger);
   background: rgba(192, 57, 43, 0.08);
 }
+
 .mcq-option.wrong .mcq-label {
   background: var(--danger);
   color: white;
 }
+
 .mcq-option.dim {
   opacity: 0.4;
 }
+
 .mcq-feedback {
   padding: 12px 16px;
   border-radius: 12px;
@@ -576,14 +730,20 @@ mark.off {
   font-size: 0.95rem;
   text-align: center;
 }
+
 .mcq-feedback.ok {
   background: var(--ok-soft);
   color: var(--ok);
 }
+
 .mcq-feedback.ko {
   background: rgba(192, 57, 43, 0.1);
   color: var(--danger);
 }
+
+/* ============================================================
+   SELECTION BAR
+   ============================================================ */
 .sel-bar {
   position: fixed;
   bottom: calc(96px + env(safe-area-inset-bottom));
@@ -600,12 +760,15 @@ mark.off {
   overflow-x: auto;
   scrollbar-width: none;
 }
+
 .sel-bar::-webkit-scrollbar {
   display: none;
 }
+
 .sel-bar.show {
   display: flex;
 }
+
 .sel-bar .cat-btn {
   width: 36px;
   height: 36px;
@@ -614,26 +777,34 @@ mark.off {
   place-items: center;
   flex: 0 0 auto;
 }
+
 .sel-bar .cat-btn:active {
   transform: scale(0.9);
 }
+
 .sel-bar .cat-btn .dot {
   width: 22px;
   height: 22px;
   border-radius: 50%;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
 }
+
 .sel-bar .sep {
   width: 1px;
   background: rgba(255, 255, 255, 0.18);
   margin: 4px 2px;
   flex: 0 0 auto;
 }
+
 .sel-bar .note-btn svg {
   width: 18px;
   height: 18px;
   color: white;
 }
+
+/* ============================================================
+   EDIT PANEL
+   ============================================================ */
 .edit-panel {
   position: fixed;
   left: 0;
@@ -645,9 +816,11 @@ mark.off {
   display: none;
   box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.2);
 }
+
 .edit-panel.show {
   display: block;
 }
+
 .edit-panel-inner {
   display: flex;
   align-items: center;
@@ -657,9 +830,11 @@ mark.off {
   max-width: 760px;
   margin: 0 auto;
 }
+
 .edit-panel-inner::-webkit-scrollbar {
   display: none;
 }
+
 .edit-panel .hint {
   color: rgba(255, 255, 255, 0.6);
   font-size: 0.72rem;
@@ -669,6 +844,7 @@ mark.off {
   padding-right: 6px;
   flex: 0 0 auto;
 }
+
 .edit-panel .color-btn {
   width: 40px;
   height: 40px;
@@ -677,15 +853,18 @@ mark.off {
   place-items: center;
   flex: 0 0 auto;
 }
+
 .edit-panel .color-btn:active {
   transform: scale(0.9);
 }
+
 .edit-panel .color-btn .dot {
   width: 28px;
   height: 28px;
   border-radius: 50%;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
 }
+
 .edit-panel .close-btn {
   margin-left: auto;
   color: rgba(255, 255, 255, 0.7);
@@ -694,6 +873,10 @@ mark.off {
   font-size: 1.2rem;
   line-height: 1;
 }
+
+/* ============================================================
+   TAB BAR
+   ============================================================ */
 .tabbar {
   display: flex;
   background: var(--bg);
@@ -701,6 +884,7 @@ mark.off {
   padding-bottom: env(safe-area-inset-bottom);
   flex: 0 0 auto;
 }
+
 .tabbar .tab {
   flex: 1;
   padding: 10px 8px 12px;
@@ -713,13 +897,16 @@ mark.off {
   font-weight: 600;
   position: relative;
 }
+
 .tabbar .tab svg {
   width: 22px;
   height: 22px;
 }
+
 .tabbar .tab.active {
   color: var(--ai);
 }
+
 .tabbar .badge-dot {
   position: absolute;
   top: 6px;
@@ -735,6 +922,10 @@ mark.off {
   border-radius: 8px;
   font-weight: 700;
 }
+
+/* ============================================================
+   MODALS
+   ============================================================ */
 .modal-bg {
   position: fixed;
   inset: 0;
@@ -744,9 +935,11 @@ mark.off {
   align-items: flex-end;
   justify-content: center;
 }
+
 .modal-bg.open {
   display: flex;
 }
+
 .modal {
   background: var(--surface);
   border-radius: 20px 20px 0 0;
@@ -756,16 +949,19 @@ mark.off {
   max-height: 85dvh;
   overflow-y: auto;
 }
+
 .modal h3 {
   margin: 0 0 8px;
   font-size: 1.05rem;
 }
+
 .modal p {
   margin: 0 0 14px;
   color: var(--ink-2);
   font-size: 0.9rem;
   line-height: 1.5;
 }
+
 .modal label {
   display: block;
   font-size: 0.72rem;
@@ -775,6 +971,7 @@ mark.off {
   letter-spacing: 0.04em;
   margin-bottom: 6px;
 }
+
 .modal input,
 .modal textarea {
   width: 100%;
@@ -787,16 +984,19 @@ mark.off {
   margin-bottom: 12px;
   font-family: inherit;
 }
+
 .modal textarea {
   min-height: 70px;
   resize: vertical;
   line-height: 1.5;
 }
+
 .row-actions {
   display: flex;
   gap: 8px;
   margin-top: 12px;
 }
+
 .btn {
   flex: 1;
   padding: 12px 16px;
@@ -805,13 +1005,19 @@ mark.off {
   font-size: 0.92rem;
   text-align: center;
 }
+
 .btn.primary  { background: var(--ink); color: var(--bg); }
 .btn.ghost    { background: var(--surface); border: 1px solid var(--border-2); color: var(--ink); }
 .btn.danger   { background: var(--danger); color: white; }
 .btn.ai       { background: var(--ai); color: white; }
+
 [data-theme="dark"] .btn.ai {
   color: #1a0f3d;
 }
+
+/* ============================================================
+   MODEL OPTIONS
+   ============================================================ */
 .model-option {
   display: flex;
   align-items: center;
@@ -823,29 +1029,38 @@ mark.off {
   cursor: pointer;
   margin-bottom: 8px;
 }
+
 .model-option.selected {
   border-color: var(--ai);
   background: var(--ai-soft);
 }
+
 .model-option .info {
   flex: 1;
   min-width: 0;
 }
+
 .model-option .name {
   font-weight: 600;
   font-size: 0.9rem;
 }
+
 .model-option .name .sz {
   font-weight: 500;
   font-size: 0.76rem;
   color: var(--ink-3);
   margin-left: 6px;
 }
+
 .model-option .desc {
   font-size: 0.76rem;
   color: var(--ink-2);
   margin-top: 2px;
 }
+
+/* ============================================================
+   TOAST
+   ============================================================ */
 .toast {
   position: fixed;
   left: 50%;
@@ -864,9 +1079,14 @@ mark.off {
   max-width: 90vw;
   text-align: center;
 }
+
 .toast.show {
   opacity: 1;
 }
+
+/* ============================================================
+   AI STATUS BAR
+   ============================================================ */
 .ai-bar {
   display: none;
   align-items: center;
@@ -880,9 +1100,11 @@ mark.off {
   color: var(--ai);
   font-weight: 500;
 }
+
 .ai-bar.show {
   display: flex;
 }
+
 .ai-bar .spinner {
   width: 14px;
   height: 14px;
@@ -892,9 +1114,11 @@ mark.off {
   animation: spin 0.7s linear infinite;
   flex: 0 0 auto;
 }
+
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
 .ai-bar .msg {
   flex: 1;
   min-width: 0;
@@ -902,31 +1126,40 @@ mark.off {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .ai-bar .pct {
   font-variant-numeric: tabular-nums;
   font-weight: 700;
   flex: 0 0 auto;
 }
+
 .ai-bar.ready {
   background: color-mix(in srgb, var(--ok) 15%, var(--surface));
   color: var(--ok);
 }
+
 .ai-bar.error {
   background: rgba(192, 57, 43, 0.1);
   color: var(--danger);
 }
+
+/* ============================================================
+   STATS ROW
+   ============================================================ */
 .stats-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   margin-top: 12px;
 }
+
 .stat {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 10px;
 }
+
 .stat .k {
   font-size: 0.6rem;
   color: var(--ink-3);
@@ -934,11 +1167,16 @@ mark.off {
   letter-spacing: 0.04em;
   font-weight: 700;
 }
+
 .stat .v {
   font-size: 1rem;
   font-weight: 700;
   margin-top: 2px;
 }
+
+/* ============================================================
+   ERROR BANNER
+   ============================================================ */
 #error-banner {
   position: fixed;
   top: 0;
@@ -1160,6 +1398,7 @@ mark.off {
   // ============================================================
   // UTILITIES
   // ============================================================
+
   function $(id) {
     return document.getElementById(id);
   }
@@ -1217,6 +1456,7 @@ mark.off {
   // ============================================================
   // CONSTANTS
   // ============================================================
+
   var CATEGORIES = [
     { id: 'num',      label: 'Numbers',     cssClass: 'c-num' },
     { id: 'name',     label: 'Names',       cssClass: 'c-name' },
@@ -1237,6 +1477,9 @@ mark.off {
     sentence: 4
   };
 
+  // ============================================================
+  // SAMPLE TEXTS
+  // ============================================================
   var SAMPLE_TEXTS = [
     {
       title: 'Sample · Photosynthesis',
@@ -1260,6 +1503,9 @@ mark.off {
     }
   ];
 
+  // ============================================================
+  // DICTIONARY
+  // ============================================================
   var DICTIONARY = {
     commonYears: [
       1492, 1517, 1648, 1776, 1789, 1815, 1848, 1861, 1870,
@@ -1366,8 +1612,8 @@ mark.off {
     'che chi cui non più anche solo come dove quando perché ' +
     'essere avere sono è era fu sia stata stato stati state ' +
     'viene venga fatto fare può devono deve loro lei lui noi voi ' +
-    'tuttavia inoltre quindi perciò comunque invece inoltre ' +
-    'secondo durante secondo circa quasi sempre spesso talvolta'
+    'tuttavia inoltre quindi perciò comunque invece ' +
+    'secondo durante circa quasi sempre spesso talvolta'
   ).split(/\s+/);
 
   var STOPWORD_SET = {};
@@ -1407,16 +1653,13 @@ mark.off {
   }
 
   // ============================================================
-  // FSRS 4.5 — faithful implementation
+  // FSRS — Free Spaced Repetition Scheduler 4.5
   // ============================================================
-  // Includes:
-  //  - initial stability/difficulty for new cards
-  //  - short-term formula for Learning/Relearning cards
-  //  - long-term formula for Review cards
-  //  - difficulty mean reversion (FSRS-4.5)
-  //  - lapse (Again on a Review card) formula
-  //
-  // Weights (w[0..18]) come from the FSRS-4.5 default parameter set.
+  // Faithful implementation. Three regimes are modeled:
+  //  - initialization (new card, first grade)
+  //  - short-term (learning / relearning / same-day review)
+  //  - long-term (review state with elapsed >= 1 day)
+  // Parameters w[0..18] are the FSRS-4.5 default weights.
 
   var FSRS_PARAMS = [
     0.4072, 1.1829, 3.1262, 15.4722, 7.2102, 0.5316, 1.0651,
@@ -1428,104 +1671,103 @@ mark.off {
   var FSRS_TARGET = 0.9;
 
   /**
-   * FSRS-4.5 initial stability for rating G (1=Again..4=Easy).
-   *   S_0(G) = w[G-1]
-   */
-  function fsrsInitStability(rating) {
-    return Math.max(0.1, FSRS_PARAMS[rating - 1]);
-  }
-
-  /**
-   * FSRS-4.5 initial difficulty for rating G.
-   *   D_0(G) = w[4] - exp(w[5] * (G - 1)) + 1, clamped to [1,10]
-   */
-  function fsrsInitDifficulty(rating) {
-    return clamp(
-      FSRS_PARAMS[4] - Math.exp(FSRS_PARAMS[5] * (rating - 1)) + 1,
-      1, 10
-    );
-  }
-
-  /**
-   * Initialize FSRS state for a brand-new card.
+   * Initialize FSRS state for a brand new card (first grade).
+   * @param {number} rating - 1..4
    */
   function fsrsInitialize(rating) {
+    var S = Math.max(0.1, FSRS_PARAMS[rating - 1]);
+    var D = clamp(
+      FSRS_PARAMS[4] - Math.exp(FSRS_PARAMS[5] * (rating - 1)) + 1,
+      1,
+      10
+    );
     return {
-      stability: fsrsInitStability(rating),
-      difficulty: fsrsInitDifficulty(rating),
+      stability: S,
+      difficulty: D,
       reps: 1,
       lapses: rating === 1 ? 1 : 0,
-      state: 'learning',
+      state: rating >= 3 ? 'review' : 'learning',
       lastReview: Date.now(),
       due: 0
     };
   }
 
   /**
-   * Compute the next FSRS state given a rating and current state.
-   * Handles Learning, Relearning and Review branches correctly.
+   * Compute the next FSRS state given a rating.
+   * Short-term formula used when in learning/relearning OR when
+   * elapsed time since last review is less than one day.
+   * Long-term formula used in review state with elapsed >= 1 day.
    */
   function fsrsNext(card, rating, now) {
+    var S = Math.max(0.1, card.stability);
+    var D = clamp(card.difficulty, 1, 10);
     var elapsedDays = Math.max(0, (now - (card.lastReview || now)) / 86400000);
-    var retrievability = Math.exp(Math.log(0.9) * elapsedDays / card.stability);
 
-    // ---- Difficulty update (with FSRS-4.5 mean reversion) ----
-    // D' = D - w[6] * (G - 3)
-    var dPrime = card.difficulty - FSRS_PARAMS[6] * (rating - 3);
-    // D'' = w[7] * D_0(4) + (1 - w[7]) * D'
-    var d0_4 = FSRS_PARAMS[4] - Math.exp(FSRS_PARAMS[5] * 3) + 1;
-    var newDifficulty = clamp(
-      FSRS_PARAMS[7] * d0_4 + (1 - FSRS_PARAMS[7]) * dPrime,
-      1, 10
-    );
+    // Retrievability for the long-term path
+    var R = Math.exp(Math.log(FSRS_TARGET) * elapsedDays / S);
 
-    var newStability;
+    var newD = clamp(D - FSRS_PARAMS[6] * (rating - 3), 1, 10);
+    var newS;
     var newState;
+    var newLapses = card.lapses || 0;
 
-    if (card.state === 'learning' || card.state === 'relearning') {
-      // ---- Short-term (same learning session) ----
-      // S' = S * exp(w[17] * (G - 3 + w[18]))
-      newStability = card.stability * Math.exp(
-        FSRS_PARAMS[17] * (rating - 3 + FSRS_PARAMS[18])
-      );
-      newStability = Math.max(0.1, newStability);
-      newState = rating === 1 ? 'relearning' : 'review';
+    var useShortTerm =
+      card.state === 'learning' ||
+      card.state === 'relearning' ||
+      elapsedDays < 1;
 
-    } else if (rating === 1) {
-      // ---- Lapse (Review card failed) ----
-      newStability = FSRS_PARAMS[11]
-        * Math.pow(newDifficulty, -FSRS_PARAMS[12])
-        * (Math.pow(card.stability + 1, FSRS_PARAMS[13]) - 1)
-        * Math.exp(FSRS_PARAMS[14] * (1 - retrievability));
-      newStability = Math.max(0.1, newStability);
-      newState = 'relearning';
+    if (useShortTerm) {
+      // Short-term stability update
+      newS = S * Math.exp(FSRS_PARAMS[17] * (rating - 3 + FSRS_PARAMS[18]));
+      newS = Math.max(0.1, newS);
 
+      if (rating === 1) {
+        newLapses++;
+        newState = 'relearning';
+      } else if (rating >= 3) {
+        newState = 'review';
+      } else {
+        newState = card.state === 'review' ? 'review' : 'learning';
+      }
     } else {
-      // ---- Long-term review ----
-      var hardPenalty = rating === 2 ? FSRS_PARAMS[15] : 1;
-      var easyBonus = rating === 4 ? FSRS_PARAMS[16] : 1;
-      newStability = card.stability * (
-        1 +
-        Math.exp(FSRS_PARAMS[8]) * (11 - newDifficulty)
-        * Math.pow(card.stability, -FSRS_PARAMS[9])
-        * (Math.exp(FSRS_PARAMS[10] * (1 - retrievability)) - 1)
-        * hardPenalty * easyBonus
-      );
-      newStability = Math.max(0.1, newStability);
-      newState = 'review';
+      if (rating === 1) {
+        // Lapse path (post-lapse stability)
+        newS = FSRS_PARAMS[11]
+          * Math.pow(newD, -FSRS_PARAMS[12])
+          * (Math.pow(S + 1, FSRS_PARAMS[13]) - 1)
+          * Math.exp(FSRS_PARAMS[14] * (1 - R));
+        newS = Math.max(0.1, newS);
+        newLapses++;
+        newState = 'relearning';
+      } else {
+        var hardPenalty = rating === 2 ? FSRS_PARAMS[15] : 1;
+        var easyBonus = rating === 4 ? FSRS_PARAMS[16] : 1;
+        newS = S * (
+          1 +
+          Math.exp(FSRS_PARAMS[8]) * (11 - newD)
+          * Math.pow(S, -FSRS_PARAMS[9])
+          * (Math.exp(FSRS_PARAMS[10] * (1 - R)) - 1)
+          * hardPenalty * easyBonus
+        );
+        newS = Math.max(0.1, newS);
+        newState = 'review';
+      }
     }
 
     return {
-      stability: newStability,
-      difficulty: newDifficulty,
+      stability: newS,
+      difficulty: newD,
       reps: (card.reps || 0) + 1,
-      lapses: (card.lapses || 0) + (rating === 1 ? 1 : 0),
+      lapses: newLapses,
       state: newState,
       lastReview: now,
       due: 0
     };
   }
 
+  /**
+   * Convert stability into an interval in days.
+   */
   function fsrsInterval(stability) {
     var days = (stability / FSRS_FACTOR)
       * (Math.pow(FSRS_TARGET, 1 / FSRS_DECAY) - 1);
@@ -1533,22 +1775,19 @@ mark.off {
   }
 
   // ============================================================
-  // STORE — split storage (per-document + meta)
+  // STORE — data persistence, per-document
   // ============================================================
-  // Two namespaces:
-  //   highlight-ai.v131.meta       → {version, activeDocId, settings, docIds}
-  //   highlight-ai.v131.doc.<id>   → {doc, highlights, cards, review}
-  //
-  // Rationale: keeps the per-keystroke write small (only the active
-  // document), avoids the "serialize the whole world" cost, and
-  // keeps each document well under localStorage quota.
-  //
-  // Legacy v130 format (single blob under highlight-ai.v130.data) is
-  // automatically migrated on first load.
+  // Storage layout (v131):
+  //   highlight-ai.v131.index          → { version, activeDocId, docIds, settings }
+  //   highlight-ai.v131.doc.<docId>    → { id, title, text, lang, createdAt,
+  //                                        updatedAt, highlights, cards, review }
+  // Migration: on first run after upgrade, the legacy single-key blob
+  // (highlight-ai.v130.data) is split into per-document keys and removed.
 
-  var STORAGE_META_KEY   = 'highlight-ai.v131.meta';
+  var STORAGE_INDEX_KEY = 'highlight-ai.v131.index';
   var STORAGE_DOC_PREFIX = 'highlight-ai.v131.doc.';
-  var LEGACY_KEY_V130    = 'highlight-ai.v130.data';
+  var STORAGE_OLD_KEY = 'highlight-ai.v130.data';
+  var STORAGE_MODEL_KEY = 'highlight-ai.v130.model';
 
   var DATA = {
     version: 131,
@@ -1563,176 +1802,205 @@ mark.off {
     }
   };
 
-  // ---- Persistence primitives ----------------------------------
+  // Dirty tracking: we only persist documents that actually changed.
+  var pendingDocSaves = {};
+  var pendingIndexSave = false;
+  var saveTimer = null;
 
-  function saveMeta() {
-    try {
-      var meta = {
-        version: DATA.version,
-        activeDocId: DATA.activeDocId,
-        settings: DATA.settings,
-        docIds: Object.keys(DATA.docs)
-      };
-      localStorage.setItem(STORAGE_META_KEY, JSON.stringify(meta));
-    } catch (error) {
-      // Quota or privacy mode — ignore
-    }
+  function markDocDirty(docId) {
+    if (!docId) return;
+    pendingDocSaves[docId] = true;
+    scheduleFlush();
   }
 
-  function saveDocumentNow(docId) {
-    if (!docId) return;
-    var doc = DATA.docs[docId];
-    if (!doc) {
-      // Document deleted: remove its slice.
-      try { localStorage.removeItem(STORAGE_DOC_PREFIX + docId); } catch (e) {}
-      return;
-    }
+  function markIndexDirty() {
+    pendingIndexSave = true;
+    scheduleFlush();
+  }
 
-    var highlights = {};
-    var cards = {};
-    var review = {};
+  function markAllDocsDirty() {
+    for (var id in DATA.docs) pendingDocSaves[id] = true;
+    pendingIndexSave = true;
+  }
 
-    for (var hid in DATA.highlights) {
-      if (DATA.highlights[hid].docId === docId) highlights[hid] = DATA.highlights[hid];
-    }
-    for (var cid in DATA.cards) {
-      if (DATA.cards[cid].docId === docId) {
-        cards[cid] = DATA.cards[cid];
-        if (DATA.review[cid]) review[cid] = DATA.review[cid];
-      }
-    }
+  function scheduleFlush() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(flushSaves, 250);
+  }
 
+  function flushSaves() {
+    clearTimeout(saveTimer);
     try {
-      localStorage.setItem(STORAGE_DOC_PREFIX + docId, JSON.stringify({
-        doc: doc,
-        highlights: highlights,
-        cards: cards,
-        review: review
-      }));
+      if (pendingIndexSave) {
+        var indexPayload = {
+          version: DATA.version,
+          activeDocId: DATA.activeDocId,
+          docIds: Object.keys(DATA.docs),
+          settings: DATA.settings
+        };
+        localStorage.setItem(STORAGE_INDEX_KEY, JSON.stringify(indexPayload));
+        pendingIndexSave = false;
+      }
+
+      for (var docId in pendingDocSaves) {
+        var doc = DATA.docs[docId];
+        if (!doc) {
+          localStorage.removeItem(STORAGE_DOC_PREFIX + docId);
+          continue;
+        }
+
+        var hl = {};
+        for (var hid in DATA.highlights) {
+          if (DATA.highlights[hid].docId === docId) hl[hid] = DATA.highlights[hid];
+        }
+        var cards = {};
+        for (var cid in DATA.cards) {
+          if (DATA.cards[cid].docId === docId) cards[cid] = DATA.cards[cid];
+        }
+        var review = {};
+        for (var rid in DATA.review) {
+          if (cards[rid]) review[rid] = DATA.review[rid];
+        }
+
+        var payload = {
+          id: doc.id,
+          title: doc.title,
+          text: doc.text,
+          lang: doc.lang,
+          createdAt: doc.createdAt,
+          updatedAt: doc.updatedAt,
+          highlights: hl,
+          cards: cards,
+          review: review
+        };
+
+        localStorage.setItem(STORAGE_DOC_PREFIX + docId, JSON.stringify(payload));
+      }
+
+      pendingDocSaves = {};
     } catch (error) {
       showToast('Storage full');
     }
   }
 
-  function deleteDocumentFromStorage(docId) {
-    if (!docId) return;
-    try { localStorage.removeItem(STORAGE_DOC_PREFIX + docId); } catch (e) {}
-  }
-
-  var saveTimer = null;
-
   /**
-   * Debounced save of the active document + meta.
+   * Debounced save (kept as a public entry point for existing code).
    */
   function saveData() {
-    clearTimeout(saveTimer);
-    saveTimer = setTimeout(saveDataNow, 300);
+    scheduleFlush();
   }
 
   /**
-   * Immediate save of meta + active document.
+   * Immediate save (used after deletes and destructive actions).
    */
   function saveDataNow() {
-    clearTimeout(saveTimer);
-    saveMeta();
-    if (DATA.activeDocId) saveDocumentNow(DATA.activeDocId);
+    flushSaves();
   }
 
   /**
-   * Save the document that owns a given card id.
-   * Used by updateCard / removeCard / gradeCard so that changes to
-   * cards (which always belong to some document) are persisted even
-   * if that document isn't the active one.
+   * Load the entire dataset from localStorage.
+   * Handles both the new per-document layout and migration from
+   * the legacy single-key blob.
    */
-  function saveCardDocument(cardId) {
-    var card = DATA.cards[cardId];
-    if (card && card.docId) saveDocumentNow(card.docId);
-    else saveData();
-  }
-
-  // ---- Loading + migration -------------------------------------
-
-  function migrateLegacyV130(parsed) {
-    // Legacy single-blob format. Copy fields across, then persist
-    // into the new per-document layout and drop the old key.
-    DATA.docs = parsed.docs || {};
-    DATA.highlights = parsed.highlights || {};
-    DATA.cards = parsed.cards || {};
-    DATA.review = parsed.review || {};
-    DATA.activeDocId = parsed.activeDocId || null;
-    DATA.settings = parsed.settings || { activeCategories: [], editMode: false };
-
-    // Persist in the new layout
-    saveMeta();
-    for (var docId in DATA.docs) saveDocumentNow(docId);
-
-    try { localStorage.removeItem(LEGACY_KEY_V130); } catch (e) {}
-    console.warn('Migrated v130 storage → v131 per-document layout');
-  }
-
   function loadData() {
+    var indexRaw = null;
     try {
-      var metaRaw = localStorage.getItem(STORAGE_META_KEY);
+      indexRaw = localStorage.getItem(STORAGE_INDEX_KEY);
+    } catch (e) {}
 
-      if (metaRaw) {
-        var meta = JSON.parse(metaRaw);
-        if (meta.settings) DATA.settings = meta.settings;
-        DATA.activeDocId = meta.activeDocId || null;
+    if (indexRaw) {
+      try {
+        var index = JSON.parse(indexRaw);
+        DATA.activeDocId = index.activeDocId || null;
+        DATA.settings = index.settings || { activeCategories: [], editMode: false };
 
-        var docIds = meta.docIds || [];
-        for (var i = 0; i < docIds.length; i++) {
-          var docId = docIds[i];
-          var docRaw = localStorage.getItem(STORAGE_DOC_PREFIX + docId);
-          if (!docRaw) continue;
-          try {
-            var parsed = JSON.parse(docRaw);
-            if (parsed.doc) DATA.docs[docId] = parsed.doc;
-            if (parsed.highlights) {
-              for (var hid in parsed.highlights) DATA.highlights[hid] = parsed.highlights[hid];
-            }
-            if (parsed.cards) {
-              for (var cid in parsed.cards) DATA.cards[cid] = parsed.cards[cid];
-            }
-            if (parsed.review) {
-              for (var rid in parsed.review) DATA.review[rid] = parsed.review[rid];
-            }
-          } catch (e) {
-            console.warn('Corrupt doc entry:', docId, e);
-          }
+        var ids = index.docIds || [];
+        for (var i = 0; i < ids.length; i++) {
+          var raw = null;
+          try { raw = localStorage.getItem(STORAGE_DOC_PREFIX + ids[i]); } catch (e) {}
+          if (!raw) continue;
+          var d;
+          try { d = JSON.parse(raw); } catch (e) { continue; }
+          if (!d || !d.id) continue;
+
+          DATA.docs[d.id] = {
+            id: d.id,
+            title: d.title || 'Untitled',
+            text: d.text || '',
+            lang: d.lang || 'en',
+            createdAt: d.createdAt || Date.now(),
+            updatedAt: d.updatedAt || Date.now()
+          };
+          for (var hid in d.highlights || {}) DATA.highlights[hid] = d.highlights[hid];
+          for (var cid in d.cards || {}) DATA.cards[cid] = d.cards[cid];
+          for (var rid in d.review || {}) DATA.review[rid] = d.review[rid];
         }
-      } else {
-        // Try legacy single-blob format
-        var legacyRaw = localStorage.getItem(LEGACY_KEY_V130);
-        if (legacyRaw) {
-          try {
-            var legacy = JSON.parse(legacyRaw);
-            migrateLegacyV130(legacy);
-          } catch (e) {
-            console.warn('Legacy parse failed:', e);
-          }
-        }
+      } catch (error) {
+        console.warn('Index parse error:', error);
       }
-    } catch (error) {
-      console.warn('Load error:', error);
+    } else {
+      // Attempt migration from v130 legacy blob
+      var oldRaw = null;
+      try { oldRaw = localStorage.getItem(STORAGE_OLD_KEY); } catch (e) {}
+      if (oldRaw) {
+        migrateFromLegacy(oldRaw);
+      }
     }
 
-    // Ensure settings shape
-    if (!DATA.settings) DATA.settings = { activeCategories: [], editMode: false };
+    // Ensure settings are initialized
+    if (!DATA.settings) {
+      DATA.settings = { activeCategories: [], editMode: false };
+    }
     if (!DATA.settings.activeCategories || !DATA.settings.activeCategories.length) {
       DATA.settings.activeCategories = CATEGORIES.map(function (c) { return c.id; });
     }
+
+    // Recover if activeDocId points to a missing document
+    if (DATA.activeDocId && !DATA.docs[DATA.activeDocId]) {
+      DATA.activeDocId = null;
+      markIndexDirty();
+    }
   }
 
-  // ---- Document helpers ----------------------------------------
+  /**
+   * Split the legacy single-key blob into per-document keys,
+   * then remove the old key. All data is preserved.
+   */
+  function migrateFromLegacy(raw) {
+    try {
+      var parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== 'object') return;
+
+      DATA.docs = parsed.docs || {};
+      DATA.highlights = parsed.highlights || {};
+      DATA.cards = parsed.cards || {};
+      DATA.review = parsed.review || {};
+      DATA.activeDocId = parsed.activeDocId || null;
+      DATA.settings = parsed.settings || { activeCategories: [], editMode: false };
+
+      // Persist in the new layout
+      markAllDocsDirty();
+      flushSaves();
+
+      // Drop the legacy key
+      try { localStorage.removeItem(STORAGE_OLD_KEY); } catch (e) {}
+
+      console.info('Migrated legacy data (' +
+        Object.keys(DATA.docs).length + ' documents)');
+    } catch (error) {
+      console.warn('Migration failed:', error);
+    }
+  }
+
+  // ------------------------------------------------------------
+  // DATA ACCESS
+  // ------------------------------------------------------------
 
   function getActiveDocument() {
     return DATA.activeDocId ? DATA.docs[DATA.activeDocId] : null;
   }
 
   function createDocument(text, title) {
-    // Persist the current document before switching away.
-    if (DATA.activeDocId) saveDocumentNow(DATA.activeDocId);
-
     var id = generateId();
     DATA.docs[id] = {
       id: id,
@@ -1743,18 +2011,17 @@ mark.off {
       updatedAt: Date.now()
     };
     DATA.activeDocId = id;
-    saveMeta();
+    markDocDirty(id);
+    markIndexDirty();
     return DATA.docs[id];
   }
 
   function updateDocument(id, changes) {
     var doc = DATA.docs[id];
     if (!doc) return;
-    for (var key in changes) {
-      doc[key] = changes[key];
-    }
+    for (var key in changes) doc[key] = changes[key];
     doc.updatedAt = Date.now();
-    saveDocumentNow(id);
+    markDocDirty(id);
   }
 
   function addHighlight(options) {
@@ -1771,7 +2038,7 @@ mark.off {
       note: '',
       createdAt: Date.now()
     };
-    saveData();
+    markDocDirty(options.docId);
     return DATA.highlights[id];
   }
 
@@ -1786,24 +2053,20 @@ mark.off {
         delete DATA.review[cardId];
       }
     }
-    if (docId) saveDocumentNow(docId); else saveData();
+    markDocDirty(docId);
   }
 
   function updateHighlight(id, changes) {
     var highlight = DATA.highlights[id];
     if (!highlight) return;
-    for (var key in changes) {
-      highlight[key] = changes[key];
-    }
-    saveData();
+    for (var key in changes) highlight[key] = changes[key];
+    markDocDirty(highlight.docId);
   }
 
   function highlightsForDocument(docId) {
     var result = [];
     for (var id in DATA.highlights) {
-      if (DATA.highlights[id].docId === docId) {
-        result.push(DATA.highlights[id]);
-      }
+      if (DATA.highlights[id].docId === docId) result.push(DATA.highlights[id]);
     }
     return result;
   }
@@ -1811,18 +2074,14 @@ mark.off {
   function cardsForDocument(docId) {
     var result = [];
     for (var id in DATA.cards) {
-      if (DATA.cards[id].docId === docId) {
-        result.push(DATA.cards[id]);
-      }
+      if (DATA.cards[id].docId === docId) result.push(DATA.cards[id]);
     }
     return result;
   }
 
   function allCards() {
     var result = [];
-    for (var id in DATA.cards) {
-      result.push(DATA.cards[id]);
-    }
+    for (var id in DATA.cards) result.push(DATA.cards[id]);
     return result;
   }
 
@@ -1830,33 +2089,34 @@ mark.off {
     card.id = generateId();
     card.createdAt = Date.now();
     DATA.cards[card.id] = card;
-    if (card.docId) saveDocumentNow(card.docId); else saveData();
+    markDocDirty(card.docId);
     return card;
   }
 
   function updateCard(id, changes) {
     var card = DATA.cards[id];
     if (!card) return;
-    for (var key in changes) {
-      card[key] = changes[key];
-    }
-    saveCardDocument(id);
+    for (var key in changes) card[key] = changes[key];
+    markDocDirty(card.docId);
   }
 
   function removeCard(id) {
     var card = DATA.cards[id];
-    var docId = card ? card.docId : null;
+    if (!card) return;
+    var docId = card.docId;
     delete DATA.cards[id];
     delete DATA.review[id];
-    if (docId) saveDocumentNow(docId); else saveData();
+    markDocDirty(docId);
   }
 
   function gradeCard(cardId, rating) {
+    var card = DATA.cards[cardId];
+    if (!card) return;
     var now = Date.now();
     var previous = DATA.review[cardId];
     var next;
 
-    if (!previous || previous.state === 'new') {
+    if (!previous || previous.state === 'new' || !previous.lastReview) {
       next = fsrsInitialize(rating);
     } else {
       next = fsrsNext(previous, rating, now);
@@ -1864,7 +2124,7 @@ mark.off {
 
     next.due = now + fsrsInterval(next.stability) * 86400000;
     DATA.review[cardId] = next;
-    saveCardDocument(cardId);
+    markDocDirty(card.docId);
   }
 
   function cardsDue(docId) {
@@ -1874,16 +2134,15 @@ mark.off {
       var card = DATA.cards[id];
       if (docId && card.docId !== docId) continue;
       var state = DATA.review[id];
-      if (!state || !state.due || state.due <= now) {
-        result.push(card);
-      }
+      if (!state || !state.due || state.due <= now) result.push(card);
     }
     return result;
   }
 
   // ============================================================
-  // ANALYZER
+  // ANALYZER — universal entity detection
   // ============================================================
+
   function findNumbers(text) {
     var spans = [];
     var match;
@@ -1895,26 +2154,14 @@ mark.off {
       'gi'
     );
     while ((match = dateRegex.exec(text)) !== null) {
-      spans.push({
-        start: match.index,
-        end: match.index + match[0].length,
-        cat: 'num',
-        w: 5
-      });
-      for (var i = match.index; i < match.index + match[0].length; i++) {
-        used[i] = true;
-      }
+      spans.push({ start: match.index, end: match.index + match[0].length, cat: 'num', w: 5 });
+      for (var i = match.index; i < match.index + match[0].length; i++) used[i] = true;
     }
 
     var numberRegex = /(?<![\p{L}\p{M}])\d+(?:[.,]\d+)?(?:\s*%|\s*‰)?(?![\p{L}\p{M}])/gu;
     while ((match = numberRegex.exec(text)) !== null) {
       if (used[match.index]) continue;
-      spans.push({
-        start: match.index,
-        end: match.index + match[0].length,
-        cat: 'num',
-        w: 5
-      });
+      spans.push({ start: match.index, end: match.index + match[0].length, cat: 'num', w: 5 });
     }
 
     return spans;
@@ -1922,12 +2169,7 @@ mark.off {
 
   function findQuotes(text) {
     var spans = [];
-    var pairs = [
-      ['«', '»'],
-      ['"', '"'],
-      ['"', '"'],
-      ['「', '」']
-    ];
+    var pairs = [['«', '»'], ['"', '"'], ['"', '"'], ['「', '」']];
 
     for (var p = 0; p < pairs.length; p++) {
       var opening = pairs[p][0];
@@ -1941,14 +2183,7 @@ mark.off {
             if (openIdx < 0) {
               openIdx = i;
             } else {
-              if (i - openIdx >= 10) {
-                spans.push({
-                  start: openIdx,
-                  end: i + 1,
-                  cat: 'quote',
-                  w: 5
-                });
-              }
+              if (i - openIdx >= 10) spans.push({ start: openIdx, end: i + 1, cat: 'quote', w: 5 });
               openIdx = -1;
             }
           }
@@ -1961,18 +2196,12 @@ mark.off {
           if (closingIdx === -1) break;
           var len = closingIdx - idx - 1;
           if (len >= 10 && len < 500) {
-            spans.push({
-              start: idx,
-              end: closingIdx + 1,
-              cat: 'quote',
-              w: 5
-            });
+            spans.push({ start: idx, end: closingIdx + 1, cat: 'quote', w: 5 });
           }
           idx = closingIdx + 1;
         }
       }
     }
-
     return spans;
   }
 
@@ -1998,7 +2227,6 @@ mark.off {
     for (var i = 0; i < tokens.length; i++) {
       var token = tokens[i];
       var first = token.word[0];
-
       if (first !== first.toUpperCase() || first === first.toLowerCase()) continue;
       if (token.word.length < 3) continue;
 
@@ -2031,18 +2259,9 @@ mark.off {
         accept = !followingIsCommonVerb;
       }
 
-      if (accept) {
-        spans.push({
-          start: token.start,
-          end: tokens[j].end,
-          cat: 'name',
-          w: 4
-        });
-      }
-
+      if (accept) spans.push({ start: token.start, end: tokens[j].end, cat: 'name', w: 4 });
       i = j;
     }
-
     return spans;
   }
 
@@ -2060,15 +2279,9 @@ mark.off {
     for (var j = 0; j < tokens.length; j++) {
       var tk = tokens[j];
       if (frequencies[tk.lower] >= 2 && tk.lower.length >= 6) {
-        spans.push({
-          start: tk.start,
-          end: tk.end,
-          cat: 'key',
-          w: 3
-        });
+        spans.push({ start: tk.start, end: tk.end, cat: 'key', w: 3 });
       }
     }
-
     return spans;
   }
 
@@ -2087,26 +2300,15 @@ mark.off {
       if (wordCount > 5 || trimmedHead.length < 3) continue;
       if (/[!?»"']\s*$/.test(trimmedHead)) continue;
 
-      spans.push({
-        start: headStart,
-        end: headEnd,
-        cat: 'def',
-        w: 4
-      });
+      spans.push({ start: headStart, end: headEnd, cat: 'def', w: 4 });
 
       var defStart = headEnd;
       var after = match[0].slice(head.length);
       var separator = after.match(/^\s*[:：]\s*/);
       if (separator) defStart += separator[0].length;
 
-      spans.push({
-        start: defStart,
-        end: defStart + match[2].length,
-        cat: 'def',
-        w: 2
-      });
+      spans.push({ start: defStart, end: defStart + match[2].length, cat: 'def', w: 2 });
     }
-
     return spans;
   }
 
@@ -2122,29 +2324,87 @@ mark.off {
   }
 
   // ============================================================
-  // RENDER
+  // INCREMENTAL RENDER
   // ============================================================
+  // The output card is built from inline <span class="seg"> nodes.
+  // Each segment holds either a run of characters between newlines
+  // or a single newline. On redraw, we compute a per-segment hash
+  // (segment text + intersecting highlight IDs + their categories
+  // + their visibility) and skip re-rendering segments whose hash
+  // did not change. Typing at the end of a long document only
+  // re-renders the last segment.
 
-  /**
-   * Convert overlapping highlights into non-overlapping runs.
-   * User highlights always beat auto highlights (source bonus).
-   */
-  function buildRuns(text, highlights) {
-    var length = text.length;
+  function splitSegments(text) {
+    var segs = [];
+    var last = 0;
+    for (var i = 0; i < text.length; i++) {
+      if (text[i] === '\n') {
+        if (i > last) {
+          segs.push({ start: last, end: i, text: text.slice(last, i), kind: 'line' });
+        }
+        segs.push({ start: i, end: i + 1, text: '\n', kind: 'nl' });
+        last = i + 1;
+      }
+    }
+    if (last < text.length) {
+      segs.push({ start: last, end: text.length, text: text.slice(last), kind: 'line' });
+    }
+    return segs;
+  }
+
+  function segHash(seg, allHl, activeCats) {
+    var h = seg.text;
+    for (var i = 0; i < allHl.length; i++) {
+      var hl = allHl[i];
+      if (hl.end <= seg.start || hl.start >= seg.end) continue;
+      h += '#' + hl.id + ':' + hl.cat + ':' +
+           (activeCats[hl.cat] ? '1' : '0') + ':' +
+           (hl.note ? '1' : '0');
+    }
+    return h;
+  }
+
+  function categoryFromIndex(categoryIndex, index) {
+    for (var key in categoryIndex) {
+      if (categoryIndex[key] === index) return key;
+    }
+    return null;
+  }
+
+  function renderSegment(container, seg, allHl, activeCats) {
+    var segText = seg.text;
+    var segStart = seg.start;
+    var segEnd = seg.end;
+    var length = segText.length;
+
+    // Fast path: no intersecting highlights
+    var any = false;
+    for (var q = 0; q < allHl.length; q++) {
+      var h0 = allHl[q];
+      if (h0.end > segStart && h0.start < segEnd) { any = true; break; }
+    }
+    if (!any) {
+      container.textContent = segText;
+      return;
+    }
+
+    // Build ownership map
     var owner = new Array(length);
-    var weight = new Array(length);
     var hlId = new Array(length);
+    var weight = new Array(length);
     var categoryIndex = {};
 
-    for (var i = 0; i < highlights.length; i++) {
-      var h = highlights[i];
-      if (h.start < 0 || h.end > length || h.start >= h.end) continue;
+    for (var i = 0; i < allHl.length; i++) {
+      var h = allHl[i];
+      if (h.end <= segStart || h.start >= segEnd) continue;
+      var s = Math.max(h.start, segStart) - segStart;
+      var e = Math.min(h.end, segEnd) - segStart;
+      if (s >= e) continue;
 
-      var base = (CATEGORY_PRIORITY[h.cat] || 1) * 10;
-      var sourceBonus = (h.source === 'user') ? 10000 : 0;
-      var priority = base + sourceBonus + 1;
+      var priority = (CATEGORY_PRIORITY[h.cat] || 1) * 10
+        + (h.source === 'user' ? 10000 : 0) + 1;
 
-      for (var p = h.start; p < h.end; p++) {
+      for (var p = s; p < e; p++) {
         if (!weight[p] || priority >= weight[p]) {
           weight[p] = priority;
           if (!categoryIndex[h.cat]) {
@@ -2156,162 +2416,112 @@ mark.off {
       }
     }
 
-    var runs = [];
-    var index = 0;
-    while (index < length) {
-      if (!owner[index]) {
-        index++;
+    // Build DOM fragment
+    var frag = document.createDocumentFragment();
+    var idx = 0;
+    var pending = '';
+
+    while (idx < length) {
+      if (!owner[idx]) {
+        pending += segText[idx];
+        idx++;
         continue;
       }
-      var cat = owner[index];
-      var hid = hlId[index];
-      var end = index + 1;
-      while (end < length && owner[end] === cat && hlId[end] === hid) {
-        end++;
+      if (pending) {
+        frag.appendChild(document.createTextNode(pending));
+        pending = '';
       }
-      runs.push({ start: index, end: end, catIdx: cat, hlId: hid });
-      index = end;
+
+      var catIdx = owner[idx];
+      var id = hlId[idx];
+      var end = idx + 1;
+      while (end < length && owner[end] === catIdx && hlId[end] === id) end++;
+
+      var catId = categoryFromIndex(categoryIndex, catIdx);
+      if (activeCats[catId]) {
+        var cssClass = 'c-key';
+        for (var c = 0; c < CATEGORIES.length; c++) {
+          if (CATEGORIES[c].id === catId) cssClass = CATEGORIES[c].cssClass;
+        }
+        var hlObj = DATA.highlights[id];
+        var hasNote = hlObj && hlObj.note ? ' has-note' : '';
+        var mark = document.createElement('mark');
+        mark.className = cssClass + hasNote;
+        mark.setAttribute('data-hl', id);
+        mark.textContent = segText.slice(idx, end);
+        frag.appendChild(mark);
+      } else {
+        frag.appendChild(document.createTextNode(segText.slice(idx, end)));
+      }
+      idx = end;
     }
 
-    return { runs: runs, categoryIndex: categoryIndex };
+    if (pending) frag.appendChild(document.createTextNode(pending));
+
+    container.innerHTML = '';
+    container.appendChild(frag);
   }
 
-  function categoryFromIndex(categoryIndex, index) {
-    for (var key in categoryIndex) {
-      if (categoryIndex[key] === index) return key;
+  function redrawOutput(doc) {
+    var output = $('output');
+    if (!doc) {
+      output.innerHTML = '';
+      return;
     }
-    return null;
-  }
 
-  /**
-   * Build the annotated HTML. All marks are always rendered; the
-   * "off" class hides them visually. This lets the fast-path
-   * redraw update categories with a class swap instead of a
-   * full innerHTML rebuild.
-   */
-  function renderAnnotated(doc) {
-    if (!doc) return '';
     var text = doc.text;
-    var highlights = highlightsForDocument(doc.id).filter(function (h) {
-      return h.start >= 0;
+    var allHl = highlightsForDocument(doc.id).filter(function (h) {
+      return h.start >= 0 && h.end <= text.length && h.start < h.end;
     });
 
-    if (!highlights.length) return escapeHtml(text);
-
-    var activeCategories = {};
+    var activeCats = {};
     for (var i = 0; i < DATA.settings.activeCategories.length; i++) {
-      activeCategories[DATA.settings.activeCategories[i]] = true;
+      activeCats[DATA.settings.activeCategories[i]] = true;
     }
 
-    var result = buildRuns(text, highlights);
-    var runs = result.runs;
-    var categoryIndex = result.categoryIndex;
-    if (!runs.length) return escapeHtml(text);
+    var segments = splitSegments(text);
 
-    var html = '';
-    var cursor = 0;
+    // Trim extra children first
+    while (output.children.length > segments.length) {
+      output.removeChild(output.lastChild);
+    }
 
-    for (var r = 0; r < runs.length; r++) {
-      var run = runs[r];
-      if (run.start > cursor) {
-        html += escapeHtml(text.slice(cursor, run.start));
+    // Update or create segments
+    for (var i = 0; i < segments.length; i++) {
+      var seg = segments[i];
+      var child = output.children[i];
+      if (!child) {
+        child = document.createElement('span');
+        child.className = 'seg';
+        output.appendChild(child);
+        child.dataset.hash = '';
       }
-
-      var catId = categoryFromIndex(categoryIndex, run.catIdx);
-      var cssClass = 'c-key';
-      for (var c = 0; c < CATEGORIES.length; c++) {
-        if (CATEGORIES[c].id === catId) cssClass = CATEGORIES[c].cssClass;
+      var newHash = segHash(seg, allHl, activeCats);
+      if (child.dataset.hash !== newHash) {
+        renderSegment(child, seg, allHl, activeCats);
+        child.dataset.hash = newHash;
       }
-      var h = DATA.highlights[run.hlId];
-      var hasNote = h && h.note ? ' has-note' : '';
-      var isOff = !activeCategories[catId] ? ' off' : '';
-
-      html += '<mark class="' + cssClass + hasNote + isOff + '" data-hl="' + run.hlId + '">' +
-              escapeHtml(text.slice(run.start, run.end)) +
-              '</mark>';
-
-      cursor = run.end;
-    }
-
-    if (cursor < text.length) html += escapeHtml(text.slice(cursor));
-    return html;
-  }
-
-  // Cache used to skip a full DOM rebuild when only classes change.
-  var lastRendered = null;
-
-  /**
-   * Fast path: only class names need to change (category toggle,
-   * note added/removed). No structural change to the DOM tree.
-   */
-  function updateMarkClasses() {
-    var output = $('output');
-    var marks = output.querySelectorAll('mark[data-hl]');
-    var active = {};
-    for (var i = 0; i < DATA.settings.activeCategories.length; i++) {
-      active[DATA.settings.activeCategories[i]] = true;
-    }
-    for (var j = 0; j < marks.length; j++) {
-      var mark = marks[j];
-      var hl = DATA.highlights[mark.dataset.hl];
-      if (!hl) continue;
-      var isActive = !!active[hl.cat];
-      mark.classList.toggle('off', !isActive);
-      mark.classList.toggle('has-note', !!hl.note);
     }
   }
 
   /**
-   * Main redraw. Detects whether the change is structural (text or
-   * highlight set) or only presentational (classes, note markers).
+   * Full redraw — output (incremental), stats and legend.
    */
   function redraw() {
     var doc = getActiveDocument();
     if (!doc) {
       $('output').innerHTML = '';
-      lastRendered = null;
       $('stats').style.display = 'none';
       renderLegend();
       return;
     }
-
-    var highlights = highlightsForDocument(doc.id).filter(function (h) {
-      return h.start >= 0;
-    });
-
-    // Fast path: same text reference (strings are immutable) and
-    // same number of highlights → nothing structural changed.
-    var canFastPath = false;
-    if (lastRendered &&
-        lastRendered.docId === doc.id &&
-        lastRendered.textRef === doc.text &&
-        lastRendered.highlightCount === highlights.length &&
-        $('output').children.length > 0) {
-      canFastPath = true;
-    }
-
-    if (canFastPath) {
-      updateMarkClasses();
-      renderStats(doc);
-      renderLegend();
-      return;
-    }
-
-    // Full rebuild
-    $('output').innerHTML = renderAnnotated(doc);
-    lastRendered = {
-      docId: doc.id,
-      textRef: doc.text,
-      highlightCount: highlights.length
-    };
+    redrawOutput(doc);
     renderStats(doc);
     renderLegend();
   }
 
   function renderStats(doc) {
-    var highlights = highlightsForDocument(doc.id).filter(function (h) {
-      return h.start >= 0;
-    });
+    var highlights = highlightsForDocument(doc.id).filter(function (h) { return h.start >= 0; });
     var cardCount = cardsForDocument(doc.id).length;
     var dueCount = cardsDue(doc.id).length;
 
@@ -2329,9 +2539,7 @@ mark.off {
     box.innerHTML = '';
     if (!doc) return;
 
-    var highlights = highlightsForDocument(doc.id).filter(function (h) {
-      return h.start >= 0;
-    });
+    var highlights = highlightsForDocument(doc.id).filter(function (h) { return h.start >= 0; });
     var counts = {};
     for (var i = 0; i < highlights.length; i++) {
       counts[highlights[i].cat] = (counts[highlights[i].cat] || 0) + 1;
@@ -2369,7 +2577,7 @@ mark.off {
           } else {
             DATA.settings.activeCategories.push(catId);
           }
-          saveMeta();
+          markIndexDirty();
           redraw();
           vibrate(4);
         });
@@ -2434,7 +2642,7 @@ mark.off {
     $('edit-panel').classList.toggle('show', isOn);
     $('btn-edit').classList.toggle('on', isOn);
     DATA.settings.editMode = isOn;
-    saveMeta();
+    markIndexDirty();
     vibrate(6);
   }
 
@@ -2748,6 +2956,7 @@ mark.off {
   }
 
   function buildUniversalDistractors(type, correct, doc, count) {
+    // STRATEGY 1: Perturbation
     if (type === 'year') {
       var year = parseInt(correct, 10);
       if (!isNaN(year)) {
@@ -2798,6 +3007,7 @@ mark.off {
       }
     }
 
+    // STRATEGY 2: Dictionary
     if (type === 'person' && DICT_SETS.usPresidents[correct.toLowerCase()]) {
       var usPool = shuffle(DICTIONARY.usPresidents.filter(function (n) {
         return n.toLowerCase() !== correct.toLowerCase();
@@ -2823,6 +3033,7 @@ mark.off {
       if (treatyPool.length >= count) return treatyPool;
     }
 
+    // STRATEGY 3: From the text itself
     var candidates = [];
 
     if (type === 'person' || type === 'organization' || type === 'treaty') {
@@ -2870,9 +3081,7 @@ mark.off {
   }
 
   function proposeFromAnalyzer(doc) {
-    var highlights = highlightsForDocument(doc.id).filter(function (h) {
-      return h.start >= 0;
-    });
+    var highlights = highlightsForDocument(doc.id).filter(function (h) { return h.start >= 0; });
     var sentences = splitIntoSentences(doc.text);
     var proposals = [];
     var seen = {};
@@ -2971,7 +3180,7 @@ mark.off {
     loading: false,
     ready: false,
     failed: false,
-    modelKey: localStorage.getItem('highlight-ai.model') || 'qwen15'
+    modelKey: localStorage.getItem(STORAGE_MODEL_KEY) || 'qwen15'
   };
 
   function hasWebGPU() {
@@ -3037,7 +3246,7 @@ mark.off {
 
     aiState.loading = true;
     aiState.failed = false;
-    localStorage.setItem('highlight-ai.model', key);
+    localStorage.setItem(STORAGE_MODEL_KEY, key);
 
     mainAIStatus('loading', 'Downloading ' + model.label + '…', 0);
     modalAIStatus('loading', 'Downloading ' + model.label + '…', 0);
@@ -3335,9 +3544,7 @@ mark.off {
     var doc = getActiveDocument();
     if (!doc) { showToast('No text'); return; }
 
-    var highlights = highlightsForDocument(doc.id).filter(function (h) {
-      return h.start >= 0;
-    });
+    var highlights = highlightsForDocument(doc.id).filter(function (h) { return h.start >= 0; });
     if (!highlights.length) { showToast('Highlight something first'); return; }
 
     var templateProposals = proposeFromAnalyzer(doc).filter(validateProposal);
@@ -3531,14 +3738,9 @@ mark.off {
   function openDocument(id) {
     var d = DATA.docs[id];
     if (!d) return;
-    // Persist current document before switching.
-    if (DATA.activeDocId && DATA.activeDocId !== id) {
-      saveDocumentNow(DATA.activeDocId);
-    }
     DATA.activeDocId = id;
-    saveMeta();
+    markIndexDirty();
     $('input').value = d.text;
-    lastRendered = null;
     redraw();
     switchView('text');
     $('scroll-text').scrollTop = 0;
@@ -3565,12 +3767,13 @@ mark.off {
           delete DATA.review[cid];
         }
       }
-      if (DATA.activeDocId === id) {
-        DATA.activeDocId = null;
-        lastRendered = null;
-      }
-      deleteDocumentFromStorage(id);
-      saveMeta();
+      if (DATA.activeDocId === id) DATA.activeDocId = null;
+
+      // Force the doc key to be removed on flush, then flush immediately.
+      pendingDocSaves[id] = true;
+      markIndexDirty();
+      flushSaves();
+
       renderLibrary();
       $('modal-confirm').classList.remove('open');
       showToast('Deleted');
@@ -3598,7 +3801,6 @@ mark.off {
     });
     var final = distractors.slice(0, 3);
 
-    // Borrow distractors from sibling cards if the card is short.
     if (final.length < 3) {
       var pool = [];
       var seen = {};
@@ -3660,16 +3862,14 @@ mark.off {
     } else {
       html += '<div class="card-item" style="text-align:center;padding:24px">' +
         '<div style="font-weight:600;color:var(--ink-2);margin-bottom:4px">No questions yet</div>' +
-        '<div style="font-size:.85rem;color:var(--ink-3)">Generate some from the Text tab first</'
-div>' +
-           '</div>';
+        '<div style="font-size:.85rem;color:var(--ink-3)">Generate some from the Text tab first</div>' +
+      '</div>';
     }
 
     html += '<div class="section-title">' +
-      });
- '<span>All questions (' + all.length + ')</     span>' +
-      '<button id="btn-new show-question">+ New question</button>' +
-    '</divToast>';
+      '<span>All questions (' + all.length + ')</span>' +
+      '<button id="btn-new-question">+ New question</button>' +
+    '</div>';
 
     if (!all.length) {
       html += '<div class="empty" style="padding:40px 24px">' +
@@ -3975,7 +4175,9 @@ div>' +
         back: back,
         distractors: distractors.slice(0, 3),
         sourceCat: 'key',
-        origin: 'manual('Question created');
+        origin: 'manual'
+      });
+      showToast('Question created');
     } else {
       updateCard(cardBeingEdited.id, {
         front: front,
@@ -4086,7 +4288,7 @@ div>' +
       };
     }
 
-    saveData();
+    markDocDirty(doc.id);
   }
 
   function renderModelList() {
@@ -4109,7 +4311,7 @@ div>' +
         element.addEventListener('click', function () {
           if (aiState.loading) return;
           aiState.modelKey = k;
-          localStorage.setItem('highlight-ai.model', k);
+          localStorage.setItem(STORAGE_MODEL_KEY, k);
           renderModelList();
           vibrate(4);
         });
@@ -4119,6 +4321,7 @@ div>' +
     }
   }
 
+  // Debounced auto-analysis timer
   var autoAnalysisTimer = null;
 
   function scheduleAutoAnalysis(delay) {
@@ -4131,10 +4334,8 @@ div>' +
       doc.text = newText;
       doc.lang = detectLanguage(newText);
       doc.updatedAt = Date.now();
+      markDocDirty(doc.id);
       analyzeCurrentDocument();
-      saveData();
-      // Force full rebuild since the text changed.
-      lastRendered = null;
       redraw();
     }, delay || 700);
   }
@@ -4190,8 +4391,6 @@ div>' +
       createDocument(sample.text, sample.title);
       $('input').value = sample.text;
       analyzeCurrentDocument();
-      saveDataNow();
-      lastRendered = null;
       redraw();
       switchView('text');
       $('scroll-text').scrollTop = 0;
@@ -4217,8 +4416,8 @@ div>' +
         }
         doc.text = '';
         $('input').value = '';
-        saveDocumentNow(doc.id);
-        lastRendered = null;
+        markDocDirty(doc.id);
+        saveDataNow();
         redraw();
         updateReviewBadge();
         $('modal-confirm').classList.remove('open');
@@ -4300,6 +4499,13 @@ div>' +
         });
       })(modals[m]);
     }
+
+    // Persist any pending writes when the page is hidden or unloaded.
+    window.addEventListener('pagehide', function () { flushSaves(); });
+    window.addEventListener('beforeunload', function () { flushSaves(); });
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'hidden') flushSaves();
+    });
   }
 
   // ============================================================
@@ -4324,11 +4530,9 @@ div>' +
         var sample = SAMPLE_TEXTS[Math.floor(Math.random() * SAMPLE_TEXTS.length)];
         doc = createDocument(sample.text, sample.title);
         analyzeCurrentDocument();
-        saveDataNow();
       }
 
       $('input').value = doc.text;
-      lastRendered = null;
       redraw();
       updateReviewBadge();
     } catch (error) {
