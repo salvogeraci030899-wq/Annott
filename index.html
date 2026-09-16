@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
@@ -10,74 +10,74 @@
 <title>HIGHLIGHT AI</title>
 <style>
 /* ============================================================
-   VARIABILI CSS — Cambia qui per modificare l'aspetto globale
+   CSS VARIABLES — Change these to modify the global look
    ============================================================ */
 :root {
   color-scheme: light;
 
-  --colore-sfondo: #f6f3ee;
-  --colore-superficie: #ffffff;
-  --colore-superficie-2: #fbf9f5;
-  --colore-superficie-3: #f1ede6;
+  --color-bg: #f6f3ee;
+  --color-surface: #ffffff;
+  --color-surface-2: #fbf9f5;
+  --color-surface-3: #f1ede6;
 
-  --colore-inchiostro: #1b1815;
-  --colore-inchiostro-2: #57534e;
-  --colore-inchiostro-3: #a8a29e;
+  --color-ink: #1b1815;
+  --color-ink-2: #57534e;
+  --color-ink-3: #a8a29e;
 
-  --colore-bordo: #e6e0d6;
-  --colore-bordo-2: #d9d2c5;
+  --color-border: #e6e0d6;
+  --color-border-2: #d9d2c5;
 
-  --colore-accento: #b8893d;
-  --colore-accento-tenue: #f3e6cf;
-  --colore-pericolo: #c0392b;
-  --colore-ai: #7c4dff;
-  --colore-ai-tenue: #ece5ff;
-  --colore-ok: #3b8f4b;
-  --colore-ok-tenue: #dff0e2;
+  --color-accent: #b8893d;
+  --color-accent-soft: #f3e6cf;
+  --color-danger: #c0392b;
+  --color-ai: #7c4dff;
+  --color-ai-soft: #ece5ff;
+  --color-ok: #3b8f4b;
+  --color-ok-soft: #dff0e2;
 
-  --colore-numero: #ffe680;
-  --colore-nome: #d9b8ff;
-  --colore-concetto: #b6e6b6;
-  --colore-definizione: #ffe0b6;
-  --colore-citazione: #ffc1cf;
-  --colore-elenco: #a9d8ff;
-  --colore-frase: rgba(255, 201, 160, 0.45);
+  --color-number: #ffe680;
+  --color-name: #d9b8ff;
+  --color-concept: #b6e6b6;
+  --color-definition: #ffe0b6;
+  --color-quote: #ffc1cf;
+  --color-list: #a9d8ff;
+  --color-sentence: rgba(255, 201, 160, 0.45);
 }
 
 [data-theme="dark"] {
   color-scheme: dark;
 
-  --colore-sfondo: #14110f;
-  --colore-superficie: #1e1a18;
-  --colore-superficie-2: #262120;
-  --colore-superficie-3: #2e2826;
+  --color-bg: #14110f;
+  --color-surface: #1e1a18;
+  --color-surface-2: #262120;
+  --color-surface-3: #2e2826;
 
-  --colore-inchiostro: #f3efe9;
-  --colore-inchiostro-2: #b6ada3;
-  --colore-inchiostro-3: #6a635c;
+  --color-ink: #f3efe9;
+  --color-ink-2: #b6ada3;
+  --color-ink-3: #6a635c;
 
-  --colore-bordo: #302a27;
-  --colore-bordo-2: #3d3632;
+  --color-border: #302a27;
+  --color-border-2: #3d3632;
 
-  --colore-accento: #d4b478;
-  --colore-accento-tenue: #3a2f1c;
-  --colore-pericolo: #e57373;
-  --colore-ai: #b39dff;
-  --colore-ai-tenue: #2a1f4d;
-  --colore-ok: #7bd88f;
-  --colore-ok-tenue: #1c3322;
+  --color-accent: #d4b478;
+  --color-accent-soft: #3a2f1c;
+  --color-danger: #e57373;
+  --color-ai: #b39dff;
+  --color-ai-soft: #2a1f4d;
+  --color-ok: #7bd88f;
+  --color-ok-soft: #1c3322;
 
-  --colore-numero: rgba(255, 205, 50, 0.42);
-  --colore-nome: rgba(200, 140, 255, 0.42);
-  --colore-concetto: rgba(100, 220, 110, 0.36);
-  --colore-definizione: rgba(255, 180, 100, 0.40);
-  --colore-citazione: rgba(255, 140, 175, 0.38);
-  --colore-elenco: rgba(80, 170, 255, 0.38);
-  --colore-frase: rgba(255, 165, 90, 0.20);
+  --color-number: rgba(255, 205, 50, 0.42);
+  --color-name: rgba(200, 140, 255, 0.42);
+  --color-concept: rgba(100, 220, 110, 0.36);
+  --color-definition: rgba(255, 180, 100, 0.40);
+  --color-quote: rgba(255, 140, 175, 0.38);
+  --color-list: rgba(80, 170, 255, 0.38);
+  --color-sentence: rgba(255, 165, 90, 0.20);
 }
 
 /* ============================================================
-   RESET E STILI BASE
+   RESET AND BASE STYLES
    ============================================================ */
 * {
   box-sizing: border-box;
@@ -91,8 +91,8 @@ body {
 }
 
 body {
-  background: var(--colore-sfondo);
-  color: var(--colore-inchiostro);
+  background: var(--color-bg);
+  color: var(--color-ink);
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, "Segoe UI", sans-serif;
   font-size: 16px;
   line-height: 1.5;
@@ -115,7 +115,7 @@ button {
 }
 
 /* ============================================================
-   STRUTTURA PRINCIPALE
+   MAIN LAYOUT
    ============================================================ */
 .app {
   display: flex;
@@ -129,7 +129,7 @@ button {
   align-items: center;
   gap: 8px;
   padding: 10px 14px;
-  border-bottom: 1px solid var(--colore-bordo);
+  border-bottom: 1px solid var(--color-border);
   flex: 0 0 auto;
 }
 
@@ -144,10 +144,10 @@ button {
   padding: 1px 3px;
   border-radius: 3px;
   margin-right: 1px;
-  color: var(--colore-inchiostro);
+  color: var(--color-ink);
 }
 
-.brand-title .spazio {
+.brand-title .space {
   display: inline-block;
   width: 0.35em;
 }
@@ -158,12 +158,12 @@ button {
   border-radius: 10px;
   display: grid;
   place-items: center;
-  color: var(--colore-inchiostro-2);
+  color: var(--color-ink-2);
   position: relative;
 }
 
 .iconbtn:active {
-  background: var(--colore-superficie-3);
+  background: var(--color-surface-3);
 }
 
 .iconbtn svg {
@@ -171,30 +171,30 @@ button {
   height: 20px;
 }
 
-.iconbtn.ai-attiva {
-  color: var(--colore-ai);
+.iconbtn.ai-active {
+  color: var(--color-ai);
 }
 
-.iconbtn.ai-attiva::after {
+.iconbtn.ai-active::after {
   content: "";
   position: absolute;
   bottom: 4px;
   right: 4px;
   width: 8px;
   height: 8px;
-  background: var(--colore-ok);
+  background: var(--color-ok);
   border-radius: 50%;
-  border: 2px solid var(--colore-sfondo);
+  border: 2px solid var(--color-bg);
 }
 
-.iconbtn .lingua-badge {
+.iconbtn .lang-badge {
   position: absolute;
   bottom: 2px;
   right: 2px;
   font-size: 0.5rem;
   font-weight: 800;
-  background: var(--colore-inchiostro);
-  color: var(--colore-sfondo);
+  background: var(--color-ink);
+  color: var(--color-bg);
   padding: 1px 4px;
   border-radius: 4px;
   line-height: 1;
@@ -229,11 +229,11 @@ button {
 }
 
 /* ============================================================
-   CAMPO DI INPUT — 6 righe fisse con scroll
+   TEXT INPUT — fixed 6 lines with internal scroll
    ============================================================ */
 .input-card {
-  background: var(--colore-superficie);
-  border: 1px solid var(--colore-bordo);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 14px;
   margin-bottom: 12px;
   overflow: hidden;
@@ -254,7 +254,7 @@ button {
 }
 
 .input-card textarea::placeholder {
-  color: var(--colore-inchiostro-3);
+  color: var(--color-ink-3);
 }
 
 /* ============================================================
@@ -282,20 +282,20 @@ button {
   border-radius: 9px;
   font-size: 0.82rem;
   font-weight: 500;
-  color: var(--colore-inchiostro-2);
-  background: var(--colore-superficie);
-  border: 1px solid var(--colore-bordo);
+  color: var(--color-ink-2);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   white-space: nowrap;
 }
 
 .tbtn:active {
-  background: var(--colore-superficie-3);
+  background: var(--color-surface-3);
 }
 
 .tbtn.on {
-  background: var(--colore-ai-tenue);
-  color: var(--colore-ai);
-  border-color: color-mix(in srgb, var(--colore-ai) 30%, transparent);
+  background: var(--color-ai-soft);
+  color: var(--color-ai);
+  border-color: color-mix(in srgb, var(--color-ai) 30%, transparent);
 }
 
 .tbtn svg {
@@ -304,11 +304,11 @@ button {
 }
 
 .tbtn.danger {
-  color: var(--colore-pericolo);
+  color: var(--color-danger);
 }
 
 /* ============================================================
-   LEGENDA CATEGORIE
+   CATEGORY LEGEND
    ============================================================ */
 .cats-row {
   display: flex;
@@ -331,9 +331,9 @@ button {
   border-radius: 999px;
   font-size: 0.7rem;
   font-weight: 600;
-  background: var(--colore-superficie);
-  border: 1px solid var(--colore-bordo);
-  color: var(--colore-inchiostro-2);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-ink-2);
   white-space: nowrap;
   line-height: 1;
 }
@@ -355,15 +355,15 @@ button {
 }
 
 .cat-pill.sel {
-  border-color: var(--colore-ai);
-  background: var(--colore-ai-tenue);
-  color: var(--colore-ai);
+  border-color: var(--color-ai);
+  background: var(--color-ai-soft);
+  color: var(--color-ai);
   font-weight: 700;
 }
 
 .cat-pill .count {
   font-size: 0.62rem;
-  color: var(--colore-inchiostro-3);
+  color: var(--color-ink-3);
   margin-left: 1px;
   font-weight: 600;
 }
@@ -372,8 +372,8 @@ button {
    OUTPUT
    ============================================================ */
 .output-card {
-  background: var(--colore-superficie);
-  border: 1px solid var(--colore-bordo);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 16px;
   padding: 22px;
   font-family: Georgia, "New York", serif;
@@ -398,30 +398,30 @@ mark {
   cursor: pointer;
 }
 
-mark.c-num { background: var(--colore-numero); }
-mark.c-name { background: var(--colore-nome); }
-mark.c-key { background: var(--colore-concetto); }
-mark.c-quote { background: var(--colore-citazione); }
-mark.c-list { background: var(--colore-elenco); }
-mark.c-def { background: var(--colore-definizione); }
-mark.c-sentence { background: var(--colore-frase); }
+mark.c-num { background: var(--color-number); }
+mark.c-name { background: var(--color-name); }
+mark.c-key { background: var(--color-concept); }
+mark.c-quote { background: var(--color-quote); }
+mark.c-list { background: var(--color-list); }
+mark.c-def { background: var(--color-definition); }
+mark.c-sentence { background: var(--color-sentence); }
 
 mark.has-note {
-  box-shadow: inset 0 -3px 0 0 var(--colore-ai);
+  box-shadow: inset 0 -3px 0 0 var(--color-ai);
 }
 
 /* ============================================================
-   HINT MODALITÀ MODIFICA
+   EDIT MODE HINT
    ============================================================ */
 .edit-hint {
   display: none;
   padding: 8px 12px;
   border-radius: 10px;
-  background: var(--colore-ai-tenue);
-  border: 1px solid color-mix(in srgb, var(--colore-ai) 22%, transparent);
+  background: var(--color-ai-soft);
+  border: 1px solid color-mix(in srgb, var(--color-ai) 22%, transparent);
   margin-bottom: 10px;
   font-size: 0.78rem;
-  color: var(--colore-ai);
+  color: var(--color-ai);
   font-weight: 500;
 }
 
@@ -430,16 +430,16 @@ body.edit-mode .edit-hint {
 }
 
 /* ============================================================
-   STATI VUOTI E LISTE
+   EMPTY STATES
    ============================================================ */
 .empty {
   text-align: center;
   padding: 60px 24px;
-  color: var(--colore-inchiostro-3);
+  color: var(--color-ink-3);
 }
 
 .empty .title {
-  color: var(--colore-inchiostro-2);
+  color: var(--color-ink-2);
   font-weight: 600;
   margin-bottom: 4px;
   font-size: 1rem;
@@ -450,6 +450,9 @@ body.edit-mode .edit-hint {
   line-height: 1.5;
 }
 
+/* ============================================================
+   LIBRARY LIST
+   ============================================================ */
 .lib-list {
   display: flex;
   flex-direction: column;
@@ -457,15 +460,15 @@ body.edit-mode .edit-hint {
 }
 
 .lib-item {
-  background: var(--colore-superficie);
-  border: 1px solid var(--colore-bordo);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 14px;
   padding: 14px 16px;
   cursor: pointer;
 }
 
 .lib-item:active {
-  background: var(--colore-superficie-2);
+  background: var(--color-surface-2);
 }
 
 .lib-item .title {
@@ -479,7 +482,7 @@ body.edit-mode .edit-hint {
 
 .lib-item .snippet {
   font-size: 0.85rem;
-  color: var(--colore-inchiostro-2);
+  color: var(--color-ink-2);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -491,13 +494,13 @@ body.edit-mode .edit-hint {
   display: flex;
   gap: 12px;
   font-size: 0.74rem;
-  color: var(--colore-inchiostro-3);
+  color: var(--color-ink-3);
   margin-top: 8px;
   flex-wrap: wrap;
 }
 
 /* ============================================================
-   BADGE
+   BADGES
    ============================================================ */
 .badge {
   display: inline-block;
@@ -507,32 +510,27 @@ body.edit-mode .edit-hint {
   letter-spacing: 0.03em;
   padding: 2px 7px;
   border-radius: 999px;
-  background: var(--colore-accento-tenue);
-  color: var(--colore-accento);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
   margin-right: 4px;
 }
 
 .badge.ai {
-  background: var(--colore-ai-tenue);
-  color: var(--colore-ai);
+  background: var(--color-ai-soft);
+  color: var(--color-ai);
 }
 
 .badge.tpl {
-  background: var(--colore-ok-tenue);
-  color: var(--colore-ok);
-}
-
-.badge.lang {
-  background: var(--colore-inchiostro);
-  color: var(--colore-sfondo);
+  background: var(--color-ok-soft);
+  color: var(--color-ok);
 }
 
 /* ============================================================
-   CARD
+   CARDS
    ============================================================ */
 .card-item {
-  background: var(--colore-superficie);
-  border: 1px solid var(--colore-bordo);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 14px;
   padding: 14px 16px;
   margin-bottom: 10px;
@@ -555,7 +553,7 @@ body.edit-mode .edit-hint {
 }
 
 .card-back {
-  color: var(--colore-accento);
+  color: var(--color-accent);
   font-size: 0.92rem;
   font-family: Georgia, serif;
   white-space: pre-wrap;
@@ -564,13 +562,13 @@ body.edit-mode .edit-hint {
 
 .distr-line {
   font-size: 0.78rem;
-  color: var(--colore-inchiostro-3);
+  color: var(--color-ink-3);
   margin-top: 6px;
   line-height: 1.5;
 }
 
 .distr-line strong {
-  color: var(--colore-inchiostro-2);
+  color: var(--color-ink-2);
 }
 
 #card-preview-list {
@@ -582,12 +580,12 @@ body.edit-mode .edit-hint {
 }
 
 /* ============================================================
-   RIPASSO
+   REVIEW
    ============================================================ */
 .review-progress {
   text-align: center;
   font-size: 0.82rem;
-  color: var(--colore-inchiostro-3);
+  color: var(--color-ink-3);
   margin-bottom: 14px;
   font-weight: 700;
   text-transform: uppercase;
@@ -595,8 +593,8 @@ body.edit-mode .edit-hint {
 }
 
 .review-card {
-  background: var(--colore-superficie);
-  border: 1px solid var(--colore-bordo);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 16px;
   padding: 22px;
   margin-bottom: 14px;
@@ -613,21 +611,21 @@ body.edit-mode .edit-hint {
   display: inline-block;
   min-width: 60px;
   text-align: center;
-  border-bottom: 2px solid var(--colore-ai);
+  border-bottom: 2px solid var(--color-ai);
   font-weight: 700;
-  color: var(--colore-ai);
+  color: var(--color-ai);
   padding: 0 4px;
 }
 
 .review-context {
   margin-top: 14px;
   padding: 12px 14px;
-  background: var(--colore-superficie-2);
+  background: var(--color-surface-2);
   border-radius: 10px;
-  border-left: 3px solid var(--colore-accento);
+  border-left: 3px solid var(--color-accent);
   font-size: 0.85rem;
   line-height: 1.6;
-  color: var(--colore-inchiostro-2);
+  color: var(--color-ink-2);
   font-family: Georgia, serif;
 }
 
@@ -637,7 +635,7 @@ body.edit-mode .edit-hint {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   font-weight: 700;
-  color: var(--colore-inchiostro-3);
+  color: var(--color-ink-3);
   margin-bottom: 4px;
   display: block;
 }
@@ -648,8 +646,8 @@ body.edit-mode .edit-hint {
   gap: 12px;
   padding: 14px 16px;
   border-radius: 12px;
-  border: 1.5px solid var(--colore-bordo);
-  background: var(--colore-superficie);
+  border: 1.5px solid var(--color-border);
+  background: var(--color-surface);
   text-align: left;
   width: 100%;
   margin-bottom: 10px;
@@ -666,8 +664,8 @@ body.edit-mode .edit-hint {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: var(--colore-superficie-3);
-  color: var(--colore-inchiostro-2);
+  background: var(--color-surface-3);
+  color: var(--color-ink-2);
   display: grid;
   place-items: center;
   font-weight: 700;
@@ -681,27 +679,27 @@ body.edit-mode .edit-hint {
 }
 
 .mcq-option.correct {
-  border-color: var(--colore-ok);
-  background: var(--colore-ok-tenue);
+  border-color: var(--color-ok);
+  background: var(--color-ok-soft);
 }
 
 .mcq-option.correct .mcq-label {
-  background: var(--colore-ok);
+  background: var(--color-ok);
   color: white;
 }
 
 .mcq-option.correct .mcq-text {
-  color: var(--colore-ok);
+  color: var(--color-ok);
   font-weight: 600;
 }
 
 .mcq-option.wrong {
-  border-color: var(--colore-pericolo);
+  border-color: var(--color-danger);
   background: rgba(192, 57, 43, 0.08);
 }
 
 .mcq-option.wrong .mcq-label {
-  background: var(--colore-pericolo);
+  background: var(--color-danger);
   color: white;
 }
 
@@ -719,24 +717,24 @@ body.edit-mode .edit-hint {
 }
 
 .mcq-feedback.ok {
-  background: var(--colore-ok-tenue);
-  color: var(--colore-ok);
+  background: var(--color-ok-soft);
+  color: var(--color-ok);
 }
 
 .mcq-feedback.ko {
   background: rgba(192, 57, 43, 0.1);
-  color: var(--colore-pericolo);
+  color: var(--color-danger);
 }
 
 /* ============================================================
-   BARRA DI SELEZIONE
+   SELECTION BAR
    ============================================================ */
 .sel-bar {
   position: fixed;
   bottom: calc(96px + env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%) translateY(20px);
-  background: var(--colore-inchiostro);
+  background: var(--color-ink);
   border-radius: 999px;
   padding: 6px;
   display: flex;
@@ -799,8 +797,8 @@ body.edit-mode .edit-hint {
    ============================================================ */
 .tabbar {
   display: flex;
-  background: var(--colore-sfondo);
-  border-top: 1px solid var(--colore-bordo);
+  background: var(--color-bg);
+  border-top: 1px solid var(--color-border);
   padding-bottom: env(safe-area-inset-bottom);
   flex: 0 0 auto;
 }
@@ -812,7 +810,7 @@ body.edit-mode .edit-hint {
   flex-direction: column;
   align-items: center;
   gap: 3px;
-  color: var(--colore-inchiostro-3);
+  color: var(--color-ink-3);
   font-size: 0.68rem;
   font-weight: 600;
   position: relative;
@@ -824,7 +822,7 @@ body.edit-mode .edit-hint {
 }
 
 .tabbar .tab.active {
-  color: var(--colore-ai);
+  color: var(--color-ai);
 }
 
 .tabbar .badge-dot {
@@ -834,7 +832,7 @@ body.edit-mode .edit-hint {
   min-width: 16px;
   height: 16px;
   padding: 0 4px;
-  background: var(--colore-pericolo);
+  background: var(--color-danger);
   color: white;
   font-size: 0.6rem;
   line-height: 16px;
@@ -844,7 +842,7 @@ body.edit-mode .edit-hint {
 }
 
 /* ============================================================
-   MODALI
+   MODALS
    ============================================================ */
 .modal-bg {
   position: fixed;
@@ -861,7 +859,7 @@ body.edit-mode .edit-hint {
 }
 
 .modal {
-  background: var(--colore-superficie);
+  background: var(--color-surface);
   border-radius: 20px 20px 0 0;
   padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
   width: 100%;
@@ -877,7 +875,7 @@ body.edit-mode .edit-hint {
 
 .modal p {
   margin: 0 0 14px;
-  color: var(--colore-inchiostro-2);
+  color: var(--color-ink-2);
   font-size: 0.9rem;
   line-height: 1.5;
 }
@@ -887,8 +885,8 @@ body.edit-mode .edit-hint {
   width: 100%;
   padding: 12px 14px;
   border-radius: 12px;
-  border: 1px solid var(--colore-bordo-2);
-  background: var(--colore-superficie-2);
+  border: 1px solid var(--color-border-2);
+  background: var(--color-surface-2);
   font-size: 16px;
   outline: none;
   margin-bottom: 12px;
@@ -917,23 +915,23 @@ body.edit-mode .edit-hint {
 }
 
 .btn.primary {
-  background: var(--colore-inchiostro);
-  color: var(--colore-sfondo);
+  background: var(--color-ink);
+  color: var(--color-bg);
 }
 
 .btn.ghost {
-  background: var(--colore-superficie);
-  border: 1px solid var(--colore-bordo-2);
-  color: var(--colore-inchiostro);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-2);
+  color: var(--color-ink);
 }
 
 .btn.danger {
-  background: var(--colore-pericolo);
+  background: var(--color-danger);
   color: white;
 }
 
 .btn.ai {
-  background: var(--colore-ai);
+  background: var(--color-ai);
   color: white;
 }
 
@@ -947,15 +945,15 @@ body.edit-mode .edit-hint {
   gap: 12px;
   padding: 12px 14px;
   border-radius: 12px;
-  border: 1.5px solid var(--colore-bordo);
-  background: var(--colore-superficie-2);
+  border: 1.5px solid var(--color-border);
+  background: var(--color-surface-2);
   cursor: pointer;
   margin-bottom: 8px;
 }
 
 .model-option.selected {
-  border-color: var(--colore-ai);
-  background: var(--colore-ai-tenue);
+  border-color: var(--color-ai);
+  background: var(--color-ai-soft);
 }
 
 .model-option .info {
@@ -971,13 +969,13 @@ body.edit-mode .edit-hint {
 .model-option .name .sz {
   font-weight: 500;
   font-size: 0.76rem;
-  color: var(--colore-inchiostro-3);
+  color: var(--color-ink-3);
   margin-left: 6px;
 }
 
 .model-option .desc {
   font-size: 0.76rem;
-  color: var(--colore-inchiostro-2);
+  color: var(--color-ink-2);
   margin-top: 2px;
 }
 
@@ -986,8 +984,8 @@ body.edit-mode .edit-hint {
   left: 50%;
   bottom: calc(90px + env(safe-area-inset-bottom));
   transform: translateX(-50%);
-  background: var(--colore-inchiostro);
-  color: var(--colore-sfondo);
+  background: var(--color-ink);
+  color: var(--color-bg);
   padding: 10px 16px;
   border-radius: 999px;
   font-size: 0.86rem;
@@ -1010,11 +1008,11 @@ body.edit-mode .edit-hint {
   gap: 10px;
   padding: 10px 14px;
   border-radius: 12px;
-  background: var(--colore-ai-tenue);
-  border: 1px solid color-mix(in srgb, var(--colore-ai) 25%, transparent);
+  background: var(--color-ai-soft);
+  border: 1px solid color-mix(in srgb, var(--color-ai) 25%, transparent);
   margin-bottom: 10px;
   font-size: 0.8rem;
-  color: var(--colore-ai);
+  color: var(--color-ai);
   font-weight: 500;
 }
 
@@ -1025,8 +1023,8 @@ body.edit-mode .edit-hint {
 .ai-bar .spinner {
   width: 14px;
   height: 14px;
-  border: 2px solid color-mix(in srgb, var(--colore-ai) 25%, transparent);
-  border-top-color: var(--colore-ai);
+  border: 2px solid color-mix(in srgb, var(--color-ai) 25%, transparent);
+  border-top-color: var(--color-ai);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
   flex: 0 0 auto;
@@ -1051,13 +1049,13 @@ body.edit-mode .edit-hint {
 }
 
 .ai-bar.ready {
-  background: color-mix(in srgb, var(--colore-ok) 15%, var(--colore-superficie));
-  color: var(--colore-ok);
+  background: color-mix(in srgb, var(--color-ok) 15%, var(--color-surface));
+  color: var(--color-ok);
 }
 
 .ai-bar.error {
   background: rgba(192, 57, 43, 0.1);
-  color: var(--colore-pericolo);
+  color: var(--color-danger);
 }
 
 .stats-row {
@@ -1068,15 +1066,15 @@ body.edit-mode .edit-hint {
 }
 
 .stat {
-  background: var(--colore-superficie);
-  border: 1px solid var(--colore-bordo);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   padding: 10px;
 }
 
 .stat .k {
   font-size: 0.6rem;
-  color: var(--colore-inchiostro-3);
+  color: var(--color-ink-3);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   font-weight: 700;
@@ -1115,10 +1113,10 @@ body.edit-mode .edit-hint {
   <header class="topbar">
     <div class="brand-title" id="brand-title"></div>
     <div class="spacer"></div>
-    <button class="iconbtn" id="btn-lingua" title="Lingua rilevata">
-      <span id="lingua-badge" class="lingua-badge">IT</span>
+    <button class="iconbtn" id="btn-language" title="Detected language (tap to switch)">
+      <span id="language-badge" class="lang-badge">EN</span>
     </button>
-    <button class="iconbtn" id="btn-ai-status" title="Modello AI">
+    <button class="iconbtn" id="btn-ai-status" title="Local AI model">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"/>
         <path d="M19 17l.9 2.1L22 20l-2.1.9L19 23l-.9-2.1L16 20l2.1-.9L19 17z"/>
@@ -1132,7 +1130,7 @@ body.edit-mode .edit-hint {
         <div class="input-card">
           <textarea
             id="input"
-            placeholder="Incolla o scrivi un testo (italiano o inglese) — l'evidenziazione è automatica"
+            placeholder="Paste or type a text — highlighting is automatic (Italian or English)"
           ></textarea>
         </div>
 
@@ -1144,7 +1142,7 @@ body.edit-mode .edit-hint {
               <path d="M12 20h9"/>
               <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
             </svg>
-            Modifica
+            Edit
           </button>
           <button class="tbtn" id="btn-generate-cards">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1152,39 +1150,39 @@ body.edit-mode .edit-hint {
               <line x1="7" y1="9" x2="17" y2="9"/>
               <line x1="7" y1="13" x2="13" y2="13"/>
             </svg>
-            Domande
+            Questions
           </button>
           <button class="tbtn" id="btn-save">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
               <polyline points="17 21 17 13 7 13 7 21"/>
             </svg>
-            Salva
+            Save
           </button>
           <button class="tbtn" id="btn-new">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="12" y1="5" x2="12" y2="19"/>
               <line x1="5" y1="12" x2="19" y2="12"/>
             </svg>
-            Nuovo
+            New
           </button>
           <button class="tbtn danger" id="btn-clear">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="3 6 5 6 21 6"/>
               <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
             </svg>
-            Pulisci
+            Clear
           </button>
         </div>
 
         <div class="ai-bar" id="ai-bar">
           <span class="spinner"></span>
-          <span class="msg" id="ai-msg">Preparazione AI…</span>
+          <span class="msg" id="ai-msg">Preparing AI…</span>
           <span class="pct" id="ai-pct"></span>
         </div>
 
         <div class="edit-hint" id="edit-hint">
-          Modalità modifica attiva: tocca una parola per evidenziarla o rimuoverla
+          Edit mode: tap a word to highlight or remove it
         </div>
 
         <div class="output-card" id="output"></div>
@@ -1200,13 +1198,13 @@ body.edit-mode .edit-hint {
         <input
           id="library-search"
           type="search"
-          placeholder="Cerca nella libreria…"
-          style="width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--colore-bordo-2); background: var(--colore-superficie-2); margin-bottom: 14px; outline: none;"
+          placeholder="Search library…"
+          style="width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--color-border-2); background: var(--color-surface-2); margin-bottom: 14px; outline: none;"
         >
         <div class="lib-list" id="library-list"></div>
         <div class="empty" id="library-empty" style="display: none;">
-          <div class="title">Libreria vuota</div>
-          <div class="sub">Salva un testo per ritrovarlo qui.</div>
+          <div class="title">Library is empty</div>
+          <div class="sub">Save a text to find it here later.</div>
         </div>
       </div>
     </div>
@@ -1226,20 +1224,20 @@ body.edit-mode .edit-hint {
         <line x1="8" y1="13" x2="16" y2="13"/>
         <line x1="8" y1="17" x2="13" y2="17"/>
       </svg>
-      <span>Testo</span>
+      <span>Text</span>
     </button>
     <button class="tab" data-view="library">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
       </svg>
-      <span>Libreria</span>
+      <span>Library</span>
     </button>
     <button class="tab" data-view="review" id="tab-review">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
       </svg>
-      <span>Ripasso</span>
+      <span>Review</span>
       <span class="badge-dot" id="review-badge" style="display: none;">0</span>
     </button>
   </nav>
@@ -1250,58 +1248,58 @@ body.edit-mode .edit-hint {
 
 <div class="modal-bg" id="modal-save">
   <div class="modal">
-    <h3>Salva testo</h3>
-    <p>Il testo e le evidenziazioni resteranno sul dispositivo.</p>
-    <input id="save-title" placeholder="Titolo" autocomplete="off">
+    <h3>Save text</h3>
+    <p>Text and highlights will stay on your device.</p>
+    <input id="save-title" placeholder="Title" autocomplete="off">
     <div class="row-actions">
-      <button class="btn ghost" id="btn-cancel-save">Annulla</button>
-      <button class="btn primary" id="btn-confirm-save">Salva</button>
+      <button class="btn ghost" id="btn-cancel-save">Cancel</button>
+      <button class="btn primary" id="btn-confirm-save">Save</button>
     </div>
   </div>
 </div>
 
 <div class="modal-bg" id="modal-confirm">
   <div class="modal">
-    <h3 id="confirm-title">Sei sicuro?</h3>
-    <p id="confirm-text">Questa azione non può essere annullata.</p>
+    <h3 id="confirm-title">Are you sure?</h3>
+    <p id="confirm-text">This action cannot be undone.</p>
     <div class="row-actions">
-      <button class="btn ghost" id="btn-cancel-confirm">Annulla</button>
-      <button class="btn danger" id="btn-ok-confirm">Conferma</button>
+      <button class="btn ghost" id="btn-cancel-confirm">Cancel</button>
+      <button class="btn danger" id="btn-ok-confirm">Confirm</button>
     </div>
   </div>
 </div>
 
 <div class="modal-bg" id="modal-note">
   <div class="modal">
-    <h3>Nota</h3>
+    <h3>Note</h3>
     <p id="note-context"></p>
-    <textarea id="note-text" placeholder="Scrivi la tua nota…"></textarea>
+    <textarea id="note-text" placeholder="Write your note…"></textarea>
     <div class="row-actions">
-      <button class="btn ghost" id="btn-delete-highlight" style="color: var(--colore-pericolo);">Rimuovi</button>
-      <button class="btn primary" id="btn-save-note">Salva</button>
+      <button class="btn ghost" id="btn-delete-highlight" style="color: var(--color-danger);">Remove</button>
+      <button class="btn primary" id="btn-save-note">Save</button>
     </div>
   </div>
 </div>
 
 <div class="modal-bg" id="modal-ai-setup">
   <div class="modal">
-    <h3>Modello AI locale</h3>
+    <h3>Local AI model</h3>
     <p id="ai-setup-description">
-      Il modello viene scaricato una volta e resta sul dispositivo.
-      L'AI estrae dati dal testo, il dizionario costruisce le domande.
+      The model is downloaded once and stays on your device.
+      AI extracts facts from the text, the dictionary builds the questions.
     </p>
     <div id="model-list"></div>
     <div class="row-actions" id="ai-actions-idle">
-      <button class="btn ghost" id="btn-cancel-ai">Chiudi</button>
-      <button class="btn ai" id="btn-load-ai">Scarica e attiva</button>
+      <button class="btn ghost" id="btn-cancel-ai">Close</button>
+      <button class="btn ai" id="btn-load-ai">Download and activate</button>
     </div>
     <div class="row-actions" id="ai-actions-ready" style="display: none;">
-      <button class="btn ghost" id="btn-unload-ai">Disattiva AI</button>
-      <button class="btn primary" id="btn-close-ai-ready">Chiudi</button>
+      <button class="btn ghost" id="btn-unload-ai">Deactivate AI</button>
+      <button class="btn primary" id="btn-close-ai-ready">Close</button>
     </div>
     <div class="ai-bar" id="ai-bar-modal">
       <span class="spinner"></span>
-      <span class="msg" id="ai-modal-msg">In attesa…</span>
+      <span class="msg" id="ai-modal-msg">Waiting…</span>
       <span class="pct" id="ai-modal-pct"></span>
     </div>
   </div>
@@ -1309,12 +1307,12 @@ body.edit-mode .edit-hint {
 
 <div class="modal-bg" id="modal-card-preview">
   <div class="modal">
-    <h3>Domande generate</h3>
+    <h3>Generated questions</h3>
     <p id="card-preview-count">0</p>
     <div id="card-preview-list"></div>
     <div class="row-actions">
-      <button class="btn ghost" id="btn-cancel-cards">Annulla</button>
-      <button class="btn primary" id="btn-confirm-cards">Aggiungi</button>
+      <button class="btn ghost" id="btn-cancel-cards">Cancel</button>
+      <button class="btn primary" id="btn-confirm-cards">Add</button>
     </div>
   </div>
 </div>
@@ -1326,113 +1324,115 @@ body.edit-mode .edit-hint {
   'use strict';
 
   // ============================================================
-  // GESTIONE ERRORI GLOBALE
+  // GLOBAL ERROR HANDLER
   // ============================================================
-  var bannerErrore = document.getElementById('error-banner');
-  window.addEventListener('error', function (evento) {
-    bannerErrore.style.display = 'block';
-    bannerErrore.textContent += '❌ ' + evento.message + ' (riga ' + evento.lineno + ')\n';
+  var errorBanner = document.getElementById('error-banner');
+  window.addEventListener('error', function (event) {
+    errorBanner.style.display = 'block';
+    errorBanner.textContent += '❌ ' + event.message + ' (line ' + event.lineno + ')\n';
   });
 
   // ============================================================
-  // UTILITÀ DI BASE
+  // BASIC UTILITIES
   // ============================================================
 
   function $(id) {
     return document.getElementById(id);
   }
 
-  function escapeHtml(testo) {
-    return String(testo).replace(/[&<>"']/g, function (carattere) {
+  function escapeHtml(text) {
+    return String(text).replace(/[&<>"']/g, function (character) {
       return {
         '&': '&amp;',
         '<': '&lt;',
         '>': '&gt;',
         '"': '&quot;',
         "'": '&#39;'
-      }[carattere];
+      }[character];
     });
   }
 
-  function generaId() {
+  function generateId() {
     return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   }
 
-  function vibra(millisecondi) {
+  function vibrate(ms) {
     try {
-      if (navigator.vibrate) navigator.vibrate(millisecondi);
-    } catch (errore) { /* ignora */ }
+      if (navigator.vibrate) navigator.vibrate(ms);
+    } catch (error) { /* ignore */ }
   }
 
-  function limita(valore, minimo, massimo) {
-    return Math.max(minimo, Math.min(massimo, valore));
+  function clamp(value, minimum, maximum) {
+    return Math.max(minimum, Math.min(maximum, value));
   }
 
-  function mescola(array) {
-    var copia = array.slice();
-    for (var i = copia.length - 1; i > 0; i--) {
+  function shuffle(array) {
+    var copy = array.slice();
+    for (var i = copy.length - 1; i > 0; i--) {
       var j = Math.floor(Math.random() * (i + 1));
-      var temp = copia[i];
-      copia[i] = copia[j];
-      copia[j] = temp;
+      var temp = copy[i];
+      copy[i] = copy[j];
+      copy[j] = temp;
     }
-    return copia;
+    return copy;
   }
 
-  var timerToast = null;
-  function mostraToast(messaggio, durata) {
-    durata = durata || 2200;
+  var toastTimer = null;
+  function showToast(message, duration) {
+    duration = duration || 2200;
     var toast = $('toast');
-    toast.textContent = messaggio;
+    toast.textContent = message;
     toast.classList.add('show');
-    clearTimeout(timerToast);
-    timerToast = setTimeout(function () {
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
       toast.classList.remove('show');
-    }, durata);
+    }, duration);
   }
 
   // ============================================================
-  // COSTANTI
+  // CONSTANTS
   // ============================================================
 
-  var CATEGORIE = [
-    { id: 'num',      label: 'Numeri',      classeCss: 'c-num' },
-    { id: 'name',     label: 'Nomi',        classeCss: 'c-name' },
-    { id: 'key',      label: 'Concetti',    classeCss: 'c-key' },
-    { id: 'def',      label: 'Definizioni', classeCss: 'c-def' },
-    { id: 'quote',    label: 'Citazioni',   classeCss: 'c-quote' },
-    { id: 'list',     label: 'Elenchi',     classeCss: 'c-list' },
-    { id: 'sentence', label: 'Frasi',       classeCss: 'c-sentence' }
+  var CATEGORIES = [
+    { id: 'num',      label: 'Numbers',     cssClass: 'c-num' },
+    { id: 'name',     label: 'Names',       cssClass: 'c-name' },
+    { id: 'key',      label: 'Concepts',    cssClass: 'c-key' },
+    { id: 'def',      label: 'Definitions', cssClass: 'c-def' },
+    { id: 'quote',    label: 'Quotes',      cssClass: 'c-quote' },
+    { id: 'list',     label: 'Lists',       cssClass: 'c-list' },
+    { id: 'sentence', label: 'Sentences',   cssClass: 'c-sentence' }
   ];
 
-  var PRIORITA_CATEGORIE = {
-    quote: 10, num: 9, def: 8, list: 7, name: 6, key: 5, sentence: 4
+  var CATEGORY_PRIORITY = {
+    quote: 10,
+    num: 9,
+    def: 8,
+    list: 7,
+    name: 6,
+    key: 5,
+    sentence: 4
   };
 
   // ============================================================
-  // DIZIONARIO — multilinguistico e multidominio
+  // DICTIONARY — multilingual, multi-domain
   // ============================================================
-  // Non è più solo storia italiana. È un dizionario di partenza
-  // pensato per funzionare su storia, cultura generale, attualità
-  // in italiano e in inglese.
+  // No longer just Italian history. Covers common facts across
+  // history, politics, geography, in both IT and EN.
 
-  var DIZIONARIO = {
-    // Anni storici comuni in Italia e nel mondo
-    anniComuni: [
+  var DICTIONARY = {
+    commonYears: [
       1492, 1517, 1648, 1776, 1789, 1815, 1848, 1861, 1870,
       1914, 1918, 1922, 1929, 1933, 1939, 1943, 1945, 1946,
       1947, 1948, 1957, 1962, 1968, 1969, 1978, 1989, 1991,
       1992, 2001, 2008, 2020
     ],
 
-    // Presidenti italiani della Repubblica
-    presidentiRepubblica: [
+    italianPresidents: [
       'De Nicola', 'Einaudi', 'Gronchi', 'Segni', 'Saragat', 'Leone',
       'Pertini', 'Cossiga', 'Scalfaro', 'Ciampi', 'Napolitano', 'Mattarella'
     ],
 
-    // Presidenti del Consiglio italiani (dopoguerra)
-    presidentiConsiglio: [
+    italianPrimeMinisters: [
       'De Gasperi', 'Pella', 'Fanfani', 'Scelba', 'Segni', 'Zoli',
       'Tambroni', 'Moro', 'Leone', 'Rumor', 'Colombo', 'Andreotti',
       'Craxi', 'Goria', 'De Mita', 'Amato', 'Ciampi', "D'Alema",
@@ -1440,7 +1440,6 @@ body.edit-mode .edit-hint {
       'Conte', 'Draghi', 'Meloni'
     ],
 
-    // Presidenti degli Stati Uniti (per testi in inglese)
     usPresidents: [
       'Washington', 'Adams', 'Jefferson', 'Madison', 'Monroe',
       'Jackson', 'Lincoln', 'Grant', 'Roosevelt', 'Truman',
@@ -1448,30 +1447,26 @@ body.edit-mode .edit-hint {
       'Reagan', 'Bush', 'Clinton', 'Obama', 'Trump', 'Biden'
     ],
 
-    // Primi ministri britannici moderni
     ukPrimeMinisters: [
       'Churchill', 'Attlee', 'Eden', 'Macmillan', 'Wilson',
       'Heath', 'Callaghan', 'Thatcher', 'Major', 'Blair',
       'Brown', 'Cameron', 'May', 'Johnson', 'Sunak'
     ],
 
-    // Trattati europei e internazionali
-    trattati: [
-      'Trattato di Roma', 'Atto Unico Europeo', 'Trattato di Maastricht',
-      'Trattato di Amsterdam', 'Trattato di Nizza', 'Trattato di Lisbona',
-      'Trattato di Versailles', 'Trattato di Vienna',
-      'Treaty of Versailles', 'Treaty of Vienna', 'Treaty of Rome'
+    treaties: [
+      'Treaty of Versailles', 'Treaty of Vienna', 'Treaty of Rome',
+      'Maastricht Treaty', 'Lisbon Treaty', 'Treaty of Paris',
+      'Trattato di Roma', 'Trattato di Maastricht', 'Trattato di Lisbona',
+      'Trattato di Versailles'
     ],
 
-    // Partiti italiani
-    partiti: [
+    italianParties: [
       'Democrazia Cristiana', 'PCI', 'PSI', 'MSI', 'PRI', 'PLI',
       'PSDI', 'PDS', 'DS', 'Forza Italia', 'AN', 'Lega Nord',
       'UDC', 'PD', 'M5S', 'FdI'
     ],
 
-    // Regioni italiane
-    regioni: [
+    italianRegions: [
       'Abruzzo', 'Basilicata', 'Calabria', 'Campania',
       'Emilia-Romagna', 'Friuli-Venezia Giulia', 'Lazio', 'Liguria',
       'Lombardia', 'Marche', 'Molise', 'Piemonte', 'Puglia',
@@ -1479,15 +1474,12 @@ body.edit-mode .edit-hint {
       'Umbria', "Valle d'Aosta", 'Veneto'
     ],
 
-    // Continenti e grandi aree geografiche
-    continenti: [
-      'Europa', 'Asia', 'Africa', 'America', 'Oceania', 'Antartide',
+    continents: [
       'Europe', 'Asia', 'Africa', 'America', 'Oceania', 'Antarctica'
     ]
   };
 
-  // Set di lookup per il dizionario
-  function costruisciSet(array) {
+  function buildLookupSet(array) {
     var set = {};
     for (var i = 0; i < array.length; i++) {
       set[String(array[i]).toLowerCase()] = true;
@@ -1495,21 +1487,21 @@ body.edit-mode .edit-hint {
     return set;
   }
 
-  var SET_DIZIONARIO = {
-    presidentiRepubblica: costruisciSet(DIZIONARIO.presidentiRepubblica),
-    presidentiConsiglio: costruisciSet(DIZIONARIO.presidentiConsiglio),
-    usPresidents: costruisciSet(DIZIONARIO.usPresidents),
-    ukPrimeMinisters: costruisciSet(DIZIONARIO.ukPrimeMinisters),
-    trattati: costruisciSet(DIZIONARIO.trattati),
-    partiti: costruisciSet(DIZIONARIO.partiti),
-    regioni: costruisciSet(DIZIONARIO.regioni)
+  var DICTIONARY_SETS = {
+    italianPresidents: buildLookupSet(DICTIONARY.italianPresidents),
+    italianPrimeMinisters: buildLookupSet(DICTIONARY.italianPrimeMinisters),
+    usPresidents: buildLookupSet(DICTIONARY.usPresidents),
+    ukPrimeMinisters: buildLookupSet(DICTIONARY.ukPrimeMinisters),
+    treaties: buildLookupSet(DICTIONARY.treaties),
+    italianParties: buildLookupSet(DICTIONARY.italianParties),
+    italianRegions: buildLookupSet(DICTIONARY.italianRegions)
   };
 
-  // Regex mesi bilingui
-  var REGEX_MESI = '(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre|january|february|march|april|may|june|july|august|september|october|november|december|janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)';
+  // Bilingual month regex
+  var MONTH_REGEX = '(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre|january|february|march|april|may|june|july|august|september|october|november|december|janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)';
 
-  // Stopword italiane
-  var STOPWORD_ITALIANE = (
+  // Italian stopwords
+  var STOPWORDS_IT = (
     'il lo la i gli le un uno una e ed o od ma però perciò ' +
     'in con su per tra fra da di al allo alla ai agli alle ' +
     'del dello della dei degli delle nel nello nella nei negli nelle ' +
@@ -1520,8 +1512,8 @@ body.edit-mode .edit-hint {
     'viene venga fatto fare può devono deve loro lei lui noi voi egli ella essi esse'
   ).split(/\s+/);
 
-  // Stopword inglesi
-  var STOPWORD_INGLESI = (
+  // English stopwords
+  var STOPWORDS_EN = (
     'the a an and or but of in on at to for from by with as is are was were ' +
     'be been being this that these those it its he she they them him her his ' +
     'hers their theirs we us our ours you your yours i me my mine ' +
@@ -1533,335 +1525,335 @@ body.edit-mode .edit-hint {
     'below again further once here there'
   ).split(/\s+/);
 
-  // Set stopword unificato
-  var SET_STOPWORD = {};
+  // Unified stopword set
+  var STOPWORD_SET = {};
   (function () {
-    for (var i = 0; i < STOPWORD_ITALIANE.length; i++) {
-      SET_STOPWORD[STOPWORD_ITALIANE[i]] = true;
+    for (var i = 0; i < STOPWORDS_IT.length; i++) {
+      STOPWORD_SET[STOPWORDS_IT[i]] = true;
     }
-    for (var j = 0; j < STOPWORD_INGLESI.length; j++) {
-      SET_STOPWORD[STOPWORD_INGLESI[j]] = true;
+    for (var j = 0; j < STOPWORDS_EN.length; j++) {
+      STOPWORD_SET[STOPWORDS_EN[j]] = true;
     }
   })();
 
   // ============================================================
-  // RILEVAMENTO LINGUA
+  // LANGUAGE DETECTION
   // ============================================================
 
   /**
-   * Rileva la lingua del testo (IT o EN) in base a euristiche.
-   * Restituisce "it" o "en".
+   * Detects the language of a text (IT or EN).
+   * Returns "it" or "en".
    */
-  function rilevaLingua(testo) {
-    if (!testo || testo.length < 10) return 'it';
+  function detectLanguage(text) {
+    if (!text || text.length < 10) return 'en';
 
-    var parole = testo.toLowerCase().match(/\p{L}+/gu) || [];
-    if (parole.length < 3) return 'it';
+    var words = text.toLowerCase().match(/\p{L}+/gu) || [];
+    if (words.length < 3) return 'en';
 
-    var campione = {};
-    var limite = Math.min(200, parole.length);
-    for (var i = 0; i < limite; i++) {
-      campione[parole[i]] = true;
+    var sample = {};
+    var limit = Math.min(200, words.length);
+    for (var i = 0; i < limit; i++) {
+      sample[words[i]] = true;
     }
 
-    // Parole spia italiane
-    var spiaItaliana = ['il', 'lo', 'la', 'gli', 'della', 'nella', 'perché',
+    // Italian signal words
+    var italianSignals = ['il', 'lo', 'la', 'gli', 'della', 'nella', 'perché',
       'quindi', 'sono', 'questo', 'questa', 'anche', 'però', 'molto',
       'più', 'già', 'dopo', 'prima', 'stato', 'viene', 'anno', 'nel', 'sul'];
-    var puntiItaliano = 0;
-    for (var k = 0; k < spiaItaliana.length; k++) {
-      if (campione[spiaItaliana[k]]) puntiItaliano++;
+    var italianScore = 0;
+    for (var k = 0; k < italianSignals.length; k++) {
+      if (sample[italianSignals[k]]) italianScore++;
     }
 
-    // Parole spia inglesi
-    var spiaInglese = ['the', 'and', 'of', 'with', 'that', 'this', 'which',
+    // English signal words
+    var englishSignals = ['the', 'and', 'of', 'with', 'that', 'this', 'which',
       'their', 'would', 'could', 'should', 'very', 'also', 'from', 'into',
       'between', 'through', 'during', 'about', 'were', 'have', 'been'];
-    var puntiInglese = 0;
-    for (var m = 0; m < spiaInglese.length; m++) {
-      if (campione[spiaInglese[m]]) puntiInglese++;
+    var englishScore = 0;
+    for (var m = 0; m < englishSignals.length; m++) {
+      if (sample[englishSignals[m]]) englishScore++;
     }
 
-    // Controlla caratteri accentati italiani
-    var accentiItaliani = (testo.match(/[àèéìòù]/gi) || []).length;
-    if (accentiItaliani > 3) puntiItaliano += accentiItaliani * 0.3;
+    // Italian accented characters
+    var italianAccents = (text.match(/[àèéìòù]/gi) || []).length;
+    if (italianAccents > 3) italianScore += italianAccents * 0.3;
 
-    return puntiItaliano >= puntiInglese ? 'it' : 'en';
+    return italianScore >= englishScore ? 'it' : 'en';
   }
 
   // ============================================================
-  // FSRS
+  // FSRS — Free Spaced Repetition Scheduler
   // ============================================================
 
-  var PARAMETRI_FSRS = [
+  var FSRS_PARAMS = [
     0.4072, 1.1829, 3.1262, 15.4722, 7.2102, 0.5316, 1.0651,
     0.0234, 1.616, 0.1544, 1.0824, 1.9813, 0.0953, 0.2975,
     2.2042, 0.2407, 2.9466, 0.5034, 0.6567
   ];
-  var FSRS_DECADIMENTO = -0.5;
-  var FSRS_FATTORE = 19 / 81;
-  var FSRS_OBIETTIVO = 0.9;
+  var FSRS_DECAY = -0.5;
+  var FSRS_FACTOR = 19 / 81;
+  var FSRS_TARGET_RETENTION = 0.9;
 
-  function fsrsInizializza(votoIniziale) {
-    var difficolta = limita(
-      PARAMETRI_FSRS[4] - Math.exp(PARAMETRI_FSRS[5] * (votoIniziale - 1)) + 1,
+  function fsrsInitialize(initialRating) {
+    var difficulty = clamp(
+      FSRS_PARAMS[4] - Math.exp(FSRS_PARAMS[5] * (initialRating - 1)) + 1,
       1, 10
     );
-    var stabilita = Math.max(0.1, PARAMETRI_FSRS[votoIniziale - 1]);
+    var stability = Math.max(0.1, FSRS_PARAMS[initialRating - 1]);
     return {
-      stability: stabilita,
-      difficulty: difficolta,
+      stability: stability,
+      difficulty: difficulty,
       reps: 1,
-      lapses: votoIniziale === 1 ? 1 : 0,
+      lapses: initialRating === 1 ? 1 : 0,
       state: 'learning',
       lastReview: Date.now(),
       due: 0
     };
   }
 
-  function fsrsProssimo(card, voto, adesso) {
-    var giorniTrascorsi = Math.max(0, (adesso - (card.lastReview || adesso)) / 86400000);
-    var recuperabilita = Math.exp(Math.log(0.9) * giorniTrascorsi / card.stability);
-    var nuovaDifficolta = limita(card.difficulty - PARAMETRI_FSRS[6] * (voto - 3), 1, 10);
-    var nuovaStabilita;
+  function fsrsNext(card, rating, now) {
+    var elapsedDays = Math.max(0, (now - (card.lastReview || now)) / 86400000);
+    var retrievability = Math.exp(Math.log(0.9) * elapsedDays / card.stability);
+    var newDifficulty = clamp(card.difficulty - FSRS_PARAMS[6] * (rating - 3), 1, 10);
+    var newStability;
 
-    if (voto === 1) {
-      nuovaStabilita = PARAMETRI_FSRS[11]
-        * Math.pow(nuovaDifficolta, -PARAMETRI_FSRS[12])
-        * (Math.pow(card.stability + 1, PARAMETRI_FSRS[13]) - 1)
-        * Math.exp(PARAMETRI_FSRS[14] * (1 - recuperabilita));
+    if (rating === 1) {
+      newStability = FSRS_PARAMS[11]
+        * Math.pow(newDifficulty, -FSRS_PARAMS[12])
+        * (Math.pow(card.stability + 1, FSRS_PARAMS[13]) - 1)
+        * Math.exp(FSRS_PARAMS[14] * (1 - retrievability));
     } else {
-      var penalitaDifficile = voto === 2 ? PARAMETRI_FSRS[15] : 1;
-      var bonusFacile = voto === 4 ? PARAMETRI_FSRS[16] : 1;
-      nuovaStabilita = card.stability * (
+      var hardPenalty = rating === 2 ? FSRS_PARAMS[15] : 1;
+      var easyBonus = rating === 4 ? FSRS_PARAMS[16] : 1;
+      newStability = card.stability * (
         1 +
-        Math.exp(PARAMETRI_FSRS[8]) * (11 - nuovaDifficolta)
-        * Math.pow(card.stability, -PARAMETRI_FSRS[9])
-        * (Math.exp(PARAMETRI_FSRS[10] * (1 - recuperabilita)) - 1)
-        * penalitaDifficile * bonusFacile
+        Math.exp(FSRS_PARAMS[8]) * (11 - newDifficulty)
+        * Math.pow(card.stability, -FSRS_PARAMS[9])
+        * (Math.exp(FSRS_PARAMS[10] * (1 - retrievability)) - 1)
+        * hardPenalty * easyBonus
       );
     }
 
-    nuovaStabilita = Math.max(0.1, nuovaStabilita);
+    newStability = Math.max(0.1, newStability);
 
     return {
-      stability: nuovaStabilita,
-      difficulty: nuovaDifficolta,
+      stability: newStability,
+      difficulty: newDifficulty,
       reps: (card.reps || 0) + 1,
-      lapses: (card.lapses || 0) + (voto === 1 ? 1 : 0),
-      state: voto === 1 ? 'relearning' : 'review',
-      lastReview: adesso,
+      lapses: (card.lapses || 0) + (rating === 1 ? 1 : 0),
+      state: rating === 1 ? 'relearning' : 'review',
+      lastReview: now,
       due: 0
     };
   }
 
-  function fsrsIntervallo(stabilita) {
-    var giorni = (stabilita / FSRS_FATTORE)
-      * (Math.pow(FSRS_OBIETTIVO, 1 / FSRS_DECADIMENTO) - 1);
-    return Math.max(1, Math.round(giorni));
+  function fsrsInterval(stability) {
+    var days = (stability / FSRS_FACTOR)
+      * (Math.pow(FSRS_TARGET_RETENTION, 1 / FSRS_DECAY) - 1);
+    return Math.max(1, Math.round(days));
   }
 
   // ============================================================
-  // STORE — persistenza dati
+  // STORE — data persistence
   // ============================================================
 
-  var CHIAVE_STORAGE = 'highlight-ai.v80.data';
+  var STORAGE_KEY = 'highlight-ai.v90.data';
 
-  var DATI = {
-    version: 80,
+  var DATA = {
+    version: 90,
     docs: {},
     highlights: {},
     cards: {},
     review: {},
     activeDocId: null,
-    impostazioni: {
-      categorieAttive: [],
-      linguaForzata: null
+    settings: {
+      activeCategories: [],
+      forcedLanguage: null
     }
   };
 
-  function caricaDati() {
+  function loadData() {
     try {
-      var salvato = localStorage.getItem(CHIAVE_STORAGE);
-      if (salvato) {
-        var parsed = JSON.parse(salvato);
-        for (var chiave in parsed) {
-          DATI[chiave] = parsed[chiave];
+      var saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        var parsed = JSON.parse(saved);
+        for (var key in parsed) {
+          DATA[key] = parsed[key];
         }
       }
-    } catch (errore) {
-      console.warn('Errore nel caricamento:', errore);
+    } catch (error) {
+      console.warn('Load error:', error);
     }
 
-    if (!DATI.impostazioni) {
-      DATI.impostazioni = { categorieAttive: [], linguaForzata: null };
+    if (!DATA.settings) {
+      DATA.settings = { activeCategories: [], forcedLanguage: null };
     }
-    if (!DATI.impostazioni.categorieAttive ||
-        DATI.impostazioni.categorieAttive.length === 0) {
-      DATI.impostazioni.categorieAttive = CATEGORIE.map(function (cat) {
+    if (!DATA.settings.activeCategories ||
+        DATA.settings.activeCategories.length === 0) {
+      DATA.settings.activeCategories = CATEGORIES.map(function (cat) {
         return cat.id;
       });
     }
   }
 
-  var timerSalvataggio = null;
-  function salvaDati() {
-    clearTimeout(timerSalvataggio);
-    timerSalvataggio = setTimeout(function () {
+  var saveTimer = null;
+  function saveData() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () {
       try {
-        localStorage.setItem(CHIAVE_STORAGE, JSON.stringify(DATI));
-      } catch (errore) {
-        mostraToast('Spazio esaurito');
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(DATA));
+      } catch (error) {
+        showToast('Storage full');
       }
     }, 200);
   }
 
-  function salvaDatiSubito() {
-    clearTimeout(timerSalvataggio);
+  function saveDataNow() {
+    clearTimeout(saveTimer);
     try {
-      localStorage.setItem(CHIAVE_STORAGE, JSON.stringify(DATI));
-    } catch (errore) { /* ignora */ }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(DATA));
+    } catch (error) { /* ignore */ }
   }
 
-  function documentoAttivo() {
-    return DATI.activeDocId ? DATI.docs[DATI.activeDocId] : null;
+  function getActiveDocument() {
+    return DATA.activeDocId ? DATA.docs[DATA.activeDocId] : null;
   }
 
-  function creaDocumento(testo, titolo) {
-    var id = generaId();
-    DATI.docs[id] = {
+  function createDocument(text, title) {
+    var id = generateId();
+    DATA.docs[id] = {
       id: id,
-      title: titolo || testo.trim().slice(0, 60).replace(/\s+/g, ' ') || 'Senza titolo',
-      text: testo,
-      lang: rilevaLingua(testo),
+      title: title || text.trim().slice(0, 60).replace(/\s+/g, ' ') || 'Untitled',
+      text: text,
+      lang: detectLanguage(text),
       createdAt: Date.now(),
       updatedAt: Date.now()
     };
-    DATI.activeDocId = id;
-    salvaDati();
-    return DATI.docs[id];
+    DATA.activeDocId = id;
+    saveData();
+    return DATA.docs[id];
   }
 
-  function aggiornaDocumento(id, modifiche) {
-    var doc = DATI.docs[id];
+  function updateDocument(id, changes) {
+    var doc = DATA.docs[id];
     if (!doc) return;
-    for (var chiave in modifiche) {
-      doc[chiave] = modifiche[chiave];
+    for (var key in changes) {
+      doc[key] = changes[key];
     }
     doc.updatedAt = Date.now();
-    salvaDati();
+    saveData();
   }
 
-  function aggiungiEvidenziazione(opzioni) {
-    var id = generaId();
-    DATI.highlights[id] = {
+  function addHighlight(options) {
+    var id = generateId();
+    DATA.highlights[id] = {
       id: id,
-      docId: opzioni.docId,
-      start: opzioni.start,
-      end: opzioni.end,
-      cat: opzioni.cat,
-      source: opzioni.source || 'user',
-      before: opzioni.before || '',
-      after: opzioni.after || '',
+      docId: options.docId,
+      start: options.start,
+      end: options.end,
+      cat: options.cat,
+      source: options.source || 'user',
+      before: options.before || '',
+      after: options.after || '',
       note: '',
       createdAt: Date.now()
     };
-    salvaDati();
-    return DATI.highlights[id];
+    saveData();
+    return DATA.highlights[id];
   }
 
-  function rimuoviEvidenziazione(id) {
-    delete DATI.highlights[id];
-    for (var cardId in DATI.cards) {
-      if (DATI.cards[cardId].highlightId === id) {
-        delete DATI.cards[cardId];
-        delete DATI.review[cardId];
+  function removeHighlight(id) {
+    delete DATA.highlights[id];
+    for (var cardId in DATA.cards) {
+      if (DATA.cards[cardId].highlightId === id) {
+        delete DATA.cards[cardId];
+        delete DATA.review[cardId];
       }
     }
-    salvaDati();
+    saveData();
   }
 
-  function aggiornaEvidenziazione(id, modifiche) {
-    var ev = DATI.highlights[id];
-    if (!ev) return;
-    for (var chiave in modifiche) {
-      ev[chiave] = modifiche[chiave];
+  function updateHighlight(id, changes) {
+    var highlight = DATA.highlights[id];
+    if (!highlight) return;
+    for (var key in changes) {
+      highlight[key] = changes[key];
     }
-    salvaDati();
+    saveData();
   }
 
-  function evidenziazioniDi(docId) {
-    var risultato = [];
-    for (var id in DATI.highlights) {
-      if (DATI.highlights[id].docId === docId) {
-        risultato.push(DATI.highlights[id]);
+  function highlightsForDocument(docId) {
+    var result = [];
+    for (var id in DATA.highlights) {
+      if (DATA.highlights[id].docId === docId) {
+        result.push(DATA.highlights[id]);
       }
     }
-    return risultato;
+    return result;
   }
 
-  function cardDi(docId) {
-    var risultato = [];
-    for (var id in DATI.cards) {
-      if (DATI.cards[id].docId === docId) {
-        risultato.push(DATI.cards[id]);
+  function cardsForDocument(docId) {
+    var result = [];
+    for (var id in DATA.cards) {
+      if (DATA.cards[id].docId === docId) {
+        result.push(DATA.cards[id]);
       }
     }
-    return risultato;
+    return result;
   }
 
-  function aggiungiCard(card) {
-    card.id = generaId();
+  function addCard(card) {
+    card.id = generateId();
     card.createdAt = Date.now();
-    DATI.cards[card.id] = card;
-    salvaDati();
+    DATA.cards[card.id] = card;
+    saveData();
     return card;
   }
 
-  function valutaCard(cardId, voto) {
-    var adesso = Date.now();
-    var precedente = DATI.review[cardId];
-    var nuovo;
-    if (!precedente || precedente.state === 'new') {
-      nuovo = fsrsInizializza(voto);
+  function gradeCard(cardId, rating) {
+    var now = Date.now();
+    var previous = DATA.review[cardId];
+    var next;
+    if (!previous || previous.state === 'new') {
+      next = fsrsInitialize(rating);
     } else {
-      nuovo = fsrsProssimo(precedente, voto, adesso);
+      next = fsrsNext(previous, rating, now);
     }
-    nuovo.due = adesso + fsrsIntervallo(nuovo.stability) * 86400000;
-    DATI.review[cardId] = nuovo;
-    salvaDati();
+    next.due = now + fsrsInterval(next.stability) * 86400000;
+    DATA.review[cardId] = next;
+    saveData();
   }
 
-  function cardDaRipassare(docId) {
-    var adesso = Date.now();
-    var risultato = [];
-    for (var id in DATI.cards) {
-      var card = DATI.cards[id];
+  function cardsDue(docId) {
+    var now = Date.now();
+    var result = [];
+    for (var id in DATA.cards) {
+      var card = DATA.cards[id];
       if (docId && card.docId !== docId) continue;
-      var stato = DATI.review[id];
-      if (!stato || !stato.due || stato.due <= adesso) {
-        risultato.push(card);
+      var state = DATA.review[id];
+      if (!state || !state.due || state.due <= now) {
+        result.push(card);
       }
     }
-    return risultato;
+    return result;
   }
 
   // ============================================================
-  // ANALIZZATORE — funziona in IT e EN
+  // ANALYZER — works in IT and EN
   // ============================================================
 
-  function trovaNumeri(testo) {
+  function findNumbers(text) {
     var spans = [];
     var match;
-    var gia = {};
+    var used = {};
 
-    // Date complete (IT + EN)
-    var regexData = new RegExp(
-      '\\b\\d{1,2}\\s+' + REGEX_MESI + '\\s+\\d{3,4}\\b|' +
-      '\\b' + REGEX_MESI + '\\s+\\d{1,2},?\\s+\\d{3,4}\\b',
+    // Full dates (IT + EN)
+    var dateRegex = new RegExp(
+      '\\b\\d{1,2}\\s+' + MONTH_REGEX + '\\s+\\d{3,4}\\b|' +
+      '\\b' + MONTH_REGEX + '\\s+\\d{1,2},?\\s+\\d{3,4}\\b',
       'gi'
     );
-    while ((match = regexData.exec(testo)) !== null) {
+    while ((match = dateRegex.exec(text)) !== null) {
       spans.push({
         start: match.index,
         end: match.index + match[0].length,
@@ -1869,14 +1861,14 @@ body.edit-mode .edit-hint {
         w: 5
       });
       for (var i = match.index; i < match.index + match[0].length; i++) {
-        gia[i] = true;
+        used[i] = true;
       }
     }
 
-    // Numeri semplici, percentuali, anni
-    var regexNumero = /(?<![\p{L}\p{M}])\d+(?:[.,]\d+)?(?:\s*%|\s*‰)?(?![\p{L}\p{M}])/gu;
-    while ((match = regexNumero.exec(testo)) !== null) {
-      if (gia[match.index]) continue;
+    // Simple numbers, percentages, years
+    var numberRegex = /(?<![\p{L}\p{M}])\d+(?:[.,]\d+)?(?:\s*%|\s*‰)?(?![\p{L}\p{M}])/gu;
+    while ((match = numberRegex.exec(text)) !== null) {
+      if (used[match.index]) continue;
       spans.push({
         start: match.index,
         end: match.index + match[0].length,
@@ -1888,55 +1880,55 @@ body.edit-mode .edit-hint {
     return spans;
   }
 
-  function trovaCitazioni(testo) {
+  function findQuotes(text) {
     var spans = [];
-    var coppie = [
+    var pairs = [
       ['«', '»'],
       ['"', '"'],
       ['"', '"'],
       ['「', '」']
     ];
 
-    for (var p = 0; p < coppie.length; p++) {
-      var apertura = coppie[p][0];
-      var chiusura = coppie[p][1];
+    for (var p = 0; p < pairs.length; p++) {
+      var opening = pairs[p][0];
+      var closing = pairs[p][1];
 
-      if (apertura === chiusura) {
+      if (opening === closing) {
         var i = 0;
-        var indiceApertura = -1;
-        while (i < testo.length) {
-          if (testo[i] === apertura) {
-            if (indiceApertura < 0) {
-              indiceApertura = i;
+        var openingIndex = -1;
+        while (i < text.length) {
+          if (text[i] === opening) {
+            if (openingIndex < 0) {
+              openingIndex = i;
             } else {
-              if (i - indiceApertura >= 10) {
+              if (i - openingIndex >= 10) {
                 spans.push({
-                  start: indiceApertura,
+                  start: openingIndex,
                   end: i + 1,
                   cat: 'quote',
                   w: 5
                 });
               }
-              indiceApertura = -1;
+              openingIndex = -1;
             }
           }
           i++;
         }
       } else {
-        var indice = 0;
-        while ((indice = testo.indexOf(apertura, indice)) !== -1) {
-          var indiceChiusura = testo.indexOf(chiusura, indice + 1);
-          if (indiceChiusura === -1) break;
-          var lunghezza = indiceChiusura - indice - 1;
-          if (lunghezza >= 10 && lunghezza < 500) {
+        var index = 0;
+        while ((index = text.indexOf(opening, index)) !== -1) {
+          var closingIndex = text.indexOf(closing, index + 1);
+          if (closingIndex === -1) break;
+          var length = closingIndex - index - 1;
+          if (length >= 10 && length < 500) {
             spans.push({
-              start: indice,
-              end: indiceChiusura + 1,
+              start: index,
+              end: closingIndex + 1,
               cat: 'quote',
               w: 5
             });
           }
-          indice = indiceChiusura + 1;
+          index = closingIndex + 1;
         }
       }
     }
@@ -1944,11 +1936,11 @@ body.edit-mode .edit-hint {
     return spans;
   }
 
-  function tokenizza(testo) {
+  function tokenize(text) {
     var tokens = [];
     var match;
     var regex = /[\p{L}\p{M}][\p{L}\p{M}'\-]*/gu;
-    while ((match = regex.exec(testo)) !== null) {
+    while ((match = regex.exec(text)) !== null) {
       tokens.push({
         word: match[0],
         lower: match[0].toLowerCase(),
@@ -1959,16 +1951,16 @@ body.edit-mode .edit-hint {
     return tokens;
   }
 
-  function trovaNomiPropri(testo, lingua) {
+  function findProperNouns(text) {
     var spans = [];
-    var tokens = tokenizza(testo);
+    var tokens = tokenize(text);
 
     for (var i = 0; i < tokens.length; i++) {
       var token = tokens[i];
-      var primaLettera = token.word[0];
+      var firstLetter = token.word[0];
 
-      if (primaLettera !== primaLettera.toUpperCase() ||
-          primaLettera === primaLettera.toLowerCase()) {
+      if (firstLetter !== firstLetter.toUpperCase() ||
+          firstLetter === firstLetter.toLowerCase()) {
         continue;
       }
 
@@ -1976,33 +1968,33 @@ body.edit-mode .edit-hint {
 
       var j = i;
       while (j + 1 < tokens.length) {
-        var prossimo = tokens[j + 1];
-        var tra = testo.slice(tokens[j].end, prossimo.start);
-        if (!/^[\s'\-]{1,2}$/.test(tra)) break;
-        var primaProssima = prossimo.word[0];
-        if (primaProssima === primaProssima.toUpperCase() &&
-            primaProssima !== primaProssima.toLowerCase()) {
+        var next = tokens[j + 1];
+        var between = text.slice(tokens[j].end, next.start);
+        if (!/^[\s'\-]{1,2}$/.test(between)) break;
+        var nextFirst = next.word[0];
+        if (nextFirst === nextFirst.toUpperCase() &&
+            nextFirst !== nextFirst.toLowerCase()) {
           j++;
         } else {
           break;
         }
       }
 
-      var prima = testo.slice(0, token.start).trim();
-      var aInizioFrase = !prima || /[.!?…»"']\s*$/.test(prima);
-      var multiParola = j > i;
-      var eStopword = SET_STOPWORD[token.lower];
+      var before = text.slice(0, token.start).trim();
+      var atSentenceStart = !before || /[.!?…»"']\s*$/.test(before);
+      var multiWord = j > i;
+      var isStopword = STOPWORD_SET[token.lower];
 
-      var accetta = false;
-      if (multiParola) {
-        accetta = true;
-      } else if (!aInizioFrase && !eStopword) {
-        accetta = true;
-      } else if (aInizioFrase && !eStopword && token.word.length >= 7) {
-        accetta = true;
+      var accept = false;
+      if (multiWord) {
+        accept = true;
+      } else if (!atSentenceStart && !isStopword) {
+        accept = true;
+      } else if (atSentenceStart && !isStopword && token.word.length >= 7) {
+        accept = true;
       }
 
-      if (accetta) {
+      if (accept) {
         spans.push({
           start: token.start,
           end: tokens[j].end,
@@ -2017,20 +2009,20 @@ body.edit-mode .edit-hint {
     return spans;
   }
 
-  function trovaConcetti(testo) {
-    var frequenze = {};
-    var tokens = tokenizza(testo);
+  function findConcepts(text) {
+    var frequencies = {};
+    var tokens = tokenize(text);
 
     for (var i = 0; i < tokens.length; i++) {
       var token = tokens[i];
-      if (token.lower.length < 6 || SET_STOPWORD[token.lower]) continue;
-      frequenze[token.lower] = (frequenze[token.lower] || 0) + 1;
+      if (token.lower.length < 6 || STOPWORD_SET[token.lower]) continue;
+      frequencies[token.lower] = (frequencies[token.lower] || 0) + 1;
     }
 
     var spans = [];
     for (var j = 0; j < tokens.length; j++) {
       var tk = tokens[j];
-      if (frequenze[tk.lower] >= 2 && tk.lower.length >= 6) {
+      if (frequencies[tk.lower] >= 2 && tk.lower.length >= 6) {
         spans.push({
           start: tk.start,
           end: tk.end,
@@ -2043,33 +2035,33 @@ body.edit-mode .edit-hint {
     return spans;
   }
 
-  function trovaDefinizioni(testo) {
+  function findDefinitions(text) {
     var spans = [];
     var match;
     var regex = /([\p{L}\p{M}][\p{L}\p{M}\s'\-]{1,40})\s*[:：]\s*([^\n.;]{20,300})/gu;
 
-    while ((match = regex.exec(testo)) !== null) {
-      var inizioTesta = match.index;
-      var fineTesta = inizioTesta + match[1].length;
-      var numeroParole = match[1].trim().split(/\s+/).length;
+    while ((match = regex.exec(text)) !== null) {
+      var headStart = match.index;
+      var headEnd = headStart + match[1].length;
+      var wordCount = match[1].trim().split(/\s+/).length;
 
-      if (numeroParole > 5 || match[1].trim().length < 3) continue;
+      if (wordCount > 5 || match[1].trim().length < 3) continue;
 
       spans.push({
-        start: inizioTesta,
-        end: fineTesta,
+        start: headStart,
+        end: headEnd,
         cat: 'def',
         w: 4
       });
 
-      var inizioDefinizione = fineTesta;
-      var dopo = match[0].slice(match[1].length);
-      var separatore = dopo.match(/^\s*[:：]\s*/);
-      if (separatore) inizioDefinizione += separatore[0].length;
+      var defStart = headEnd;
+      var after = match[0].slice(match[1].length);
+      var separator = after.match(/^\s*[:：]\s*/);
+      if (separator) defStart += separator[0].length;
 
       spans.push({
-        start: inizioDefinizione,
-        end: inizioDefinizione + match[2].length,
+        start: defStart,
+        end: defStart + match[2].length,
         cat: 'def',
         w: 2
       });
@@ -2078,19 +2070,14 @@ body.edit-mode .edit-hint {
     return spans;
   }
 
-  /**
-   * Analizza un testo in IT o EN.
-   * @param {string} testo
-   * @param {string} lingua - "it" o "en"
-   */
-  function analizzaTesto(testo, lingua) {
-    if (!testo.trim()) return [];
+  function analyzeText(text) {
+    if (!text.trim()) return [];
     return [].concat(
-      trovaNumeri(testo),
-      trovaCitazioni(testo),
-      trovaDefinizioni(testo),
-      trovaNomiPropri(testo, lingua),
-      trovaConcetti(testo)
+      findNumbers(text),
+      findQuotes(text),
+      findDefinitions(text),
+      findProperNouns(text),
+      findConcepts(text)
     );
   }
 
@@ -2098,264 +2085,265 @@ body.edit-mode .edit-hint {
   // RENDER
   // ============================================================
 
-  function costruisciRun(testo, evidenziazioni) {
-    var lunghezza = testo.length;
-    var proprietario = new Array(lunghezza);
-    var peso = new Array(lunghezza);
-    var idEvidenziazione = new Array(lunghezza);
-    var indiceCategorie = {};
+  function buildRuns(text, highlights) {
+    var length = text.length;
+    var owner = new Array(length);
+    var weight = new Array(length);
+    var highlightId = new Array(length);
+    var categoryIndex = {};
 
-    for (var i = 0; i < evidenziazioni.length; i++) {
-      var ev = evidenziazioni[i];
-      if (ev.start < 0 || ev.end > lunghezza || ev.start >= ev.end) continue;
+    for (var i = 0; i < highlights.length; i++) {
+      var highlight = highlights[i];
+      if (highlight.start < 0 || highlight.end > length ||
+          highlight.start >= highlight.end) continue;
 
-      var priorita = (PRIORITA_CATEGORIE[ev.cat] || 1) * 10 + 1;
+      var priority = (CATEGORY_PRIORITY[highlight.cat] || 1) * 10 + 1;
 
-      for (var p = ev.start; p < ev.end; p++) {
-        if (!peso[p] || priorita >= peso[p]) {
-          peso[p] = priorita;
-          if (!indiceCategorie[ev.cat]) {
-            indiceCategorie[ev.cat] = Object.keys(indiceCategorie).length + 1;
+      for (var p = highlight.start; p < highlight.end; p++) {
+        if (!weight[p] || priority >= weight[p]) {
+          weight[p] = priority;
+          if (!categoryIndex[highlight.cat]) {
+            categoryIndex[highlight.cat] = Object.keys(categoryIndex).length + 1;
           }
-          proprietario[p] = indiceCategorie[ev.cat];
-          idEvidenziazione[p] = ev.id;
+          owner[p] = categoryIndex[highlight.cat];
+          highlightId[p] = highlight.id;
         }
       }
     }
 
     var runs = [];
-    var indice = 0;
-    while (indice < lunghezza) {
-      if (!proprietario[indice]) {
-        indice++;
+    var index = 0;
+    while (index < length) {
+      if (!owner[index]) {
+        index++;
         continue;
       }
-      var cat = proprietario[indice];
-      var idEv = idEvidenziazione[indice];
-      var fine = indice + 1;
-      while (fine < lunghezza &&
-             proprietario[fine] === cat &&
-             idEvidenziazione[fine] === idEv) {
-        fine++;
+      var cat = owner[index];
+      var hlId = highlightId[index];
+      var end = index + 1;
+      while (end < length &&
+             owner[end] === cat &&
+             highlightId[end] === hlId) {
+        end++;
       }
-      runs.push({ start: indice, end: fine, catIdx: cat, hlId: idEv });
-      indice = fine;
+      runs.push({ start: index, end: end, catIdx: cat, hlId: hlId });
+      index = end;
     }
 
-    return { runs: runs, indiceCategorie: indiceCategorie };
+    return { runs: runs, categoryIndex: categoryIndex };
   }
 
-  function categoriaDaIndice(indiceCategorie, indice) {
-    for (var chiave in indiceCategorie) {
-      if (indiceCategorie[chiave] === indice) return chiave;
+  function categoryFromIndex(categoryIndex, index) {
+    for (var key in categoryIndex) {
+      if (categoryIndex[key] === index) return key;
     }
     return null;
   }
 
-  function renderizzaAnnotato(doc) {
+  function renderAnnotated(doc) {
     if (!doc) return '';
 
-    var testo = doc.text;
-    var evidenziazioni = evidenziazioniDi(doc.id).filter(function (ev) {
-      return ev.start >= 0;
+    var text = doc.text;
+    var highlights = highlightsForDocument(doc.id).filter(function (h) {
+      return h.start >= 0;
     });
 
-    if (!evidenziazioni.length) return escapeHtml(testo);
+    if (!highlights.length) return escapeHtml(text);
 
-    var categorieAttive = {};
-    for (var i = 0; i < DATI.impostazioni.categorieAttive.length; i++) {
-      categorieAttive[DATI.impostazioni.categorieAttive[i]] = true;
+    var activeCategories = {};
+    for (var i = 0; i < DATA.settings.activeCategories.length; i++) {
+      activeCategories[DATA.settings.activeCategories[i]] = true;
     }
 
-    var risultato = costruisciRun(testo, evidenziazioni);
-    var runs = risultato.runs;
-    var indiceCategorie = risultato.indiceCategorie;
+    var result = buildRuns(text, highlights);
+    var runs = result.runs;
+    var categoryIndex = result.categoryIndex;
 
-    if (!runs.length) return escapeHtml(testo);
+    if (!runs.length) return escapeHtml(text);
 
     var html = '';
-    var cursore = 0;
+    var cursor = 0;
 
     for (var r = 0; r < runs.length; r++) {
       var run = runs[r];
 
-      if (run.start > cursore) {
-        html += escapeHtml(testo.slice(cursore, run.start));
+      if (run.start > cursor) {
+        html += escapeHtml(text.slice(cursor, run.start));
       }
 
-      var catId = categoriaDaIndice(indiceCategorie, run.catIdx);
+      var catId = categoryFromIndex(categoryIndex, run.catIdx);
 
-      if (categorieAttive[catId]) {
-        var classeCss = 'c-key';
-        for (var c = 0; c < CATEGORIE.length; c++) {
-          if (CATEGORIE[c].id === catId) classeCss = CATEGORIE[c].classeCss;
+      if (activeCategories[catId]) {
+        var cssClass = 'c-key';
+        for (var c = 0; c < CATEGORIES.length; c++) {
+          if (CATEGORIES[c].id === catId) cssClass = CATEGORIES[c].cssClass;
         }
-        var evidenziazione = DATI.highlights[run.hlId];
-        var haNota = evidenziazione && evidenziazione.note ? ' has-note' : '';
-        html += '<mark class="' + classeCss + haNota + '" data-hl="' + run.hlId + '">' +
-                escapeHtml(testo.slice(run.start, run.end)) +
+        var highlight = DATA.highlights[run.hlId];
+        var hasNote = highlight && highlight.note ? ' has-note' : '';
+        html += '<mark class="' + cssClass + hasNote + '" data-hl="' + run.hlId + '">' +
+                escapeHtml(text.slice(run.start, run.end)) +
                 '</mark>';
       } else {
-        html += escapeHtml(testo.slice(run.start, run.end));
+        html += escapeHtml(text.slice(run.start, run.end));
       }
 
-      cursore = run.end;
+      cursor = run.end;
     }
 
-    if (cursore < testo.length) {
-      html += escapeHtml(testo.slice(cursore));
+    if (cursor < text.length) {
+      html += escapeHtml(text.slice(cursor));
     }
 
     return html;
   }
 
-  function ridisegna() {
-    var doc = documentoAttivo();
+  function redraw() {
+    var doc = getActiveDocument();
     if (!doc) {
       $('output').innerHTML = '';
       $('stats').style.display = 'none';
-      renderizzaLegenda();
-      aggiornaBadgeLingua(null);
+      renderLegend();
+      updateLanguageBadge(null);
       return;
     }
 
-    $('output').innerHTML = renderizzaAnnotato(doc);
-    renderizzaStatistiche(doc);
-    renderizzaLegenda();
-    aggiornaBadgeLingua(doc);
+    $('output').innerHTML = renderAnnotated(doc);
+    renderStats(doc);
+    renderLegend();
+    updateLanguageBadge(doc);
   }
 
-  function aggiornaBadgeLingua(doc) {
-    var badge = $('lingua-badge');
+  function updateLanguageBadge(doc) {
+    var badge = $('language-badge');
     if (!badge) return;
     if (!doc) {
       badge.textContent = '—';
       return;
     }
-    var lingua = doc.lang || rilevaLingua(doc.text);
-    badge.textContent = lingua === 'it' ? 'IT' : 'EN';
+    var lang = doc.lang || detectLanguage(doc.text);
+    badge.textContent = lang === 'it' ? 'IT' : 'EN';
   }
 
-  function renderizzaStatistiche(doc) {
-    var evidenziazioni = evidenziazioniDi(doc.id).filter(function (ev) {
-      return ev.start >= 0;
+  function renderStats(doc) {
+    var highlights = highlightsForDocument(doc.id).filter(function (h) {
+      return h.start >= 0;
     });
-    var numeroCard = cardDi(doc.id).length;
-    var daRipassare = cardDaRipassare(doc.id).length;
-    var lingua = doc.lang || rilevaLingua(doc.text);
+    var cardCount = cardsForDocument(doc.id).length;
+    var dueCount = cardsDue(doc.id).length;
+    var lang = doc.lang || detectLanguage(doc.text);
 
     var box = $('stats');
     box.style.display = 'grid';
     box.innerHTML =
-      '<div class="stat"><div class="k">Lingua</div><div class="v">' +
-        (lingua === 'it' ? 'IT' : 'EN') +
+      '<div class="stat"><div class="k">Language</div><div class="v">' +
+        (lang === 'it' ? 'IT' : 'EN') +
       '</div></div>' +
-      '<div class="stat"><div class="k">Evidenziaz.</div><div class="v">' +
-        evidenziazioni.length +
+      '<div class="stat"><div class="k">Highlights</div><div class="v">' +
+        highlights.length +
       '</div></div>' +
-      '<div class="stat"><div class="k">Domande</div><div class="v">' +
-        numeroCard +
+      '<div class="stat"><div class="k">Questions</div><div class="v">' +
+        cardCount +
       '</div></div>' +
-      '<div class="stat"><div class="k">Da ripassare</div><div class="v">' +
-        daRipassare +
+      '<div class="stat"><div class="k">Due</div><div class="v">' +
+        dueCount +
       '</div></div>';
   }
 
-  function renderizzaLegenda() {
-    var doc = documentoAttivo();
+  function renderLegend() {
+    var doc = getActiveDocument();
     var box = $('legend');
     box.innerHTML = '';
     if (!doc) return;
 
-    var evidenziazioni = evidenziazioniDi(doc.id).filter(function (ev) {
-      return ev.start >= 0;
+    var highlights = highlightsForDocument(doc.id).filter(function (h) {
+      return h.start >= 0;
     });
 
-    var conteggi = {};
-    for (var i = 0; i < evidenziazioni.length; i++) {
-      conteggi[evidenziazioni[i].cat] = (conteggi[evidenziazioni[i].cat] || 0) + 1;
+    var counts = {};
+    for (var i = 0; i < highlights.length; i++) {
+      counts[highlights[i].cat] = (counts[highlights[i].cat] || 0) + 1;
     }
 
-    var attive = {};
-    for (var j = 0; j < DATI.impostazioni.categorieAttive.length; j++) {
-      attive[DATI.impostazioni.categorieAttive[j]] = true;
+    var active = {};
+    for (var j = 0; j < DATA.settings.activeCategories.length; j++) {
+      active[DATA.settings.activeCategories[j]] = true;
     }
 
-    var modalitaModifica = document.body.classList.contains('edit-mode');
+    var editMode = document.body.classList.contains('edit-mode');
 
-    for (var c = 0; c < CATEGORIE.length; c++) {
-      var categoria = CATEGORIE[c];
-      var bottone = document.createElement('button');
-      var selezionata = modalitaModifica && stato.editCategory === categoria.id;
-      var attiva = attive[categoria.id];
+    for (var c = 0; c < CATEGORIES.length; c++) {
+      var category = CATEGORIES[c];
+      var button = document.createElement('button');
+      var selected = editMode && state.editCategory === category.id;
+      var isActive = active[category.id];
 
-      bottone.className = 'cat-pill' +
-        (selezionata ? ' sel' : (attiva ? '' : ' off'));
+      button.className = 'cat-pill' +
+        (selected ? ' sel' : (isActive ? '' : ' off'));
 
-      var numero = conteggi[categoria.id] || 0;
-      var varCss = '--colore-' +
-        categoria.id.replace('num', 'numero')
-          .replace('name', 'nome')
-          .replace('key', 'concetto')
-          .replace('def', 'definizione')
-          .replace('quote', 'citazione')
-          .replace('list', 'elenco')
-          .replace('sentence', 'frase');
+      var count = counts[category.id] || 0;
+      var cssVar = '--color-' +
+        category.id.replace('num', 'number')
+          .replace('name', 'name')
+          .replace('key', 'concept')
+          .replace('def', 'definition')
+          .replace('quote', 'quote')
+          .replace('list', 'list')
+          .replace('sentence', 'sentence');
 
-      bottone.innerHTML =
-        '<span class="dot" style="background: var(' + varCss + ')"></span>' +
-        categoria.label +
-        (numero ? '<span class="count">' + numero + '</span>' : '');
+      button.innerHTML =
+        '<span class="dot" style="background: var(' + cssVar + ')"></span>' +
+        category.label +
+        (count ? '<span class="count">' + count + '</span>' : '');
 
-      (function (categoriaId, inModifica) {
-        bottone.addEventListener('click', function () {
-          if (inModifica) {
-            stato.editCategory = categoriaId;
-            renderizzaLegenda();
+      (function (categoryId, isEditMode) {
+        button.addEventListener('click', function () {
+          if (isEditMode) {
+            state.editCategory = categoryId;
+            renderLegend();
           } else {
-            var idx = DATI.impostazioni.categorieAttive.indexOf(categoriaId);
+            var idx = DATA.settings.activeCategories.indexOf(categoryId);
             if (idx >= 0) {
-              DATI.impostazioni.categorieAttive.splice(idx, 1);
+              DATA.settings.activeCategories.splice(idx, 1);
             } else {
-              DATI.impostazioni.categorieAttive.push(categoriaId);
+              DATA.settings.activeCategories.push(categoryId);
             }
-            salvaDati();
-            ridisegna();
+            saveData();
+            redraw();
           }
-          vibra(4);
+          vibrate(4);
         });
-      })(categoria.id, modalitaModifica);
+      })(category.id, editMode);
 
-      box.appendChild(bottone);
+      box.appendChild(button);
     }
   }
 
-  var stato = {
+  var state = {
     editCategory: 'key'
   };
 
   // ============================================================
-  // SELEZIONE
+  // SELECTION
   // ============================================================
 
-  var selezione = {
-    elemento: null,
+  var selection = {
+    element: null,
     offset: null,
-    timerNascondi: null
+    hideTimer: null
   };
 
-  function inizializzaSelezione() {
-    selezione.elemento = $('selection-bar');
+  function initSelection() {
+    selection.element = $('selection-bar');
 
     document.addEventListener('selectionchange', function () {
-      var attivo = document.activeElement;
-      if (attivo && (attivo.tagName === 'INPUT' || attivo.tagName === 'TEXTAREA')) {
+      var active = document.activeElement;
+      if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) {
         return;
       }
 
       var sel = window.getSelection();
       if (!sel || sel.isCollapsed || sel.rangeCount === 0) {
-        programmaNascondi();
+        scheduleHide();
         return;
       }
 
@@ -2365,36 +2353,36 @@ body.edit-mode .edit-hint {
       var range = sel.getRangeAt(0);
       if (!output.contains(range.startContainer) ||
           !output.contains(range.endContainer)) {
-        programmaNascondi();
+        scheduleHide();
         return;
       }
 
-      var offset = calcolaOffset(output);
+      var offset = calculateOffset(output);
       if (!offset || offset.end - offset.start < 2) {
-        programmaNascondi();
+        scheduleHide();
         return;
       }
 
-      clearTimeout(selezione.timerNascondi);
-      selezione.offset = offset;
-      mostraBarraSelezione();
+      clearTimeout(selection.hideTimer);
+      selection.offset = offset;
+      showSelectionBar();
     });
 
-    window.addEventListener('scroll', nascondiBarraSelezione, { passive: true });
+    window.addEventListener('scroll', hideSelectionBar, { passive: true });
   }
 
-  function programmaNascondi() {
-    clearTimeout(selezione.timerNascondi);
-    selezione.timerNascondi = setTimeout(nascondiBarraSelezione, 400);
+  function scheduleHide() {
+    clearTimeout(selection.hideTimer);
+    selection.hideTimer = setTimeout(hideSelectionBar, 400);
   }
 
-  function nascondiBarraSelezione() {
-    if (selezione.elemento) {
-      selezione.elemento.classList.remove('show');
+  function hideSelectionBar() {
+    if (selection.element) {
+      selection.element.classList.remove('show');
     }
   }
 
-  function calcolaOffset(output) {
+  function calculateOffset(output) {
     var sel = window.getSelection();
     if (!sel.rangeCount) return null;
 
@@ -2403,799 +2391,800 @@ body.edit-mode .edit-hint {
     var pre1 = document.createRange();
     pre1.selectNodeContents(output);
     pre1.setEnd(range.startContainer, range.startOffset);
-    var inizio = pre1.toString().length;
+    var start = pre1.toString().length;
 
     var pre2 = document.createRange();
     pre2.selectNodeContents(output);
     pre2.setEnd(range.endContainer, range.endOffset);
-    var fine = pre2.toString().length;
+    var end = pre2.toString().length;
 
     return {
-      start: Math.min(inizio, fine),
-      end: Math.max(inizio, fine)
+      start: Math.min(start, end),
+      end: Math.max(start, end)
     };
   }
 
-  function mostraBarraSelezione() {
-    var barra = selezione.elemento;
-    if (!barra) return;
-    barra.innerHTML = '';
+  function showSelectionBar() {
+    var bar = selection.element;
+    if (!bar) return;
+    bar.innerHTML = '';
 
-    for (var i = 0; i < CATEGORIE.length; i++) {
-      var categoria = CATEGORIE[i];
-      var bottone = document.createElement('button');
-      bottone.className = 'cat-btn';
+    for (var i = 0; i < CATEGORIES.length; i++) {
+      var category = CATEGORIES[i];
+      var button = document.createElement('button');
+      button.className = 'cat-btn';
 
-      var varCss = '--colore-' +
-        categoria.id.replace('num', 'numero')
-          .replace('name', 'nome')
-          .replace('key', 'concetto')
-          .replace('def', 'definizione')
-          .replace('quote', 'citazione')
-          .replace('list', 'elenco')
-          .replace('sentence', 'frase');
+      var cssVar = '--color-' +
+        category.id.replace('num', 'number')
+          .replace('name', 'name')
+          .replace('key', 'concept')
+          .replace('def', 'definition')
+          .replace('quote', 'quote')
+          .replace('list', 'list')
+          .replace('sentence', 'sentence');
 
-      bottone.innerHTML =
-        '<span class="dot" style="background: var(' + varCss + ')"></span>';
+      button.innerHTML =
+        '<span class="dot" style="background: var(' + cssVar + ')"></span>';
 
-      (function (categoriaId) {
-        bottone.addEventListener('click', function () {
-          clearTimeout(selezione.timerNascondi);
-          var offset = selezione.offset;
+      (function (categoryId) {
+        button.addEventListener('click', function () {
+          clearTimeout(selection.hideTimer);
+          var offset = selection.offset;
           if (!offset) return;
-          applicaEvidenziazione(offset.start, offset.end, categoriaId);
-          selezione.offset = null;
-          nascondiBarraSelezione();
+          applyHighlight(offset.start, offset.end, categoryId);
+          selection.offset = null;
+          hideSelectionBar();
           if (window.getSelection) window.getSelection().removeAllRanges();
         });
-      })(categoria.id);
+      })(category.id);
 
-      barra.appendChild(bottone);
+      bar.appendChild(button);
     }
 
-    var separatore = document.createElement('div');
-    separatore.className = 'sep';
-    barra.appendChild(separatore);
+    var separator = document.createElement('div');
+    separator.className = 'sep';
+    bar.appendChild(separator);
 
-    var btnNota = document.createElement('button');
-    btnNota.className = 'cat-btn note-btn';
-    btnNota.innerHTML =
+    var noteBtn = document.createElement('button');
+    noteBtn.className = 'cat-btn note-btn';
+    noteBtn.innerHTML =
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
       'stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
       '<path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>' +
       '</svg>';
 
-    btnNota.addEventListener('click', function () {
-      clearTimeout(selezione.timerNascondi);
-      var offset = selezione.offset;
+    noteBtn.addEventListener('click', function () {
+      clearTimeout(selection.hideTimer);
+      var offset = selection.offset;
       if (!offset) return;
-      var ev = applicaEvidenziazione(offset.start, offset.end, 'key', true);
-      selezione.offset = null;
-      nascondiBarraSelezione();
+      var highlight = applyHighlight(offset.start, offset.end, 'key', true);
+      selection.offset = null;
+      hideSelectionBar();
       if (window.getSelection) window.getSelection().removeAllRanges();
-      if (ev) setTimeout(function () { apriModaleNota(ev); }, 80);
+      if (highlight) setTimeout(function () { openNoteModal(highlight); }, 80);
     });
 
-    barra.appendChild(btnNota);
-    barra.classList.add('show');
+    bar.appendChild(noteBtn);
+    bar.classList.add('show');
   }
 
-  function applicaEvidenziazione(start, end, categoriaId, silenzioso) {
-    var doc = documentoAttivo();
+  function applyHighlight(start, end, categoryId, silent) {
+    var doc = getActiveDocument();
     if (!doc || end - start < 2) return null;
 
-    var esistente = null;
-    var tutte = evidenziazioniDi(doc.id);
+    var existing = null;
+    var all = highlightsForDocument(doc.id);
 
-    for (var i = 0; i < tutte.length; i++) {
-      if (tutte[i].start === start && tutte[i].end === end) {
-        esistente = tutte[i];
+    for (var i = 0; i < all.length; i++) {
+      if (all[i].start === start && all[i].end === end) {
+        existing = all[i];
         break;
       }
     }
 
-    var evidenziazione;
+    var highlight;
 
-    if (esistente) {
-      aggiornaEvidenziazione(esistente.id, { cat: categoriaId, source: 'user' });
-      evidenziazione = esistente;
+    if (existing) {
+      updateHighlight(existing.id, { cat: categoryId, source: 'user' });
+      highlight = existing;
     } else {
-      var daRimuovere = [];
-      for (var j = 0; j < tutte.length; j++) {
-        var altra = tutte[j];
-        if (altra.start >= start && altra.end <= end &&
-            (altra.start !== start || altra.end !== end)) {
-          daRimuovere.push(altra.id);
+      var toRemove = [];
+      for (var j = 0; j < all.length; j++) {
+        var other = all[j];
+        if (other.start >= start && other.end <= end &&
+            (other.start !== start || other.end !== end)) {
+          toRemove.push(other.id);
         }
       }
-      for (var k = 0; k < daRimuovere.length; k++) {
-        rimuoviEvidenziazione(daRimuovere[k]);
+      for (var k = 0; k < toRemove.length; k++) {
+        removeHighlight(toRemove[k]);
       }
 
-      var prima = doc.text.slice(Math.max(0, start - 30), start);
-      var dopo = doc.text.slice(end, end + 30);
+      var before = doc.text.slice(Math.max(0, start - 30), start);
+      var after = doc.text.slice(end, end + 30);
 
-      evidenziazione = aggiungiEvidenziazione({
+      highlight = addHighlight({
         docId: doc.id,
         start: start,
         end: end,
-        cat: categoriaId,
+        cat: categoryId,
         source: 'user',
-        before: prima,
-        after: dopo
+        before: before,
+        after: after
       });
     }
 
-    ridisegna();
+    redraw();
 
-    if (!silenzioso) {
-      var etichetta = categoriaId;
-      for (var c = 0; c < CATEGORIE.length; c++) {
-        if (CATEGORIE[c].id === categoriaId) etichetta = CATEGORIE[c].label;
+    if (!silent) {
+      var label = categoryId;
+      for (var c = 0; c < CATEGORIES.length; c++) {
+        if (CATEGORIES[c].id === categoryId) label = CATEGORIES[c].label;
       }
-      mostraToast('Evidenziato · ' + etichetta, 1200);
+      showToast('Highlighted · ' + label, 1200);
     }
 
-    vibra(6);
-    return evidenziazione;
+    vibrate(6);
+    return highlight;
   }
 
   // ============================================================
-  // MODALITÀ MODIFICA
+  // EDIT MODE
   // ============================================================
 
-  function trovaToken(testo, posizione) {
-    var tokens = tokenizza(testo);
+  function findToken(text, position) {
+    var tokens = tokenize(text);
     for (var i = 0; i < tokens.length; i++) {
-      if (posizione >= tokens[i].start && posizione <= tokens[i].end) {
+      if (position >= tokens[i].start && position <= tokens[i].end) {
         return tokens[i];
       }
     }
-    var migliore = null;
-    var distanzaMinima = Infinity;
+    var best = null;
+    var minDistance = Infinity;
     for (var j = 0; j < tokens.length; j++) {
-      var distanza = Math.min(
-        Math.abs(tokens[j].start - posizione),
-        Math.abs(tokens[j].end - posizione)
+      var distance = Math.min(
+        Math.abs(tokens[j].start - position),
+        Math.abs(tokens[j].end - position)
       );
-      if (distanza < distanzaMinima) {
-        distanzaMinima = distanza;
-        migliore = tokens[j];
+      if (distance < minDistance) {
+        minDistance = distance;
+        best = tokens[j];
       }
     }
-    return (migliore && distanzaMinima < 5) ? migliore : null;
+    return (best && minDistance < 5) ? best : null;
   }
 
-  function calcolaPosizioneClick(elementoOutput, x, y) {
-    var nodo = null;
+  function calculateClickPosition(outputElement, x, y) {
+    var node = null;
     var offset = 0;
 
     if (document.caretRangeFromPoint) {
       var range = document.caretRangeFromPoint(x, y);
       if (range) {
-        nodo = range.startContainer;
+        node = range.startContainer;
         offset = range.startOffset;
       }
     } else if (document.caretPositionFromPoint) {
-      var posizione = document.caretPositionFromPoint(x, y);
-      if (posizione) {
-        nodo = posizione.offsetNode;
-        offset = posizione.offset;
+      var position = document.caretPositionFromPoint(x, y);
+      if (position) {
+        node = position.offsetNode;
+        offset = position.offset;
       }
     }
 
-    if (!nodo) return -1;
+    if (!node) return -1;
 
-    if (nodo.nodeType !== 3) {
-      if (nodo.firstChild && nodo.firstChild.nodeType === 3) {
-        nodo = nodo.firstChild;
+    if (node.nodeType !== 3) {
+      if (node.firstChild && node.firstChild.nodeType === 3) {
+        node = node.firstChild;
         offset = 0;
       } else {
-        var precedente = nodo.firstChild;
-        while (precedente && precedente.nodeType !== 3) {
-          precedente = precedente.firstChild;
+        var prev = node.firstChild;
+        while (prev && prev.nodeType !== 3) {
+          prev = prev.firstChild;
         }
-        if (!precedente) return -1;
-        nodo = precedente;
-        offset = nodo.nodeValue.length;
+        if (!prev) return -1;
+        node = prev;
+        offset = node.nodeValue.length;
       }
     }
 
-    var walker = document.createTreeWalker(elementoOutput, NodeFilter.SHOW_TEXT, null);
-    var assoluto = 0;
-    var attuale;
-    while ((attuale = walker.nextNode())) {
-      if (attuale === nodo) return assoluto + offset;
-      assoluto += attuale.nodeValue.length;
+    var walker = document.createTreeWalker(outputElement, NodeFilter.SHOW_TEXT, null);
+    var absolute = 0;
+    var current;
+    while ((current = walker.nextNode())) {
+      if (current === node) return absolute + offset;
+      absolute += current.nodeValue.length;
     }
     return -1;
   }
 
-  function cambiaStatoToken(token) {
-    var doc = documentoAttivo();
+  function toggleToken(token) {
+    var doc = getActiveDocument();
     if (!doc) return;
 
-    var categoria = stato.editCategory;
-    var evidenziazioni = evidenziazioniDi(doc.id);
+    var category = state.editCategory;
+    var highlights = highlightsForDocument(doc.id);
 
-    var esistente = null;
-    for (var i = 0; i < evidenziazioni.length; i++) {
-      if (evidenziazioni[i].start === token.start &&
-          evidenziazioni[i].end === token.end) {
-        esistente = evidenziazioni[i];
+    var existing = null;
+    for (var i = 0; i < highlights.length; i++) {
+      if (highlights[i].start === token.start &&
+          highlights[i].end === token.end) {
+        existing = highlights[i];
         break;
       }
     }
 
-    if (esistente) {
-      if (esistente.cat === categoria) {
-        rimuoviEvidenziazione(esistente.id);
-        ridisegna();
-        mostraToast('− ' + token.word, 900);
+    if (existing) {
+      if (existing.cat === category) {
+        removeHighlight(existing.id);
+        redraw();
+        showToast('− ' + token.word, 900);
         return;
       } else {
-        aggiornaEvidenziazione(esistente.id, { cat: categoria, source: 'user' });
-        ridisegna();
-        mostraToast('→ ' + token.word, 900);
+        updateHighlight(existing.id, { cat: category, source: 'user' });
+        redraw();
+        showToast('→ ' + token.word, 900);
         return;
       }
     }
 
-    var prima = doc.text.slice(Math.max(0, token.start - 30), token.start);
-    var dopo = doc.text.slice(token.end, token.end + 30);
+    var before = doc.text.slice(Math.max(0, token.start - 30), token.start);
+    var after = doc.text.slice(token.end, token.end + 30);
 
-    aggiungiEvidenziazione({
+    addHighlight({
       docId: doc.id,
       start: token.start,
       end: token.end,
-      cat: categoria,
+      cat: category,
       source: 'user',
-      before: prima,
-      after: dopo
+      before: before,
+      after: after
     });
 
-    ridisegna();
-    mostraToast('+ ' + token.word, 900);
-    vibra(6);
+    redraw();
+    showToast('+ ' + token.word, 900);
+    vibrate(6);
   }
 
   // ============================================================
-  // NOTE
+  // NOTES
   // ============================================================
 
-  var evidenziazioneInNota = null;
+  var highlightInNote = null;
 
-  function apriModaleNota(evidenziazione) {
-    evidenziazioneInNota = evidenziazione;
-    var doc = DATI.docs[evidenziazione.docId];
+  function openNoteModal(highlight) {
+    highlightInNote = highlight;
+    var doc = DATA.docs[highlight.docId];
     if (!doc) return;
 
-    var frammento = doc.text.slice(evidenziazione.start, evidenziazione.end);
-    var etichettaCategoria = evidenziazione.cat;
+    var snippet = doc.text.slice(highlight.start, highlight.end);
+    var categoryLabel = highlight.cat;
 
-    for (var i = 0; i < CATEGORIE.length; i++) {
-      if (CATEGORIE[i].id === evidenziazione.cat) {
-        etichettaCategoria = CATEGORIE[i].label;
+    for (var i = 0; i < CATEGORIES.length; i++) {
+      if (CATEGORIES[i].id === highlight.cat) {
+        categoryLabel = CATEGORIES[i].label;
       }
     }
 
     $('note-context').innerHTML =
-      '<span class="badge">' + escapeHtml(etichettaCategoria) + '</span>' +
-      '<em>' + escapeHtml(frammento.slice(0, 140)) +
-      (frammento.length > 140 ? '…' : '') + '</em>';
+      '<span class="badge">' + escapeHtml(categoryLabel) + '</span>' +
+      '<em>' + escapeHtml(snippet.slice(0, 140)) +
+      (snippet.length > 140 ? '…' : '') + '</em>';
 
-    $('note-text').value = evidenziazione.note || '';
+    $('note-text').value = highlight.note || '';
     $('modal-note').classList.add('open');
     setTimeout(function () { $('note-text').focus(); }, 100);
   }
 
   // ============================================================
-  // GENERAZIONE DOMANDE
+  // QUESTION GENERATION
   // ============================================================
 
-  function hashDomanda(stringa) {
+  function hashQuestion(string) {
     var hash = 5381;
-    var limitato = stringa.slice(0, 1000);
-    for (var i = 0; i < limitato.length; i++) {
-      hash = ((hash << 5) + hash + limitato.charCodeAt(i)) | 0;
+    var limited = string.slice(0, 1000);
+    for (var i = 0; i < limited.length; i++) {
+      hash = ((hash << 5) + hash + limited.charCodeAt(i)) | 0;
     }
     return 'm' + Math.abs(hash).toString(36);
   }
 
-  function classificaEntita(superficie) {
-    var s = superficie.toLowerCase().trim();
+  function classifyEntity(surface) {
+    var s = surface.toLowerCase().trim();
 
-    if (new RegExp('\\d{1,2}\\s+' + REGEX_MESI + '\\s+\\d{3,4}').test(s)) return 'data';
-    if (/^(1\d{3}|20\d{2})$/.test(s)) return 'anno';
-    if (/^\d+(?:[.,]\d+)?\s*%$/.test(s)) return 'percentuale';
-    if (/^\d+(?:[.,]\d+)?$/.test(s)) return 'numero';
+    if (new RegExp('\\d{1,2}\\s+' + MONTH_REGEX + '\\s+\\d{3,4}').test(s)) return 'date';
+    if (/^(1\d{3}|20\d{2})$/.test(s)) return 'year';
+    if (/^\d+(?:[.,]\d+)?\s*%$/.test(s)) return 'percentage';
+    if (/^\d+(?:[.,]\d+)?$/.test(s)) return 'number';
 
-    if (SET_DIZIONARIO.trattati[s]) return 'trattato';
-    if (SET_DIZIONARIO.presidentiRepubblica[s]) return 'presidente_repubblica';
-    if (SET_DIZIONARIO.presidentiConsiglio[s]) return 'presidente_consiglio';
-    if (SET_DIZIONARIO.usPresidents[s]) return 'us_president';
-    if (SET_DIZIONARIO.ukPrimeMinisters[s]) return 'uk_pm';
-    if (SET_DIZIONARIO.partiti[s]) return 'partito';
-    if (SET_DIZIONARIO.regioni[s]) return 'regione';
+    if (DICTIONARY_SETS.treaties[s]) return 'treaty';
+    if (DICTIONARY_SETS.italianPresidents[s]) return 'italian_president';
+    if (DICTIONARY_SETS.italianPrimeMinisters[s]) return 'italian_pm';
+    if (DICTIONARY_SETS.usPresidents[s]) return 'us_president';
+    if (DICTIONARY_SETS.ukPrimeMinisters[s]) return 'uk_pm';
+    if (DICTIONARY_SETS.italianParties[s]) return 'party';
+    if (DICTIONARY_SETS.italianRegions[s]) return 'region';
 
-    if (/^[A-ZÀ-Ý][a-zà-ÿ]+\s+[A-ZÀ-Ý][a-zà-ÿ]+/.test(superficie)) {
-      return 'nome_proprio';
+    if (/^[A-ZÀ-Ý][a-zà-ÿ]+\s+[A-ZÀ-Ý][a-zà-ÿ]+/.test(surface)) {
+      return 'proper_noun';
     }
 
-    return 'sconosciuto';
+    return 'unknown';
   }
 
-  function distrattoriPerturbazione(tipo, corretta, quanti) {
-    if (tipo === 'anno') {
-      var anno = parseInt(corretta, 10);
-      if (isNaN(anno)) return null;
-      var offsetAnno = [-1, 1, -2, 2, -3, 3, -5, 5];
-      var risultati = [];
-      for (var i = 0; i < offsetAnno.length; i++) {
-        var v = anno + offsetAnno[i];
-        if (v >= 1000 && v <= 2099) risultati.push(String(v));
+  function perturbationDistractors(type, correct, count) {
+    if (type === 'year') {
+      var year = parseInt(correct, 10);
+      if (isNaN(year)) return null;
+      var yearOffsets = [-1, 1, -2, 2, -3, 3, -5, 5];
+      var yearResults = [];
+      for (var i = 0; i < yearOffsets.length; i++) {
+        var v = year + yearOffsets[i];
+        if (v >= 1000 && v <= 2099) yearResults.push(String(v));
       }
-      return risultati.length >= quanti ? mescola(risultati).slice(0, quanti) : null;
+      return yearResults.length >= count ? shuffle(yearResults).slice(0, count) : null;
     }
 
-    if (tipo === 'percentuale') {
-      var match = String(corretta).match(/^(\d+(?:[.,]\d+)?)\s*%$/);
+    if (type === 'percentage') {
+      var match = String(correct).match(/^(\d+(?:[.,]\d+)?)\s*%$/);
       if (!match) return null;
       var p = parseFloat(match[1].replace(',', '.'));
-      var offsetPerc = [-0.5, 0.5, -1, 1, -2, 2];
-      var risultatiPerc = [];
-      for (var j = 0; j < offsetPerc.length; j++) {
-        var vp = p + offsetPerc[j];
+      var percentOffsets = [-0.5, 0.5, -1, 1, -2, 2];
+      var percentResults = [];
+      for (var j = 0; j < percentOffsets.length; j++) {
+        var vp = p + percentOffsets[j];
         if (vp > 0 && vp < 100) {
-          risultatiPerc.push(vp.toString().replace('.', ',') + '%');
+          percentResults.push(vp.toString().replace('.', ',') + '%');
         }
       }
-      return risultatiPerc.length >= quanti
-        ? mescola(risultatiPerc).slice(0, quanti) : null;
+      return percentResults.length >= count
+        ? shuffle(percentResults).slice(0, count) : null;
     }
 
-    if (tipo === 'numero') {
-      var numero = parseFloat(String(corretta).replace(',', '.'));
-      if (isNaN(numero)) return null;
-      var unita = String(corretta).replace(/[\d.,\s]+/g, '').trim();
-      var offsetNum = [-1, 1, -2, 2, -5, 5, -10, 10];
-      var risultatiNum = [];
-      for (var k = 0; k < offsetNum.length; k++) {
-        var vn = numero + offsetNum[k];
+    if (type === 'number') {
+      var number = parseFloat(String(correct).replace(',', '.'));
+      if (isNaN(number)) return null;
+      var unit = String(correct).replace(/[\d.,\s]+/g, '').trim();
+      var numberOffsets = [-1, 1, -2, 2, -5, 5, -10, 10];
+      var numberResults = [];
+      for (var k = 0; k < numberOffsets.length; k++) {
+        var vn = number + numberOffsets[k];
         if (vn > 0) {
-          var stringa = String(Math.round(vn));
-          risultatiNum.push(unita ? stringa + ' ' + unita : stringa);
+          var str = String(Math.round(vn));
+          numberResults.push(unit ? str + ' ' + unit : str);
         }
       }
-      return risultatiNum.length >= quanti
-        ? mescola(risultatiNum).slice(0, quanti) : null;
+      return numberResults.length >= count
+        ? shuffle(numberResults).slice(0, count) : null;
     }
 
     return null;
   }
 
-  function distrattoriDizionario(tipo, corretta, quanti) {
-    var mappa = {
-      anno: 'anniComuni',
-      presidente_repubblica: 'presidentiRepubblica',
-      presidente_consiglio: 'presidentiConsiglio',
+  function dictionaryDistractors(type, correct, count) {
+    var mapping = {
+      year: 'commonYears',
+      italian_president: 'italianPresidents',
+      italian_pm: 'italianPrimeMinisters',
       us_president: 'usPresidents',
       uk_pm: 'ukPrimeMinisters',
-      trattato: 'trattati',
-      partito: 'partiti',
-      regione: 'regioni'
+      treaty: 'treaties',
+      party: 'italianParties',
+      region: 'italianRegions'
     };
 
-    var chiave = mappa[tipo];
-    if (!chiave) return null;
+    var key = mapping[type];
+    if (!key) return null;
 
-    var pool = DIZIONARIO[chiave];
+    var pool = DICTIONARY[key];
     if (!pool || !pool.length) return null;
 
-    var correttaStr = String(corretta).toLowerCase();
+    var correctStr = String(correct).toLowerCase();
 
-    if (tipo === 'anno') {
-      var annoCorretto = parseInt(corretta, 10);
-      if (!isNaN(annoCorretto)) {
-        var ordinati = pool
-          .filter(function (v) { return String(v) !== String(corretta); })
+    if (type === 'year') {
+      var correctYear = parseInt(correct, 10);
+      if (!isNaN(correctYear)) {
+        var sorted = pool
+          .filter(function (v) { return String(v) !== String(correct); })
           .map(function (v) {
-            return { v: v, d: Math.abs(parseInt(v, 10) - annoCorretto) };
+            return { v: v, d: Math.abs(parseInt(v, 10) - correctYear) };
           })
           .sort(function (a, b) { return a.d - b.d; });
-        var risultato = [];
-        for (var i = 0; i < ordinati.length && risultato.length < quanti; i++) {
-          risultato.push(String(ordinati[i].v));
+        var result = [];
+        for (var i = 0; i < sorted.length && result.length < count; i++) {
+          result.push(String(sorted[i].v));
         }
-        return risultato;
+        return result;
       }
     }
 
-    var mescolato = mescola(pool.slice());
+    var shuffled = shuffle(pool.slice());
     var out = [];
-    for (var j = 0; j < mescolato.length && out.length < quanti; j++) {
-      if (String(mescolato[j]).toLowerCase() !== correttaStr) {
-        out.push(String(mescolato[j]));
+    for (var j = 0; j < shuffled.length && out.length < count; j++) {
+      if (String(shuffled[j]).toLowerCase() !== correctStr) {
+        out.push(String(shuffled[j]));
       }
     }
-    return out.length >= quanti ? out : null;
+    return out.length >= count ? out : null;
   }
 
-  function costruisciDomanda(tipo, entita, frase, lingua) {
-    var indice = frase.toLowerCase().indexOf(entita.toLowerCase());
-    if (indice < 0) return null;
+  function buildQuestion(type, entity, sentence, language) {
+    var index = sentence.toLowerCase().indexOf(entity.toLowerCase());
+    if (index < 0) return null;
 
-    var prima = frase.slice(0, indice).replace(/^[«"'(\[]\s*/, '').trim();
-    var dopo = frase.slice(indice + entita.length).replace(/[.,;:!?]+$/, '').trim();
+    var before = sentence.slice(0, index).replace(/^[«"'(\[]\s*/, '').trim();
+    var after = sentence.slice(index + entity.length).replace(/[.,;:!?]+$/, '').trim();
 
-    var it = lingua === 'it';
+    var isItalian = language === 'it';
 
-    if (tipo === 'data' || tipo === 'anno') {
-      if (prima.length > 5) {
-        return it
-          ? 'Quando ' + prima.toLowerCase() + '?'
-          : 'When did ' + prima.toLowerCase() + ' happen?';
+    if (type === 'date' || type === 'year') {
+      if (before.length > 5) {
+        return isItalian
+          ? 'Quando ' + before.toLowerCase() + '?'
+          : 'When did ' + before.toLowerCase() + ' happen?';
       }
-      if (dopo.length > 5) {
-        return it
-          ? 'In quale anno avvenne: ' + dopo + '?'
-          : 'In which year did this happen: ' + dopo + '?';
-      }
-      return null;
-    }
-
-    if (tipo === 'percentuale' || tipo === 'numero') {
-      if (prima.length > 5) {
-        return it
-          ? 'Quanto ' + prima.toLowerCase() + '?'
-          : 'How much ' + prima.toLowerCase() + '?';
+      if (after.length > 5) {
+        return isItalian
+          ? 'In quale anno avvenne: ' + after + '?'
+          : 'In which year did this happen: ' + after + '?';
       }
       return null;
     }
 
-    if (tipo === 'presidente_repubblica') {
-      return it
+    if (type === 'percentage' || type === 'number') {
+      if (before.length > 5) {
+        return isItalian
+          ? 'Quanto ' + before.toLowerCase() + '?'
+          : 'How much ' + before.toLowerCase() + '?';
+      }
+      return null;
+    }
+
+    if (type === 'italian_president') {
+      return isItalian
         ? 'Chi fu il Presidente della Repubblica ' +
-          (dopo ? 'che ' + dopo.toLowerCase() : 'in questo periodo') + '?'
-        : 'Who was the President of the Republic ' +
-          (dopo ? 'who ' + dopo.toLowerCase() : 'in this period') + '?';
+          (after ? 'che ' + after.toLowerCase() : 'in questo periodo') + '?'
+        : 'Who was the President of the Italian Republic ' +
+          (after ? 'who ' + after.toLowerCase() : 'in this period') + '?';
     }
 
-    if (tipo === 'presidente_consiglio') {
-      return it
-        ? 'Chi era il Presidente del Consiglio quando ' + dopo.toLowerCase() + '?'
-        : 'Who was the Prime Minister when ' + dopo.toLowerCase() + '?';
+    if (type === 'italian_pm') {
+      return isItalian
+        ? 'Chi era il Presidente del Consiglio quando ' + after.toLowerCase() + '?'
+        : 'Who was the Italian Prime Minister when ' + after.toLowerCase() + '?';
     }
 
-    if (tipo === 'us_president') {
-      return it
-        ? 'Quale presidente americano ' + (dopo ? dopo.toLowerCase() : 'in questo periodo') + '?'
-        : 'Which US president ' + (dopo ? dopo.toLowerCase() : 'in this period') + '?';
+    if (type === 'us_president') {
+      return isItalian
+        ? 'Quale presidente americano ' + (after ? after.toLowerCase() : 'in questo periodo') + '?'
+        : 'Which US president ' + (after ? after.toLowerCase() : 'in this period') + '?';
     }
 
-    if (tipo === 'uk_pm') {
-      return it
-        ? 'Quale primo ministro britannico ' + (dopo ? dopo.toLowerCase() : 'in questo periodo') + '?'
-        : 'Which UK prime minister ' + (dopo ? dopo.toLowerCase() : 'in this period') + '?';
+    if (type === 'uk_pm') {
+      return isItalian
+        ? 'Quale primo ministro britannico ' + (after ? after.toLowerCase() : 'in questo periodo') + '?'
+        : 'Which UK prime minister ' + (after ? after.toLowerCase() : 'in this period') + '?';
     }
 
-    if (tipo === 'trattato') {
-      return it
-        ? 'Quale trattato ' + (dopo ? dopo.toLowerCase() : 'fu firmato in questo periodo') + '?'
-        : 'Which treaty ' + (dopo ? dopo.toLowerCase() : 'was signed in this period') + '?';
+    if (type === 'treaty') {
+      return isItalian
+        ? 'Quale trattato ' + (after ? after.toLowerCase() : 'fu firmato in questo periodo') + '?'
+        : 'Which treaty ' + (after ? after.toLowerCase() : 'was signed in this period') + '?';
     }
 
-    if (tipo === 'partito') {
-      return it
-        ? 'Quale partito ' + (dopo ? dopo.toLowerCase() : '—') + '?'
-        : 'Which party ' + (dopo ? dopo.toLowerCase() : '—') + '?';
+    if (type === 'party') {
+      return isItalian
+        ? 'Quale partito ' + (after ? after.toLowerCase() : '—') + '?'
+        : 'Which Italian party ' + (after ? after.toLowerCase() : '—') + '?';
     }
 
-    if (tipo === 'regione') {
-      return it
-        ? 'Quale regione ' + (dopo ? dopo.toLowerCase() : '—') + '?'
-        : 'Which region ' + (dopo ? dopo.toLowerCase() : '—') + '?';
+    if (type === 'region') {
+      return isItalian
+        ? 'Quale regione ' + (after ? after.toLowerCase() : '—') + '?'
+        : 'Which Italian region ' + (after ? after.toLowerCase() : '—') + '?';
     }
 
     return null;
   }
 
-  function dividiInFrasi(testo) {
-    var frasi = [];
-    var inizio = 0;
+  function splitIntoSentences(text) {
+    var sentences = [];
+    var start = 0;
     var match;
     var regex = /[.!?…]+(?=\s|$)/g;
-    while ((match = regex.exec(testo)) !== null) {
-      var fine = match.index + match[0].length;
-      if (fine - inizio >= 15) frasi.push({ start: inizio, end: fine });
-      inizio = fine;
-      while (inizio < testo.length && /\s/.test(testo[inizio])) inizio++;
+    while ((match = regex.exec(text)) !== null) {
+      var end = match.index + match[0].length;
+      if (end - start >= 15) sentences.push({ start: start, end: end });
+      start = end;
+      while (start < text.length && /\s/.test(text[start])) start++;
     }
-    if (testo.length - inizio >= 15) frasi.push({ start: inizio, end: testo.length });
-    return frasi;
+    if (text.length - start >= 15) sentences.push({ start: start, end: text.length });
+    return sentences;
   }
 
-  function proponiDalDizionario(doc) {
-    var evidenziazioni = evidenziazioniDi(doc.id).filter(function (ev) {
-      return ev.start >= 0;
+  function proposeFromDictionary(doc) {
+    var highlights = highlightsForDocument(doc.id).filter(function (h) {
+      return h.start >= 0;
     });
-    var frasi = dividiInFrasi(doc.text);
-    var proposte = [];
-    var visti = {};
-    var lingua = doc.lang || rilevaLingua(doc.text);
+    var sentences = splitIntoSentences(doc.text);
+    var proposals = [];
+    var seen = {};
+    var language = doc.lang || detectLanguage(doc.text);
 
-    for (var i = 0; i < evidenziazioni.length; i++) {
-      var ev = evidenziazioni[i];
-      var superficie = doc.text.slice(ev.start, ev.end).trim();
-      if (!superficie || superficie.length < 2 || superficie.length > 120) continue;
+    for (var i = 0; i < highlights.length; i++) {
+      var highlight = highlights[i];
+      var surface = doc.text.slice(highlight.start, highlight.end).trim();
+      if (!surface || surface.length < 2 || surface.length > 120) continue;
 
-      var tipo = classificaEntita(superficie);
-      if (tipo === 'sconosciuto') continue;
+      var type = classifyEntity(surface);
+      if (type === 'unknown') continue;
 
-      var fraseContenitrice = null;
-      for (var f = 0; f < frasi.length; f++) {
-        if (ev.start >= frasi[f].start && ev.end <= frasi[f].end) {
-          fraseContenitrice = frasi[f];
+      var containerSentence = null;
+      for (var s = 0; s < sentences.length; s++) {
+        if (highlight.start >= sentences[s].start &&
+            highlight.end <= sentences[s].end) {
+          containerSentence = sentences[s];
           break;
         }
       }
-      if (!fraseContenitrice) continue;
+      if (!containerSentence) continue;
 
-      var testoFrase = doc.text.slice(fraseContenitrice.start, fraseContenitrice.end);
-      if (testoFrase.length < 20 || testoFrase.length > 400) continue;
+      var sentenceText = doc.text.slice(containerSentence.start, containerSentence.end);
+      if (sentenceText.length < 20 || sentenceText.length > 400) continue;
 
-      var domanda = null;
-      var tipoCard = tipo;
+      var question = null;
+      var cardType = type;
 
-      if (tipo !== 'nome_proprio') {
-        domanda = costruisciDomanda(tipo, superficie, testoFrase, lingua);
+      if (type !== 'proper_noun') {
+        question = buildQuestion(type, surface, sentenceText, language);
       }
 
-      if (!domanda && tipo === 'nome_proprio') {
-        var relativo = ev.start - fraseContenitrice.start;
-        var cloze = testoFrase.slice(0, relativo) +
+      if (!question && type === 'proper_noun') {
+        var relative = highlight.start - containerSentence.start;
+        var cloze = sentenceText.slice(0, relative) +
                     '____' +
-                    testoFrase.slice(relativo + superficie.length);
+                    sentenceText.slice(relative + surface.length);
         cloze = cloze.replace(/\s+/g, ' ').trim();
         if (cloze.length >= 20 && cloze.length <= 300) {
-          domanda = cloze;
-          tipoCard = 'cloze';
+          question = cloze;
+          cardType = 'cloze';
         }
       }
 
-      if (!domanda || domanda.length < 10 || domanda.length > 220) continue;
+      if (!question || question.length < 10 || question.length > 220) continue;
 
-      var distrattori = null;
-      if (tipoCard !== 'cloze' && tipoCard !== 'nome_proprio') {
-        distrattori = distrattoriDizionario(tipoCard, superficie, 3);
-        if (!distrattori || distrattori.length < 3) {
-          distrattori = distrattoriPerturbazione(tipoCard, superficie, 3);
+      var distractors = null;
+      if (cardType !== 'cloze' && cardType !== 'proper_noun') {
+        distractors = dictionaryDistractors(cardType, surface, 3);
+        if (!distractors || distractors.length < 3) {
+          distractors = perturbationDistractors(cardType, surface, 3);
         }
       }
 
-      if (!distrattori || distrattori.length < 3) {
-        var altri = [];
-        for (var o = 0; o < evidenziazioni.length && altri.length < 3; o++) {
-          if (evidenziazioni[o].id === ev.id) continue;
-          var testoAltro = doc.text.slice(
-            evidenziazioni[o].start, evidenziazioni[o].end
+      if (!distractors || distractors.length < 3) {
+        var others = [];
+        for (var o = 0; o < highlights.length && others.length < 3; o++) {
+          if (highlights[o].id === highlight.id) continue;
+          var otherText = doc.text.slice(
+            highlights[o].start, highlights[o].end
           ).trim();
-          if (testoAltro &&
-              testoAltro.toLowerCase() !== superficie.toLowerCase() &&
-              altri.indexOf(testoAltro) === -1) {
-            altri.push(testoAltro);
+          if (otherText &&
+              otherText.toLowerCase() !== surface.toLowerCase() &&
+              others.indexOf(otherText) === -1) {
+            others.push(otherText);
           }
         }
-        if (altri.length >= 3) distrattori = altri.slice(0, 3);
+        if (others.length >= 3) distractors = others.slice(0, 3);
       }
 
-      if (!distrattori || distrattori.length < 3) continue;
+      if (!distractors || distractors.length < 3) continue;
 
-      var contentId = hashDomanda(tipoCard + '|' + domanda + '|' + superficie);
-      if (visti[contentId]) continue;
-      visti[contentId] = true;
+      var contentId = hashQuestion(cardType + '|' + question + '|' + surface);
+      if (seen[contentId]) continue;
+      seen[contentId] = true;
 
-      proposte.push({
-        type: tipoCard === 'cloze' ? 'concept-cloze' : 'fact-' + tipoCard,
-        front: domanda,
-        back: superficie,
-        distractors: distrattori.slice(0, 3),
-        highlightId: ev.id,
-        sourceCat: (tipoCard === 'anno' || tipoCard === 'data' ||
-                    tipoCard === 'percentuale' || tipoCard === 'numero')
+      proposals.push({
+        type: cardType === 'cloze' ? 'concept-cloze' : 'fact-' + cardType,
+        front: question,
+        back: surface,
+        distractors: distractors.slice(0, 3),
+        highlightId: highlight.id,
+        sourceCat: (cardType === 'year' || cardType === 'date' ||
+                    cardType === 'percentage' || cardType === 'number')
                    ? 'num' : 'name',
         contentId: contentId,
         origin: 'template'
       });
     }
 
-    return proposte;
+    return proposals;
   }
 
   // ============================================================
   // AI — WebLLM
   // ============================================================
 
-  var URL_CDN_AI = 'https://esm.run/@mlc-ai/web-llm';
+  var AI_CDN_URL = 'https://esm.run/@mlc-ai/web-llm';
 
-  var MODELLI_AI = {
+  var AI_MODELS = {
     qwen05: {
       id: 'Qwen2.5-0.5B-Instruct-q4f16_1-MLC',
       label: 'Qwen 0.5B',
       size: '~400 MB',
-      desc: 'Veloce, per telefoni modesti.'
+      desc: 'Fast, for modest phones.'
     },
     qwen15: {
       id: 'Qwen2.5-1.5B-Instruct-q4f16_1-MLC',
       label: 'Qwen 1.5B',
       size: '~1 GB',
-      desc: 'Bilanciato. Consigliato.'
+      desc: 'Balanced. Recommended.'
     },
     qwen3: {
       id: 'Qwen2.5-3B-Instruct-q4f16_1-MLC',
       label: 'Qwen 3B',
       size: '~1.8 GB',
-      desc: 'Alta qualità per tablet recenti.'
+      desc: 'High quality for recent tablets.'
     }
   };
 
-  var statoAI = {
+  var aiState = {
     engine: null,
     loading: false,
     ready: false,
     failed: false,
-    modelKey: localStorage.getItem('highlight-ai.v80.model') || 'qwen15'
+    modelKey: localStorage.getItem('highlight-ai.v90.model') || 'qwen15'
   };
 
-  function haWebGPU() {
+  function hasWebGPU() {
     return typeof navigator !== 'undefined' && !!navigator.gpu;
   }
 
-  function impostaStatoAI(elementoBarra, elementoMsg, elementoPct, tipo, messaggio, percentuale) {
-    var barra = $(elementoBarra);
-    barra.classList.remove('ready', 'error');
+  function setAIStatus(barId, msgId, pctId, kind, message, percentage) {
+    var bar = $(barId);
+    bar.classList.remove('ready', 'error');
 
-    if (tipo === 'hidden') {
-      barra.classList.remove('show');
+    if (kind === 'hidden') {
+      bar.classList.remove('show');
       return;
     }
 
-    barra.classList.add('show');
-    var spinner = barra.querySelector('.spinner');
+    bar.classList.add('show');
+    var spinner = bar.querySelector('.spinner');
 
-    if (tipo === 'ready') {
-      barra.classList.add('ready');
+    if (kind === 'ready') {
+      bar.classList.add('ready');
       spinner.style.display = 'none';
-      $(elementoMsg).textContent = messaggio || 'Pronta';
-      if (elementoPct) $(elementoPct).textContent = '';
+      $(msgId).textContent = message || 'Ready';
+      if (pctId) $(pctId).textContent = '';
       setTimeout(function () {
-        if (barra.classList.contains('ready')) barra.classList.remove('show');
+        if (bar.classList.contains('ready')) bar.classList.remove('show');
       }, 2500);
-    } else if (tipo === 'error') {
-      barra.classList.add('error');
+    } else if (kind === 'error') {
+      bar.classList.add('error');
       spinner.style.display = 'none';
-      $(elementoMsg).textContent = messaggio || 'Errore';
-      if (elementoPct) $(elementoPct).textContent = '';
+      $(msgId).textContent = message || 'Error';
+      if (pctId) $(pctId).textContent = '';
     } else {
       spinner.style.display = 'block';
-      $(elementoMsg).textContent = messaggio || 'Caricamento…';
-      if (elementoPct) {
-        $(elementoPct).textContent = percentuale != null
-          ? Math.round(percentuale * 100) + '%' : '';
+      $(msgId).textContent = message || 'Loading…';
+      if (pctId) {
+        $(pctId).textContent = percentage != null
+          ? Math.round(percentage * 100) + '%' : '';
       }
     }
   }
 
-  function statoAIinAlto(tipo, msg, pct) {
-    impostaStatoAI('ai-bar', 'ai-msg', 'ai-pct', tipo, msg, pct);
+  function mainAIStatus(kind, msg, pct) {
+    setAIStatus('ai-bar', 'ai-msg', 'ai-pct', kind, msg, pct);
   }
 
-  function statoAIinModale(tipo, msg, pct) {
-    impostaStatoAI('ai-bar-modal', 'ai-modal-msg', 'ai-modal-pct', tipo, msg, pct);
+  function modalAIStatus(kind, msg, pct) {
+    setAIStatus('ai-bar-modal', 'ai-modal-msg', 'ai-modal-pct', kind, msg, pct);
   }
 
-  function caricaModelloAI(chiave) {
-    if (statoAI.loading) return Promise.resolve(false);
-    if (statoAI.ready && statoAI.modelKey === chiave) return Promise.resolve(true);
+  function loadAIModel(key) {
+    if (aiState.loading) return Promise.resolve(false);
+    if (aiState.ready && aiState.modelKey === key) return Promise.resolve(true);
 
-    if (!haWebGPU()) {
-      statoAIinAlto('error', 'WebGPU non supportato su questo browser');
-      statoAIinModale('error', 'WebGPU non supportato');
+    if (!hasWebGPU()) {
+      mainAIStatus('error', 'WebGPU not supported in this browser');
+      modalAIStatus('error', 'WebGPU not supported');
       return Promise.resolve(false);
     }
 
-    var modello = MODELLI_AI[chiave];
-    if (!modello) return Promise.resolve(false);
+    var model = AI_MODELS[key];
+    if (!model) return Promise.resolve(false);
 
-    statoAI.loading = true;
-    statoAI.failed = false;
-    localStorage.setItem('highlight-ai.v80.model', chiave);
+    aiState.loading = true;
+    aiState.failed = false;
+    localStorage.setItem('highlight-ai.v90.model', key);
 
-    statoAIinAlto('loading', 'Scaricamento ' + modello.label + '…', 0);
-    statoAIinModale('loading', 'Scaricamento ' + modello.label + '…', 0);
+    mainAIStatus('loading', 'Downloading ' + model.label + '…', 0);
+    modalAIStatus('loading', 'Downloading ' + model.label + '…', 0);
 
-    return import(/* @vite-ignore */ URL_CDN_AI).then(function (webllm) {
-      return webllm.CreateMLCEngine(modello.id, {
+    return import(/* @vite-ignore */ AI_CDN_URL).then(function (webllm) {
+      return webllm.CreateMLCEngine(model.id, {
         initProgressCallback: function (report) {
-          statoAIinAlto('loading', report.text || 'Caricamento…', report.progress || 0);
-          statoAIinModale('loading', report.text || 'Caricamento…', report.progress || 0);
+          mainAIStatus('loading', report.text || 'Loading…', report.progress || 0);
+          modalAIStatus('loading', report.text || 'Loading…', report.progress || 0);
         }
       });
     }).then(function (engine) {
-      statoAI.engine = engine;
-      statoAI.ready = true;
-      statoAI.loading = false;
-      statoAI.modelKey = chiave;
-      statoAIinAlto('ready', modello.label + ' pronta');
-      statoAIinModale('ready', modello.label + ' pronta');
-      aggiornaIconaAI();
-      aggiornaBottoniModaleAI();
-      mostraToast(modello.label + ' caricata');
+      aiState.engine = engine;
+      aiState.ready = true;
+      aiState.loading = false;
+      aiState.modelKey = key;
+      mainAIStatus('ready', model.label + ' ready');
+      modalAIStatus('ready', model.label + ' ready');
+      updateAIIcon();
+      updateAIModalButtons();
+      showToast(model.label + ' loaded');
       return true;
-    }).catch(function (errore) {
-      console.error('Errore caricamento AI:', errore);
-      statoAI.loading = false;
-      statoAI.ready = false;
-      statoAI.failed = true;
-      statoAIinAlto('error', 'Errore: ' + String(errore.message || errore).slice(0, 60));
-      statoAIinModale('error', 'Errore di caricamento');
-      aggiornaIconaAI();
-      aggiornaBottoniModaleAI();
+    }).catch(function (error) {
+      console.error('AI load error:', error);
+      aiState.loading = false;
+      aiState.ready = false;
+      aiState.failed = true;
+      mainAIStatus('error', 'Error: ' + String(error.message || error).slice(0, 60));
+      modalAIStatus('error', 'Loading error');
+      updateAIIcon();
+      updateAIModalButtons();
       return false;
     });
   }
 
-  function scaricaModelloAI() {
-    if (statoAI.engine && statoAI.engine.unload) {
-      try { statoAI.engine.unload(); } catch (errore) { /* ignora */ }
+  function unloadAIModel() {
+    if (aiState.engine && aiState.engine.unload) {
+      try { aiState.engine.unload(); } catch (error) { /* ignore */ }
     }
-    statoAI.engine = null;
-    statoAI.ready = false;
-    statoAI.loading = false;
-    statoAIinAlto('hidden');
-    statoAIinModale('hidden');
-    aggiornaIconaAI();
-    aggiornaBottoniModaleAI();
-    mostraToast('AI disattivata');
+    aiState.engine = null;
+    aiState.ready = false;
+    aiState.loading = false;
+    mainAIStatus('hidden');
+    modalAIStatus('hidden');
+    updateAIIcon();
+    updateAIModalButtons();
+    showToast('AI deactivated');
   }
 
-  function chiamaAI(prompt, maxTokens) {
-    if (!statoAI.engine) return Promise.reject(new Error('AI non caricata'));
+  function callAI(prompt, maxTokens) {
+    if (!aiState.engine) return Promise.reject(new Error('AI not loaded'));
     maxTokens = maxTokens || 300;
 
     var timeout = new Promise(function (_, reject) {
       setTimeout(function () { reject(new Error('timeout')); }, 60000);
     });
 
-    var chiamata = statoAI.engine.chat.completions.create({
+    var call = aiState.engine.chat.completions.create({
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.1,
       max_tokens: maxTokens,
       stream: false
     });
 
-    return Promise.race([chiamata, timeout]).then(function (risposta) {
-      return (risposta.choices &&
-              risposta.choices[0] &&
-              risposta.choices[0].message &&
-              risposta.choices[0].message.content) || '';
+    return Promise.race([call, timeout]).then(function (response) {
+      return (response.choices &&
+              response.choices[0] &&
+              response.choices[0].message &&
+              response.choices[0].message.content) || '';
     });
   }
 
-  function aggiornaIconaAI() {
-    var bottone = $('btn-ai-status');
-    if (!bottone) return;
-    if (statoAI.ready) {
-      bottone.classList.add('ai-attiva');
+  function updateAIIcon() {
+    var button = $('btn-ai-status');
+    if (!button) return;
+    if (aiState.ready) {
+      button.classList.add('ai-active');
     } else {
-      bottone.classList.remove('ai-attiva');
+      button.classList.remove('ai-active');
     }
   }
 
-  function aggiornaBottoniModaleAI() {
+  function updateAIModalButtons() {
     var idle = $('ai-actions-idle');
     var ready = $('ai-actions-ready');
-    if (statoAI.ready) {
+    if (aiState.ready) {
       idle.style.display = 'none';
       ready.style.display = 'flex';
     } else {
@@ -3204,370 +3193,370 @@ body.edit-mode .edit-hint {
     }
   }
 
-  function costruisciPromptEstrazione(testo, lingua) {
-    if (lingua === 'en') {
+  function buildExtractionPrompt(text, language) {
+    if (language === 'en') {
       return 'Read this text and extract facts. For each fact write ' +
-        'a JSON object with 3 fields: entita, tipo, soggetto.\n\n' +
-        'Allowed types: anno, data, percentuale, numero, nome.\n' +
-        'Rules: entita must be short (1-8 words). ' +
-        'soggetto is the sentence part before the entity.\n\n' +
-        'Text:\n' + testo + '\n\n' +
+        'a JSON object with 3 fields: entity, type, subject.\n\n' +
+        'Allowed types: year, date, percentage, number, name.\n' +
+        'Rules: entity must be short (1-8 words). ' +
+        'subject is the part of the sentence before the entity.\n\n' +
+        'Text:\n' + text + '\n\n' +
         'Example valid response:\n' +
-        '[{"entita":"1945","tipo":"anno","soggetto":"World War II ended in"},' +
-        '{"entita":"4 July 1776","tipo":"data","soggetto":"The Declaration was signed on"}]\n\n' +
-        'Reply ONLY with JSON array, no text before or after:';
+        '[{"entity":"1945","type":"year","subject":"World War II ended in"},' +
+        '{"entity":"4 July 1776","type":"date","subject":"The Declaration was signed on"}]\n\n' +
+        'Reply ONLY with a JSON array, no text before or after:';
     }
 
     return 'Leggi questo testo ed estrai i fatti. Per ogni fatto scrivi ' +
-      'un oggetto JSON con 3 campi: entita, tipo, soggetto.\n\n' +
-      'Tipi ammessi: anno, data, percentuale, numero, nome.\n' +
-      'Regole: entita deve essere breve (1-8 parole). ' +
-      'soggetto è la parte di frase prima dell\'entità.\n\n' +
-      'Testo:\n' + testo + '\n\n' +
+      'un oggetto JSON con 3 campi: entity, type, subject.\n\n' +
+      'Tipi ammessi: year, date, percentage, number, name.\n' +
+      'Regole: entity deve essere breve (1-8 parole). ' +
+      'subject è la parte di frase prima dell\'entità.\n\n' +
+      'Testo:\n' + text + '\n\n' +
       'Esempio di risposta valida:\n' +
-      '[{"entita":"1948","tipo":"anno","soggetto":"La Costituzione entrò in vigore il"},' +
-      '{"entita":"1 gennaio 1948","tipo":"data","soggetto":"entrò in vigore il"}]\n\n' +
+      '[{"entity":"1948","type":"year","subject":"La Costituzione entrò in vigore il"},' +
+      '{"entity":"1 gennaio 1948","type":"date","subject":"entrò in vigore il"}]\n\n' +
       'Rispondi SOLO con array JSON, nessun testo prima o dopo:';
   }
 
-  function parseEstrazione(raw) {
+  function parseExtraction(raw) {
     if (!raw || typeof raw !== 'string') return [];
 
-    var pulito = raw.trim();
-    var fenced = pulito.match(/```(?:json)?\s*([\s\S]*?)```/);
-    if (fenced) pulito = fenced[1].trim();
+    var cleaned = raw.trim();
+    var fenced = cleaned.match(/```(?:json)?\s*([\s\S]*?)```/);
+    if (fenced) cleaned = fenced[1].trim();
 
     try {
-      var parsed = JSON.parse(pulito);
+      var parsed = JSON.parse(cleaned);
       if (Array.isArray(parsed)) return parsed;
       if (parsed && typeof parsed === 'object') return [parsed];
-    } catch (errore) { /* continua */ }
+    } catch (error) { /* continue */ }
 
-    var arrayMatch = pulito.match(/\[[\s\S]*\]/);
+    var arrayMatch = cleaned.match(/\[[\s\S]*\]/);
     if (arrayMatch) {
       try {
         var parsed2 = JSON.parse(arrayMatch[0]);
         if (Array.isArray(parsed2)) return parsed2;
-      } catch (errore) { /* continua */ }
+      } catch (error) { /* continue */ }
     }
 
-    var oggetti = [];
-    var regexOggetto = /\{[^{}]*?"entita"[\s\S]*?"tipo"[\s\S]*?\}/g;
+    var objects = [];
+    var objectRegex = /\{[^{}]*?"entity"[\s\S]*?"type"[\s\S]*?\}/g;
     var m;
-    while ((m = regexOggetto.exec(pulito)) !== null) {
-      try { oggetti.push(JSON.parse(m[0])); } catch (errore) { /* ignora */ }
+    while ((m = objectRegex.exec(cleaned)) !== null) {
+      try { objects.push(JSON.parse(m[0])); } catch (error) { /* ignore */ }
     }
-    return oggetti;
+    return objects;
   }
 
-  function dividiInChunk(testo, maxParole) {
-    maxParole = maxParole || 100;
-    var frasi = dividiInFrasi(testo);
-    if (!frasi.length) return testo.trim() ? [testo.trim()] : [];
+  function splitIntoChunks(text, maxWords) {
+    maxWords = maxWords || 100;
+    var sentences = splitIntoSentences(text);
+    if (!sentences.length) return text.trim() ? [text.trim()] : [];
 
     var chunks = [];
-    var inizioCorrente = frasi[0].start;
-    var paroleCorrenti = 0;
+    var currentStart = sentences[0].start;
+    var currentWords = 0;
 
-    for (var i = 0; i < frasi.length; i++) {
-      var frase = frasi[i];
-      var parole = (testo.slice(frase.start, frase.end).match(/\p{L}+/gu) || []).length;
+    for (var i = 0; i < sentences.length; i++) {
+      var sentence = sentences[i];
+      var words = (text.slice(sentence.start, sentence.end).match(/\p{L}+/gu) || []).length;
 
-      if (paroleCorrenti > 0 && paroleCorrenti + parole > maxParole) {
-        chunks.push(testo.slice(inizioCorrente, frasi[i - 1].end).trim());
-        inizioCorrente = frase.start;
-        paroleCorrenti = parole;
+      if (currentWords > 0 && currentWords + words > maxWords) {
+        chunks.push(text.slice(currentStart, sentences[i - 1].end).trim());
+        currentStart = sentence.start;
+        currentWords = words;
       } else {
-        paroleCorrenti += parole;
+        currentWords += words;
       }
     }
-    if (inizioCorrente < testo.length) {
-      chunks.push(testo.slice(inizioCorrente).trim());
+    if (currentStart < text.length) {
+      chunks.push(text.slice(currentStart).trim());
     }
     return chunks.filter(function (c) { return c.length > 40; });
   }
 
-  function proponiDallAI(doc, onProgress) {
-    var chunks = dividiInChunk(doc.text, 100);
+  function proposeFromAI(doc, onProgress) {
+    var chunks = splitIntoChunks(doc.text, 100);
     if (!chunks.length) return Promise.resolve([]);
 
-    var frasi = dividiInFrasi(doc.text);
-    var proposte = [];
-    var visti = {};
-    var indiceCorrente = 0;
-    var lingua = doc.lang || rilevaLingua(doc.text);
+    var sentences = splitIntoSentences(doc.text);
+    var proposals = [];
+    var seen = {};
+    var currentIndex = 0;
+    var language = doc.lang || detectLanguage(doc.text);
 
-    function prossimo() {
-      if (indiceCorrente >= chunks.length) {
-        return Promise.resolve(proposte);
+    function next() {
+      if (currentIndex >= chunks.length) {
+        return Promise.resolve(proposals);
       }
-      if (onProgress) onProgress(indiceCorrente + 1, chunks.length);
+      if (onProgress) onProgress(currentIndex + 1, chunks.length);
 
-      var chunk = chunks[indiceCorrente];
+      var chunk = chunks[currentIndex];
 
-      return chiamaAI(costruisciPromptEstrazione(chunk, lingua), 300).then(function (rispostaRaw) {
-        var items = parseEstrazione(rispostaRaw);
+      return callAI(buildExtractionPrompt(chunk, language), 300).then(function (rawResponse) {
+        var items = parseExtraction(rawResponse);
 
         for (var i = 0; i < items.length; i++) {
           var item = items[i];
-          if (!item || !item.entita || !item.tipo) continue;
+          if (!item || !item.entity || !item.type) continue;
 
-          var entita = String(item.entita).trim();
-          var tipo = String(item.tipo).trim().toLowerCase();
+          var entity = String(item.entity).trim();
+          var type = String(item.type).trim().toLowerCase();
 
-          if (tipo === 'cifra') tipo = 'numero';
-          if (tipo === 'nome' || tipo === 'persona') tipo = 'nome_proprio';
+          if (type === 'cifra' || type === 'cifre') type = 'number';
+          if (type === 'nome' || type === 'persona' || type === 'name') type = 'proper_noun';
 
-          if (['anno', 'data', 'percentuale', 'numero', 'nome_proprio']
-              .indexOf(tipo) === -1) continue;
+          if (['year', 'date', 'percentage', 'number', 'proper_noun']
+              .indexOf(type) === -1) continue;
 
-          var verificato = classificaEntita(entita);
-          if (verificato !== 'sconosciuto') tipo = verificato;
+          var verified = classifyEntity(entity);
+          if (verified !== 'unknown') type = verified;
 
-          var indice = doc.text.indexOf(entita);
-          if (indice < 0) continue;
+          var index = doc.text.indexOf(entity);
+          if (index < 0) continue;
 
-          var fraseContenitrice = null;
-          for (var f = 0; f < frasi.length; f++) {
-            if (indice >= frasi[f].start && indice < frasi[f].end) {
-              fraseContenitrice = frasi[f];
+          var containerSentence = null;
+          for (var s = 0; s < sentences.length; s++) {
+            if (index >= sentences[s].start && index < sentences[s].end) {
+              containerSentence = sentences[s];
               break;
             }
           }
-          if (!fraseContenitrice) continue;
+          if (!containerSentence) continue;
 
-          var testoFrase = doc.text.slice(fraseContenitrice.start, fraseContenitrice.end);
-          if (testoFrase.length < 20 || testoFrase.length > 400) continue;
+          var sentenceText = doc.text.slice(containerSentence.start, containerSentence.end);
+          if (sentenceText.length < 20 || sentenceText.length > 400) continue;
 
-          var domanda = null;
-          var tipoCard = tipo;
+          var question = null;
+          var cardType = type;
 
-          if (tipo === 'nome_proprio') {
-            var relativo = indice - fraseContenitrice.start;
-            var cloze = testoFrase.slice(0, relativo) + '____' +
-                        testoFrase.slice(relativo + entita.length);
+          if (type === 'proper_noun') {
+            var relative = index - containerSentence.start;
+            var cloze = sentenceText.slice(0, relative) + '____' +
+                        sentenceText.slice(relative + entity.length);
             cloze = cloze.replace(/\s+/g, ' ').trim();
             if (cloze.length >= 20 && cloze.length <= 300) {
-              domanda = cloze;
-              tipoCard = 'cloze';
+              question = cloze;
+              cardType = 'cloze';
             }
           } else {
-            domanda = costruisciDomanda(tipo, entita, testoFrase, lingua);
+            question = buildQuestion(type, entity, sentenceText, language);
           }
 
-          if (!domanda || domanda.length < 10 || domanda.length > 220) continue;
+          if (!question || question.length < 10 || question.length > 220) continue;
 
-          var distrattori = null;
-          if (tipoCard !== 'cloze') {
-            distrattori = distrattoriDizionario(tipoCard, entita, 3);
-            if (!distrattori || distrattori.length < 3) {
-              distrattori = distrattoriPerturbazione(tipoCard, entita, 3);
+          var distractors = null;
+          if (cardType !== 'cloze') {
+            distractors = dictionaryDistractors(cardType, entity, 3);
+            if (!distractors || distractors.length < 3) {
+              distractors = perturbationDistractors(cardType, entity, 3);
             }
           }
 
-          if (!distrattori || distrattori.length < 3) {
-            var altri = [];
-            var altreEvidenziazioni = evidenziazioniDi(doc.id);
-            for (var o = 0; o < altreEvidenziazioni.length && altri.length < 3; o++) {
-              var testoAltro = doc.text.slice(
-                altreEvidenziazioni[o].start,
-                altreEvidenziazioni[o].end
+          if (!distractors || distractors.length < 3) {
+            var others = [];
+            var otherHighlights = highlightsForDocument(doc.id);
+            for (var o = 0; o < otherHighlights.length && others.length < 3; o++) {
+              var otherText = doc.text.slice(
+                otherHighlights[o].start,
+                otherHighlights[o].end
               ).trim();
-              if (testoAltro &&
-                  testoAltro.toLowerCase() !== entita.toLowerCase() &&
-                  altri.indexOf(testoAltro) === -1) {
-                altri.push(testoAltro);
+              if (otherText &&
+                  otherText.toLowerCase() !== entity.toLowerCase() &&
+                  others.indexOf(otherText) === -1) {
+                others.push(otherText);
               }
             }
-            if (altri.length >= 3) distrattori = altri.slice(0, 3);
+            if (others.length >= 3) distractors = others.slice(0, 3);
           }
 
-          if (!distrattori || distrattori.length < 3) continue;
+          if (!distractors || distractors.length < 3) continue;
 
-          var contentId = hashDomanda('ai|' + tipoCard + '|' + domanda + '|' + entita);
-          if (visti[contentId]) continue;
-          visti[contentId] = true;
+          var contentId = hashQuestion('ai|' + cardType + '|' + question + '|' + entity);
+          if (seen[contentId]) continue;
+          seen[contentId] = true;
 
-          proposte.push({
-            type: tipoCard === 'cloze' ? 'concept-cloze' : 'fact-' + tipoCard,
-            front: domanda,
-            back: entita,
-            distractors: distrattori.slice(0, 3),
+          proposals.push({
+            type: cardType === 'cloze' ? 'concept-cloze' : 'fact-' + cardType,
+            front: question,
+            back: entity,
+            distractors: distractors.slice(0, 3),
             highlightId: null,
-            sourceCat: (tipoCard === 'anno' || tipoCard === 'data' ||
-                        tipoCard === 'percentuale' || tipoCard === 'numero')
+            sourceCat: (cardType === 'year' || cardType === 'date' ||
+                        cardType === 'percentage' || cardType === 'number')
                        ? 'num' : 'name',
             contentId: contentId,
             origin: 'ai'
           });
         }
 
-        indiceCorrente++;
-        return prossimo();
-      }).catch(function (errore) {
-        console.warn('Chunk fallito:', errore);
-        indiceCorrente++;
-        return prossimo();
+        currentIndex++;
+        return next();
+      }).catch(function (error) {
+        console.warn('Chunk failed:', error);
+        currentIndex++;
+        return next();
       });
     }
 
-    return prossimo();
+    return next();
   }
 
-  function validaProposta(p) {
-    var domanda = p.front.trim();
-    var corretta = p.back.trim();
-    var distrattori = p.distractors.filter(function (s) { return s && s.trim(); });
+  function validateProposal(proposal) {
+    var question = proposal.front.trim();
+    var correct = proposal.back.trim();
+    var distractors = proposal.distractors.filter(function (s) { return s && s.trim(); });
 
-    if (domanda.length < 10 || corretta.length < 1 || distrattori.length < 3) return false;
-    if (corretta.length > 60) return false;
+    if (question.length < 10 || correct.length < 1 || distractors.length < 3) return false;
+    if (correct.length > 60) return false;
 
-    var correttaLower = corretta.toLowerCase();
-    for (var i = 0; i < distrattori.length; i++) {
-      var rapporto = distrattori[i].length / corretta.length;
-      if (rapporto < 0.4 || rapporto > 2.5) return false;
-      if (distrattori[i].toLowerCase() === correttaLower) return false;
+    var correctLower = correct.toLowerCase();
+    for (var i = 0; i < distractors.length; i++) {
+      var ratio = distractors[i].length / correct.length;
+      if (ratio < 0.4 || ratio > 2.5) return false;
+      if (distractors[i].toLowerCase() === correctLower) return false;
     }
 
-    if (/tutte le precedenti|nessuna delle precedenti/i.test(corretta)) return false;
-    if (/^(cos'è|cosa sono|chi era|chi erano)/i.test(domanda)) return false;
-    if (/^(what is|who was|tell me about)/i.test(domanda)) return false;
+    if (/all of the above|none of the above/i.test(correct)) return false;
+    if (/^(what is|who was|tell me about)/i.test(question)) return false;
+    if (/^(cos'è|cosa sono|chi era|chi erano)/i.test(question)) return false;
 
     return true;
   }
 
   // ============================================================
-  // ANTEPRIMA DOMANDE
+  // CARD PREVIEW
   // ============================================================
 
-  var proposteInAnteprima = [];
+  var previewProposals = [];
 
-  function apriAnteprimaDomande() {
-    var doc = documentoAttivo();
+  function openCardPreview() {
+    var doc = getActiveDocument();
     if (!doc) {
-      mostraToast('Nessun testo');
+      showToast('No text');
       return;
     }
 
-    var evidenziazioni = evidenziazioniDi(doc.id).filter(function (ev) {
-      return ev.start >= 0;
+    var highlights = highlightsForDocument(doc.id).filter(function (h) {
+      return h.start >= 0;
     });
-    if (!evidenziazioni.length) {
-      mostraToast('Evidenzia prima qualcosa');
+    if (!highlights.length) {
+      showToast('Highlight something first');
       return;
     }
 
-    var proposteDizionario = proponiDalDizionario(doc).filter(validaProposta);
-    var numeroDizionario = proposteDizionario.length;
-    var contentIdsDizionario = {};
-    for (var i = 0; i < proposteDizionario.length; i++) {
-      contentIdsDizionario[proposteDizionario[i].contentId] = true;
+    var dictionaryProposals = proposeFromDictionary(doc).filter(validateProposal);
+    var dictionaryCount = dictionaryProposals.length;
+    var dictionaryContentIds = {};
+    for (var i = 0; i < dictionaryProposals.length; i++) {
+      dictionaryContentIds[dictionaryProposals[i].contentId] = true;
     }
 
-    if (!statoAI.ready || !haWebGPU()) {
-      if (!proposteDizionario.length) {
-        mostraToast('Nessuna domanda generabile');
+    if (!aiState.ready || !hasWebGPU()) {
+      if (!dictionaryProposals.length) {
+        showToast('No questions available');
         return;
       }
-      mostraAnteprima(proposteDizionario, 0);
+      showPreview(dictionaryProposals, 0);
       return;
     }
 
-    statoAIinAlto('working', 'Dizionario: ' + numeroDizionario + ' domande · preparo AI…');
+    mainAIStatus('working', 'Dictionary: ' + dictionaryCount + ' questions · preparing AI…');
 
-    proponiDallAI(doc, function (corrente, totale) {
-      statoAIinAlto('working', 'AI estrazione ' + corrente + '/' + totale + '…');
-    }).then(function (proposteAI) {
-      var proposteAIValide = proposteAI.filter(validaProposta).filter(function (p) {
-        return !contentIdsDizionario[p.contentId];
+    proposeFromAI(doc, function (current, total) {
+      mainAIStatus('working', 'AI extraction ' + current + '/' + total + '…');
+    }).then(function (aiProposals) {
+      var validAIProposals = aiProposals.filter(validateProposal).filter(function (p) {
+        return !dictionaryContentIds[p.contentId];
       });
 
-      var tutte = proposteDizionario.concat(proposteAIValide);
-      statoAIinAlto('hidden');
+      var all = dictionaryProposals.concat(validAIProposals);
+      mainAIStatus('hidden');
 
-      if (!tutte.length) {
-        mostraToast('Nessuna domanda generata');
+      if (!all.length) {
+        showToast('No questions generated');
         return;
       }
-      mostraAnteprima(tutte, numeroDizionario);
-    }).catch(function (errore) {
-      console.error(errore);
-      statoAIinAlto('error', 'Errore AI · uso solo dizionario');
-      setTimeout(function () { statoAIinAlto('hidden'); }, 2000);
-      mostraAnteprima(proposteDizionario, 0);
+      showPreview(all, dictionaryCount);
+    }).catch(function (error) {
+      console.error(error);
+      mainAIStatus('error', 'AI error · using dictionary only');
+      setTimeout(function () { mainAIStatus('hidden'); }, 2000);
+      showPreview(dictionaryProposals, 0);
     });
   }
 
-  function mostraAnteprima(proposte, numeroDizionario) {
-    var esistenti = {};
-    for (var id in DATI.cards) {
-      esistenti[DATI.cards[id].contentId] = true;
+  function showPreview(proposals, dictionaryCount) {
+    var existing = {};
+    for (var id in DATA.cards) {
+      existing[DATA.cards[id].contentId] = true;
     }
 
-    for (var i = 0; i < proposte.length; i++) {
-      proposte[i].alreadyExists = !!esistenti[proposte[i].contentId];
+    for (var i = 0; i < proposals.length; i++) {
+      proposals[i].alreadyExists = !!existing[proposals[i].contentId];
     }
 
-    proposteInAnteprima = proposte;
-    renderizzaAnteprima();
+    previewProposals = proposals;
+    renderPreview();
 
-    var numeroAI = proposte.length - numeroDizionario;
-    var riassunto = numeroDizionario + ' dal dizionario';
-    if (numeroAI > 0) riassunto += ' · ' + numeroAI + ' dall\'AI';
-    $('card-preview-count').textContent = riassunto;
+    var aiCount = proposals.length - dictionaryCount;
+    var summary = dictionaryCount + ' from dictionary';
+    if (aiCount > 0) summary += ' · ' + aiCount + ' from AI';
+    $('card-preview-count').textContent = summary;
 
     $('modal-card-preview').classList.add('open');
   }
 
-  function renderizzaAnteprima() {
+  function renderPreview() {
     var box = $('card-preview-list');
     box.innerHTML = '';
 
-    for (var i = 0; i < proposteInAnteprima.length; i++) {
-      var p = proposteInAnteprima[i];
-      var elemento = document.createElement('div');
-      elemento.className = 'card-item';
+    for (var i = 0; i < previewProposals.length; i++) {
+      var p = previewProposals[i];
+      var element = document.createElement('div');
+      element.className = 'card-item';
 
-      var tipo = p.type.replace('fact-', '').replace('concept-', '');
-      var origine = p.origin === 'ai'
+      var type = p.type.replace('fact-', '').replace('concept-', '');
+      var origin = p.origin === 'ai'
         ? '<span class="badge ai">AI</span>'
         : '<span class="badge tpl">Template</span>';
 
-      elemento.innerHTML =
+      element.innerHTML =
         '<div class="card-head">' +
-          origine +
-          '<span class="badge">' + escapeHtml(tipo) + '</span>' +
+          origin +
+          '<span class="badge">' + escapeHtml(type) + '</span>' +
           (p.alreadyExists
-            ? '<span style="font-size: 0.72rem; color: var(--colore-inchiostro-3); margin-left: auto;">già presente</span>'
+            ? '<span style="font-size: 0.72rem; color: var(--color-ink-3); margin-left: auto;">already present</span>'
             : '') +
           '<label style="margin-left: auto; display: flex; align-items: center; gap: 6px;">' +
             '<input type="checkbox" data-idx="' + i + '" ' +
               (p.alreadyExists ? 'disabled' : 'checked') +
-              ' style="width: 18px; height: 18px; accent-color: var(--colore-ai);">' +
+              ' style="width: 18px; height: 18px; accent-color: var(--color-ai);">' +
           '</label>' +
         '</div>' +
         '<div class="card-front">' + escapeHtml(p.front) + '</div>' +
         '<div class="distr-line">' +
-          '<strong>Risposte proposte:</strong> ' +
+          '<strong>Suggested answers:</strong> ' +
           p.distractors.map(escapeHtml).join(' · ') +
         '</div>';
 
-      box.appendChild(elemento);
+      box.appendChild(element);
     }
   }
 
-  function confermaAggiuntaCard() {
-    var doc = documentoAttivo();
+  function confirmCardAdd() {
+    var doc = getActiveDocument();
     if (!doc) return;
 
-    var aggiunte = 0;
-    var checkbox = $('card-preview-list').querySelectorAll('input[type=checkbox]');
+    var added = 0;
+    var checkboxes = $('card-preview-list').querySelectorAll('input[type=checkbox]');
 
-    for (var i = 0; i < checkbox.length; i++) {
-      var chk = checkbox[i];
+    for (var i = 0; i < checkboxes.length; i++) {
+      var chk = checkboxes[i];
       if (chk.checked && !chk.disabled) {
-        var p = proposteInAnteprima[parseInt(chk.dataset.idx, 10)];
-        aggiungiCard({
+        var p = previewProposals[parseInt(chk.dataset.idx, 10)];
+        addCard({
           docId: doc.id,
           highlightId: p.highlightId || null,
           contentId: p.contentId,
@@ -3578,134 +3567,134 @@ body.edit-mode .edit-hint {
           sourceCat: p.sourceCat,
           origin: p.origin
         });
-        aggiunte++;
+        added++;
       }
     }
 
-    if (aggiunte) mostraToast(aggiunte + ' domande aggiunte');
+    if (added) showToast(added + ' questions added');
     $('modal-card-preview').classList.remove('open');
-    aggiornaBadgeRipasso();
-    ridisegna();
+    updateReviewBadge();
+    redraw();
   }
 
   // ============================================================
-  // LIBRERIA
+  // LIBRARY
   // ============================================================
 
-  function renderizzaLibreria(filtro) {
-    filtro = (filtro || '').toLowerCase();
+  function renderLibrary(filter) {
+    filter = (filter || '').toLowerCase();
 
-    var lista = $('library-list');
-    var vuoto = $('library-empty');
-    lista.innerHTML = '';
+    var list = $('library-list');
+    var empty = $('library-empty');
+    list.innerHTML = '';
 
-    var documenti = [];
-    for (var id in DATI.docs) documenti.push(DATI.docs[id]);
-    documenti.sort(function (a, b) { return b.updatedAt - a.updatedAt; });
+    var documents = [];
+    for (var id in DATA.docs) documents.push(DATA.docs[id]);
+    documents.sort(function (a, b) { return b.updatedAt - a.updatedAt; });
 
-    if (filtro) {
-      documenti = documenti.filter(function (d) {
-        return d.title.toLowerCase().indexOf(filtro) !== -1 ||
-               d.text.toLowerCase().indexOf(filtro) !== -1;
+    if (filter) {
+      documents = documents.filter(function (d) {
+        return d.title.toLowerCase().indexOf(filter) !== -1 ||
+               d.text.toLowerCase().indexOf(filter) !== -1;
       });
     }
 
-    if (!documenti.length) {
-      vuoto.style.display = 'block';
-      vuoto.querySelector('.title').textContent =
-        filtro ? 'Nessun risultato' : 'Libreria vuota';
+    if (!documents.length) {
+      empty.style.display = 'block';
+      empty.querySelector('.title').textContent =
+        filter ? 'No results' : 'Library is empty';
       return;
     }
 
-    vuoto.style.display = 'none';
+    empty.style.display = 'none';
 
-    for (var i = 0; i < documenti.length; i++) {
+    for (var i = 0; i < documents.length; i++) {
       (function (d) {
-        var elemento = document.createElement('div');
-        elemento.className = 'lib-item';
+        var element = document.createElement('div');
+        element.className = 'lib-item';
 
-        var data = new Date(d.updatedAt).toLocaleDateString('it-IT', {
+        var date = new Date(d.updatedAt).toLocaleDateString('en-US', {
           day: '2-digit', month: 'short'
         });
-        var evidenziazioni = evidenziazioniDi(d.id).filter(function (ev) {
-          return ev.start >= 0;
+        var highlights = highlightsForDocument(d.id).filter(function (h) {
+          return h.start >= 0;
         }).length;
-        var numeroCard = cardDi(d.id).length;
-        var lingua = d.lang || rilevaLingua(d.text);
+        var cardCount = cardsForDocument(d.id).length;
+        var lang = d.lang || detectLanguage(d.text);
 
-        elemento.innerHTML =
+        element.innerHTML =
           '<div class="title">' + escapeHtml(d.title) + '</div>' +
           '<div class="snippet">' +
             escapeHtml(d.text.slice(0, 160).replace(/\s+/g, ' ')) + '…' +
           '</div>' +
           '<div class="meta">' +
-            '<span>' + (lingua === 'it' ? 'IT' : 'EN') + '</span>' +
-            '<span>' + evidenziazioni + ' evidenziazioni</span>' +
-            '<span>' + numeroCard + ' domande</span>' +
-            '<span>' + data + '</span>' +
+            '<span>' + (lang === 'it' ? 'IT' : 'EN') + '</span>' +
+            '<span>' + highlights + ' highlights</span>' +
+            '<span>' + cardCount + ' questions</span>' +
+            '<span>' + date + '</span>' +
           '</div>';
 
-        elemento.addEventListener('click', function () {
-          apriDocumento(d.id);
+        element.addEventListener('click', function () {
+          openDocument(d.id);
         });
 
         var timer;
-        elemento.addEventListener('touchstart', function () {
-          timer = setTimeout(function () { chiediEliminaDocumento(d.id); }, 700);
+        element.addEventListener('touchstart', function () {
+          timer = setTimeout(function () { askDeleteDocument(d.id); }, 700);
         }, { passive: true });
-        elemento.addEventListener('touchend', function () { clearTimeout(timer); });
-        elemento.addEventListener('touchmove', function () { clearTimeout(timer); });
+        element.addEventListener('touchend', function () { clearTimeout(timer); });
+        element.addEventListener('touchmove', function () { clearTimeout(timer); });
 
-        lista.appendChild(elemento);
-      })(documenti[i]);
+        list.appendChild(element);
+      })(documents[i]);
     }
   }
 
-  function apriDocumento(id) {
-    var d = DATI.docs[id];
+  function openDocument(id) {
+    var d = DATA.docs[id];
     if (!d) return;
-    DATI.activeDocId = id;
-    salvaDati();
+    DATA.activeDocId = id;
+    saveData();
     $('input').value = d.text;
-    ridisegna();
-    cambiaVista('text');
+    redraw();
+    switchView('text');
     $('scroll-text').scrollTop = 0;
-    mostraToast('Aperto');
+    showToast('Opened');
   }
 
-  function chiediEliminaDocumento(id) {
-    var d = DATI.docs[id];
+  function askDeleteDocument(id) {
+    var d = DATA.docs[id];
     if (!d) return;
 
-    $('confirm-title').textContent = 'Eliminare il testo?';
+    $('confirm-title').textContent = 'Delete this text?';
     $('confirm-text').textContent =
-      '"' + d.title + '" e tutte le sue evidenziazioni e domande verranno rimosse.';
+      '"' + d.title + '" and all its highlights and questions will be removed.';
     $('modal-confirm').classList.add('open');
 
     $('btn-ok-confirm').onclick = function () {
-      delete DATI.docs[id];
-      for (var hid in DATI.highlights) {
-        if (DATI.highlights[hid].docId === id) delete DATI.highlights[hid];
+      delete DATA.docs[id];
+      for (var hid in DATA.highlights) {
+        if (DATA.highlights[hid].docId === id) delete DATA.highlights[hid];
       }
-      for (var cid in DATI.cards) {
-        if (DATI.cards[cid].docId === id) {
-          delete DATI.cards[cid];
-          delete DATI.review[cid];
+      for (var cid in DATA.cards) {
+        if (DATA.cards[cid].docId === id) {
+          delete DATA.cards[cid];
+          delete DATA.review[cid];
         }
       }
-      if (DATI.activeDocId === id) DATI.activeDocId = null;
-      salvaDatiSubito();
-      renderizzaLibreria();
+      if (DATA.activeDocId === id) DATA.activeDocId = null;
+      saveDataNow();
+      renderLibrary();
       $('modal-confirm').classList.remove('open');
-      mostraToast('Eliminato');
+      showToast('Deleted');
     };
   }
 
   // ============================================================
-  // RIPASSO
+  // REVIEW
   // ============================================================
 
-  var statoRipasso = {
+  var reviewState = {
     queue: [],
     idx: 0,
     done: 0,
@@ -3715,364 +3704,364 @@ body.edit-mode .edit-hint {
     selected: -1
   };
 
-  function costruisciMCQ(card) {
-    var corretta = card.back;
-    var distrattori = (card.distractors || []).filter(function (x) {
-      return x && x.trim() && x.trim() !== corretta.trim();
+  function buildMCQ(card) {
+    var correct = card.back;
+    var distractors = (card.distractors || []).filter(function (x) {
+      return x && x.trim() && x.trim() !== correct.trim();
     });
 
-    var finali = distrattori.slice(0, 3);
-    if (finali.length < 3) return null;
+    var final = distractors.slice(0, 3);
+    if (final.length < 3) return null;
 
-    var opzioni = mescola([corretta].concat(finali));
-    return { options: opzioni, correctIndex: opzioni.indexOf(corretta) };
+    var options = shuffle([correct].concat(final));
+    return { options: options, correctIndex: options.indexOf(correct) };
   }
 
-  function avviaRipasso() {
-    var daRipassare = cardDaRipassare(null).filter(function (c) {
-      return costruisciMCQ(c);
+  function startReview() {
+    var due = cardsDue(null).filter(function (c) {
+      return buildMCQ(c);
     });
 
-    if (!daRipassare.length) {
+    if (!due.length) {
       $('review-content').innerHTML =
         '<div class="empty">' +
-          '<div class="title">Tutto in pari</div>' +
-          '<div class="sub">Nessuna domanda da ripassare.<br>' +
-          'Evidenzia un testo e tocca "Domande".</div>' +
+          '<div class="title">All caught up</div>' +
+          '<div class="sub">No questions to review.<br>' +
+          'Highlight some text and tap "Questions".</div>' +
         '</div>';
       return;
     }
 
-    daRipassare.sort(function () { return Math.random() - 0.5; });
+    due.sort(function () { return Math.random() - 0.5; });
 
-    statoRipasso.queue = daRipassare.slice();
-    statoRipasso.idx = 0;
-    statoRipasso.done = 0;
-    statoRipasso.correct = 0;
-    statoRipasso.forIdx = -1;
+    reviewState.queue = due.slice();
+    reviewState.idx = 0;
+    reviewState.done = 0;
+    reviewState.correct = 0;
+    reviewState.forIdx = -1;
 
-    renderizzaCardRipasso();
+    renderReviewCard();
   }
 
-  function renderizzaCardRipasso() {
+  function renderReviewCard() {
     var box = $('review-content');
 
-    if (statoRipasso.idx >= statoRipasso.queue.length) {
-      var precisione = statoRipasso.done > 0
-        ? Math.round(100 * statoRipasso.correct / statoRipasso.done) : 0;
+    if (reviewState.idx >= reviewState.queue.length) {
+      var accuracy = reviewState.done > 0
+        ? Math.round(100 * reviewState.correct / reviewState.done) : 0;
       box.innerHTML =
         '<div class="empty">' +
-          '<div class="title">Sessione completata</div>' +
+          '<div class="title">Session complete</div>' +
           '<div class="sub">' +
-            statoRipasso.done + ' domande · ' +
-            statoRipasso.correct + ' corrette (' + precisione + '%)' +
+            reviewState.done + ' questions · ' +
+            reviewState.correct + ' correct (' + accuracy + '%)' +
           '</div>' +
         '</div>';
-      aggiornaBadgeRipasso();
+      updateReviewBadge();
       return;
     }
 
-    var card = statoRipasso.queue[statoRipasso.idx];
+    var card = reviewState.queue[reviewState.idx];
 
-    if (statoRipasso.forIdx !== statoRipasso.idx) {
-      statoRipasso.mcq = costruisciMCQ(card);
-      statoRipasso.forIdx = statoRipasso.idx;
-      statoRipasso.selected = -1;
+    if (reviewState.forIdx !== reviewState.idx) {
+      reviewState.mcq = buildMCQ(card);
+      reviewState.forIdx = reviewState.idx;
+      reviewState.selected = -1;
     }
 
-    if (!statoRipasso.mcq) {
-      statoRipasso.idx++;
-      renderizzaCardRipasso();
+    if (!reviewState.mcq) {
+      reviewState.idx++;
+      renderReviewCard();
       return;
     }
 
-    var opzioni = statoRipasso.mcq.options;
-    var indiceCorretto = statoRipasso.mcq.correctIndex;
-    var risposto = statoRipasso.selected >= 0;
-    var lettere = ['A', 'B', 'C', 'D'];
+    var options = reviewState.mcq.options;
+    var correctIndex = reviewState.mcq.correctIndex;
+    var answered = reviewState.selected >= 0;
+    var letters = ['A', 'B', 'C', 'D'];
 
-    var doc = DATI.docs[card.docId];
-    var evidenziazione = card.highlightId
-      ? DATI.highlights[card.highlightId] : null;
-    var contesto = (evidenziazione && evidenziazione.start >= 0 && doc)
-      ? doc.text.slice(evidenziazione.start, evidenziazione.end) : '';
+    var doc = DATA.docs[card.docId];
+    var highlight = card.highlightId
+      ? DATA.highlights[card.highlightId] : null;
+    var context = (highlight && highlight.start >= 0 && doc)
+      ? doc.text.slice(highlight.start, highlight.end) : '';
 
     var frontHtml = escapeHtml(card.front).replace(/____/g, '<span class="blank">?</span>');
 
-    var opzioniHtml = '';
-    for (var i = 0; i < opzioni.length; i++) {
-      var classe = 'mcq-option';
-      if (risposto) {
-        if (i === indiceCorretto) classe += ' correct';
-        else if (i === statoRipasso.selected) classe += ' wrong';
-        else classe += ' dim';
+    var optionsHtml = '';
+    for (var i = 0; i < options.length; i++) {
+      var cls = 'mcq-option';
+      if (answered) {
+        if (i === correctIndex) cls += ' correct';
+        else if (i === reviewState.selected) cls += ' wrong';
+        else cls += ' dim';
       }
-      opzioniHtml +=
-        '<button class="' + classe + '" data-i="' + i + '" ' +
-          (risposto ? 'disabled' : '') + '>' +
-          '<span class="mcq-label">' + lettere[i] + '</span>' +
-          '<span class="mcq-text">' + escapeHtml(opzioni[i]) + '</span>' +
+      optionsHtml +=
+        '<button class="' + cls + '" data-i="' + i + '" ' +
+          (answered ? 'disabled' : '') + '>' +
+          '<span class="mcq-label">' + letters[i] + '</span>' +
+          '<span class="mcq-text">' + escapeHtml(options[i]) + '</span>' +
         '</button>';
     }
 
     var feedbackHtml = '';
-    if (risposto) {
-      var corretta = statoRipasso.selected === indiceCorretto;
+    if (answered) {
+      var isCorrect = reviewState.selected === correctIndex;
       feedbackHtml =
-        '<div class="mcq-feedback ' + (corretta ? 'ok' : 'ko') + '">' +
-          (corretta ? '✓ Corretto' : '✗ Sbagliato') +
+        '<div class="mcq-feedback ' + (isCorrect ? 'ok' : 'ko') + '">' +
+          (isCorrect ? '✓ Correct' : '✗ Wrong') +
         '</div>' +
-        '<button class="btn primary" id="btn-continue" style="width: 100%;">Continua</button>';
+        '<button class="btn primary" id="btn-continue" style="width: 100%;">Continue</button>';
     }
 
     box.innerHTML =
       '<div class="review-progress">' +
-        (statoRipasso.idx + 1) + ' / ' + statoRipasso.queue.length +
+        (reviewState.idx + 1) + ' / ' + reviewState.queue.length +
       '</div>' +
       '<div class="review-card">' +
         '<div class="review-front">' + frontHtml + '</div>' +
-        (contesto
+        (context
           ? '<div class="review-context">' +
-              '<span class="label">Dal tuo testo</span>' +
-              escapeHtml(contesto) +
+              '<span class="label">From your text</span>' +
+              escapeHtml(context) +
             '</div>'
           : '') +
       '</div>' +
-      '<div>' + opzioniHtml + '</div>' +
+      '<div>' + optionsHtml + '</div>' +
       feedbackHtml;
 
-    if (!risposto) {
-      var bottoni = box.querySelectorAll('.mcq-option');
-      for (var b = 0; b < bottoni.length; b++) {
-        (function (bottone) {
-          bottone.addEventListener('click', function () {
-            var indice = parseInt(bottone.dataset.i, 10);
-            statoRipasso.selected = indice;
-            var corretto = indice === indiceCorretto;
-            statoRipasso.done++;
-            if (corretto) statoRipasso.correct++;
-            valutaCard(card.id, corretto ? 4 : 1);
-            vibra(corretto ? 8 : 20);
-            renderizzaCardRipasso();
+    if (!answered) {
+      var buttons = box.querySelectorAll('.mcq-option');
+      for (var b = 0; b < buttons.length; b++) {
+        (function (button) {
+          button.addEventListener('click', function () {
+            var idx = parseInt(button.dataset.i, 10);
+            reviewState.selected = idx;
+            var correct = idx === correctIndex;
+            reviewState.done++;
+            if (correct) reviewState.correct++;
+            gradeCard(card.id, correct ? 4 : 1);
+            vibrate(correct ? 8 : 20);
+            renderReviewCard();
           });
-        })(bottoni[b]);
+        })(buttons[b]);
       }
     } else {
-      var btnContinua = $('btn-continue');
-      if (btnContinua) {
-        btnContinua.addEventListener('click', function () {
-          statoRipasso.idx++;
-          renderizzaCardRipasso();
+      var btnContinue = $('btn-continue');
+      if (btnContinue) {
+        btnContinue.addEventListener('click', function () {
+          reviewState.idx++;
+          renderReviewCard();
         });
       }
     }
   }
 
-  function aggiornaBadgeRipasso() {
-    var numero = cardDaRipassare(null).filter(function (c) {
-      return costruisciMCQ(c);
+  function updateReviewBadge() {
+    var count = cardsDue(null).filter(function (c) {
+      return buildMCQ(c);
     }).length;
 
     var badge = $('review-badge');
-    if (numero > 0) {
+    if (count > 0) {
       badge.style.display = 'inline-block';
-      badge.textContent = numero > 99 ? '99+' : String(numero);
+      badge.textContent = count > 99 ? '99+' : String(count);
     } else {
       badge.style.display = 'none';
     }
   }
 
   // ============================================================
-  // CAMBIO VISTA
+  // VIEW SWITCHING
   // ============================================================
 
-  function cambiaVista(nome) {
-    var viste = document.querySelectorAll('.view');
-    for (var i = 0; i < viste.length; i++) {
-      viste[i].classList.toggle('active', viste[i].id === 'view-' + nome);
+  function switchView(name) {
+    var views = document.querySelectorAll('.view');
+    for (var i = 0; i < views.length; i++) {
+      views[i].classList.toggle('active', views[i].id === 'view-' + name);
     }
 
-    var tab = document.querySelectorAll('.tabbar .tab');
-    for (var j = 0; j < tab.length; j++) {
-      tab[j].classList.toggle('active', tab[j].dataset.view === nome);
+    var tabs = document.querySelectorAll('.tabbar .tab');
+    for (var j = 0; j < tabs.length; j++) {
+      tabs[j].classList.toggle('active', tabs[j].dataset.view === name);
     }
 
-    if (nome === 'library') renderizzaLibreria($('library-search').value);
-    if (nome === 'review') avviaRipasso();
+    if (name === 'library') renderLibrary($('library-search').value);
+    if (name === 'review') startReview();
   }
 
   // ============================================================
-  // TITOLO E TEMA
+  // TITLE AND THEME
   // ============================================================
 
-  function costruisciTitolo() {
-    var elemento = $('brand-title');
-    var testo = 'HIGHLIGHT AI';
-    var classiColori = ['num', 'name', 'key', 'quote', 'list', 'def'];
+  function buildTitle() {
+    var element = $('brand-title');
+    var text = 'HIGHLIGHT AI';
+    var colorClasses = ['num', 'name', 'key', 'quote', 'list', 'def'];
 
-    elemento.innerHTML = '';
-    var indiceColore = 0;
+    element.innerHTML = '';
+    var colorIndex = 0;
 
-    for (var i = 0; i < testo.length; i++) {
-      var carattere = testo[i];
-      if (carattere === ' ') {
-        var spazio = document.createElement('span');
-        spazio.className = 'spazio';
-        elemento.appendChild(spazio);
+    for (var i = 0; i < text.length; i++) {
+      var character = text[i];
+      if (character === ' ') {
+        var space = document.createElement('span');
+        space.className = 'space';
+        element.appendChild(space);
       } else {
         var span = document.createElement('span');
-        var nomeColore = classiColori[indiceColore % classiColori.length];
-        var varCss = '--colore-' +
-          nomeColore.replace('num', 'numero')
-            .replace('name', 'nome')
-            .replace('key', 'concetto')
-            .replace('def', 'definizione')
-            .replace('quote', 'citazione')
-            .replace('list', 'elenco');
-        span.style.background = 'var(' + varCss + ')';
-        span.textContent = carattere;
-        elemento.appendChild(span);
-        indiceColore++;
+        var colorName = colorClasses[colorIndex % colorClasses.length];
+        var cssVar = '--color-' +
+          colorName.replace('num', 'number')
+            .replace('name', 'name')
+            .replace('key', 'concept')
+            .replace('def', 'definition')
+            .replace('quote', 'quote')
+            .replace('list', 'list');
+        span.style.background = 'var(' + cssVar + ')';
+        span.textContent = character;
+        element.appendChild(span);
+        colorIndex++;
       }
     }
   }
 
-  function applicaTema() {
-    function applica() {
-      var scuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      document.documentElement.setAttribute('data-theme', scuro ? 'dark' : 'light');
+  function applyTheme() {
+    function apply() {
+      var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
     }
-    applica();
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applica);
+    apply();
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', apply);
   }
 
   // ============================================================
-  // ANALISI AUTOMATICA
+  // AUTO ANALYSIS
   // ============================================================
 
-  function analizzaDocumentoCorrente() {
-    var doc = documentoAttivo();
+  function analyzeCurrentDocument() {
+    var doc = getActiveDocument();
     if (!doc || !doc.text.trim()) return;
 
-    var lingua = rilevaLingua(doc.text);
-    doc.lang = lingua;
+    var language = detectLanguage(doc.text);
+    doc.lang = language;
 
-    var spans = analizzaTesto(doc.text, lingua);
-    var evidenziazioni = evidenziazioniDi(doc.id);
+    var spans = analyzeText(doc.text);
+    var highlights = highlightsForDocument(doc.id);
 
-    for (var i = 0; i < evidenziazioni.length; i++) {
-      if (evidenziazioni[i].source === 'auto') {
-        delete DATI.highlights[evidenziazioni[i].id];
+    for (var i = 0; i < highlights.length; i++) {
+      if (highlights[i].source === 'auto') {
+        delete DATA.highlights[highlights[i].id];
       }
     }
 
     for (var j = 0; j < spans.length; j++) {
       var span = spans[j];
-      var prima = doc.text.slice(Math.max(0, span.start - 30), span.start);
-      var dopo = doc.text.slice(span.end, span.end + 30);
-      var id = generaId();
+      var before = doc.text.slice(Math.max(0, span.start - 30), span.start);
+      var after = doc.text.slice(span.end, span.end + 30);
+      var id = generateId();
 
-      DATI.highlights[id] = {
+      DATA.highlights[id] = {
         id: id,
         docId: doc.id,
         start: span.start,
         end: span.end,
         cat: span.cat,
         source: 'auto',
-        before: prima,
-        after: dopo,
+        before: before,
+        after: after,
         note: '',
         createdAt: Date.now()
       };
     }
 
-    salvaDati();
+    saveData();
   }
 
-  function renderizzaListaModelli() {
+  function renderModelList() {
     var box = $('model-list');
     box.innerHTML = '';
 
-    for (var chiave in MODELLI_AI) {
-      var modello = MODELLI_AI[chiave];
-      var elemento = document.createElement('div');
-      elemento.className = 'model-option' +
-        (chiave === statoAI.modelKey ? ' selected' : '');
+    for (var key in AI_MODELS) {
+      var model = AI_MODELS[key];
+      var element = document.createElement('div');
+      element.className = 'model-option' +
+        (key === aiState.modelKey ? ' selected' : '');
 
-      elemento.innerHTML =
+      element.innerHTML =
         '<div class="info">' +
-          '<div class="name">' + modello.label +
-            '<span class="sz">' + modello.size + '</span>' +
+          '<div class="name">' + model.label +
+            '<span class="sz">' + model.size + '</span>' +
           '</div>' +
-          '<div class="desc">' + modello.desc + '</div>' +
+          '<div class="desc">' + model.desc + '</div>' +
         '</div>';
 
       (function (k) {
-        elemento.addEventListener('click', function () {
-          if (statoAI.loading) return;
-          statoAI.modelKey = k;
-          localStorage.setItem('highlight-ai.v80.model', k);
-          renderizzaListaModelli();
-          vibra(4);
+        element.addEventListener('click', function () {
+          if (aiState.loading) return;
+          aiState.modelKey = k;
+          localStorage.setItem('highlight-ai.v90.model', k);
+          renderModelList();
+          vibrate(4);
         });
-      })(chiave);
+      })(key);
 
-      box.appendChild(elemento);
+      box.appendChild(element);
     }
   }
 
-  var timerAnalisiAutomatica = null;
+  var autoAnalysisTimer = null;
 
-  function pianificaAnalisiAutomatica(ritardo) {
-    clearTimeout(timerAnalisiAutomatica);
-    timerAnalisiAutomatica = setTimeout(function () {
-      var doc = documentoAttivo();
+  function scheduleAutoAnalysis(delay) {
+    clearTimeout(autoAnalysisTimer);
+    autoAnalysisTimer = setTimeout(function () {
+      var doc = getActiveDocument();
       if (!doc) return;
 
-      var nuovoTesto = $('input').value;
-      if (nuovoTesto === doc.text) return;
+      var newText = $('input').value;
+      if (newText === doc.text) return;
 
-      doc.text = nuovoTesto;
-      doc.lang = rilevaLingua(nuovoTesto);
+      doc.text = newText;
+      doc.lang = detectLanguage(newText);
       doc.updatedAt = Date.now();
-      salvaDati();
+      saveData();
 
-      analizzaDocumentoCorrente();
-      ridisegna();
-    }, ritardo || 400);
+      analyzeCurrentDocument();
+      redraw();
+    }, delay || 400);
   }
 
   // ============================================================
-  // BINDING EVENTI
+  // EVENT BINDING
   // ============================================================
 
-  function collegaEventi() {
-    var tab = document.querySelectorAll('.tabbar .tab');
-    for (var i = 0; i < tab.length; i++) {
+  function bindEvents() {
+    var tabs = document.querySelectorAll('.tabbar .tab');
+    for (var i = 0; i < tabs.length; i++) {
       (function (t) {
         t.addEventListener('click', function () {
-          cambiaVista(t.dataset.view);
-          vibra(4);
+          switchView(t.dataset.view);
+          vibrate(4);
         });
-      })(tab[i]);
+      })(tabs[i]);
     }
 
     $('input').addEventListener('input', function () {
-      pianificaAnalisiAutomatica(400);
+      scheduleAutoAnalysis(400);
     });
 
     $('btn-edit').addEventListener('click', function () {
       document.body.classList.toggle('edit-mode');
       $('btn-edit').classList.toggle('on', document.body.classList.contains('edit-mode'));
-      renderizzaLegenda();
-      vibra(6);
+      renderLegend();
+      vibrate(6);
     });
 
-    $('btn-generate-cards').addEventListener('click', apriAnteprimaDomande);
+    $('btn-generate-cards').addEventListener('click', openCardPreview);
 
     $('btn-save').addEventListener('click', function () {
-      var doc = documentoAttivo();
-      if (!doc) { mostraToast('Nessun testo'); return; }
+      var doc = getActiveDocument();
+      if (!doc) { showToast('No text'); return; }
       $('save-title').value = doc.title;
       $('modal-save').classList.add('open');
       setTimeout(function () { $('save-title').focus(); }, 100);
@@ -4083,50 +4072,50 @@ body.edit-mode .edit-hint {
     });
 
     $('btn-confirm-save').addEventListener('click', function () {
-      var doc = documentoAttivo();
+      var doc = getActiveDocument();
       if (!doc) return;
-      var titolo = $('save-title').value.trim() || doc.text.trim().slice(0, 60);
-      aggiornaDocumento(doc.id, { title: titolo });
-      salvaDatiSubito();
+      var title = $('save-title').value.trim() || doc.text.trim().slice(0, 60);
+      updateDocument(doc.id, { title: title });
+      saveDataNow();
       $('modal-save').classList.remove('open');
-      mostraToast('Salvato');
+      showToast('Saved');
     });
 
     $('btn-new').addEventListener('click', function () {
-      creaDocumento('', 'Senza titolo');
+      createDocument('', 'Untitled');
       $('input').value = '';
       $('output').innerHTML = '';
       $('stats').style.display = 'none';
-      ridisegna();
+      redraw();
       $('input').focus();
-      mostraToast('Nuovo documento');
+      showToast('New document');
     });
 
     $('btn-clear').addEventListener('click', function () {
-      var doc = documentoAttivo();
+      var doc = getActiveDocument();
       if (!doc) return;
 
-      $('confirm-title').textContent = 'Svuotare il testo?';
+      $('confirm-title').textContent = 'Clear the text?';
       $('confirm-text').textContent =
-        'Le evidenziazioni e le domande associate verranno rimosse.';
+        'Highlights and questions for this text will be removed.';
       $('modal-confirm').classList.add('open');
 
       $('btn-ok-confirm').onclick = function () {
-        for (var hid in DATI.highlights) {
-          if (DATI.highlights[hid].docId === doc.id) delete DATI.highlights[hid];
+        for (var hid in DATA.highlights) {
+          if (DATA.highlights[hid].docId === doc.id) delete DATA.highlights[hid];
         }
-        for (var cid in DATI.cards) {
-          if (DATI.cards[cid].docId === doc.id) {
-            delete DATI.cards[cid];
-            delete DATI.review[cid];
+        for (var cid in DATA.cards) {
+          if (DATA.cards[cid].docId === doc.id) {
+            delete DATA.cards[cid];
+            delete DATA.review[cid];
           }
         }
         doc.text = '';
         $('input').value = '';
-        salvaDatiSubito();
-        ridisegna();
+        saveDataNow();
+        redraw();
         $('modal-confirm').classList.remove('open');
-        mostraToast('Pulito');
+        showToast('Cleared');
       };
     });
 
@@ -4135,31 +4124,31 @@ body.edit-mode .edit-hint {
     });
 
     $('btn-save-note').addEventListener('click', function () {
-      if (!evidenziazioneInNota) return;
-      aggiornaEvidenziazione(evidenziazioneInNota.id, {
+      if (!highlightInNote) return;
+      updateHighlight(highlightInNote.id, {
         note: $('note-text').value.trim()
       });
       $('modal-note').classList.remove('open');
-      ridisegna();
-      mostraToast('Nota salvata');
+      redraw();
+      showToast('Note saved');
     });
 
     $('btn-delete-highlight').addEventListener('click', function () {
-      if (!evidenziazioneInNota) return;
-      rimuoviEvidenziazione(evidenziazioneInNota.id);
+      if (!highlightInNote) return;
+      removeHighlight(highlightInNote.id);
       $('modal-note').classList.remove('open');
-      ridisegna();
-      mostraToast('Rimossa');
+      redraw();
+      showToast('Removed');
     });
 
     $('btn-cancel-cards').addEventListener('click', function () {
       $('modal-card-preview').classList.remove('open');
     });
-    $('btn-confirm-cards').addEventListener('click', confermaAggiuntaCard);
+    $('btn-confirm-cards').addEventListener('click', confirmCardAdd);
 
     $('btn-ai-status').addEventListener('click', function () {
-      renderizzaListaModelli();
-      aggiornaBottoniModaleAI();
+      renderModelList();
+      updateAIModalButtons();
       $('modal-ai-setup').classList.add('open');
     });
 
@@ -4168,113 +4157,118 @@ body.edit-mode .edit-hint {
     });
 
     $('btn-load-ai').addEventListener('click', function () {
-      caricaModelloAI(statoAI.modelKey);
+      loadAIModel(aiState.modelKey);
     });
 
-    $('btn-unload-ai').addEventListener('click', scaricaModelloAI);
+    $('btn-unload-ai').addEventListener('click', unloadAIModel);
 
     $('btn-close-ai-ready').addEventListener('click', function () {
       $('modal-ai-setup').classList.remove('open');
     });
 
     $('library-search').addEventListener('input', function (e) {
-      renderizzaLibreria(e.target.value);
+      renderLibrary(e.target.value);
     });
 
     var output = $('output');
     output.addEventListener('click', function (e) {
       if (document.body.classList.contains('edit-mode')) {
-        var posizione = calcolaPosizioneClick(output, e.clientX, e.clientY);
-        if (posizione < 0) return;
-        var doc = documentoAttivo();
+        var position = calculateClickPosition(output, e.clientX, e.clientY);
+        if (position < 0) return;
+        var doc = getActiveDocument();
         if (!doc) return;
-        var token = trovaToken(doc.text, posizione);
+        var token = findToken(doc.text, position);
         if (!token) return;
-        cambiaStatoToken(token);
+        toggleToken(token);
         return;
       }
 
       var target = e.target;
       while (target && target !== output) {
         if (target.tagName === 'MARK' && target.dataset.hl) {
-          var evidenziazione = DATI.highlights[target.dataset.hl];
-          if (evidenziazione) apriModaleNota(evidenziazione);
+          var highlight = DATA.highlights[target.dataset.hl];
+          if (highlight) openNoteModal(highlight);
           return;
         }
         target = target.parentNode;
       }
     });
 
-    var modali = document.querySelectorAll('.modal-bg');
-    for (var m = 0; m < modali.length; m++) {
-      (function (modale) {
-        modale.addEventListener('click', function (e) {
-          if (e.target === modale) modale.classList.remove('open');
+    var modals = document.querySelectorAll('.modal-bg');
+    for (var m = 0; m < modals.length; m++) {
+      (function (modal) {
+        modal.addEventListener('click', function (e) {
+          if (e.target === modal) modal.classList.remove('open');
         });
-      })(modali[m]);
+      })(modals[m]);
     }
 
-    // Badge lingua cliccabile (forza IT o EN)
-    $('btn-lingua').addEventListener('click', function () {
-      var doc = documentoAttivo();
+    // Language badge — tap to force IT or EN
+    $('btn-language').addEventListener('click', function () {
+      var doc = getActiveDocument();
       if (!doc) return;
-      var nuovaLingua = (doc.lang === 'it') ? 'en' : 'it';
-      doc.lang = nuovaLingua;
-      salvaDati();
-      analizzaDocumentoCorrente();
-      ridisegna();
-      mostraToast('Lingua forzata: ' + (nuovaLingua === 'it' ? 'Italiano' : 'English'));
+      var newLang = (doc.lang === 'it') ? 'en' : 'it';
+      doc.lang = newLang;
+      saveData();
+      analyzeCurrentDocument();
+      redraw();
+      showToast('Language forced: ' + (newLang === 'it' ? 'Italiano' : 'English'));
     });
   }
 
   // ============================================================
-  // INIZIALIZZAZIONE
+  // INITIALIZATION
   // ============================================================
 
-  function inizializza() {
+  function initialize() {
     try {
-      caricaDati();
-      applicaTema();
-      costruisciTitolo();
-      inizializzaSelezione();
-      collegaEventi();
-      aggiornaIconaAI();
-      aggiornaBottoniModaleAI();
+      loadData();
+      applyTheme();
+      buildTitle();
+      initSelection();
+      bindEvents();
+      updateAIIcon();
+      updateAIModalButtons();
 
-      var doc = documentoAttivo();
+      var doc = getActiveDocument();
 
       if (!doc) {
-        var esempio =
-          "La Repubblica Italiana nacque il 2 giugno 1946, quando gli italiani " +
-          "furono chiamati a scegliere tra monarchia e repubblica attraverso " +
-          "un referendum istituzionale. La consultazione vide la vittoria della " +
-          "repubblica con il 54,3% dei voti, mentre la monarchia ottenne il 45,7%.\n\n" +
-          "L'Assemblea Costituente elesse Enrico De Nicola come Capo provvisorio " +
-          "dello Stato. La Costituzione italiana entrò in vigore il 1° gennaio 1948.\n\n" +
-          "Il 18 aprile 1948 si tennero le prime elezioni politiche della Repubblica, " +
-          "vinte dalla Democrazia Cristiana. Alcide De Gasperi divenne Presidente " +
-          "del Consiglio e guidò il primo governo repubblicano.";
+        var sampleText =
+          "The United States Declaration of Independence was adopted on " +
+          "July 4, 1776, by the Second Continental Congress. The document, " +
+          "primarily drafted by Thomas Jefferson, announced that the thirteen " +
+          "American colonies regarded themselves as independent sovereign " +
+          "states, no longer under British rule.\n\n" +
+          "George Washington was elected the first President of the United " +
+          "States in 1789. He served two terms and was succeeded by John Adams " +
+          "in 1797. Thomas Jefferson became the third President in 1801, and " +
+          "during his presidency the Louisiana Purchase of 1803 doubled the " +
+          "size of the country.\n\n" +
+          "The American Civil War began in 1861 and ended in 1865. President " +
+          "Abraham Lincoln issued the Emancipation Proclamation in 1863, " +
+          "declaring that all slaves in Confederate territory were to be " +
+          "set free.";
 
-        doc = creaDocumento(esempio, 'Esempio · Storia italiana');
-        analizzaDocumentoCorrente();
+        doc = createDocument(sampleText, 'Sample · American History');
+        analyzeCurrentDocument();
       }
 
       $('input').value = doc.text;
-      ridisegna();
-      aggiornaBadgeRipasso();
+      redraw();
+      updateReviewBadge();
 
-    } catch (errore) {
-      console.error('Errore di inizializzazione:', errore);
-      bannerErrore.style.display = 'block';
-      bannerErrore.textContent += '❌ init: ' + (errore.message || errore) + '\n' +
-        (errore.stack || '').slice(0, 500);
+    } catch (error) {
+      console.error('Initialization error:', error);
+      errorBanner.style.display = 'block';
+      errorBanner.textContent += '❌ init: ' + (error.message || error) + '\n' +
+        (error.stack || '').slice(0, 500);
     }
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', inizializza);
+    document.addEventListener('DOMContentLoaded', initialize);
   } else {
-    inizializza();
+    initialize();
   }
 
 })();
