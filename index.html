@@ -10,28 +10,23 @@
 <title>HIGHLIGHT AI</title>
 <style>
 /* ============================================================
-   VARIABILI CSS — Palette colori e dimensioni
-   Cambia qui per modificare l'aspetto globale dell'app.
+   VARIABILI CSS — Cambia qui per modificare l'aspetto globale
    ============================================================ */
 :root {
   color-scheme: light;
 
-  /* Colori base dell'interfaccia */
   --colore-sfondo: #f6f3ee;
   --colore-superficie: #ffffff;
   --colore-superficie-2: #fbf9f5;
   --colore-superficie-3: #f1ede6;
 
-  /* Colori testo */
   --colore-inchiostro: #1b1815;
   --colore-inchiostro-2: #57534e;
   --colore-inchiostro-3: #a8a29e;
 
-  /* Bordi */
   --colore-bordo: #e6e0d6;
   --colore-bordo-2: #d9d2c5;
 
-  /* Colori accento */
   --colore-accento: #b8893d;
   --colore-accento-tenue: #f3e6cf;
   --colore-pericolo: #c0392b;
@@ -40,7 +35,6 @@
   --colore-ok: #3b8f4b;
   --colore-ok-tenue: #dff0e2;
 
-  /* Colori delle 7 categorie di evidenziazione */
   --colore-numero: #ffe680;
   --colore-nome: #d9b8ff;
   --colore-concetto: #b6e6b6;
@@ -177,7 +171,6 @@ button {
   height: 20px;
 }
 
-/* Pulsante AI quando il modello è attivo */
 .iconbtn.ai-attiva {
   color: var(--colore-ai);
 }
@@ -194,13 +187,23 @@ button {
   border: 2px solid var(--colore-sfondo);
 }
 
+.iconbtn .lingua-badge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  font-size: 0.5rem;
+  font-weight: 800;
+  background: var(--colore-inchiostro);
+  color: var(--colore-sfondo);
+  padding: 1px 4px;
+  border-radius: 4px;
+  line-height: 1;
+}
+
 .spacer {
   flex: 1;
 }
 
-/* ============================================================
-   GESTIONE DELLE VISTE (tab)
-   ============================================================ */
 .view {
   display: none;
   flex: 1;
@@ -226,7 +229,7 @@ button {
 }
 
 /* ============================================================
-   CAMPO DI INPUT DEL TESTO — 6 righe fisse con scroll
+   CAMPO DI INPUT — 6 righe fisse con scroll
    ============================================================ */
 .input-card {
   background: var(--colore-superficie);
@@ -245,7 +248,6 @@ button {
   line-height: 23px;
   resize: none;
   padding: 12px 14px;
-  /* 6 righe da 23px + 24px di padding verticale = 162px */
   height: 162px;
   display: block;
   overflow-y: auto;
@@ -256,7 +258,7 @@ button {
 }
 
 /* ============================================================
-   TOOLBAR — pulsanti Modifica, Domande, Salva, Nuovo, Pulisci
+   TOOLBAR
    ============================================================ */
 .actions {
   display: flex;
@@ -306,7 +308,7 @@ button {
 }
 
 /* ============================================================
-   LEGENDA DELLE CATEGORIE
+   LEGENDA CATEGORIE
    ============================================================ */
 .cats-row {
   display: flex;
@@ -367,7 +369,7 @@ button {
 }
 
 /* ============================================================
-   AREA OUTPUT — testo con evidenziazioni
+   OUTPUT
    ============================================================ */
 .output-card {
   background: var(--colore-superficie);
@@ -396,35 +398,14 @@ mark {
   cursor: pointer;
 }
 
-mark.c-num {
-  background: var(--colore-numero);
-}
+mark.c-num { background: var(--colore-numero); }
+mark.c-name { background: var(--colore-nome); }
+mark.c-key { background: var(--colore-concetto); }
+mark.c-quote { background: var(--colore-citazione); }
+mark.c-list { background: var(--colore-elenco); }
+mark.c-def { background: var(--colore-definizione); }
+mark.c-sentence { background: var(--colore-frase); }
 
-mark.c-name {
-  background: var(--colore-nome);
-}
-
-mark.c-key {
-  background: var(--colore-concetto);
-}
-
-mark.c-quote {
-  background: var(--colore-citazione);
-}
-
-mark.c-list {
-  background: var(--colore-elenco);
-}
-
-mark.c-def {
-  background: var(--colore-definizione);
-}
-
-mark.c-sentence {
-  background: var(--colore-frase);
-}
-
-/* Evidenziazioni con nota personale */
 mark.has-note {
   box-shadow: inset 0 -3px 0 0 var(--colore-ai);
 }
@@ -449,7 +430,7 @@ body.edit-mode .edit-hint {
 }
 
 /* ============================================================
-   STATI VUOTI
+   STATI VUOTI E LISTE
    ============================================================ */
 .empty {
   text-align: center;
@@ -469,9 +450,6 @@ body.edit-mode .edit-hint {
   line-height: 1.5;
 }
 
-/* ============================================================
-   LISTA LIBRERIA
-   ============================================================ */
 .lib-list {
   display: flex;
   flex-direction: column;
@@ -544,8 +522,13 @@ body.edit-mode .edit-hint {
   color: var(--colore-ok);
 }
 
+.badge.lang {
+  background: var(--colore-inchiostro);
+  color: var(--colore-sfondo);
+}
+
 /* ============================================================
-   CARD (domande in anteprima e in lista)
+   CARD
    ============================================================ */
 .card-item {
   background: var(--colore-superficie);
@@ -590,7 +573,7 @@ body.edit-mode .edit-hint {
   color: var(--colore-inchiostro-2);
 }
 
-#cardPreviewList {
+#card-preview-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -599,7 +582,7 @@ body.edit-mode .edit-hint {
 }
 
 /* ============================================================
-   RIPASSO — schermata di review
+   RIPASSO
    ============================================================ */
 .review-progress {
   text-align: center;
@@ -659,9 +642,6 @@ body.edit-mode .edit-hint {
   display: block;
 }
 
-/* ============================================================
-   OPZIONI MCQ
-   ============================================================ */
 .mcq-option {
   display: flex;
   align-items: flex-start;
@@ -749,7 +729,7 @@ body.edit-mode .edit-hint {
 }
 
 /* ============================================================
-   BARRA DI SELEZIONE — appare quando selezioni del testo
+   BARRA DI SELEZIONE
    ============================================================ */
 .sel-bar {
   position: fixed;
@@ -815,7 +795,7 @@ body.edit-mode .edit-hint {
 }
 
 /* ============================================================
-   TAB BAR IN BASSO
+   TAB BAR
    ============================================================ */
 .tabbar {
   display: flex;
@@ -864,7 +844,7 @@ body.edit-mode .edit-hint {
 }
 
 /* ============================================================
-   MODALI — pannelli che salgono dal basso
+   MODALI
    ============================================================ */
 .modal-bg {
   position: fixed;
@@ -961,9 +941,6 @@ body.edit-mode .edit-hint {
   color: #1a0f3d;
 }
 
-/* ============================================================
-   OPZIONI DEL MODELLO AI
-   ============================================================ */
 .model-option {
   display: flex;
   align-items: center;
@@ -1004,9 +981,6 @@ body.edit-mode .edit-hint {
   margin-top: 2px;
 }
 
-/* ============================================================
-   TOAST — piccola notifica in basso
-   ============================================================ */
 .toast {
   position: fixed;
   left: 50%;
@@ -1030,9 +1004,6 @@ body.edit-mode .edit-hint {
   opacity: 1;
 }
 
-/* ============================================================
-   BARRA DI STATO AI
-   ============================================================ */
 .ai-bar {
   display: none;
   align-items: center;
@@ -1062,9 +1033,7 @@ body.edit-mode .edit-hint {
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
 .ai-bar .msg {
@@ -1091,12 +1060,9 @@ body.edit-mode .edit-hint {
   color: var(--colore-pericolo);
 }
 
-/* ============================================================
-   RIGA STATISTICHE
-   ============================================================ */
 .stats-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
   margin-top: 12px;
 }
@@ -1122,9 +1088,6 @@ body.edit-mode .edit-hint {
   margin-top: 2px;
 }
 
-/* ============================================================
-   BARRA DI ERRORE (visibile solo se c'è un errore JavaScript)
-   ============================================================ */
 #error-banner {
   position: fixed;
   top: 0;
@@ -1145,17 +1108,16 @@ body.edit-mode .edit-hint {
 </head>
 <body>
 
-<!-- Banner di errore: compare solo se qualcosa va storto -->
 <div id="error-banner"></div>
 
 <div class="app">
 
-  <!-- ============================================================
-       BARRA SUPERIORE
-       ============================================================ -->
   <header class="topbar">
     <div class="brand-title" id="brand-title"></div>
     <div class="spacer"></div>
+    <button class="iconbtn" id="btn-lingua" title="Lingua rilevata">
+      <span id="lingua-badge" class="lingua-badge">IT</span>
+    </button>
     <button class="iconbtn" id="btn-ai-status" title="Modello AI">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9L12 3z"/>
@@ -1164,25 +1126,18 @@ body.edit-mode .edit-hint {
     </button>
   </header>
 
-  <!-- ============================================================
-       VISTA 1 — TESTO (evidenziazione automatica)
-       ============================================================ -->
   <section class="view active" id="view-text">
     <div class="scroll" id="scroll-text">
       <div class="wrap">
-
-        <!-- Campo di input testo -->
         <div class="input-card">
           <textarea
             id="input"
-            placeholder="Incolla o scrivi un testo… l'evidenziazione è automatica"
+            placeholder="Incolla o scrivi un testo (italiano o inglese) — l'evidenziazione è automatica"
           ></textarea>
         </div>
 
-        <!-- Legenda categorie -->
         <div class="cats-row" id="legend"></div>
 
-        <!-- Toolbar azioni -->
         <div class="actions" id="toolbar">
           <button class="tbtn" id="btn-edit">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1222,31 +1177,23 @@ body.edit-mode .edit-hint {
           </button>
         </div>
 
-        <!-- Barra di stato AI -->
         <div class="ai-bar" id="ai-bar">
           <span class="spinner"></span>
           <span class="msg" id="ai-msg">Preparazione AI…</span>
           <span class="pct" id="ai-pct"></span>
         </div>
 
-        <!-- Hint per la modalità modifica -->
         <div class="edit-hint" id="edit-hint">
           Modalità modifica attiva: tocca una parola per evidenziarla o rimuoverla
         </div>
 
-        <!-- Output: il testo evidenziato -->
         <div class="output-card" id="output"></div>
 
-        <!-- Statistiche del documento corrente -->
         <div class="stats-row" id="stats" style="display: none;"></div>
-
       </div>
     </div>
   </section>
 
-  <!-- ============================================================
-       VISTA 2 — LIBRERIA
-       ============================================================ -->
   <section class="view" id="view-library">
     <div class="scroll">
       <div class="wrap">
@@ -1265,18 +1212,12 @@ body.edit-mode .edit-hint {
     </div>
   </section>
 
-  <!-- ============================================================
-       VISTA 3 — RIPASSO
-       ============================================================ -->
   <section class="view" id="view-review">
     <div class="scroll">
       <div class="wrap" id="review-content"></div>
     </div>
   </section>
 
-  <!-- ============================================================
-       TAB BAR
-       ============================================================ -->
   <nav class="tabbar">
     <button class="tab active" data-view="text">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1305,12 +1246,8 @@ body.edit-mode .edit-hint {
 
 </div>
 
-<!-- Barra di selezione (appare quando si seleziona del testo) -->
 <div class="sel-bar" id="selection-bar"></div>
 
-<!-- ============================================================
-     MODALE — Salva testo
-     ============================================================ -->
 <div class="modal-bg" id="modal-save">
   <div class="modal">
     <h3>Salva testo</h3>
@@ -1323,9 +1260,6 @@ body.edit-mode .edit-hint {
   </div>
 </div>
 
-<!-- ============================================================
-     MODALE — Conferma generica
-     ============================================================ -->
 <div class="modal-bg" id="modal-confirm">
   <div class="modal">
     <h3 id="confirm-title">Sei sicuro?</h3>
@@ -1337,9 +1271,6 @@ body.edit-mode .edit-hint {
   </div>
 </div>
 
-<!-- ============================================================
-     MODALE — Nota su un'evidenziazione
-     ============================================================ -->
 <div class="modal-bg" id="modal-note">
   <div class="modal">
     <h3>Nota</h3>
@@ -1352,9 +1283,6 @@ body.edit-mode .edit-hint {
   </div>
 </div>
 
-<!-- ============================================================
-     MODALE — Configurazione modello AI
-     ============================================================ -->
 <div class="modal-bg" id="modal-ai-setup">
   <div class="modal">
     <h3>Modello AI locale</h3>
@@ -1379,9 +1307,6 @@ body.edit-mode .edit-hint {
   </div>
 </div>
 
-<!-- ============================================================
-     MODALE — Anteprima domande generate
-     ============================================================ -->
 <div class="modal-bg" id="modal-card-preview">
   <div class="modal">
     <h3>Domande generate</h3>
@@ -1394,7 +1319,6 @@ body.edit-mode .edit-hint {
   </div>
 </div>
 
-<!-- Toast notifiche -->
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1403,7 +1327,6 @@ body.edit-mode .edit-hint {
 
   // ============================================================
   // GESTIONE ERRORI GLOBALE
-  // Se qualcosa va storto, mostriamo un banner rosso in cima.
   // ============================================================
   var bannerErrore = document.getElementById('error-banner');
   window.addEventListener('error', function (evento) {
@@ -1415,12 +1338,10 @@ body.edit-mode .edit-hint {
   // UTILITÀ DI BASE
   // ============================================================
 
-  /** Scorciatoia per document.getElementById */
   function $(id) {
     return document.getElementById(id);
   }
 
-  /** Scappa i caratteri HTML pericolosi in una stringa */
   function escapeHtml(testo) {
     return String(testo).replace(/[&<>"']/g, function (carattere) {
       return {
@@ -1433,33 +1354,20 @@ body.edit-mode .edit-hint {
     });
   }
 
-  /** Scappa i caratteri speciali regex */
-  function escapeRegex(testo) {
-    return testo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  }
-
-  /** Genera un ID univoco basato sul timestamp e casualità */
   function generaId() {
     return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   }
 
-  /** Vibra il dispositivo se supportato */
   function vibra(millisecondi) {
     try {
-      if (navigator.vibrate) {
-        navigator.vibrate(millisecondi);
-      }
-    } catch (errore) {
-      // Ignoriamo silenziosamente — non tutti i browser supportano la vibrazione
-    }
+      if (navigator.vibrate) navigator.vibrate(millisecondi);
+    } catch (errore) { /* ignora */ }
   }
 
-  /** Limita un valore tra un minimo e un massimo */
   function limita(valore, minimo, massimo) {
     return Math.max(minimo, Math.min(massimo, valore));
   }
 
-  /** Mescola un array (Fisher-Yates) */
   function mescola(array) {
     var copia = array.slice();
     for (var i = copia.length - 1; i > 0; i--) {
@@ -1471,7 +1379,6 @@ body.edit-mode .edit-hint {
     return copia;
   }
 
-  /** Mostra un toast temporaneo in basso */
   var timerToast = null;
   function mostraToast(messaggio, durata) {
     durata = durata || 2200;
@@ -1485,12 +1392,9 @@ body.edit-mode .edit-hint {
   }
 
   // ============================================================
-  // COSTANTI DELL'APPLICAZIONE
+  // COSTANTI
   // ============================================================
 
-  // Le 7 categorie di evidenziazione.
-  // "id" è usato internamente, "label" è mostrato all'utente,
-  // "classeCss" è la classe CSS per il colore del mark.
   var CATEGORIE = [
     { id: 'num',      label: 'Numeri',      classeCss: 'c-num' },
     { id: 'name',     label: 'Nomi',        classeCss: 'c-name' },
@@ -1501,31 +1405,33 @@ body.edit-mode .edit-hint {
     { id: 'sentence', label: 'Frasi',       classeCss: 'c-sentence' }
   ];
 
-  // Quando due evidenziazioni si sovrappongono, quale vince?
-  // Numero più alto = priorità maggiore.
   var PRIORITA_CATEGORIE = {
-    quote: 10,
-    num: 9,
-    def: 8,
-    list: 7,
-    name: 6,
-    key: 5,
-    sentence: 4
+    quote: 10, num: 9, def: 8, list: 7, name: 6, key: 5, sentence: 4
   };
 
-  // Dizionario di dominio storico-italiano.
-  // Serve per generare distrattori plausibili nelle domande.
-  var DIZIONARIO_STORICO = {
-    anni: [
-      1848, 1861, 1870, 1915, 1918, 1922, 1929, 1936, 1939,
-      1943, 1945, 1946, 1947, 1948, 1955, 1957, 1962, 1963,
-      1968, 1969, 1974, 1978, 1981, 1989, 1992, 1993, 1994,
-      2001, 2008, 2011, 2020, 2022
+  // ============================================================
+  // DIZIONARIO — multilinguistico e multidominio
+  // ============================================================
+  // Non è più solo storia italiana. È un dizionario di partenza
+  // pensato per funzionare su storia, cultura generale, attualità
+  // in italiano e in inglese.
+
+  var DIZIONARIO = {
+    // Anni storici comuni in Italia e nel mondo
+    anniComuni: [
+      1492, 1517, 1648, 1776, 1789, 1815, 1848, 1861, 1870,
+      1914, 1918, 1922, 1929, 1933, 1939, 1943, 1945, 1946,
+      1947, 1948, 1957, 1962, 1968, 1969, 1978, 1989, 1991,
+      1992, 2001, 2008, 2020
     ],
+
+    // Presidenti italiani della Repubblica
     presidentiRepubblica: [
       'De Nicola', 'Einaudi', 'Gronchi', 'Segni', 'Saragat', 'Leone',
       'Pertini', 'Cossiga', 'Scalfaro', 'Ciampi', 'Napolitano', 'Mattarella'
     ],
+
+    // Presidenti del Consiglio italiani (dopoguerra)
     presidentiConsiglio: [
       'De Gasperi', 'Pella', 'Fanfani', 'Scelba', 'Segni', 'Zoli',
       'Tambroni', 'Moro', 'Leone', 'Rumor', 'Colombo', 'Andreotti',
@@ -1533,37 +1439,76 @@ body.edit-mode .edit-hint {
       'Prodi', 'Berlusconi', 'Monti', 'Renzi', 'Gentiloni',
       'Conte', 'Draghi', 'Meloni'
     ],
+
+    // Presidenti degli Stati Uniti (per testi in inglese)
+    usPresidents: [
+      'Washington', 'Adams', 'Jefferson', 'Madison', 'Monroe',
+      'Jackson', 'Lincoln', 'Grant', 'Roosevelt', 'Truman',
+      'Eisenhower', 'Kennedy', 'Johnson', 'Nixon', 'Carter',
+      'Reagan', 'Bush', 'Clinton', 'Obama', 'Trump', 'Biden'
+    ],
+
+    // Primi ministri britannici moderni
+    ukPrimeMinisters: [
+      'Churchill', 'Attlee', 'Eden', 'Macmillan', 'Wilson',
+      'Heath', 'Callaghan', 'Thatcher', 'Major', 'Blair',
+      'Brown', 'Cameron', 'May', 'Johnson', 'Sunak'
+    ],
+
+    // Trattati europei e internazionali
     trattati: [
-      'Trattato di Roma',
-      'Atto Unico Europeo',
-      'Trattato di Maastricht',
-      'Trattato di Amsterdam',
-      'Trattato di Nizza',
-      'Trattato di Lisbona'
+      'Trattato di Roma', 'Atto Unico Europeo', 'Trattato di Maastricht',
+      'Trattato di Amsterdam', 'Trattato di Nizza', 'Trattato di Lisbona',
+      'Trattato di Versailles', 'Trattato di Vienna',
+      'Treaty of Versailles', 'Treaty of Vienna', 'Treaty of Rome'
     ],
-    articoliCostituzione: [
-      '1', '2', '3', '5', '9', '11', '13', '21', '27', '32',
-      '33', '34', '48', '52', '54', '75', '101', '104', '117',
-      '138', '139'
-    ],
+
+    // Partiti italiani
     partiti: [
       'Democrazia Cristiana', 'PCI', 'PSI', 'MSI', 'PRI', 'PLI',
       'PSDI', 'PDS', 'DS', 'Forza Italia', 'AN', 'Lega Nord',
       'UDC', 'PD', 'M5S', 'FdI'
     ],
+
+    // Regioni italiane
     regioni: [
       'Abruzzo', 'Basilicata', 'Calabria', 'Campania',
       'Emilia-Romagna', 'Friuli-Venezia Giulia', 'Lazio', 'Liguria',
       'Lombardia', 'Marche', 'Molise', 'Piemonte', 'Puglia',
       'Sardegna', 'Sicilia', 'Toscana', 'Trentino-Alto Adige',
       'Umbria', "Valle d'Aosta", 'Veneto'
+    ],
+
+    // Continenti e grandi aree geografiche
+    continenti: [
+      'Europa', 'Asia', 'Africa', 'America', 'Oceania', 'Antartide',
+      'Europe', 'Asia', 'Africa', 'America', 'Oceania', 'Antarctica'
     ]
   };
 
-  // Regex per riconoscere i nomi dei mesi in italiano e inglese
-  var REGEX_MESI = '(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre|january|february|march|april|may|june|july|august|september|october|november|december)';
+  // Set di lookup per il dizionario
+  function costruisciSet(array) {
+    var set = {};
+    for (var i = 0; i < array.length; i++) {
+      set[String(array[i]).toLowerCase()] = true;
+    }
+    return set;
+  }
 
-  // Stopword italiane (le parole più comuni che non sono mai nomi propri)
+  var SET_DIZIONARIO = {
+    presidentiRepubblica: costruisciSet(DIZIONARIO.presidentiRepubblica),
+    presidentiConsiglio: costruisciSet(DIZIONARIO.presidentiConsiglio),
+    usPresidents: costruisciSet(DIZIONARIO.usPresidents),
+    ukPrimeMinisters: costruisciSet(DIZIONARIO.ukPrimeMinisters),
+    trattati: costruisciSet(DIZIONARIO.trattati),
+    partiti: costruisciSet(DIZIONARIO.partiti),
+    regioni: costruisciSet(DIZIONARIO.regioni)
+  };
+
+  // Regex mesi bilingui
+  var REGEX_MESI = '(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre|january|february|march|april|may|june|july|august|september|october|november|december|janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)';
+
+  // Stopword italiane
   var STOPWORD_ITALIANE = (
     'il lo la i gli le un uno una e ed o od ma però perciò ' +
     'in con su per tra fra da di al allo alla ai agli alle ' +
@@ -1575,35 +1520,79 @@ body.edit-mode .edit-hint {
     'viene venga fatto fare può devono deve loro lei lui noi voi egli ella essi esse'
   ).split(/\s+/);
 
-  // Insieme (Set) delle stopword per ricerca veloce
+  // Stopword inglesi
+  var STOPWORD_INGLESI = (
+    'the a an and or but of in on at to for from by with as is are was were ' +
+    'be been being this that these those it its he she they them him her his ' +
+    'hers their theirs we us our ours you your yours i me my mine ' +
+    'not no so very more most much many few some any all every each ' +
+    'both either neither one two who whom whose which what where when why ' +
+    'how if then else than too also just only can could will would shall ' +
+    'should may might must do does did done have has had having ' +
+    'about after before during between into through over under above ' +
+    'below again further once here there'
+  ).split(/\s+/);
+
+  // Set stopword unificato
   var SET_STOPWORD = {};
   (function () {
     for (var i = 0; i < STOPWORD_ITALIANE.length; i++) {
       SET_STOPWORD[STOPWORD_ITALIANE[i]] = true;
     }
+    for (var j = 0; j < STOPWORD_INGLESI.length; j++) {
+      SET_STOPWORD[STOPWORD_INGLESI[j]] = true;
+    }
   })();
 
-  // Set di lookup per il dizionario storico (ricerca veloce)
-  function costruisciSet(array) {
-    var set = {};
-    for (var i = 0; i < array.length; i++) {
-      set[String(array[i]).toLowerCase()] = true;
+  // ============================================================
+  // RILEVAMENTO LINGUA
+  // ============================================================
+
+  /**
+   * Rileva la lingua del testo (IT o EN) in base a euristiche.
+   * Restituisce "it" o "en".
+   */
+  function rilevaLingua(testo) {
+    if (!testo || testo.length < 10) return 'it';
+
+    var parole = testo.toLowerCase().match(/\p{L}+/gu) || [];
+    if (parole.length < 3) return 'it';
+
+    var campione = {};
+    var limite = Math.min(200, parole.length);
+    for (var i = 0; i < limite; i++) {
+      campione[parole[i]] = true;
     }
-    return set;
+
+    // Parole spia italiane
+    var spiaItaliana = ['il', 'lo', 'la', 'gli', 'della', 'nella', 'perché',
+      'quindi', 'sono', 'questo', 'questa', 'anche', 'però', 'molto',
+      'più', 'già', 'dopo', 'prima', 'stato', 'viene', 'anno', 'nel', 'sul'];
+    var puntiItaliano = 0;
+    for (var k = 0; k < spiaItaliana.length; k++) {
+      if (campione[spiaItaliana[k]]) puntiItaliano++;
+    }
+
+    // Parole spia inglesi
+    var spiaInglese = ['the', 'and', 'of', 'with', 'that', 'this', 'which',
+      'their', 'would', 'could', 'should', 'very', 'also', 'from', 'into',
+      'between', 'through', 'during', 'about', 'were', 'have', 'been'];
+    var puntiInglese = 0;
+    for (var m = 0; m < spiaInglese.length; m++) {
+      if (campione[spiaInglese[m]]) puntiInglese++;
+    }
+
+    // Controlla caratteri accentati italiani
+    var accentiItaliani = (testo.match(/[àèéìòù]/gi) || []).length;
+    if (accentiItaliani > 3) puntiItaliano += accentiItaliani * 0.3;
+
+    return puntiItaliano >= puntiInglese ? 'it' : 'en';
   }
 
-  var SET_PRESIDENTI_REPUBBLICA = costruisciSet(DIZIONARIO_STORICO.presidentiRepubblica);
-  var SET_PRESIDENTI_CONSIGLIO = costruisciSet(DIZIONARIO_STORICO.presidentiConsiglio);
-  var SET_TRATTATI = costruisciSet(DIZIONARIO_STORICO.trattati);
-  var SET_PARTITI = costruisciSet(DIZIONARIO_STORICO.partiti);
-  var SET_REGIONI = costruisciSet(DIZIONARIO_STORICO.regioni);
-
   // ============================================================
-  // FSRS — Algoritmo di ripetizione spaziata
-  // (Free Spaced Repetition Scheduler, versione 4.5)
+  // FSRS
   // ============================================================
 
-  // Parametri dell'algoritmo FSRS (pesi pre-addestrati)
   var PARAMETRI_FSRS = [
     0.4072, 1.1829, 3.1262, 15.4722, 7.2102, 0.5316, 1.0651,
     0.0234, 1.616, 0.1544, 1.0824, 1.9813, 0.0953, 0.2975,
@@ -1613,12 +1602,10 @@ body.edit-mode .edit-hint {
   var FSRS_FATTORE = 19 / 81;
   var FSRS_OBIETTIVO = 0.9;
 
-  /** Inizializza lo stato FSRS di una card nuova */
   function fsrsInizializza(votoIniziale) {
     var difficolta = limita(
       PARAMETRI_FSRS[4] - Math.exp(PARAMETRI_FSRS[5] * (votoIniziale - 1)) + 1,
-      1,
-      10
+      1, 10
     );
     var stabilita = Math.max(0.1, PARAMETRI_FSRS[votoIniziale - 1]);
     return {
@@ -1632,7 +1619,6 @@ body.edit-mode .edit-hint {
     };
   }
 
-  /** Calcola il prossimo stato FSRS dato un voto */
   function fsrsProssimo(card, voto, adesso) {
     var giorniTrascorsi = Math.max(0, (adesso - (card.lastReview || adesso)) / 86400000);
     var recuperabilita = Math.exp(Math.log(0.9) * giorniTrascorsi / card.stability);
@@ -1640,7 +1626,6 @@ body.edit-mode .edit-hint {
     var nuovaStabilita;
 
     if (voto === 1) {
-      // Voto 1 = "non la sapevo" → reset quasi completo
       nuovaStabilita = PARAMETRI_FSRS[11]
         * Math.pow(nuovaDifficolta, -PARAMETRI_FSRS[12])
         * (Math.pow(card.stability + 1, PARAMETRI_FSRS[13]) - 1)
@@ -1670,7 +1655,6 @@ body.edit-mode .edit-hint {
     };
   }
 
-  /** Converte stabilità in intervallo di giorni */
   function fsrsIntervallo(stabilita) {
     var giorni = (stabilita / FSRS_FATTORE)
       * (Math.pow(FSRS_OBIETTIVO, 1 / FSRS_DECADIMENTO) - 1);
@@ -1678,30 +1662,24 @@ body.edit-mode .edit-hint {
   }
 
   // ============================================================
-  // STORE — Gestione dati persistenti
+  // STORE — persistenza dati
   // ============================================================
-  // Tutti i dati dell'utente sono in questa struttura:
-  //   docs        = documenti (testi)
-  //   highlights  = evidenziazioni
-  //   cards       = domande generate
-  //   review      = stato FSRS delle card
-  //   activeDocId = id del documento attualmente aperto
 
-  var CHIAVE_STORAGE = 'highlight-ai.v73.data';
+  var CHIAVE_STORAGE = 'highlight-ai.v80.data';
 
   var DATI = {
-    version: 73,
+    version: 80,
     docs: {},
     highlights: {},
     cards: {},
     review: {},
     activeDocId: null,
     impostazioni: {
-      categorieAttive: []
+      categorieAttive: [],
+      linguaForzata: null
     }
   };
 
-  /** Carica i dati dal localStorage */
   function caricaDati() {
     try {
       var salvato = localStorage.getItem(CHIAVE_STORAGE);
@@ -1712,12 +1690,11 @@ body.edit-mode .edit-hint {
         }
       }
     } catch (errore) {
-      console.warn('Errore nel caricamento dei dati:', errore);
+      console.warn('Errore nel caricamento:', errore);
     }
 
-    // Assicura che le impostazioni siano inizializzate
     if (!DATI.impostazioni) {
-      DATI.impostazioni = { categorieAttive: [] };
+      DATI.impostazioni = { categorieAttive: [], linguaForzata: null };
     }
     if (!DATI.impostazioni.categorieAttive ||
         DATI.impostazioni.categorieAttive.length === 0) {
@@ -1727,7 +1704,6 @@ body.edit-mode .edit-hint {
     }
   }
 
-  // Salvataggio debounced (aspetta 200ms prima di scrivere)
   var timerSalvataggio = null;
   function salvaDati() {
     clearTimeout(timerSalvataggio);
@@ -1740,29 +1716,24 @@ body.edit-mode .edit-hint {
     }, 200);
   }
 
-  /** Salva immediatamente (senza debounce) */
   function salvaDatiSubito() {
     clearTimeout(timerSalvataggio);
     try {
       localStorage.setItem(CHIAVE_STORAGE, JSON.stringify(DATI));
-    } catch (errore) {
-      // Ignora silenziosamente
-    }
+    } catch (errore) { /* ignora */ }
   }
 
-  /** Restituisce il documento attualmente attivo */
   function documentoAttivo() {
     return DATI.activeDocId ? DATI.docs[DATI.activeDocId] : null;
   }
 
-  /** Crea un nuovo documento */
   function creaDocumento(testo, titolo) {
     var id = generaId();
     DATI.docs[id] = {
       id: id,
       title: titolo || testo.trim().slice(0, 60).replace(/\s+/g, ' ') || 'Senza titolo',
       text: testo,
-      lang: 'it',
+      lang: rilevaLingua(testo),
       createdAt: Date.now(),
       updatedAt: Date.now()
     };
@@ -1771,7 +1742,6 @@ body.edit-mode .edit-hint {
     return DATI.docs[id];
   }
 
-  /** Aggiorna un documento con un insieme di proprietà */
   function aggiornaDocumento(id, modifiche) {
     var doc = DATI.docs[id];
     if (!doc) return;
@@ -1782,7 +1752,6 @@ body.edit-mode .edit-hint {
     salvaDati();
   }
 
-  /** Aggiunge un'evidenziazione */
   function aggiungiEvidenziazione(opzioni) {
     var id = generaId();
     DATI.highlights[id] = {
@@ -1801,7 +1770,6 @@ body.edit-mode .edit-hint {
     return DATI.highlights[id];
   }
 
-  /** Rimuove un'evidenziazione e le card associate */
   function rimuoviEvidenziazione(id) {
     delete DATI.highlights[id];
     for (var cardId in DATI.cards) {
@@ -1813,17 +1781,15 @@ body.edit-mode .edit-hint {
     salvaDati();
   }
 
-  /** Aggiorna un'evidenziazione */
   function aggiornaEvidenziazione(id, modifiche) {
-    var evidenziazione = DATI.highlights[id];
-    if (!evidenziazione) return;
+    var ev = DATI.highlights[id];
+    if (!ev) return;
     for (var chiave in modifiche) {
-      evidenziazione[chiave] = modifiche[chiave];
+      ev[chiave] = modifiche[chiave];
     }
     salvaDati();
   }
 
-  /** Restituisce tutte le evidenziazioni di un documento */
   function evidenziazioniDi(docId) {
     var risultato = [];
     for (var id in DATI.highlights) {
@@ -1834,7 +1800,6 @@ body.edit-mode .edit-hint {
     return risultato;
   }
 
-  /** Restituisce tutte le card di un documento */
   function cardDi(docId) {
     var risultato = [];
     for (var id in DATI.cards) {
@@ -1845,7 +1810,6 @@ body.edit-mode .edit-hint {
     return risultato;
   }
 
-  /** Aggiunge una card */
   function aggiungiCard(card) {
     card.id = generaId();
     card.createdAt = Date.now();
@@ -1854,24 +1818,20 @@ body.edit-mode .edit-hint {
     return card;
   }
 
-  /** Valuta una card (0-4) e aggiorna lo stato FSRS */
   function valutaCard(cardId, voto) {
     var adesso = Date.now();
     var precedente = DATI.review[cardId];
     var nuovo;
-
     if (!precedente || precedente.state === 'new') {
       nuovo = fsrsInizializza(voto);
     } else {
       nuovo = fsrsProssimo(precedente, voto, adesso);
     }
-
     nuovo.due = adesso + fsrsIntervallo(nuovo.stability) * 86400000;
     DATI.review[cardId] = nuovo;
     salvaDati();
   }
 
-  /** Restituisce le card dovute oggi (per ripasso) */
   function cardDaRipassare(docId) {
     var adesso = Date.now();
     var risultato = [];
@@ -1887,21 +1847,18 @@ body.edit-mode .edit-hint {
   }
 
   // ============================================================
-  // ANALIZZATORE — Trova le entità rilevanti in un testo
+  // ANALIZZATORE — funziona in IT e EN
   // ============================================================
 
-  /**
-   * Trova tutti i numeri, date e percentuali nel testo.
-   * Restituisce un array di oggetti {start, end, cat}.
-   */
   function trovaNumeri(testo) {
     var spans = [];
     var match;
     var gia = {};
 
-    // Date complete tipo "14 luglio 1789"
+    // Date complete (IT + EN)
     var regexData = new RegExp(
-      '\\b\\d{1,2}\\s+' + REGEX_MESI + '\\s+\\d{3,4}\\b',
+      '\\b\\d{1,2}\\s+' + REGEX_MESI + '\\s+\\d{3,4}\\b|' +
+      '\\b' + REGEX_MESI + '\\s+\\d{1,2},?\\s+\\d{3,4}\\b',
       'gi'
     );
     while ((match = regexData.exec(testo)) !== null) {
@@ -1931,10 +1888,6 @@ body.edit-mode .edit-hint {
     return spans;
   }
 
-  /**
-   * Trova le citazioni tra virgolette.
-   * Supporta vari tipi di virgolette: «», "", "", 「」
-   */
   function trovaCitazioni(testo) {
     var spans = [];
     var coppie = [
@@ -1949,7 +1902,6 @@ body.edit-mode .edit-hint {
       var chiusura = coppie[p][1];
 
       if (apertura === chiusura) {
-        // Virgolette identiche: cerca coppie consecutive
         var i = 0;
         var indiceApertura = -1;
         while (i < testo.length) {
@@ -1971,7 +1923,6 @@ body.edit-mode .edit-hint {
           i++;
         }
       } else {
-        // Virgolette diverse: cerca corrispondenza tra apertura e chiusura
         var indice = 0;
         while ((indice = testo.indexOf(apertura, indice)) !== -1) {
           var indiceChiusura = testo.indexOf(chiusura, indice + 1);
@@ -1993,9 +1944,6 @@ body.edit-mode .edit-hint {
     return spans;
   }
 
-  /**
-   * Tokenizza un testo: restituisce tutte le parole con le loro posizioni.
-   */
   function tokenizza(testo) {
     var tokens = [];
     var match;
@@ -2011,10 +1959,7 @@ body.edit-mode .edit-hint {
     return tokens;
   }
 
-  /**
-   * Trova i nomi propri (parole capitalizzate non a inizio frase).
-   */
-  function trovaNomiPropri(testo) {
+  function trovaNomiPropri(testo, lingua) {
     var spans = [];
     var tokens = tokenizza(testo);
 
@@ -2022,16 +1967,13 @@ body.edit-mode .edit-hint {
       var token = tokens[i];
       var primaLettera = token.word[0];
 
-      // Deve iniziare con maiuscola
       if (primaLettera !== primaLettera.toUpperCase() ||
           primaLettera === primaLettera.toLowerCase()) {
         continue;
       }
 
-      // Troppo corta per essere un nome
       if (token.word.length < 3) continue;
 
-      // Unisci parole consecutive capitalizzate (es. "De Gasperi")
       var j = i;
       while (j + 1 < tokens.length) {
         var prossimo = tokens[j + 1];
@@ -2075,10 +2017,6 @@ body.edit-mode .edit-hint {
     return spans;
   }
 
-  /**
-   * Trova parole ripetute che potrebbero essere concetti chiave.
-   * Una parola che appare 2+ volte e ha 6+ caratteri è probabilmente importante.
-   */
   function trovaConcetti(testo) {
     var frequenze = {};
     var tokens = tokenizza(testo);
@@ -2105,9 +2043,6 @@ body.edit-mode .edit-hint {
     return spans;
   }
 
-  /**
-   * Trova definizioni tipo "Termine: spiegazione lunga…"
-   */
   function trovaDefinizioni(testo) {
     var spans = [];
     var match;
@@ -2144,27 +2079,25 @@ body.edit-mode .edit-hint {
   }
 
   /**
-   * Analizza un testo e restituisce tutti gli span (entità rilevanti).
+   * Analizza un testo in IT o EN.
+   * @param {string} testo
+   * @param {string} lingua - "it" o "en"
    */
-  function analizzaTesto(testo) {
+  function analizzaTesto(testo, lingua) {
     if (!testo.trim()) return [];
     return [].concat(
       trovaNumeri(testo),
       trovaCitazioni(testo),
       trovaDefinizioni(testo),
-      trovaNomiPropri(testo),
+      trovaNomiPropri(testo, lingua),
       trovaConcetti(testo)
     );
   }
 
   // ============================================================
-  // RENDER — Disegna il testo con le evidenziazioni
+  // RENDER
   // ============================================================
 
-  /**
-   * Trasforma le evidenziazioni in "run" (segmenti contigui con stesso stile).
-   * Gestisce automaticamente le sovrapposizioni usando le priorità.
-   */
   function costruisciRun(testo, evidenziazioni) {
     var lunghezza = testo.length;
     var proprietario = new Array(lunghezza);
@@ -2205,19 +2138,13 @@ body.edit-mode .edit-hint {
              idEvidenziazione[fine] === idEv) {
         fine++;
       }
-      runs.push({
-        start: indice,
-        end: fine,
-        catIdx: cat,
-        hlId: idEv
-      });
+      runs.push({ start: indice, end: fine, catIdx: cat, hlId: idEv });
       indice = fine;
     }
 
     return { runs: runs, indiceCategorie: indiceCategorie };
   }
 
-  /** Inversa: dato un indice numerico, ritorna l'id della categoria */
   function categoriaDaIndice(indiceCategorie, indice) {
     for (var chiave in indiceCategorie) {
       if (indiceCategorie[chiave] === indice) return chiave;
@@ -2225,9 +2152,6 @@ body.edit-mode .edit-hint {
     return null;
   }
 
-  /**
-   * Genera l'HTML del testo con le evidenziazioni applicate.
-   */
   function renderizzaAnnotato(doc) {
     if (!doc) return '';
 
@@ -2285,32 +2209,47 @@ body.edit-mode .edit-hint {
     return html;
   }
 
-  /** Ridisegna completamente l'output */
   function ridisegna() {
     var doc = documentoAttivo();
     if (!doc) {
       $('output').innerHTML = '';
       $('stats').style.display = 'none';
       renderizzaLegenda();
+      aggiornaBadgeLingua(null);
       return;
     }
 
     $('output').innerHTML = renderizzaAnnotato(doc);
     renderizzaStatistiche(doc);
     renderizzaLegenda();
+    aggiornaBadgeLingua(doc);
   }
 
-  /** Aggiorna le statistiche in basso */
+  function aggiornaBadgeLingua(doc) {
+    var badge = $('lingua-badge');
+    if (!badge) return;
+    if (!doc) {
+      badge.textContent = '—';
+      return;
+    }
+    var lingua = doc.lang || rilevaLingua(doc.text);
+    badge.textContent = lingua === 'it' ? 'IT' : 'EN';
+  }
+
   function renderizzaStatistiche(doc) {
     var evidenziazioni = evidenziazioniDi(doc.id).filter(function (ev) {
       return ev.start >= 0;
     });
     var numeroCard = cardDi(doc.id).length;
     var daRipassare = cardDaRipassare(doc.id).length;
+    var lingua = doc.lang || rilevaLingua(doc.text);
 
     var box = $('stats');
     box.style.display = 'grid';
     box.innerHTML =
+      '<div class="stat"><div class="k">Lingua</div><div class="v">' +
+        (lingua === 'it' ? 'IT' : 'EN') +
+      '</div></div>' +
       '<div class="stat"><div class="k">Evidenziaz.</div><div class="v">' +
         evidenziazioni.length +
       '</div></div>' +
@@ -2322,12 +2261,10 @@ body.edit-mode .edit-hint {
       '</div></div>';
   }
 
-  /** Aggiorna la legenda delle categorie */
   function renderizzaLegenda() {
     var doc = documentoAttivo();
     var box = $('legend');
     box.innerHTML = '';
-
     if (!doc) return;
 
     var evidenziazioni = evidenziazioniDi(doc.id).filter(function (ev) {
@@ -2349,7 +2286,6 @@ body.edit-mode .edit-hint {
     for (var c = 0; c < CATEGORIE.length; c++) {
       var categoria = CATEGORIE[c];
       var bottone = document.createElement('button');
-
       var selezionata = modalitaModifica && stato.editCategory === categoria.id;
       var attiva = attive[categoria.id];
 
@@ -2357,27 +2293,29 @@ body.edit-mode .edit-hint {
         (selezionata ? ' sel' : (attiva ? '' : ' off'));
 
       var numero = conteggi[categoria.id] || 0;
-      var coloreCss = '--colore-' + categoria.id.replace('num', 'numero').replace('name', 'nome')
-        .replace('key', 'concetto').replace('def', 'definizione')
-        .replace('quote', 'citazione').replace('list', 'elenco')
-        .replace('sentence', 'frase');
+      var varCss = '--colore-' +
+        categoria.id.replace('num', 'numero')
+          .replace('name', 'nome')
+          .replace('key', 'concetto')
+          .replace('def', 'definizione')
+          .replace('quote', 'citazione')
+          .replace('list', 'elenco')
+          .replace('sentence', 'frase');
 
       bottone.innerHTML =
-        '<span class="dot" style="background: var(' + coloreCss + ')"></span>' +
+        '<span class="dot" style="background: var(' + varCss + ')"></span>' +
         categoria.label +
         (numero ? '<span class="count">' + numero + '</span>' : '');
 
-      (function (categoriaId, inModalitaModifica) {
+      (function (categoriaId, inModifica) {
         bottone.addEventListener('click', function () {
-          if (inModalitaModifica) {
-            // In modalità modifica, il click seleziona la categoria attiva
+          if (inModifica) {
             stato.editCategory = categoriaId;
             renderizzaLegenda();
           } else {
-            // Altrimenti toggle della visibilità
-            var indice = DATI.impostazioni.categorieAttive.indexOf(categoriaId);
-            if (indice >= 0) {
-              DATI.impostazioni.categorieAttive.splice(indice, 1);
+            var idx = DATI.impostazioni.categorieAttive.indexOf(categoriaId);
+            if (idx >= 0) {
+              DATI.impostazioni.categorieAttive.splice(idx, 1);
             } else {
               DATI.impostazioni.categorieAttive.push(categoriaId);
             }
@@ -2392,15 +2330,12 @@ body.edit-mode .edit-hint {
     }
   }
 
-  // ============================================================
-  // STATO INTERNO DELL'APPLICAZIONE
-  // ============================================================
   var stato = {
-    editCategory: 'key'  // categoria di default in modalità modifica
+    editCategory: 'key'
   };
 
   // ============================================================
-  // SELEZIONE DEL TESTO — barra in basso
+  // SELEZIONE
   // ============================================================
 
   var selezione = {
@@ -2409,7 +2344,6 @@ body.edit-mode .edit-hint {
     timerNascondi: null
   };
 
-  /** Inizializza il listener di selezione del testo */
   function inizializzaSelezione() {
     selezione.elemento = $('selection-bar');
 
@@ -2460,7 +2394,6 @@ body.edit-mode .edit-hint {
     }
   }
 
-  /** Calcola gli offset di inizio e fine della selezione nell'elemento output */
   function calcolaOffset(output) {
     var sel = window.getSelection();
     if (!sel.rangeCount) return null;
@@ -2483,11 +2416,9 @@ body.edit-mode .edit-hint {
     };
   }
 
-  /** Mostra la barra con i bottoni delle categorie */
   function mostraBarraSelezione() {
     var barra = selezione.elemento;
     if (!barra) return;
-
     barra.innerHTML = '';
 
     for (var i = 0; i < CATEGORIE.length; i++) {
@@ -2495,24 +2426,26 @@ body.edit-mode .edit-hint {
       var bottone = document.createElement('button');
       bottone.className = 'cat-btn';
 
-      var coloreCss = '--colore-' + categoria.id.replace('num', 'numero').replace('name', 'nome')
-        .replace('key', 'concetto').replace('def', 'definizione')
-        .replace('quote', 'citazione').replace('list', 'elenco')
-        .replace('sentence', 'frase');
+      var varCss = '--colore-' +
+        categoria.id.replace('num', 'numero')
+          .replace('name', 'nome')
+          .replace('key', 'concetto')
+          .replace('def', 'definizione')
+          .replace('quote', 'citazione')
+          .replace('list', 'elenco')
+          .replace('sentence', 'frase');
 
       bottone.innerHTML =
-        '<span class="dot" style="background: var(' + coloreCss + ')"></span>';
+        '<span class="dot" style="background: var(' + varCss + ')"></span>';
 
       (function (categoriaId) {
         bottone.addEventListener('click', function () {
           clearTimeout(selezione.timerNascondi);
           var offset = selezione.offset;
           if (!offset) return;
-
           applicaEvidenziazione(offset.start, offset.end, categoriaId);
           selezione.offset = null;
           nascondiBarraSelezione();
-
           if (window.getSelection) window.getSelection().removeAllRanges();
         });
       })(categoria.id);
@@ -2520,12 +2453,10 @@ body.edit-mode .edit-hint {
       barra.appendChild(bottone);
     }
 
-    // Separatore
     var separatore = document.createElement('div');
     separatore.className = 'sep';
     barra.appendChild(separatore);
 
-    // Pulsante "aggiungi nota"
     var btnNota = document.createElement('button');
     btnNota.className = 'cat-btn note-btn';
     btnNota.innerHTML =
@@ -2538,28 +2469,17 @@ body.edit-mode .edit-hint {
       clearTimeout(selezione.timerNascondi);
       var offset = selezione.offset;
       if (!offset) return;
-
-      var evidenziazione = applicaEvidenziazione(offset.start, offset.end, 'key', true);
+      var ev = applicaEvidenziazione(offset.start, offset.end, 'key', true);
       selezione.offset = null;
       nascondiBarraSelezione();
-
       if (window.getSelection) window.getSelection().removeAllRanges();
-
-      if (evidenziazione) {
-        setTimeout(function () {
-          apriModaleNota(evidenziazione);
-        }, 80);
-      }
+      if (ev) setTimeout(function () { apriModaleNota(ev); }, 80);
     });
 
     barra.appendChild(btnNota);
     barra.classList.add('show');
   }
 
-  /**
-   * Applica (o aggiorna) un'evidenziazione in un certo intervallo.
-   * Se "silenzioso" è true, non mostra il toast.
-   */
   function applicaEvidenziazione(start, end, categoriaId, silenzioso) {
     var doc = documentoAttivo();
     if (!doc || end - start < 2) return null;
@@ -2580,7 +2500,6 @@ body.edit-mode .edit-hint {
       aggiornaEvidenziazione(esistente.id, { cat: categoriaId, source: 'user' });
       evidenziazione = esistente;
     } else {
-      // Rimuovi evidenziazioni completamente contenute in questa selezione
       var daRimuovere = [];
       for (var j = 0; j < tutte.length; j++) {
         var altra = tutte[j];
@@ -2612,9 +2531,7 @@ body.edit-mode .edit-hint {
     if (!silenzioso) {
       var etichetta = categoriaId;
       for (var c = 0; c < CATEGORIE.length; c++) {
-        if (CATEGORIE[c].id === categoriaId) {
-          etichetta = CATEGORIE[c].label;
-        }
+        if (CATEGORIE[c].id === categoriaId) etichetta = CATEGORIE[c].label;
       }
       mostraToast('Evidenziato · ' + etichetta, 1200);
     }
@@ -2624,23 +2541,18 @@ body.edit-mode .edit-hint {
   }
 
   // ============================================================
-  // MODALITÀ MODIFICA — tocca le parole per evidenziarle
+  // MODALITÀ MODIFICA
   // ============================================================
 
-  /** Trova il token (parola) alla posizione specificata */
   function trovaToken(testo, posizione) {
     var tokens = tokenizza(testo);
-
     for (var i = 0; i < tokens.length; i++) {
       if (posizione >= tokens[i].start && posizione <= tokens[i].end) {
         return tokens[i];
       }
     }
-
-    // Se il click è caduto vicino a un token, scegli il più vicino
     var migliore = null;
     var distanzaMinima = Infinity;
-
     for (var j = 0; j < tokens.length; j++) {
       var distanza = Math.min(
         Math.abs(tokens[j].start - posizione),
@@ -2651,11 +2563,9 @@ body.edit-mode .edit-hint {
         migliore = tokens[j];
       }
     }
-
     return (migliore && distanzaMinima < 5) ? migliore : null;
   }
 
-  /** Trova la posizione del click in caratteri dall'inizio dell'output */
   function calcolaPosizioneClick(elementoOutput, x, y) {
     var nodo = null;
     var offset = 0;
@@ -2676,7 +2586,6 @@ body.edit-mode .edit-hint {
 
     if (!nodo) return -1;
 
-    // Normalizza a un nodo di testo
     if (nodo.nodeType !== 3) {
       if (nodo.firstChild && nodo.firstChild.nodeType === 3) {
         nodo = nodo.firstChild;
@@ -2699,11 +2608,9 @@ body.edit-mode .edit-hint {
       if (attuale === nodo) return assoluto + offset;
       assoluto += attuale.nodeValue.length;
     }
-
     return -1;
   }
 
-  /** Attiva/disattiva l'evidenziazione di un token */
   function cambiaStatoToken(token) {
     var doc = documentoAttivo();
     if (!doc) return;
@@ -2722,13 +2629,11 @@ body.edit-mode .edit-hint {
 
     if (esistente) {
       if (esistente.cat === categoria) {
-        // Toggle: rimuovi
         rimuoviEvidenziazione(esistente.id);
         ridisegna();
         mostraToast('− ' + token.word, 900);
         return;
       } else {
-        // Cambia categoria
         aggiornaEvidenziazione(esistente.id, { cat: categoria, source: 'user' });
         ridisegna();
         mostraToast('→ ' + token.word, 900);
@@ -2760,7 +2665,6 @@ body.edit-mode .edit-hint {
 
   var evidenziazioneInNota = null;
 
-  /** Apre il modale per aggiungere/modificare una nota */
   function apriModaleNota(evidenziazione) {
     evidenziazioneInNota = evidenziazione;
     var doc = DATI.docs[evidenziazione.docId];
@@ -2782,17 +2686,13 @@ body.edit-mode .edit-hint {
 
     $('note-text').value = evidenziazione.note || '';
     $('modal-note').classList.add('open');
-
-    setTimeout(function () {
-      $('note-text').focus();
-    }, 100);
+    setTimeout(function () { $('note-text').focus(); }, 100);
   }
 
   // ============================================================
-  // GENERAZIONE DOMANDE — Dizionario + AI
+  // GENERAZIONE DOMANDE
   // ============================================================
 
-  /** Hash semplice per deduplicazione delle domande */
   function hashDomanda(stringa) {
     var hash = 5381;
     var limitato = stringa.slice(0, 1000);
@@ -2802,44 +2702,22 @@ body.edit-mode .edit-hint {
     return 'm' + Math.abs(hash).toString(36);
   }
 
-  /**
-   * Classifica un'entità (una parola o frase evidenziata) in una categoria.
-   * Esempi:
-   *   "14 luglio 1789"    → "data"
-   *   "1948"              → "anno"
-   *   "Trattato di Roma"  → "trattato"
-   */
   function classificaEntita(superficie) {
     var s = superficie.toLowerCase().trim();
 
-    // Data completa: "14 luglio 1789"
-    if (new RegExp('\\d{1,2}\\s+' + REGEX_MESI + '\\s+\\d{3,4}').test(s)) {
-      return 'data';
-    }
+    if (new RegExp('\\d{1,2}\\s+' + REGEX_MESI + '\\s+\\d{3,4}').test(s)) return 'data';
+    if (/^(1\d{3}|20\d{2})$/.test(s)) return 'anno';
+    if (/^\d+(?:[.,]\d+)?\s*%$/.test(s)) return 'percentuale';
+    if (/^\d+(?:[.,]\d+)?$/.test(s)) return 'numero';
 
-    // Anno a 4 cifre
-    if (/^(1\d{3}|20\d{2})$/.test(s)) {
-      return 'anno';
-    }
+    if (SET_DIZIONARIO.trattati[s]) return 'trattato';
+    if (SET_DIZIONARIO.presidentiRepubblica[s]) return 'presidente_repubblica';
+    if (SET_DIZIONARIO.presidentiConsiglio[s]) return 'presidente_consiglio';
+    if (SET_DIZIONARIO.usPresidents[s]) return 'us_president';
+    if (SET_DIZIONARIO.ukPrimeMinisters[s]) return 'uk_pm';
+    if (SET_DIZIONARIO.partiti[s]) return 'partito';
+    if (SET_DIZIONARIO.regioni[s]) return 'regione';
 
-    // Percentuale
-    if (/^\d+(?:[.,]\d+)?\s*%$/.test(s)) {
-      return 'percentuale';
-    }
-
-    // Numero semplice
-    if (/^\d+(?:[.,]\d+)?$/.test(s)) {
-      return 'numero';
-    }
-
-    // Trattato (prima dei presidenti perché contiene parole simili)
-    if (SET_TRATTATI[s]) return 'trattato';
-    if (SET_PRESIDENTI_REPUBBLICA[s]) return 'presidente_repubblica';
-    if (SET_PRESIDENTI_CONSIGLIO[s]) return 'presidente_consiglio';
-    if (SET_PARTITI[s]) return 'partito';
-    if (SET_REGIONI[s]) return 'regione';
-
-    // Nome proprio (due parole capitalizzate consecutive)
     if (/^[A-ZÀ-Ý][a-zà-ÿ]+\s+[A-ZÀ-Ý][a-zà-ÿ]+/.test(superficie)) {
       return 'nome_proprio';
     }
@@ -2847,50 +2725,38 @@ body.edit-mode .edit-hint {
     return 'sconosciuto';
   }
 
-  /**
-   * Genera distrattori perturbando un numero (anno, percentuale, numero).
-   * Esempio: 1948 → [1947, 1949, 1946]
-   */
   function distrattoriPerturbazione(tipo, corretta, quanti) {
     if (tipo === 'anno') {
       var anno = parseInt(corretta, 10);
       if (isNaN(anno)) return null;
-
       var offsetAnno = [-1, 1, -2, 2, -3, 3, -5, 5];
-      var risultatiAnno = [];
+      var risultati = [];
       for (var i = 0; i < offsetAnno.length; i++) {
         var v = anno + offsetAnno[i];
-        if (v >= 1000 && v <= 2099) {
-          risultatiAnno.push(String(v));
-        }
+        if (v >= 1000 && v <= 2099) risultati.push(String(v));
       }
-      return risultatiAnno.length >= quanti
-        ? mescola(risultatiAnno).slice(0, quanti)
-        : null;
+      return risultati.length >= quanti ? mescola(risultati).slice(0, quanti) : null;
     }
 
     if (tipo === 'percentuale') {
       var match = String(corretta).match(/^(\d+(?:[.,]\d+)?)\s*%$/);
       if (!match) return null;
-
-      var percentuale = parseFloat(match[1].replace(',', '.'));
+      var p = parseFloat(match[1].replace(',', '.'));
       var offsetPerc = [-0.5, 0.5, -1, 1, -2, 2];
       var risultatiPerc = [];
       for (var j = 0; j < offsetPerc.length; j++) {
-        var vp = percentuale + offsetPerc[j];
+        var vp = p + offsetPerc[j];
         if (vp > 0 && vp < 100) {
           risultatiPerc.push(vp.toString().replace('.', ',') + '%');
         }
       }
       return risultatiPerc.length >= quanti
-        ? mescola(risultatiPerc).slice(0, quanti)
-        : null;
+        ? mescola(risultatiPerc).slice(0, quanti) : null;
     }
 
     if (tipo === 'numero') {
       var numero = parseFloat(String(corretta).replace(',', '.'));
       if (isNaN(numero)) return null;
-
       var unita = String(corretta).replace(/[\d.,\s]+/g, '').trim();
       var offsetNum = [-1, 1, -2, 2, -5, 5, -10, 10];
       var risultatiNum = [];
@@ -2902,22 +2768,19 @@ body.edit-mode .edit-hint {
         }
       }
       return risultatiNum.length >= quanti
-        ? mescola(risultatiNum).slice(0, quanti)
-        : null;
+        ? mescola(risultatiNum).slice(0, quanti) : null;
     }
 
     return null;
   }
 
-  /**
-   * Genera distrattori dal dizionario storico.
-   * Per gli anni, sceglie quelli più vicini numericamente.
-   */
   function distrattoriDizionario(tipo, corretta, quanti) {
     var mappa = {
-      anno: 'anni',
+      anno: 'anniComuni',
       presidente_repubblica: 'presidentiRepubblica',
       presidente_consiglio: 'presidentiConsiglio',
+      us_president: 'usPresidents',
+      uk_pm: 'ukPrimeMinisters',
       trattato: 'trattati',
       partito: 'partiti',
       regione: 'regioni'
@@ -2926,7 +2789,7 @@ body.edit-mode .edit-hint {
     var chiave = mappa[tipo];
     if (!chiave) return null;
 
-    var pool = DIZIONARIO_STORICO[chiave];
+    var pool = DIZIONARIO[chiave];
     if (!pool || !pool.length) return null;
 
     var correttaStr = String(corretta).toLowerCase();
@@ -2940,108 +2803,118 @@ body.edit-mode .edit-hint {
             return { v: v, d: Math.abs(parseInt(v, 10) - annoCorretto) };
           })
           .sort(function (a, b) { return a.d - b.d; });
-
-        var risultatoAnni = [];
-        for (var i = 0; i < ordinati.length && risultatoAnni.length < quanti; i++) {
-          risultatoAnni.push(String(ordinati[i].v));
+        var risultato = [];
+        for (var i = 0; i < ordinati.length && risultato.length < quanti; i++) {
+          risultato.push(String(ordinati[i].v));
         }
-        return risultatoAnni;
+        return risultato;
       }
     }
 
     var mescolato = mescola(pool.slice());
-    var risultato = [];
-    for (var j = 0; j < mescolato.length && risultato.length < quanti; j++) {
+    var out = [];
+    for (var j = 0; j < mescolato.length && out.length < quanti; j++) {
       if (String(mescolato[j]).toLowerCase() !== correttaStr) {
-        risultato.push(String(mescolato[j]));
+        out.push(String(mescolato[j]));
       }
     }
-
-    return risultato.length >= quanti ? risultato : null;
+    return out.length >= quanti ? out : null;
   }
 
-  /**
-   * Costruisce la domanda a partire da un template.
-   * Il "template" dipende dal tipo di entità.
-   */
-  function costruisciDomanda(tipo, entita, frase) {
+  function costruisciDomanda(tipo, entita, frase, lingua) {
     var indice = frase.toLowerCase().indexOf(entita.toLowerCase());
     if (indice < 0) return null;
 
     var prima = frase.slice(0, indice).replace(/^[«"'(\[]\s*/, '').trim();
     var dopo = frase.slice(indice + entita.length).replace(/[.,;:!?]+$/, '').trim();
 
+    var it = lingua === 'it';
+
     if (tipo === 'data' || tipo === 'anno') {
       if (prima.length > 5) {
-        return 'Quando ' + prima.toLowerCase() + '?';
+        return it
+          ? 'Quando ' + prima.toLowerCase() + '?'
+          : 'When did ' + prima.toLowerCase() + ' happen?';
       }
       if (dopo.length > 5) {
-        return 'In quale anno avvenne: ' + dopo + '?';
+        return it
+          ? 'In quale anno avvenne: ' + dopo + '?'
+          : 'In which year did this happen: ' + dopo + '?';
       }
       return null;
     }
 
     if (tipo === 'percentuale' || tipo === 'numero') {
       if (prima.length > 5) {
-        return 'Quanto ' + prima.toLowerCase() + '?';
+        return it
+          ? 'Quanto ' + prima.toLowerCase() + '?'
+          : 'How much ' + prima.toLowerCase() + '?';
       }
       return null;
     }
 
     if (tipo === 'presidente_repubblica') {
-      return 'Chi fu il Presidente della Repubblica ' +
-        (dopo ? 'che ' + dopo.toLowerCase() : 'in questo periodo') + '?';
+      return it
+        ? 'Chi fu il Presidente della Repubblica ' +
+          (dopo ? 'che ' + dopo.toLowerCase() : 'in questo periodo') + '?'
+        : 'Who was the President of the Republic ' +
+          (dopo ? 'who ' + dopo.toLowerCase() : 'in this period') + '?';
     }
 
     if (tipo === 'presidente_consiglio') {
-      return 'Chi era il Presidente del Consiglio quando ' + dopo.toLowerCase() + '?';
+      return it
+        ? 'Chi era il Presidente del Consiglio quando ' + dopo.toLowerCase() + '?'
+        : 'Who was the Prime Minister when ' + dopo.toLowerCase() + '?';
+    }
+
+    if (tipo === 'us_president') {
+      return it
+        ? 'Quale presidente americano ' + (dopo ? dopo.toLowerCase() : 'in questo periodo') + '?'
+        : 'Which US president ' + (dopo ? dopo.toLowerCase() : 'in this period') + '?';
+    }
+
+    if (tipo === 'uk_pm') {
+      return it
+        ? 'Quale primo ministro britannico ' + (dopo ? dopo.toLowerCase() : 'in questo periodo') + '?'
+        : 'Which UK prime minister ' + (dopo ? dopo.toLowerCase() : 'in this period') + '?';
     }
 
     if (tipo === 'trattato') {
-      return 'Quale trattato ' +
-        (dopo ? dopo.toLowerCase() : 'fu firmato in questo periodo') + '?';
+      return it
+        ? 'Quale trattato ' + (dopo ? dopo.toLowerCase() : 'fu firmato in questo periodo') + '?'
+        : 'Which treaty ' + (dopo ? dopo.toLowerCase() : 'was signed in this period') + '?';
     }
 
     if (tipo === 'partito') {
-      return 'Quale partito ' + (dopo ? dopo.toLowerCase() : '—') + '?';
+      return it
+        ? 'Quale partito ' + (dopo ? dopo.toLowerCase() : '—') + '?'
+        : 'Which party ' + (dopo ? dopo.toLowerCase() : '—') + '?';
     }
 
     if (tipo === 'regione') {
-      return 'Quale regione ' + (dopo ? dopo.toLowerCase() : '—') + '?';
+      return it
+        ? 'Quale regione ' + (dopo ? dopo.toLowerCase() : '—') + '?'
+        : 'Which region ' + (dopo ? dopo.toLowerCase() : '—') + '?';
     }
 
     return null;
   }
 
-  /** Divide un testo in frasi */
   function dividiInFrasi(testo) {
     var frasi = [];
     var inizio = 0;
     var match;
     var regex = /[.!?…]+(?=\s|$)/g;
-
     while ((match = regex.exec(testo)) !== null) {
       var fine = match.index + match[0].length;
-      if (fine - inizio >= 15) {
-        frasi.push({ start: inizio, end: fine });
-      }
+      if (fine - inizio >= 15) frasi.push({ start: inizio, end: fine });
       inizio = fine;
-      while (inizio < testo.length && /\s/.test(testo[inizio])) {
-        inizio++;
-      }
+      while (inizio < testo.length && /\s/.test(testo[inizio])) inizio++;
     }
-
-    if (testo.length - inizio >= 15) {
-      frasi.push({ start: inizio, end: testo.length });
-    }
-
+    if (testo.length - inizio >= 15) frasi.push({ start: inizio, end: testo.length });
     return frasi;
   }
 
-  /**
-   * Genera proposte di domande usando SOLO il dizionario locale.
-   * Veloce, offline, zero errori inventati.
-   */
   function proponiDalDizionario(doc) {
     var evidenziazioni = evidenziazioniDi(doc.id).filter(function (ev) {
       return ev.start >= 0;
@@ -3049,6 +2922,7 @@ body.edit-mode .edit-hint {
     var frasi = dividiInFrasi(doc.text);
     var proposte = [];
     var visti = {};
+    var lingua = doc.lang || rilevaLingua(doc.text);
 
     for (var i = 0; i < evidenziazioni.length; i++) {
       var ev = evidenziazioni[i];
@@ -3058,7 +2932,6 @@ body.edit-mode .edit-hint {
       var tipo = classificaEntita(superficie);
       if (tipo === 'sconosciuto') continue;
 
-      // Trova la frase che contiene questa evidenziazione
       var fraseContenitrice = null;
       for (var f = 0; f < frasi.length; f++) {
         if (ev.start >= frasi[f].start && ev.end <= frasi[f].end) {
@@ -3075,10 +2948,9 @@ body.edit-mode .edit-hint {
       var tipoCard = tipo;
 
       if (tipo !== 'nome_proprio') {
-        domanda = costruisciDomanda(tipo, superficie, testoFrase);
+        domanda = costruisciDomanda(tipo, superficie, testoFrase, lingua);
       }
 
-      // Fallback per i nomi propri: cloze sulla frase
       if (!domanda && tipo === 'nome_proprio') {
         var relativo = ev.start - fraseContenitrice.start;
         var cloze = testoFrase.slice(0, relativo) +
@@ -3093,9 +2965,7 @@ body.edit-mode .edit-hint {
 
       if (!domanda || domanda.length < 10 || domanda.length > 220) continue;
 
-      // Costruisci i distrattori
       var distrattori = null;
-
       if (tipoCard !== 'cloze' && tipoCard !== 'nome_proprio') {
         distrattori = distrattoriDizionario(tipoCard, superficie, 3);
         if (!distrattori || distrattori.length < 3) {
@@ -3103,12 +2973,13 @@ body.edit-mode .edit-hint {
         }
       }
 
-      // Fallback: prendi altri highlight come distrattori
       if (!distrattori || distrattori.length < 3) {
         var altri = [];
         for (var o = 0; o < evidenziazioni.length && altri.length < 3; o++) {
           if (evidenziazioni[o].id === ev.id) continue;
-          var testoAltro = doc.text.slice(evidenziazioni[o].start, evidenziazioni[o].end).trim();
+          var testoAltro = doc.text.slice(
+            evidenziazioni[o].start, evidenziazioni[o].end
+          ).trim();
           if (testoAltro &&
               testoAltro.toLowerCase() !== superficie.toLowerCase() &&
               altri.indexOf(testoAltro) === -1) {
@@ -3142,7 +3013,7 @@ body.edit-mode .edit-hint {
   }
 
   // ============================================================
-  // AI — WebLLM (modello locale nel browser)
+  // AI — WebLLM
   // ============================================================
 
   var URL_CDN_AI = 'https://esm.run/@mlc-ai/web-llm';
@@ -3173,15 +3044,13 @@ body.edit-mode .edit-hint {
     loading: false,
     ready: false,
     failed: false,
-    modelKey: localStorage.getItem('highlight-ai.v73.model') || 'qwen15'
+    modelKey: localStorage.getItem('highlight-ai.v80.model') || 'qwen15'
   };
 
-  /** Verifica se WebGPU è disponibile nel browser */
   function haWebGPU() {
     return typeof navigator !== 'undefined' && !!navigator.gpu;
   }
 
-  /** Gestisce la barra di stato AI (in alto o nel modale) */
   function impostaStatoAI(elementoBarra, elementoMsg, elementoPct, tipo, messaggio, percentuale) {
     var barra = $(elementoBarra);
     barra.classList.remove('ready', 'error');
@@ -3200,9 +3069,7 @@ body.edit-mode .edit-hint {
       $(elementoMsg).textContent = messaggio || 'Pronta';
       if (elementoPct) $(elementoPct).textContent = '';
       setTimeout(function () {
-        if (barra.classList.contains('ready')) {
-          barra.classList.remove('show');
-        }
+        if (barra.classList.contains('ready')) barra.classList.remove('show');
       }, 2500);
     } else if (tipo === 'error') {
       barra.classList.add('error');
@@ -3214,8 +3081,7 @@ body.edit-mode .edit-hint {
       $(elementoMsg).textContent = messaggio || 'Caricamento…';
       if (elementoPct) {
         $(elementoPct).textContent = percentuale != null
-          ? Math.round(percentuale * 100) + '%'
-          : '';
+          ? Math.round(percentuale * 100) + '%' : '';
       }
     }
   }
@@ -3228,7 +3094,6 @@ body.edit-mode .edit-hint {
     impostaStatoAI('ai-bar-modal', 'ai-modal-msg', 'ai-modal-pct', tipo, msg, pct);
   }
 
-  /** Carica il modello AI specificato */
   function caricaModelloAI(chiave) {
     if (statoAI.loading) return Promise.resolve(false);
     if (statoAI.ready && statoAI.modelKey === chiave) return Promise.resolve(true);
@@ -3244,7 +3109,7 @@ body.edit-mode .edit-hint {
 
     statoAI.loading = true;
     statoAI.failed = false;
-    localStorage.setItem('highlight-ai.v73.model', chiave);
+    localStorage.setItem('highlight-ai.v80.model', chiave);
 
     statoAIinAlto('loading', 'Scaricamento ' + modello.label + '…', 0);
     statoAIinModale('loading', 'Scaricamento ' + modello.label + '…', 0);
@@ -3280,14 +3145,9 @@ body.edit-mode .edit-hint {
     });
   }
 
-  /** Scarica il modello AI dalla memoria */
   function scaricaModelloAI() {
     if (statoAI.engine && statoAI.engine.unload) {
-      try {
-        statoAI.engine.unload();
-      } catch (errore) {
-        // Ignora
-      }
+      try { statoAI.engine.unload(); } catch (errore) { /* ignora */ }
     }
     statoAI.engine = null;
     statoAI.ready = false;
@@ -3299,17 +3159,12 @@ body.edit-mode .edit-hint {
     mostraToast('AI disattivata');
   }
 
-  /** Invia un prompt all'AI e restituisce la risposta */
   function chiamaAI(prompt, maxTokens) {
-    if (!statoAI.engine) {
-      return Promise.reject(new Error('AI non caricata'));
-    }
+    if (!statoAI.engine) return Promise.reject(new Error('AI non caricata'));
     maxTokens = maxTokens || 300;
 
     var timeout = new Promise(function (_, reject) {
-      setTimeout(function () {
-        reject(new Error('timeout'));
-      }, 60000);
+      setTimeout(function () { reject(new Error('timeout')); }, 60000);
     });
 
     var chiamata = statoAI.engine.chat.completions.create({
@@ -3327,7 +3182,6 @@ body.edit-mode .edit-hint {
     });
   }
 
-  /** Aggiorna l'icona AI in alto (pallino verde se attiva) */
   function aggiornaIconaAI() {
     var bottone = $('btn-ai-status');
     if (!bottone) return;
@@ -3338,7 +3192,6 @@ body.edit-mode .edit-hint {
     }
   }
 
-  /** Aggiorna i bottoni nel modale AI */
   function aggiornaBottoniModaleAI() {
     var idle = $('ai-actions-idle');
     var ready = $('ai-actions-ready');
@@ -3351,13 +3204,20 @@ body.edit-mode .edit-hint {
     }
   }
 
-  /**
-   * Costruisce il prompt per far ESTRARRE entità all'AI.
-   * Non chiediamo all'AI di generare domande (troppo difficile per un
-   * modello piccolo), ma solo di estrarre fatti. Il codice poi costruisce
-   * le domande con i template.
-   */
-  function costruisciPromptEstrazione(testo) {
+  function costruisciPromptEstrazione(testo, lingua) {
+    if (lingua === 'en') {
+      return 'Read this text and extract facts. For each fact write ' +
+        'a JSON object with 3 fields: entita, tipo, soggetto.\n\n' +
+        'Allowed types: anno, data, percentuale, numero, nome.\n' +
+        'Rules: entita must be short (1-8 words). ' +
+        'soggetto is the sentence part before the entity.\n\n' +
+        'Text:\n' + testo + '\n\n' +
+        'Example valid response:\n' +
+        '[{"entita":"1945","tipo":"anno","soggetto":"World War II ended in"},' +
+        '{"entita":"4 July 1776","tipo":"data","soggetto":"The Declaration was signed on"}]\n\n' +
+        'Reply ONLY with JSON array, no text before or after:';
+    }
+
     return 'Leggi questo testo ed estrai i fatti. Per ogni fatto scrivi ' +
       'un oggetto JSON con 3 campi: entita, tipo, soggetto.\n\n' +
       'Tipi ammessi: anno, data, percentuale, numero, nome.\n' +
@@ -3370,52 +3230,36 @@ body.edit-mode .edit-hint {
       'Rispondi SOLO con array JSON, nessun testo prima o dopo:';
   }
 
-  /** Parser tollerante della risposta AI (JSON potenzialmente malformato) */
   function parseEstrazione(raw) {
     if (!raw || typeof raw !== 'string') return [];
 
     var pulito = raw.trim();
-
-    // Rimuovi eventuali fence markdown
     var fenced = pulito.match(/```(?:json)?\s*([\s\S]*?)```/);
     if (fenced) pulito = fenced[1].trim();
 
-    // Prova JSON diretto
     try {
       var parsed = JSON.parse(pulito);
       if (Array.isArray(parsed)) return parsed;
       if (parsed && typeof parsed === 'object') return [parsed];
-    } catch (errore) {
-      // Continua con altri tentativi
-    }
+    } catch (errore) { /* continua */ }
 
-    // Prova a estrarre un array con regex
     var arrayMatch = pulito.match(/\[[\s\S]*\]/);
     if (arrayMatch) {
       try {
         var parsed2 = JSON.parse(arrayMatch[0]);
         if (Array.isArray(parsed2)) return parsed2;
-      } catch (errore) {
-        // Continua
-      }
+      } catch (errore) { /* continua */ }
     }
 
-    // Ultimo tentativo: estrai oggetti JSON individuali
     var oggetti = [];
     var regexOggetto = /\{[^{}]*?"entita"[\s\S]*?"tipo"[\s\S]*?\}/g;
     var m;
     while ((m = regexOggetto.exec(pulito)) !== null) {
-      try {
-        oggetti.push(JSON.parse(m[0]));
-      } catch (errore) {
-        // Ignora
-      }
+      try { oggetti.push(JSON.parse(m[0])); } catch (errore) { /* ignora */ }
     }
-
     return oggetti;
   }
 
-  /** Divide il testo in chunk da ~100 parole per l'AI */
   function dividiInChunk(testo, maxParole) {
     maxParole = maxParole || 100;
     var frasi = dividiInFrasi(testo);
@@ -3437,18 +3281,12 @@ body.edit-mode .edit-hint {
         paroleCorrenti += parole;
       }
     }
-
     if (inizioCorrente < testo.length) {
       chunks.push(testo.slice(inizioCorrente).trim());
     }
-
     return chunks.filter(function (c) { return c.length > 40; });
   }
 
-  /**
-   * Usa l'AI per estrarre entità non coperte dal dizionario.
-   * onProgress viene chiamata per ogni chunk con (numeroAttuale, totale).
-   */
   function proponiDallAI(doc, onProgress) {
     var chunks = dividiInChunk(doc.text, 100);
     if (!chunks.length) return Promise.resolve([]);
@@ -3457,18 +3295,17 @@ body.edit-mode .edit-hint {
     var proposte = [];
     var visti = {};
     var indiceCorrente = 0;
+    var lingua = doc.lang || rilevaLingua(doc.text);
 
     function prossimo() {
       if (indiceCorrente >= chunks.length) {
         return Promise.resolve(proposte);
       }
-      if (onProgress) {
-        onProgress(indiceCorrente + 1, chunks.length);
-      }
+      if (onProgress) onProgress(indiceCorrente + 1, chunks.length);
 
       var chunk = chunks[indiceCorrente];
 
-      return chiamaAI(costruisciPromptEstrazione(chunk), 300).then(function (rispostaRaw) {
+      return chiamaAI(costruisciPromptEstrazione(chunk, lingua), 300).then(function (rispostaRaw) {
         var items = parseEstrazione(rispostaRaw);
 
         for (var i = 0; i < items.length; i++) {
@@ -3478,22 +3315,18 @@ body.edit-mode .edit-hint {
           var entita = String(item.entita).trim();
           var tipo = String(item.tipo).trim().toLowerCase();
 
-          // Normalizza i tipi
           if (tipo === 'cifra') tipo = 'numero';
           if (tipo === 'nome' || tipo === 'persona') tipo = 'nome_proprio';
 
           if (['anno', 'data', 'percentuale', 'numero', 'nome_proprio']
               .indexOf(tipo) === -1) continue;
 
-          // Riclassifica per sicurezza
           var verificato = classificaEntita(entita);
           if (verificato !== 'sconosciuto') tipo = verificato;
 
-          // Trova la posizione nel testo
           var indice = doc.text.indexOf(entita);
           if (indice < 0) continue;
 
-          // Trova la frase contenitrice
           var fraseContenitrice = null;
           for (var f = 0; f < frasi.length; f++) {
             if (indice >= frasi[f].start && indice < frasi[f].end) {
@@ -3506,7 +3339,6 @@ body.edit-mode .edit-hint {
           var testoFrase = doc.text.slice(fraseContenitrice.start, fraseContenitrice.end);
           if (testoFrase.length < 20 || testoFrase.length > 400) continue;
 
-          // Costruisci domanda
           var domanda = null;
           var tipoCard = tipo;
 
@@ -3520,12 +3352,11 @@ body.edit-mode .edit-hint {
               tipoCard = 'cloze';
             }
           } else {
-            domanda = costruisciDomanda(tipo, entita, testoFrase);
+            domanda = costruisciDomanda(tipo, entita, testoFrase, lingua);
           }
 
           if (!domanda || domanda.length < 10 || domanda.length > 220) continue;
 
-          // Distrattori
           var distrattori = null;
           if (tipoCard !== 'cloze') {
             distrattori = distrattoriDizionario(tipoCard, entita, 3);
@@ -3583,16 +3414,12 @@ body.edit-mode .edit-hint {
     return prossimo();
   }
 
-  /** Valida una proposta di domanda prima di mostrarla */
   function validaProposta(p) {
     var domanda = p.front.trim();
     var corretta = p.back.trim();
     var distrattori = p.distractors.filter(function (s) { return s && s.trim(); });
 
-    if (domanda.length < 10 || corretta.length < 1 || distrattori.length < 3) {
-      return false;
-    }
-
+    if (domanda.length < 10 || corretta.length < 1 || distrattori.length < 3) return false;
     if (corretta.length > 60) return false;
 
     var correttaLower = corretta.toLowerCase();
@@ -3604,6 +3431,7 @@ body.edit-mode .edit-hint {
 
     if (/tutte le precedenti|nessuna delle precedenti/i.test(corretta)) return false;
     if (/^(cos'è|cosa sono|chi era|chi erano)/i.test(domanda)) return false;
+    if (/^(what is|who was|tell me about)/i.test(domanda)) return false;
 
     return true;
   }
@@ -3614,10 +3442,6 @@ body.edit-mode .edit-hint {
 
   var proposteInAnteprima = [];
 
-  /**
-   * Apre l'anteprima delle domande.
-   * Se l'AI è pronta, combina proposte del dizionario + proposte AI.
-   */
   function apriAnteprimaDomande() {
     var doc = documentoAttivo();
     if (!doc) {
@@ -3633,7 +3457,6 @@ body.edit-mode .edit-hint {
       return;
     }
 
-    // 1. Proposte dal dizionario (veloci)
     var proposteDizionario = proponiDalDizionario(doc).filter(validaProposta);
     var numeroDizionario = proposteDizionario.length;
     var contentIdsDizionario = {};
@@ -3641,7 +3464,6 @@ body.edit-mode .edit-hint {
       contentIdsDizionario[proposteDizionario[i].contentId] = true;
     }
 
-    // Se l'AI non è pronta, mostra solo il dizionario
     if (!statoAI.ready || !haWebGPU()) {
       if (!proposteDizionario.length) {
         mostraToast('Nessuna domanda generabile');
@@ -3651,7 +3473,6 @@ body.edit-mode .edit-hint {
       return;
     }
 
-    // 2. AI attiva: combina
     statoAIinAlto('working', 'Dizionario: ' + numeroDizionario + ' domande · preparo AI…');
 
     proponiDallAI(doc, function (corrente, totale) {
@@ -3668,19 +3489,15 @@ body.edit-mode .edit-hint {
         mostraToast('Nessuna domanda generata');
         return;
       }
-
       mostraAnteprima(tutte, numeroDizionario);
     }).catch(function (errore) {
       console.error(errore);
       statoAIinAlto('error', 'Errore AI · uso solo dizionario');
-      setTimeout(function () {
-        statoAIinAlto('hidden');
-      }, 2000);
+      setTimeout(function () { statoAIinAlto('hidden'); }, 2000);
       mostraAnteprima(proposteDizionario, 0);
     });
   }
 
-  /** Mostra il modale di anteprima con le proposte */
   function mostraAnteprima(proposte, numeroDizionario) {
     var esistenti = {};
     for (var id in DATI.cards) {
@@ -3696,18 +3513,12 @@ body.edit-mode .edit-hint {
 
     var numeroAI = proposte.length - numeroDizionario;
     var riassunto = numeroDizionario + ' dal dizionario';
-    if (numeroAI > 0) {
-      riassunto += ' · ' + numeroAI + ' dall\'AI';
-    }
+    if (numeroAI > 0) riassunto += ' · ' + numeroAI + ' dall\'AI';
     $('card-preview-count').textContent = riassunto;
 
     $('modal-card-preview').classList.add('open');
   }
 
-  /**
-   * Renderizza la lista di proposte.
-   * NON mostra la risposta corretta — solo la domanda e i distrattori.
-   */
   function renderizzaAnteprima() {
     var box = $('card-preview-list');
     box.innerHTML = '';
@@ -3745,7 +3556,6 @@ body.edit-mode .edit-hint {
     }
   }
 
-  /** Conferma e aggiunge le card selezionate */
   function confermaAggiuntaCard() {
     var doc = documentoAttivo();
     if (!doc) return;
@@ -3782,7 +3592,6 @@ body.edit-mode .edit-hint {
   // LIBRERIA
   // ============================================================
 
-  /** Renderizza la lista dei documenti salvati */
   function renderizzaLibreria(filtro) {
     filtro = (filtro || '').toLowerCase();
 
@@ -3791,12 +3600,8 @@ body.edit-mode .edit-hint {
     lista.innerHTML = '';
 
     var documenti = [];
-    for (var id in DATI.docs) {
-      documenti.push(DATI.docs[id]);
-    }
-    documenti.sort(function (a, b) {
-      return b.updatedAt - a.updatedAt;
-    });
+    for (var id in DATI.docs) documenti.push(DATI.docs[id]);
+    documenti.sort(function (a, b) { return b.updatedAt - a.updatedAt; });
 
     if (filtro) {
       documenti = documenti.filter(function (d) {
@@ -3820,14 +3625,13 @@ body.edit-mode .edit-hint {
         elemento.className = 'lib-item';
 
         var data = new Date(d.updatedAt).toLocaleDateString('it-IT', {
-          day: '2-digit',
-          month: 'short'
+          day: '2-digit', month: 'short'
         });
-
         var evidenziazioni = evidenziazioniDi(d.id).filter(function (ev) {
           return ev.start >= 0;
         }).length;
         var numeroCard = cardDi(d.id).length;
+        var lingua = d.lang || rilevaLingua(d.text);
 
         elemento.innerHTML =
           '<div class="title">' + escapeHtml(d.title) + '</div>' +
@@ -3835,6 +3639,7 @@ body.edit-mode .edit-hint {
             escapeHtml(d.text.slice(0, 160).replace(/\s+/g, ' ')) + '…' +
           '</div>' +
           '<div class="meta">' +
+            '<span>' + (lingua === 'it' ? 'IT' : 'EN') + '</span>' +
             '<span>' + evidenziazioni + ' evidenziazioni</span>' +
             '<span>' + numeroCard + ' domande</span>' +
             '<span>' + data + '</span>' +
@@ -3844,33 +3649,23 @@ body.edit-mode .edit-hint {
           apriDocumento(d.id);
         });
 
-        // Long press per eliminare
         var timer;
         elemento.addEventListener('touchstart', function () {
-          timer = setTimeout(function () {
-            chiediEliminaDocumento(d.id);
-          }, 700);
+          timer = setTimeout(function () { chiediEliminaDocumento(d.id); }, 700);
         }, { passive: true });
-        elemento.addEventListener('touchend', function () {
-          clearTimeout(timer);
-        });
-        elemento.addEventListener('touchmove', function () {
-          clearTimeout(timer);
-        });
+        elemento.addEventListener('touchend', function () { clearTimeout(timer); });
+        elemento.addEventListener('touchmove', function () { clearTimeout(timer); });
 
         lista.appendChild(elemento);
       })(documenti[i]);
     }
   }
 
-  /** Apre un documento salvato */
   function apriDocumento(id) {
     var d = DATI.docs[id];
     if (!d) return;
-
     DATI.activeDocId = id;
     salvaDati();
-
     $('input').value = d.text;
     ridisegna();
     cambiaVista('text');
@@ -3878,7 +3673,6 @@ body.edit-mode .edit-hint {
     mostraToast('Aperto');
   }
 
-  /** Chiede conferma per eliminare un documento */
   function chiediEliminaDocumento(id) {
     var d = DATI.docs[id];
     if (!d) return;
@@ -3891,9 +3685,7 @@ body.edit-mode .edit-hint {
     $('btn-ok-confirm').onclick = function () {
       delete DATI.docs[id];
       for (var hid in DATI.highlights) {
-        if (DATI.highlights[hid].docId === id) {
-          delete DATI.highlights[hid];
-        }
+        if (DATI.highlights[hid].docId === id) delete DATI.highlights[hid];
       }
       for (var cid in DATI.cards) {
         if (DATI.cards[cid].docId === id) {
@@ -3901,9 +3693,7 @@ body.edit-mode .edit-hint {
           delete DATI.review[cid];
         }
       }
-      if (DATI.activeDocId === id) {
-        DATI.activeDocId = null;
-      }
+      if (DATI.activeDocId === id) DATI.activeDocId = null;
       salvaDatiSubito();
       renderizzaLibreria();
       $('modal-confirm').classList.remove('open');
@@ -3925,7 +3715,6 @@ body.edit-mode .edit-hint {
     selected: -1
   };
 
-  /** Costruisce una domanda a scelta multipla dalla card */
   function costruisciMCQ(card) {
     var corretta = card.back;
     var distrattori = (card.distractors || []).filter(function (x) {
@@ -3936,13 +3725,9 @@ body.edit-mode .edit-hint {
     if (finali.length < 3) return null;
 
     var opzioni = mescola([corretta].concat(finali));
-    return {
-      options: opzioni,
-      correctIndex: opzioni.indexOf(corretta)
-    };
+    return { options: opzioni, correctIndex: opzioni.indexOf(corretta) };
   }
 
-  /** Avvia una sessione di ripasso */
   function avviaRipasso() {
     var daRipassare = cardDaRipassare(null).filter(function (c) {
       return costruisciMCQ(c);
@@ -3969,16 +3754,12 @@ body.edit-mode .edit-hint {
     renderizzaCardRipasso();
   }
 
-  /** Renderizza la card corrente del ripasso */
   function renderizzaCardRipasso() {
     var box = $('review-content');
 
-    // Sessione completata
     if (statoRipasso.idx >= statoRipasso.queue.length) {
       var precisione = statoRipasso.done > 0
-        ? Math.round(100 * statoRipasso.correct / statoRipasso.done)
-        : 0;
-
+        ? Math.round(100 * statoRipasso.correct / statoRipasso.done) : 0;
       box.innerHTML =
         '<div class="empty">' +
           '<div class="title">Sessione completata</div>' +
@@ -4012,11 +3793,9 @@ body.edit-mode .edit-hint {
 
     var doc = DATI.docs[card.docId];
     var evidenziazione = card.highlightId
-      ? DATI.highlights[card.highlightId]
-      : null;
+      ? DATI.highlights[card.highlightId] : null;
     var contesto = (evidenziazione && evidenziazione.start >= 0 && doc)
-      ? doc.text.slice(evidenziazione.start, evidenziazione.end)
-      : '';
+      ? doc.text.slice(evidenziazione.start, evidenziazione.end) : '';
 
     var frontHtml = escapeHtml(card.front).replace(/____/g, '<span class="blank">?</span>');
 
@@ -4028,7 +3807,6 @@ body.edit-mode .edit-hint {
         else if (i === statoRipasso.selected) classe += ' wrong';
         else classe += ' dim';
       }
-
       opzioniHtml +=
         '<button class="' + classe + '" data-i="' + i + '" ' +
           (risposto ? 'disabled' : '') + '>' +
@@ -4071,10 +3849,8 @@ body.edit-mode .edit-hint {
             var indice = parseInt(bottone.dataset.i, 10);
             statoRipasso.selected = indice;
             var corretto = indice === indiceCorretto;
-
             statoRipasso.done++;
             if (corretto) statoRipasso.correct++;
-
             valutaCard(card.id, corretto ? 4 : 1);
             vibra(corretto ? 8 : 20);
             renderizzaCardRipasso();
@@ -4092,7 +3868,6 @@ body.edit-mode .edit-hint {
     }
   }
 
-  /** Aggiorna il badge con il numero di card da ripassare */
   function aggiornaBadgeRipasso() {
     var numero = cardDaRipassare(null).filter(function (c) {
       return costruisciMCQ(c);
@@ -4108,7 +3883,7 @@ body.edit-mode .edit-hint {
   }
 
   // ============================================================
-  // CAMBIO VISTA (tab)
+  // CAMBIO VISTA
   // ============================================================
 
   function cambiaVista(nome) {
@@ -4122,19 +3897,14 @@ body.edit-mode .edit-hint {
       tab[j].classList.toggle('active', tab[j].dataset.view === nome);
     }
 
-    if (nome === 'library') {
-      renderizzaLibreria($('library-search').value);
-    }
-    if (nome === 'review') {
-      avviaRipasso();
-    }
+    if (nome === 'library') renderizzaLibreria($('library-search').value);
+    if (nome === 'review') avviaRipasso();
   }
 
   // ============================================================
-  // AVATAR E TEMA
+  // TITOLO E TEMA
   // ============================================================
 
-  /** Costruisce il titolo HIGHLIGHT AI lettera per lettera con colori diversi */
   function costruisciTitolo() {
     var elemento = $('brand-title');
     var testo = 'HIGHLIGHT AI';
@@ -4145,7 +3915,6 @@ body.edit-mode .edit-hint {
 
     for (var i = 0; i < testo.length; i++) {
       var carattere = testo[i];
-
       if (carattere === ' ') {
         var spazio = document.createElement('span');
         spazio.className = 'spazio';
@@ -4168,7 +3937,6 @@ body.edit-mode .edit-hint {
     }
   }
 
-  /** Applica il tema in base alle preferenze di sistema */
   function applicaTema() {
     function applica() {
       var scuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -4179,28 +3947,25 @@ body.edit-mode .edit-hint {
   }
 
   // ============================================================
-  // ANALISI AUTOMATICA DEL DOCUMENTO
+  // ANALISI AUTOMATICA
   // ============================================================
 
-  /**
-   * Analizza il testo del documento corrente e sostituisce
-   * tutte le evidenziazioni automatiche (source === 'auto').
-   */
   function analizzaDocumentoCorrente() {
     var doc = documentoAttivo();
     if (!doc || !doc.text.trim()) return;
 
-    var spans = analizzaTesto(doc.text);
+    var lingua = rilevaLingua(doc.text);
+    doc.lang = lingua;
+
+    var spans = analizzaTesto(doc.text, lingua);
     var evidenziazioni = evidenziazioniDi(doc.id);
 
-    // Rimuovi tutte le evidenziazioni automatiche precedenti
     for (var i = 0; i < evidenziazioni.length; i++) {
       if (evidenziazioni[i].source === 'auto') {
         delete DATI.highlights[evidenziazioni[i].id];
       }
     }
 
-    // Aggiungi le nuove
     for (var j = 0; j < spans.length; j++) {
       var span = spans[j];
       var prima = doc.text.slice(Math.max(0, span.start - 30), span.start);
@@ -4224,10 +3989,6 @@ body.edit-mode .edit-hint {
     salvaDati();
   }
 
-  // ============================================================
-  // RENDERIZZA LISTA MODELLI AI
-  // ============================================================
-
   function renderizzaListaModelli() {
     var box = $('model-list');
     box.innerHTML = '';
@@ -4250,7 +4011,7 @@ body.edit-mode .edit-hint {
         elemento.addEventListener('click', function () {
           if (statoAI.loading) return;
           statoAI.modelKey = k;
-          localStorage.setItem('highlight-ai.v73.model', k);
+          localStorage.setItem('highlight-ai.v80.model', k);
           renderizzaListaModelli();
           vibra(4);
         });
@@ -4260,16 +4021,8 @@ body.edit-mode .edit-hint {
     }
   }
 
-  // ============================================================
-  // ANALISI AUTOMATICA CON DEBOUNCE
-  // ============================================================
-
   var timerAnalisiAutomatica = null;
 
-  /**
-   * Pianifica un'analisi del documento dopo un breve ritardo.
-   * Viene chiamata ogni volta che l'utente modifica il testo.
-   */
   function pianificaAnalisiAutomatica(ritardo) {
     clearTimeout(timerAnalisiAutomatica);
     timerAnalisiAutomatica = setTimeout(function () {
@@ -4280,6 +4033,7 @@ body.edit-mode .edit-hint {
       if (nuovoTesto === doc.text) return;
 
       doc.text = nuovoTesto;
+      doc.lang = rilevaLingua(nuovoTesto);
       doc.updatedAt = Date.now();
       salvaDati();
 
@@ -4293,8 +4047,6 @@ body.edit-mode .edit-hint {
   // ============================================================
 
   function collegaEventi() {
-
-    // Tab bar
     var tab = document.querySelectorAll('.tabbar .tab');
     for (var i = 0; i < tab.length; i++) {
       (function (t) {
@@ -4305,12 +4057,10 @@ body.edit-mode .edit-hint {
       })(tab[i]);
     }
 
-    // Input: pianifica l'analisi automatica
     $('input').addEventListener('input', function () {
       pianificaAnalisiAutomatica(400);
     });
 
-    // Modifica
     $('btn-edit').addEventListener('click', function () {
       document.body.classList.toggle('edit-mode');
       $('btn-edit').classList.toggle('on', document.body.classList.contains('edit-mode'));
@@ -4318,21 +4068,14 @@ body.edit-mode .edit-hint {
       vibra(6);
     });
 
-    // Genera domande
     $('btn-generate-cards').addEventListener('click', apriAnteprimaDomande);
 
-    // Salva
     $('btn-save').addEventListener('click', function () {
       var doc = documentoAttivo();
-      if (!doc) {
-        mostraToast('Nessun testo');
-        return;
-      }
+      if (!doc) { mostraToast('Nessun testo'); return; }
       $('save-title').value = doc.title;
       $('modal-save').classList.add('open');
-      setTimeout(function () {
-        $('save-title').focus();
-      }, 100);
+      setTimeout(function () { $('save-title').focus(); }, 100);
     });
 
     $('btn-cancel-save').addEventListener('click', function () {
@@ -4342,16 +4085,13 @@ body.edit-mode .edit-hint {
     $('btn-confirm-save').addEventListener('click', function () {
       var doc = documentoAttivo();
       if (!doc) return;
-
-      var titolo = $('save-title').value.trim() ||
-                   doc.text.trim().slice(0, 60);
+      var titolo = $('save-title').value.trim() || doc.text.trim().slice(0, 60);
       aggiornaDocumento(doc.id, { title: titolo });
       salvaDatiSubito();
       $('modal-save').classList.remove('open');
       mostraToast('Salvato');
     });
 
-    // Nuovo documento
     $('btn-new').addEventListener('click', function () {
       creaDocumento('', 'Senza titolo');
       $('input').value = '';
@@ -4362,7 +4102,6 @@ body.edit-mode .edit-hint {
       mostraToast('Nuovo documento');
     });
 
-    // Pulisci
     $('btn-clear').addEventListener('click', function () {
       var doc = documentoAttivo();
       if (!doc) return;
@@ -4374,9 +4113,7 @@ body.edit-mode .edit-hint {
 
       $('btn-ok-confirm').onclick = function () {
         for (var hid in DATI.highlights) {
-          if (DATI.highlights[hid].docId === doc.id) {
-            delete DATI.highlights[hid];
-          }
+          if (DATI.highlights[hid].docId === doc.id) delete DATI.highlights[hid];
         }
         for (var cid in DATI.cards) {
           if (DATI.cards[cid].docId === doc.id) {
@@ -4397,7 +4134,6 @@ body.edit-mode .edit-hint {
       $('modal-confirm').classList.remove('open');
     });
 
-    // Nota
     $('btn-save-note').addEventListener('click', function () {
       if (!evidenziazioneInNota) return;
       aggiornaEvidenziazione(evidenziazioneInNota.id, {
@@ -4416,13 +4152,11 @@ body.edit-mode .edit-hint {
       mostraToast('Rimossa');
     });
 
-    // Anteprima card
     $('btn-cancel-cards').addEventListener('click', function () {
       $('modal-card-preview').classList.remove('open');
     });
     $('btn-confirm-cards').addEventListener('click', confermaAggiuntaCard);
 
-    // Modale AI
     $('btn-ai-status').addEventListener('click', function () {
       renderizzaListaModelli();
       aggiornaBottoniModaleAI();
@@ -4443,29 +4177,23 @@ body.edit-mode .edit-hint {
       $('modal-ai-setup').classList.remove('open');
     });
 
-    // Ricerca libreria
     $('library-search').addEventListener('input', function (e) {
       renderizzaLibreria(e.target.value);
     });
 
-    // Click sull'output: gestisce nota e modalità modifica
     var output = $('output');
     output.addEventListener('click', function (e) {
       if (document.body.classList.contains('edit-mode')) {
         var posizione = calcolaPosizioneClick(output, e.clientX, e.clientY);
         if (posizione < 0) return;
-
         var doc = documentoAttivo();
         if (!doc) return;
-
         var token = trovaToken(doc.text, posizione);
         if (!token) return;
-
         cambiaStatoToken(token);
         return;
       }
 
-      // Click normale: apri nota se è un mark
       var target = e.target;
       while (target && target !== output) {
         if (target.tagName === 'MARK' && target.dataset.hl) {
@@ -4477,17 +4205,26 @@ body.edit-mode .edit-hint {
       }
     });
 
-    // Chiudi modali cliccando sullo sfondo
     var modali = document.querySelectorAll('.modal-bg');
     for (var m = 0; m < modali.length; m++) {
       (function (modale) {
         modale.addEventListener('click', function (e) {
-          if (e.target === modale) {
-            modale.classList.remove('open');
-          }
+          if (e.target === modale) modale.classList.remove('open');
         });
       })(modali[m]);
     }
+
+    // Badge lingua cliccabile (forza IT o EN)
+    $('btn-lingua').addEventListener('click', function () {
+      var doc = documentoAttivo();
+      if (!doc) return;
+      var nuovaLingua = (doc.lang === 'it') ? 'en' : 'it';
+      doc.lang = nuovaLingua;
+      salvaDati();
+      analizzaDocumentoCorrente();
+      ridisegna();
+      mostraToast('Lingua forzata: ' + (nuovaLingua === 'it' ? 'Italiano' : 'English'));
+    });
   }
 
   // ============================================================
@@ -4506,7 +4243,6 @@ body.edit-mode .edit-hint {
 
       var doc = documentoAttivo();
 
-      // Se non c'è nessun documento, crea un esempio di storia italiana
       if (!doc) {
         var esempio =
           "La Repubblica Italiana nacque il 2 giugno 1946, quando gli italiani " +
