@@ -243,11 +243,12 @@ body.reading .reading-bar{display:flex}
 
 .badge{display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
 .badge.gray{background:var(--surface-3);color:var(--ink-3)}
+.badge.ai-badge{background:var(--ai-soft);color:var(--ai)}
 
 .card-item{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow)}
 .card-item.disabled{opacity:.5;background:var(--surface-2)}
 .card-item.disabled .card-back{opacity:.6}
-.card-head{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.card-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
 .card-due{font-size:.75rem;color:var(--ink-3);margin-left:auto;font-weight:600}
 .card-front{font-weight:600;margin-bottom:8px;font-size:.95rem;white-space:pre-wrap;line-height:1.5}
 .card-back{color:var(--accent);font-size:.92rem;margin-bottom:10px;font-family:Georgia,serif;white-space:pre-wrap}
@@ -260,18 +261,10 @@ body.reading .reading-bar{display:flex}
 #cardEditBack{min-height:70px}
 #cardEditD1,#cardEditD2,#cardEditD3{min-height:auto}
 
-/* === Ripasso MCQ === */
 .review-progress{text-align:center;font-size:.82rem;color:var(--ink-3);margin-bottom:14px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-variant-numeric:tabular-nums}
-.review-source{text-align:center;font-size:.75rem;color:var(--ink-3);margin-bottom:14px}
+.review-source{text-align:center;font-size:.75rem;color:var(--ink-3);margin-bottom:14px;display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap}
 .review-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow);margin-bottom:14px}
-.review-head{margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.review-front{font-size:1.05rem;line-height:1.65;font-family:Georgia,serif;white-space:pre-wrap}
-.review-front .blank{
-  display:inline-block;min-width:60px;text-align:center;
-  border-bottom:2px solid var(--ai);
-  font-weight:700;color:var(--ai);
-  padding:0 4px;margin:0 2px;
-}
+.review-front{font-size:1.08rem;line-height:1.7;font-family:Georgia,serif;white-space:pre-wrap;color:var(--ink)}
 
 .mcq-options{display:flex;flex-direction:column;gap:10px;margin-top:6px}
 .mcq-option{
@@ -459,7 +452,7 @@ body.reading .reading-bar{display:flex}
     <div class="scroll">
       <div class="wrap">
         <div class="actions">
-          <button class="btn primary" id="btnGenCards">Genera schede</button>
+          <button class="btn primary" id="btnGenCards">Genera domande</button>
           <button class="btn ghost icon-only" id="btnNewCard" title="Nuova scheda">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           </button>
@@ -571,7 +564,7 @@ body.reading .reading-bar{display:flex}
 
 <div class="modal-bg" id="modalCardPreview">
   <div class="modal">
-    <h3>Anteprima schede</h3>
+    <h3>Anteprima domande</h3>
     <p id="cardPreviewCount">0</p>
     <div style="display:flex;gap:8px;margin-bottom:12px">
       <button class="tbtn" id="btnSelectAllCards">Seleziona tutte</button>
@@ -588,12 +581,12 @@ body.reading .reading-bar{display:flex}
 <div class="modal-bg" id="modalCardEdit">
   <div class="modal">
     <h3 id="cardEditTitle">Modifica scheda</h3>
-    <label>Fronte (domanda)</label>
+    <label>Domanda</label>
     <textarea class="input-name" id="cardEditFront" placeholder="Domanda…" autocomplete="off"></textarea>
     <label>Risposta corretta</label>
     <textarea class="input-name" id="cardEditBack" placeholder="Risposta…" autocomplete="off"></textarea>
-    <div id="cardEditDistractorsSection" style="display:none">
-      <label>Risposte sbagliate (3 obbligatorie per scheda manuale)</label>
+    <div id="cardEditDistractorsSection">
+      <label>Risposte sbagliate (3 obbligatorie)</label>
       <input class="input-name" id="cardEditD1" placeholder="Risposta sbagliata 1" autocomplete="off">
       <input class="input-name" id="cardEditD2" placeholder="Risposta sbagliata 2" autocomplete="off">
       <input class="input-name" id="cardEditD3" placeholder="Risposta sbagliata 3" autocomplete="off">
@@ -648,7 +641,7 @@ const LANG_PROFILES = {
   fr:{ name:'Français', words:'le la les un une des du de d et ou mais donc or ni car que qui quoi dont où quand comment pourquoi si comme plus moins très trop peu beaucoup tout toute tous toutes ce cet cette ces celui celle ceux celles il elle ils elles nous vous je tu on se son sa ses leur leurs mon ma mes ton ta tes notre nos votre vos est sont était étaient être avoir a ont avait avaient fait faire peut peuvent doit doivent aussi encore déjà toujours jamais même autre autres bien' },
   es:{ name:'Español', words:'el la los las un una unos unas de del y o pero porque por para con sin en a al sobre bajo entre hasta desde que quien cuyo como cuando donde si no más menos muy mucho poco todo toda todos todas este esta estos estas ese esa esos esas aquel aquella aquellos aquellas yo tú él ella nosotros vosotros ellos ellas me te se nos os le les lo mi tu su mis tus sus es son era fueron ser estar haber ha han había habían hace hacer puede pueden debe deben también aún ya siempre nunca mismo otra otro bien' },
   de:{ name:'Deutsch', words:'der die das den dem des ein eine einen einem eines einer und oder aber denn weil wenn als wie dass ob für mit von zu aus bei nach über unter zwischen durch gegen ohne um in an auf vor hinter neben ist sind war waren sein haben hat hatte hatten haben wird werden wurde wurden kann können muss müssen soll sollen darf dürfen auch noch schon immer nie sehr mehr weniger viel wenig alle alle jeder jede jedes diese dieser dieses jener jene man nicht doch nur selbst' },
-  pt:{ name:'Português', words:'o a os as um uma uns umas de do da dos das e ou mas porque por para com sem em no na nos nas ao aos à às pelo pela pelos pelas que quem cujo como quando onde se não mais menos muito pouco todo toda todos todas este esta estes estas esse essa esses essas aquele aquela aqueles aquelas eu tu ele ela nós vós eles elas me te se nos vos lhe lhes é são era foram ser estar haver há houve tinha tem fazer pode podem deve devem também ancora ainda sempre nunca mesmo outro outra bem' },
+  pt:{ name:'Português', words:'o a os as um uma uns umas de do da dos das e ou mas porque por para com sem em no na nos nas ao aos à às pelo pela pelos pelas que quem cujo como quando onde se não mais menos muito pouco todo toda todos todas este esta estes estas esse essa esses essas aquele aquela aqueles aquelas eu tu ele ela nós vós eles elas me te se nos vos lhe lhes é são era foram ser estar haver há houve tinha tem fazer pode podem deve devem também ainda sempre nunca mesmo outro outra bem' },
   nl:{ name:'Nederlands', words:'de het een en of maar want omdat als dan dat die deze dit van voor met door naar bij uit over onder tussen tegen zonder om in op aan is zijn was waren hebben heeft had kan kunnen moet moeten zal zullen ook nog al altijd nooit zeer meer minder veel weinig alle elk ieder niet toch alleen zelf' },
   ru:{ name:'Русский', words:'и в во не что он на я с со как а то все она так его но да ты к у же вы за бы по только ее мне было вот от меня еще нет о из ему теперь когда даже ну вдруг ли если уже или ни быть был него до вас опять уж вам ведь там потом себя ничего ей может они тут где есть надо ней для мы тебя их чем была сам чтоб без будто чего раз тоже себе под будет ж тогда кто этот того потому этого какой совсем ним здесь этом один почти мой тем чтобы нее сейчас были куда зачем всех никогда можно при наконец два об другой хоть после над больше тот через эти нас про всего них какая много разве три эту моя впрочем хорошо свою этой перед иногда лучше чуть том нельзя такой им более всегда конечно всю между' }
 };
@@ -775,7 +768,7 @@ function findBigrams(tokens, stopwords) {
   return bigrams;
 }
 
-const UNIT_WHITELIST = new Set(['%','‰','°','°c','°f','°k','€','$','£','¥','km','hm','dam','dm','cm','mm','nm','µm','mi','ft','yd','in','kg','hg','dag','dg','cg','mg','lb','oz','t','q','l','dl','cl','ml','hl','gal','pt','qt','fl','h','min','s','ms','µs','ns','ore','ora','minuti','minuto','secondi','secondo','giorni','giorno','settimane','settimana','mesi','mese','anni','anno','secoli','secolo','millenni','millennio','decenni','decennio','hours','hour','minutes','minute','seconds','second','days','day','weeks','week','months','month','years','year','centuries','century','jahr','jahre','tag','tage','woche','wochen','monat','monate','jahrhundert','jahrhunderte','heure','heures','jour','jours','semaine','semaines','mois','an','ans','année','années','siècle','siècles','hora','horas','día','días','dias','semana','semanas','mes','meses','año','años','siglo','siglos','j','kj','mj','w','kw','mw','v','kv','a','ma','hz','khz','mhz','ghz','pa','kpa','mpa','n','kn','mol','mmhg','atm','b','kb','mb','gb','tb','pb','bit','byte','pixel','px','usd','eur','gbp','jpy','chf','milioni','miliardi','mila','milione','miliardo','million','billions','billion','million','millions']);
+const UNIT_WHITELIST = new Set(['%','‰','°','°c','°f','°k','€','$','£','¥','km','hm','dam','dm','cm','mm','nm','µm','mi','ft','yd','in','kg','hg','dag','dg','cg','mg','lb','oz','t','q','l','dl','cl','ml','hl','gal','pt','qt','fl','h','min','s','ms','µs','ns','ore','ora','minuti','minuto','secondi','secondo','giorni','giorno','settimane','settimana','mesi','mese','anni','anno','secoli','secolo','millenni','millennio','decenni','decennio','hours','hour','minutes','minute','seconds','second','days','day','weeks','week','months','month','years','year','centuries','century','jahr','jahre','tag','tage','woche','wochen','monat','monate','jahrhundert','jahrhunderte','heure','heures','jour','jours','semaine','semaines','mois','an','ans','année','années','siècle','siècles','hora','horas','día','días','dias','semana','semanas','mes','meses','año','años','siglo','siglos','j','kj','mj','w','kw','mw','v','kv','a','ma','hz','khz','mhz','ghz','pa','kpa','mpa','n','kn','mol','mmhg','atm','b','kb','mb','gb','tb','pb','bit','byte','pixel','px','usd','eur','gbp','jpy','chf','milioni','miliardi','mila','milione','miliardo']);
 
 const MONTHS_RE = '(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre|january|february|march|april|may|june|july|august|september|october|november|december|janvier|février|fevrier|mars|avril|mai|juin|juillet|août|aout|septembre|octobre|novembre|décembre|decembre|enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre|janeiro|fevereiro|março|marco|maio|junho|julho|setembro|outubro|novembro|dezembro|januar|februar|märz|maerz|juni|juli|august|september|oktober|november|dezember)';
 
@@ -1009,7 +1002,7 @@ function setAIStatus(kind, message, pct) {
   } else if (kind === 'ready') {
     bar.classList.add('ready'); spinner.style.display = 'none';
     msg.textContent = message || 'AI locale pronta'; pctEl.textContent = '';
-    setTimeout(() => { if (bar.classList.contains('ready')) bar.classList.remove('show'); }, 2400);
+    setTimeout(() => { if (bar.classList.contains('ready')) bar.classList.remove('show'); }, 3000);
   } else if (kind === 'working') {
     spinner.style.display = 'block';
     msg.textContent = message || 'Analisi AI in corso…';
@@ -1065,227 +1058,272 @@ async function initAI(modelKey) {
   }
 }
 
-async function llmChat(prompt, maxTokens = 8) {
+async function llmChat(prompt, maxTokens = 8, temperature = 0) {
   if (!ai.engine) throw new Error('AI non caricata');
-  const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 30000));
+  const timeoutMs = Math.max(30000, maxTokens * 200);
+  const timeout = new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), timeoutMs));
   const call = ai.engine.chat.completions.create({
     messages: [{ role: 'user', content: prompt }],
-    temperature: 0, max_tokens: maxTokens, stream: false
+    temperature, max_tokens: maxTokens, stream: false
   });
   const res = await Promise.race([call, timeout]);
   return (res.choices && res.choices[0] && res.choices[0].message && res.choices[0].message.content) || '';
 }
 
-function contextForSpan(text, span, sentences) {
-  for (const s of sentences) if (span.start >= s.start && span.end <= s.end) return text.slice(s.start, s.end);
-  const a = Math.max(0, span.start - 120), b = Math.min(text.length, span.end + 120);
-  return text.slice(a, b);
+/* ============================================================
+   GENERAZIONE DOMANDE CON AI
+   ============================================================ */
+const MCQ_CACHE_KEY = 'annota.mcqCache.v1';
+let mcqCache = {};
+try { mcqCache = JSON.parse(localStorage.getItem(MCQ_CACHE_KEY) || '{}'); } catch {}
+function saveMcqCache() {
+  try {
+    // Limita a 200 voci più recenti per evitare di saturare localStorage
+    const keys = Object.keys(mcqCache);
+    if (keys.length > 200) {
+      for (const k of keys.slice(0, keys.length - 200)) delete mcqCache[k];
+    }
+    localStorage.setItem(MCQ_CACHE_KEY, JSON.stringify(mcqCache));
+  } catch {}
+}
+function mcqHashKey(s) {
+  let h = 5381;
+  const str = s.slice(0, 1000);
+  for (let i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) | 0;
+  return 'm' + Math.abs(h).toString(36);
 }
 
-function buildValidationPrompt(lang, snippet, context) {
+function buildMCQPrompt(chunk, n, lang) {
   const prompts = {
-    it: `Sei un assistente che aiuta studenti a capire quali concetti di un testo sono davvero importanti.\nLeggi la frase e valuta se il frammento è un concetto CHIAVE (non un dettaglio secondario).\nRispondi SOLO con "SÌ" o "NO", senza altro.\n\nFrase: "${context}"\nFrammento: "${snippet}"\nRisposta:`,
-    en: `You are an assistant helping students understand which concepts in a text are truly important.\nRead the sentence and judge whether the fragment is a KEY concept (not a secondary detail).\nAnswer ONLY "YES" or "NO", nothing else.\n\nSentence: "${context}"\nFragment: "${snippet}"\nAnswer:`,
-    fr: `Tu aides des étudiants à comprendre quels concepts d'un texte sont vraiment importants.\nLis la phrase et juge si le fragment est un concept CLÉ (pas un détail secondaire).\nRéponds SEULEMENT "OUI" ou "NON", rien d'autre.\n\nPhrase : "${context}"\nFragment : "${snippet}"\nRéponse :`,
-    es: `Ayudas a estudiantes a entender qué conceptos de un texto son realmente importantes.\nLee la frase y juzga si el fragmento es un concepto CLAVE (no un detalle secundario).\nResponde SOLO "SÍ" o "NO", nada más.\n\nFrase: "${context}"\nFragmento: "${snippet}"\nRespuesta:`,
-    de: `Du hilfst Schülern zu verstehen, welche Konzepte in einem Text wirklich wichtig sind.\nLies den Satz und beurteile, ob das Fragment ein SCHLÜSSELKONZEPT ist (kein Nebendetail).\nAntworte NUR "JA" oder "NEIN", nichts anderes.\n\nSatz: "${context}"\nFragment: "${snippet}"\nAntwort:`,
-    pt: `Você ajuda estudantes a entender quais conceitos de um texto são realmente importantes.\nLeia a frase e julgue se o fragmento é um conceito-CHAVE (não um detalhe secundário).\nResponda SOMENTE "SIM" ou "NÃO", nada mais.\n\nFrase: "${context}"\nFragmento: "${snippet}"\nResposta:`,
-    nl: `Je helpt studenten begrijpen welke concepten in een tekst echt belangrijk zijn.\nLees de zin en beoordeel of het fragment een SLEUTELBEGRIP is (geen bijzaak).\nAntwoord ALLEEN "JA" of "NEE", niets anders.\n\nZin: "${context}"\nFragment: "${snippet}"\nAntwoord:`,
-    ru: `Ты помогаешь студентам понять, какие концепции в тексте действительно важны.\nПрочитай предложение и реши, является ли фрагмент КЛЮЧЕВЫМ понятием (не второстепенной деталью).\nОтвечай ТОЛЬКО "ДА" или "НЕТ", больше ничего.\n\nПредложение: "${context}"\nФрагмент: "${snippet}"\nОтвет:`
+    it: `Sei un insegnante che crea esercizi per studenti.
+
+Testo:
+"""
+{CHUNK}
+"""
+
+Genera esattamente {N} domande a scelta multipla che testino la COMPRENSIONE del testo (non il riconoscimento di parole).
+
+REGOLE:
+- Ogni domanda ha 4 opzioni: 1 corretta, 3 sbagliate
+- I distrattori devono essere PLAUSIBILI ma chiaramente sbagliati per chi ha capito il testo
+- Preferisci domande su: cause, conseguenze, eventi storici, date chiave, protagonisti, definizioni
+- Le domande devono essere AUTOSUFFICIENTI (chi le legge capisce senza il testo)
+- NON chiedere cose ovvie o banali
+- NON copiare frasi intere dal testo: riformula
+- Varia il tipo: eventi, date, cause, protagonisti, concetti
+
+Rispondi SOLO con un array JSON valido, nessun altro testo. Formato:
+[{"domanda":"...","corretta":"...","sbagliate":["...","...","..."],"tipo":"evento"}]
+
+Tipi ammessi: evento, data, causa, conseguenza, concetto, definizione, protagonista.
+
+Esempio:
+[{"domanda":"Quale evento pose fine alla fase rivoluzionaria francese?","corretta":"Il colpo di stato del 18 brumaio","sbagliate":["La presa della Bastiglia","La proclamazione dell'impero","La Dichiarazione dei Diritti dell'Uomo"],"tipo":"evento"}]
+
+Ora genera {N} domande:`,
+    en: `You are a teacher creating exercises for students.
+
+Text:
+"""
+{CHUNK}
+"""
+
+Generate exactly {N} multiple-choice questions that test COMPREHENSION (not word recognition).
+
+RULES:
+- Each question has 4 options: 1 correct, 3 wrong
+- Wrong options must be PLAUSIBLE but clearly incorrect for someone who understood the text
+- Prefer questions about: causes, consequences, historical events, key dates, protagonists, definitions
+- Questions must be SELF-CONTAINED (readable without the text)
+- Do NOT ask obvious or trivial things
+- Do NOT copy whole sentences from the text: rephrase
+- Vary the type: events, dates, causes, protagonists, concepts
+
+Reply ONLY with a valid JSON array, nothing else. Format:
+[{"domanda":"...","corretta":"...","sbagliate":["...","...","..."],"tipo":"evento"}]
+
+Allowed types: evento, data, causa, conseguenza, concetto, definizione, protagonista.
+
+Example:
+[{"domanda":"Which event ended the revolutionary phase in France?","corretta":"The coup of 18 Brumaire","sbagliate":["The storming of the Bastille","The proclamation of the Empire","The Declaration of the Rights of Man"],"tipo":"evento"}]
+
+Now generate {N} questions:`
   };
-  return prompts[lang] || prompts.en;
+  const template = prompts[lang === 'it' ? 'it' : 'en'];
+  return template.replace('{CHUNK}', chunk).replace(/\{N\}/g, String(n));
 }
 
-function parseYesNo(response) {
-  if (!response) return null;
-  const upper = response.trim().slice(0, 30).toUpperCase();
-  const noWords = ['NO', 'NON', 'NÃO', 'NEE', 'НЕТ', 'NEIN'];
-  const yesWords = ['SÌ', 'SI', 'YES', 'OUI', 'SÍ', 'JA', 'ДА'];
-  for (const w of noWords) if (upper === w || upper.startsWith(w + ' ') || upper.startsWith(w + '.') || upper.startsWith(w + ',') || upper.startsWith(w + '!')) return false;
-  for (const w of yesWords) if (upper === w || upper.startsWith(w + ' ') || upper.startsWith(w + '.') || upper.startsWith(w + ',') || upper.startsWith(w + '!')) return true;
-  for (const w of noWords) if (upper.includes(w)) return false;
-  for (const w of yesWords) if (upper.includes(w)) return true;
-  return null;
+function isValidMCQ(o) {
+  if (!o || typeof o !== 'object') return false;
+  if (typeof o.domanda !== 'string' || o.domanda.trim().length < 8) return false;
+  if (typeof o.corretta !== 'string' || o.corretta.trim().length < 1) return false;
+  if (!Array.isArray(o.sbagliate)) return false;
+  const wrongs = o.sbagliate.filter(s => typeof s === 'string' && s.trim().length > 0);
+  if (wrongs.length < 3) return false;
+  // Evita distrattori duplicati con la corretta
+  const correctLower = o.corretta.trim().toLowerCase();
+  const unique = new Set(wrongs.map(s => s.trim().toLowerCase()));
+  if (unique.has(correctLower)) return false;
+  return true;
 }
 
-async function aiValidateSpans(text, spans, lang, sentences) {
-  if (!ai.engine || !ai.ready) return spans;
-  const conceptSpans = spans.filter(s => s._concept);
-  const otherSpans = spans.filter(s => !s._concept);
-  if (!conceptSpans.length) return spans;
-  const MAX = 40;
-  const toValidate = conceptSpans.slice(0, MAX);
-  const remainder = conceptSpans.slice(MAX);
-  const kept = [];
-  const seen = new Map();
-  for (const s of toValidate) {
-    const snippet = text.slice(s.start, s.end);
-    const key = snippet.toLowerCase();
-    if (!seen.has(key)) seen.set(key, []);
-    seen.get(key).push(s);
-  }
-  const entries = [...seen.entries()];
-  let processed = 0;
-  const total = entries.length;
-  for (const [, list] of entries) {
-    processed++;
-    if (processed % 2 === 0 || processed === total) setAIStatus('working', `Validazione AI (${processed}/${total})…`, `${Math.round(processed/total*100)}%`);
-    const sample = list[0];
-    const snippet = text.slice(sample.start, sample.end);
-    const context = contextForSpan(text, sample, sentences);
-    const prompt = buildValidationPrompt(lang, snippet, context);
-    let keep = true;
+function parseMCQResponse(raw) {
+  if (!raw || typeof raw !== 'string') return [];
+  let candidate = raw.trim();
+
+  // Rimuovi eventuale markdown ```json ... ```
+  const fenceMatch = candidate.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (fenceMatch) candidate = fenceMatch[1].trim();
+
+  // 1. Prova JSON.parse diretto
+  try {
+    const parsed = JSON.parse(candidate);
+    if (Array.isArray(parsed)) return parsed.filter(isValidMCQ);
+    if (parsed && typeof parsed === 'object') return [parsed].filter(isValidMCQ);
+  } catch {}
+
+  // 2. Estrai array [ ... ] (greedy fino all'ultima ])
+  const arrMatch = candidate.match(/\[[\s\S]*\]/);
+  if (arrMatch) {
     try {
-      const response = await llmChat(prompt, 6);
-      const verdict = parseYesNo(response);
-      keep = verdict === null ? true : verdict;
-    } catch (e) { keep = true; }
-    if (keep) kept.push(...list);
+      const parsed = JSON.parse(arrMatch[0]);
+      if (Array.isArray(parsed)) return parsed.filter(isValidMCQ);
+    } catch {}
   }
-  return [...otherSpans, ...kept, ...remainder];
+
+  // 3. Estrai oggetti { ... } uno per uno
+  const objs = [];
+  const objRe = /\{[^{}]*?"domanda"[\s\S]*?"sbagliate"\s*:\s*\[[^\]]*\][^{}]*?\}/g;
+  let m;
+  while ((m = objRe.exec(candidate)) !== null) {
+    try {
+      const o = JSON.parse(m[0]);
+      if (isValidMCQ(o)) objs.push(o);
+    } catch {}
+  }
+  if (objs.length) return objs;
+
+  // 4. Ultimo tentativo: cerca in raw
+  if (candidate !== raw) return parseMCQResponse(candidate.replace(/```/g, ''));
+  return [];
 }
 
-const CAT_PRIORITY = { quote:10, num:9, def:8, list:7, name:6, key:5, sentence:4 };
-
-function buildRuns(text, spans) {
-  const n = text.length;
-  const owner = new Uint16Array(n);
-  const weight = new Uint8Array(n);
-  const catIndex = {};
-  for (const s of spans) {
-    const priority = (CAT_PRIORITY[s.cat] || 1) * 10 + (s.w || 1);
-    for (let i = s.start; i < s.end; i++) {
-      if (priority > weight[i]) {
-        weight[i] = Math.min(priority, 255);
-        if (!catIndex[s.cat]) catIndex[s.cat] = Object.keys(catIndex).length + 1;
-        owner[i] = catIndex[s.cat];
-      }
-    }
-  }
-  const runs = [];
-  let i = 0;
-  while (i < n) {
-    if (!owner[i]) { i++; continue; }
-    const cat = owner[i];
-    let j = i + 1;
-    while (j < n && owner[j] === cat) j++;
-    runs.push({ start: i, end: j, catIdx: cat });
-    i = j;
-  }
-  return { runs, catIndex };
-}
-
-function catIdFromIdx(catIndex, idx) {
-  for (const [k, v] of Object.entries(catIndex)) if (v === idx) return k;
-  return null;
-}
-
-const CAT_TO_CLASS = { num:'c-num', name:'c-name', key:'c-key', quote:'c-quote', list:'c-list', def:'c-def', sentence:'c-sentence' };
-
-const CATEGORIES = [
-  { id:'num', label:'Numeri', color:'--c-num' },
-  { id:'name', label:'Nomi', color:'--c-name' },
-  { id:'key', label:'Concetti', color:'--c-key' },
-  { id:'def', label:'Definizioni', color:'--c-def' },
-  { id:'quote', label:'Citazioni', color:'--c-quote' },
-  { id:'list', label:'Elenchi', color:'--c-list' },
-  { id:'sentence', label:'Frasi', color:'--c-sentence' }
-];
-
-function combineSpans(autoSpans, manualAdds, manualRemoves) {
-  const removeKeys = new Set(manualRemoves.map(s => s.start + ':' + s.end + ':' + s.cat));
-  const filteredAuto = autoSpans.filter(s => !removeKeys.has(s.start + ':' + s.end + ':' + s.cat));
-  const addKeys = new Set();
-  const filteredAdds = [];
-  for (const s of manualAdds) {
-    const k = s.start + ':' + s.end + ':' + s.cat;
-    if (addKeys.has(k)) continue;
-    addKeys.add(k);
-    filteredAdds.push(s);
-  }
-  return [...filteredAuto, ...filteredAdds];
-}
-
-function renderAnnotated(text, spans, activeCats) {
-  const combined = combineSpans(spans, state.manualAdds, state.manualRemoves);
-  if (!combined.length) return escapeHTML(text);
-  const { runs, catIndex } = buildRuns(text, combined);
-  if (!runs.length) return escapeHTML(text);
-  let html = '';
-  let cursor = 0;
-  for (const r of runs) {
-    if (r.start > cursor) html += escapeHTML(text.slice(cursor, r.start));
-    const catId = catIdFromIdx(catIndex, r.catIdx);
-    if (activeCats.has(catId)) {
-      const cls = CAT_TO_CLASS[catId] || 'c-key';
-      const hn = hasNote(r.start, r.end, catId) ? ' has-note' : '';
-      html += `<mark class="${cls}${hn}" data-s="${r.start}" data-e="${r.end}" data-c="${catId}">${escapeHTML(text.slice(r.start, r.end))}</mark>`;
+function splitIntoChunks(text, maxWords = 180) {
+  const sentences = segmentSentences(text);
+  if (!sentences.length) return text.trim() ? [text.trim()] : [];
+  const chunks = [];
+  let curStart = sentences[0].start;
+  let curWords = 0;
+  for (let i = 0; i < sentences.length; i++) {
+    const s = sentences[i];
+    const sText = text.slice(s.start, s.end);
+    const w = (sText.match(/\p{L}+/gu) || []).length;
+    if (curWords > 0 && curWords + w > maxWords) {
+      chunks.push(text.slice(curStart, sentences[i - 1].end).trim());
+      curStart = s.start;
+      curWords = w;
     } else {
-      html += escapeHTML(text.slice(r.start, r.end));
+      curWords += w;
     }
-    cursor = r.end;
   }
-  if (cursor < text.length) html += escapeHTML(text.slice(cursor));
-  return html;
+  if (curStart < text.length) chunks.push(text.slice(curStart).trim());
+  return chunks.filter(c => c.length > 30);
 }
 
-function computeCategoryStats(text, spans) {
-  const combined = combineSpans(spans, state.manualAdds, state.manualRemoves);
-  const { runs, catIndex } = buildRuns(text, combined);
-  const stats = {};
-  for (const r of runs) {
-    const cat = catIdFromIdx(catIndex, r.catIdx);
-    if (!cat) continue;
-    if (!stats[cat]) stats[cat] = { count: 0, chars: 0 };
-    stats[cat].count++;
-    stats[cat].chars += r.end - r.start;
+async function generateMCQFromChunk(chunk, n, lang) {
+  const key = mcqHashKey(chunk + '|' + n + '|' + lang);
+  if (mcqCache[key]) return mcqCache[key];
+  const prompt = buildMCQPrompt(chunk, n, lang);
+  const raw = await llmChat(prompt, 900, 0.3);
+  const parsed = parseMCQResponse(raw);
+  if (parsed.length) {
+    mcqCache[key] = parsed;
+    saveMcqCache();
   }
-  return stats;
+  return parsed;
 }
 
-function computeCoverage(text, spans, activeCats) {
-  const combined = combineSpans(spans, state.manualAdds, state.manualRemoves);
-  if (!combined.length) return { pct: 0, count: 0 };
-  const { runs, catIndex } = buildRuns(text, combined);
-  let hlChars = 0, count = 0;
-  for (const r of runs) {
-    const catId = catIdFromIdx(catIndex, r.catIdx);
-    if (activeCats.has(catId)) { hlChars += r.end - r.start; count++; }
+async function generateAllMCQ(text, lang, onProgress) {
+  const chunks = splitIntoChunks(text, 180);
+  const results = [];
+  const seenQuestions = new Set();
+  for (let i = 0; i < chunks.length; i++) {
+    if (onProgress) onProgress(i + 1, chunks.length);
+    const chunkWords = (chunks[i].match(/\p{L}+/gu) || []).length;
+    const n = Math.max(2, Math.min(4, Math.round(chunkWords / 60)));
+    try {
+      const items = await generateMCQFromChunk(chunks[i], n, lang);
+      for (const item of items) {
+        const qKey = item.domanda.trim().toLowerCase().slice(0, 80);
+        if (seenQuestions.has(qKey)) continue;
+        seenQuestions.add(qKey);
+        results.push({
+          domanda: item.domanda.trim(),
+          corretta: item.corretta.trim(),
+          sbagliate: item.sbagliate.map(s => String(s).trim()).filter(Boolean).slice(0, 3),
+          tipo: String(item.tipo || 'concetto').toLowerCase().trim()
+        });
+      }
+    } catch (e) {
+      console.warn('MCQ chunk error:', e);
+    }
   }
-  const pct = text.length ? Math.round(100 * hlChars / text.length) : 0;
-  return { pct, count };
+  return results;
 }
 
-const LIB_KEY = 'annota.library.v7';
-const SES_KEY = 'annota.session.v7';
-const INPUT_H_KEY = 'annota.inputHeight.v1';
-const CATS_KEY = 'annota.cats.v1';
-const CONTROLS_KEY = 'annota.controlsHidden.v1';
-
-function loadLibrary() { try { return JSON.parse(localStorage.getItem(LIB_KEY) || '[]'); } catch { return []; } }
-function saveLibrary(list) {
-  try { localStorage.setItem(LIB_KEY, JSON.stringify(list)); } catch { toast('Spazio esaurito'); }
+function mapAITypeToCat(t) {
+  if (!t) return 'key';
+  const s = String(t).toLowerCase().trim();
+  if (s === 'data' || s === 'date' || s === 'anno' || s === 'year') return 'num';
+  if (s === 'protagonista' || s === 'persona' || s === 'person' || s === 'protagonist') return 'name';
+  if (s === 'definizione' || s === 'definition') return 'def';
+  if (s === 'citazione' || s === 'quote') return 'quote';
+  if (s === 'elenco' || s === 'list') return 'list';
+  if (s === 'frase' || s === 'sentence') return 'sentence';
+  return 'key';
 }
-function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
 
-const state = {
-  text: '', activeCats: new Set(), spans: [],
-  manualAdds: [], manualRemoves: [],
-  editMode: false, editCategory: 'key',
-  controlsHidden: JSON.parse(localStorage.getItem(CONTROLS_KEY) || 'false'),
-  lang: 'en', library: loadLibrary(), view: 'annotate',
-  currentLibId: null, searchHits: [], searchIdx: -1,
-  lastStats: null, aiApplied: false
+function proposeAICards(aiItems) {
+  const props = [];
+  for (const item of aiItems) {
+    const front = item.domanda;
+    const back = item.corretta;
+    const distractors = item.sbagliate.slice(0, 3);
+    const contentId = cardContentId('ai-mcq', front, back);
+    props.push({
+      type: 'ai-mcq',
+      aiType: item.tipo,
+      front,
+      back,
+      distractors,
+      sourceCat: mapAITypeToCat(item.tipo),
+      contentId
+    });
+  }
+  return props;
+}
+
+const AI_TYPE_LABELS = {
+  evento: 'Evento',
+  data: 'Data',
+  causa: 'Causa',
+  conseguenza: 'Conseguenza',
+  concetto: 'Concetto',
+  definizione: 'Definizione',
+  protagonista: 'Protagonista',
+  event: 'Evento',
+  date: 'Data',
+  cause: 'Causa',
+  consequence: 'Conseguenza',
+  concept: 'Concetto',
+  definition: 'Definizione',
+  protagonist: 'Protagonista'
 };
 
-try {
-  const saved = JSON.parse(localStorage.getItem(CATS_KEY) || 'null');
-  if (saved && Array.isArray(saved)) state.activeCats = new Set(saved);
-} catch {}
-if (!state.activeCats.size) state.activeCats = new Set(CATEGORIES.map(c => c.id));
-
-function saveActiveCats() {
-  try { localStorage.setItem(CATS_KEY, JSON.stringify([...state.activeCats])); } catch {}
+function labelForAIType(t) {
+  if (!t) return 'AI';
+  return AI_TYPE_LABELS[t.toLowerCase()] || t.charAt(0).toUpperCase() + t.slice(1);
 }
 
 /* ============================================================
@@ -1306,9 +1344,9 @@ function setNote(s, e, c, text) {
 }
 
 /* ============================================================
-   MODULO SCHEDE (v4 — MCQ only)
+   MODULO SCHEDE (v5 — AI-first)
    ============================================================ */
-const CARDS_KEY = 'annota.cards.v4';
+const CARDS_KEY = 'annota.cards.v5';
 let cards = [];
 try { cards = JSON.parse(localStorage.getItem(CARDS_KEY) || '[]'); } catch {}
 function saveCards() { try { localStorage.setItem(CARDS_KEY, JSON.stringify(cards)); } catch {} }
@@ -1328,15 +1366,6 @@ function docTitle(text) {
 
 const labelForCat = id => (CATEGORIES.find(x => x.id === id) || { label: id }).label;
 
-const TYPE_LABELS = {
-  'def': 'Definizione',
-  'fact-year': 'Anno',
-  'fact-number': 'Dato',
-  'fact-percent': 'Percentuale',
-  'concept-cloze': 'Concetto',
-  'manual': 'Manuale'
-};
-
 function cardContentId(type, front, back) {
   let h = 5381;
   const s = type + '|' + front + '|' + back;
@@ -1344,6 +1373,7 @@ function cardContentId(type, front, back) {
   return 'c' + Math.abs(h).toString(36);
 }
 
+/* ---- Fallback euristico (usato se AI non disponibile) ---- */
 function proposeDefinitionCards(text, spans) {
   const props = [];
   const defSpans = spans.filter(s => s.cat === 'def').sort((a, b) => a.start - b.start);
@@ -1388,10 +1418,7 @@ function proposeConceptCards(text, spans, sentences, lang) {
       const sent = sentences.find(x => occ.start >= x.start && occ.end <= x.end);
       if (!sent) continue;
       const sentText = text.slice(sent.start, sent.end);
-      if (sentText.length >= 40 && sentText.length <= 200) {
-        chosenSent = sent;
-        break;
-      }
+      if (sentText.length >= 40 && sentText.length <= 200) { chosenSent = sent; break; }
     }
     if (!chosenSent) continue;
     const sentText = text.slice(chosenSent.start, chosenSent.end);
@@ -1427,7 +1454,6 @@ function proposeFactCards(text, spans, sentences) {
     for (const s of numList) {
       const val = text.slice(s.start, s.end).trim();
       let kind = 'other';
-      const pure = val.replace(/[.,]/g, (m, i) => m).trim();
       if (/^(1\d{3}|20\d{2})$/.test(val)) kind = 'year';
       else if (/^\d+(?:[.,]\d+)?\s*%$/.test(val)) kind = 'percent';
       else if (/^\d+(?:[.,]\d+)?\s*[a-zA-ZÀ-ÿ°µ€$£¥]+$/.test(val) && parseFloat(val) >= 100) kind = 'number';
@@ -1459,7 +1485,7 @@ function proposeFactCards(text, spans, sentences) {
   return props;
 }
 
-function proposeAllCards(text, spans, sentences, lang) {
+function proposeAllCardsHeuristic(text, spans, sentences, lang) {
   const all = [
     ...proposeDefinitionCards(text, spans),
     ...proposeConceptCards(text, spans, sentences, lang),
@@ -1475,19 +1501,57 @@ function proposeAllCards(text, spans, sentences, lang) {
   return out;
 }
 
+/* ---- Generazione schede (AI-first) ---- */
 let pendingProposals = [];
 
-function openCardPreview(text, spans, lang) {
-  const sentences = segmentSentences(text);
-  pendingProposals = proposeAllCards(text, spans, sentences, lang);
+async function openCardPreview(text, spans, lang) {
+  if (!text.trim()) { toast('Nulla da analizzare'); return; }
+
+  const existingIds = new Set(cards.map(c => c.contentId));
+  const useAI = ai.ready && hasWebGPU();
+
+  if (useAI) {
+    setAIStatus('working', 'Preparazione…', '0%');
+    try {
+      const aiItems = await generateAllMCQ(text, lang, (cur, tot) => {
+        setAIStatus('working', `Generazione domande AI (${cur}/${tot})…`, `${Math.round(cur/tot*100)}%`);
+      });
+      if (!aiItems.length) {
+        setAIStatus('error', 'AI non ha prodotto domande valide, uso euristiche');
+        const sentences = segmentSentences(text);
+        pendingProposals = proposeAllCardsHeuristic(text, spans, sentences, lang);
+      } else {
+        setAIStatus('ready', `${aiItems.length} domande generate con AI`);
+        pendingProposals = proposeAICards(aiItems);
+      }
+    } catch (e) {
+      console.error('AI generation error:', e);
+      setAIStatus('error', 'Errore AI, uso euristiche');
+      const sentences = segmentSentences(text);
+      pendingProposals = proposeAllCardsHeuristic(text, spans, sentences, lang);
+    }
+  } else {
+    const sentences = segmentSentences(text);
+    pendingProposals = proposeAllCardsHeuristic(text, spans, sentences, lang);
+    if (pendingProposals.length) {
+      toast('AI non caricata · uso euristiche', 2200);
+    }
+  }
+
+  for (const p of pendingProposals) p.alreadyExists = existingIds.has(p.contentId);
+
   if (!pendingProposals.length) {
-    toast('Nessuna scheda di qualità trovata nel testo');
+    toast('Nessuna domanda di qualità trovata');
     return;
   }
-  const existingIds = new Set(cards.map(c => c.contentId));
-  for (const p of pendingProposals) p.alreadyExists = existingIds.has(p.contentId);
   renderCardPreview();
   openModal('modalCardPreview');
+}
+
+function cardTypeLabel(p) {
+  if (p.type === 'ai-mcq') return labelForAIType(p.aiType) + ' · AI';
+  const map = { def: 'Definizione', 'fact-year': 'Anno', 'fact-number': 'Dato', 'fact-percent': 'Percentuale', 'concept-cloze': 'Concetto' };
+  return map[p.type] || p.type;
 }
 
 function renderCardPreview() {
@@ -1505,16 +1569,20 @@ function renderCardPreview() {
     const p = pendingProposals[i];
     const el = document.createElement('div');
     el.className = 'card-item' + (p.alreadyExists ? ' disabled' : '');
+    const catColor = CATEGORIES.find(x => x.id === p.sourceCat)?.color || '--c-key';
+    const isAI = p.type === 'ai-mcq';
     el.innerHTML = `
       <div class="card-head">
-        <span class="badge" style="background:var(${CATEGORIES.find(x=>x.id===p.sourceCat)?.color});color:var(--ink)">${TYPE_LABELS[p.type] || p.type}</span>
+        <span class="badge" style="background:var(${catColor});color:var(--ink)">${cardTypeLabel(p)}</span>
+        ${isAI ? '<span class="badge ai-badge">AI</span>' : ''}
         ${p.alreadyExists ? '<span class="card-due">già presente</span>' : ''}
         <label style="margin-left:auto;display:flex;align-items:center;gap:6px;cursor:pointer">
           <input type="checkbox" data-idx="${i}" ${p.alreadyExists ? 'disabled' : 'checked'} style="width:18px;height:18px;accent-color:var(--ai)">
         </label>
       </div>
       <div class="card-front">${escapeHTML(p.front)}</div>
-      <div class="card-back">${escapeHTML(p.back)}</div>`;
+      <div class="card-back">${escapeHTML(p.back)}</div>
+      ${p.distractors && p.distractors.length ? `<div style="font-size:.78rem;color:var(--ink-3);margin-top:8px;line-height:1.5"><strong>Distrattori:</strong> ${p.distractors.map(d => escapeHTML(d)).join(' · ')}</div>` : ''}`;
     box.appendChild(el);
   }
 }
@@ -1534,6 +1602,7 @@ function confirmCardGeneration() {
         docTitle: title,
         sourceCat: p.sourceCat,
         type: p.type,
+        aiType: p.aiType || null,
         front: p.front,
         back: p.back,
         distractors: p.distractors || null,
@@ -1542,16 +1611,16 @@ function confirmCardGeneration() {
       added++;
     }
   });
-  if (added) { saveCards(); toast(`${added} schede aggiunte`); }
-  else toast('Nessuna scheda selezionata');
+  if (added) { saveCards(); toast(`${added} domande aggiunte`); }
+  else toast('Nessuna selezionata');
   closeModal('modalCardPreview');
   renderCardsView();
 }
 
 /* ============================================================
-   MODULO RIPASSO (v4 — MCQ only, distrattori seri)
+   MODULO RIPASSO (v5 — MCQ only)
    ============================================================ */
-const REVIEW_KEY = 'annota.review.v4';
+const REVIEW_KEY = 'annota.review.v5';
 let reviewState = {};
 try { reviewState = JSON.parse(localStorage.getItem(REVIEW_KEY) || '{}'); } catch {}
 function saveReview() { try { localStorage.setItem(REVIEW_KEY, JSON.stringify(reviewState)); } catch {} }
@@ -1559,8 +1628,7 @@ function saveReview() { try { localStorage.setItem(REVIEW_KEY, JSON.stringify(re
 function gradeCard(cardId, grade) {
   const r = reviewState[cardId] || { ef: 2.5, interval: 0, reps: 0, due: 0, lastGrade: null };
   if (grade < 3) {
-    r.reps = 0;
-    r.interval = 0;
+    r.reps = 0; r.interval = 0;
     r.ef = Math.max(1.3, r.ef - 0.20);
     r.lastGrade = grade;
     reviewState[cardId] = r;
@@ -1591,12 +1659,10 @@ const SIM_STOPWORDS = new Set([
   'may','might','must','do','does','did','done','have','has','had','having','about','after','before',
   'during','between','into','through','over','under','above','below','again','further','once','here'
 ]);
-
 function tokensForSim(s) {
   const tokens = (String(s).toLowerCase().match(/\p{L}+/gu) || []);
   return new Set(tokens.filter(w => w.length > 3 && !SIM_STOPWORDS.has(w)));
 }
-
 function similarityScore(a, b) {
   const sa = tokensForSim(a);
   const sb = tokensForSim(b);
@@ -1605,7 +1671,6 @@ function similarityScore(a, b) {
   for (const w of sa) if (sb.has(w)) inter++;
   return inter / Math.min(sa.size, sb.size);
 }
-
 function shuffleArr(a) {
   const arr = a.slice();
   for (let i = arr.length - 1; i > 0; i--) {
@@ -1614,23 +1679,25 @@ function shuffleArr(a) {
   }
   return arr;
 }
-
 function extractNumber(s) {
   const m = String(s).replace(',', '.').match(/-?\d+(?:\.\d+)?/);
   return m ? parseFloat(m[0]) : NaN;
 }
 
 function buildMCQ(card) {
+  if (card.type === 'ai-mcq') {
+    const correct = card.back;
+    const ds = Array.isArray(card.distractors) ? card.distractors.filter(d => d && d.trim() && d.trim() !== correct.trim()) : [];
+    if (ds.length < 3) return null;
+    const options = shuffleArr([correct, ...ds.slice(0, 3)]);
+    return { options, correctIndex: options.indexOf(correct) };
+  }
+
   const correct = card.back;
   const pool = [];
 
-  if (Array.isArray(card.distractors)) {
-    pool.push(...card.distractors);
-  }
-
   const sameDoc = cards.filter(c => c.id !== card.id && c.type === card.type && c.docKey === card.docKey);
   pool.push(...sameDoc.map(c => c.back));
-
   const sameAll = cards.filter(c => c.id !== card.id && c.type === card.type);
   pool.push(...sameAll.map(c => c.back));
 
@@ -1677,7 +1744,6 @@ function buildMCQ(card) {
     seen.add(t);
     distractors.push(t);
   }
-
   if (distractors.length < 3) return null;
 
   let sorted;
@@ -1704,14 +1770,11 @@ function buildMCQ(card) {
   const topK = Math.min(6, sorted.length);
   const candidatePool = sorted.slice(0, topK).map(x => x.d);
   const chosen = shuffleArr(candidatePool).slice(0, 3);
-
   const options = shuffleArr([correct, ...chosen]);
   return { options, correctIndex: options.indexOf(correct) };
 }
 
-function isReviewable(card) {
-  return buildMCQ(card) !== null;
-}
+function isReviewable(card) { return buildMCQ(card) !== null; }
 
 function dueCardsAll() {
   const now = Date.now();
@@ -1750,7 +1813,7 @@ function startReviewSession(scope) {
     const doc = scope === 'doc' ? ' in questo documento' : '';
     $('reviewContent').innerHTML = `<div class="empty"><div class="icon">✓</div>
       <div class="title">Tutto in pari</div>
-      <div class="sub">Nessuna scheda dovuta${doc}.<br>
+      <div class="sub">Nessuna domanda dovuta${doc}.<br>
         ${st.scheduled} in programma · ${st.newCards} nuove${st.notReviewable ? ` · ${st.notReviewable} non ripassabili` : ''}.</div>
       <div class="row-actions" style="justify-content:center;margin-top:20px">
         ${scope === 'doc' && reviewStats().dueNow > 0 ? '<button class="btn primary" id="btnReviewAll">Ripassa tutti i documenti</button>' : ''}
@@ -1770,6 +1833,12 @@ function startReviewSession(scope) {
   reviewUI.mcqForIdx = -1;
   reviewUI.selectedIndex = -1;
   renderReviewCard();
+}
+
+function cardDisplayType(card) {
+  if (card.type === 'ai-mcq') return labelForAIType(card.aiType);
+  const map = { 'def': 'Definizione', 'fact-year': 'Anno', 'fact-number': 'Dato', 'fact-percent': 'Percentuale', 'concept-cloze': 'Concetto', 'manual': 'Manuale' };
+  return map[card.type] || card.type;
 }
 
 function renderReviewCard() {
@@ -1800,20 +1869,14 @@ function renderReviewCard() {
     reviewUI.selectedIndex = -1;
   }
 
-  if (!reviewUI.mcq) {
-    // Sicurezza: se per qualche motivo non è MCQ, salta
-    reviewUI.idx++;
-    renderReviewCard();
-    return;
-  }
+  if (!reviewUI.mcq) { reviewUI.idx++; renderReviewCard(); return; }
 
   const { options, correctIndex } = reviewUI.mcq;
   const answered = reviewUI.selectedIndex >= 0;
   const letters = ['A', 'B', 'C', 'D'];
+  const catColor = CATEGORIES.find(x => x.id === card.sourceCat)?.color || '--c-key';
 
-  // Rendering fronte con eventuale ____ evidenziato
   let frontHTML = escapeHTML(card.front);
-  // Sostituisci "____" con uno span stilizzato (dopo escape, "____" resta invariato)
   frontHTML = frontHTML.replace(/____/g, '<span class="blank">?</span>');
 
   const optionsHTML = options.map((opt, i) => {
@@ -1841,9 +1904,10 @@ function renderReviewCard() {
   box.innerHTML = `
     <div class="review-progress">Domanda ${reviewUI.idx + 1} di ${reviewUI.queue.length}</div>
     <div class="review-source">
-      <span class="badge" style="background:var(${CATEGORIES.find(x=>x.id===card.sourceCat)?.color});color:var(--ink)">${TYPE_LABELS[card.type] || card.type}</span>
-      ${srcDoc ? ` · da ${escapeHTML(srcDoc)}` : ''}
-      ${prevInfo ? ` · ${prevInfo}` : ''}
+      <span class="badge" style="background:var(${catColor});color:var(--ink)">${cardDisplayType(card)}</span>
+      ${card.type === 'ai-mcq' ? '<span class="badge ai-badge">AI</span>' : ''}
+      ${srcDoc ? `<span>· da ${escapeHTML(srcDoc)}</span>` : ''}
+      ${prevInfo ? `<span>· ${prevInfo}</span>` : ''}
     </div>
     <div class="review-card">
       <div class="review-front">${frontHTML}</div>
@@ -1877,7 +1941,7 @@ function renderReviewCard() {
 }
 
 /* ============================================================
-   MODULO EXPORT
+   EXPORT
    ============================================================ */
 function downloadBlob(content, filename, mime) {
   const blob = new Blob([content], { type: mime });
@@ -1887,7 +1951,6 @@ function downloadBlob(content, filename, mime) {
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 500);
 }
-
 function exportAnkiCSV() {
   const cs = cards.filter(c => c.docKey === docKey(state.text));
   if (!cs.length) { toast('Nessuna scheda da esportare'); return; }
@@ -1897,7 +1960,6 @@ function exportAnkiCSV() {
   downloadBlob('\ufeff' + csv, `annott-anki-${Date.now()}.csv`, 'text/csv');
   toast(`${cs.length} schede esportate per Anki`);
 }
-
 function exportMarkdown(obsidian = false) {
   const cs = cards.filter(c => c.docKey === docKey(state.text));
   let md = `# ANNOTT · ${new Date().toLocaleString('it-IT')}\n\n## Testo annotato\n\n`;
@@ -1913,15 +1975,15 @@ function exportMarkdown(obsidian = false) {
     md += '\n';
   }
   if (cs.length) {
-    md += '## Schede\n\n';
-    for (const c of cs) md += `### ${c.front}\n\n${c.back}\n\n`;
+    md += '## Domande\n\n';
+    for (const c of cs) md += `### ${c.front}\n\n**${c.back}**\n\n`;
   }
   downloadBlob(md, `annott-${Date.now()}.md`, 'text/markdown');
   toast(obsidian ? 'Obsidian esportato' : 'Markdown esportato');
 }
 
 /* ============================================================
-   UI — NOTE
+   UI NOTE
    ============================================================ */
 let noteDialogCtx = null;
 function openNoteDialog(start, end, cat) {
@@ -1936,7 +1998,7 @@ function openNoteDialog(start, end, cat) {
 }
 
 /* ============================================================
-   UI — SCHEDE
+   UI SCHEDE
    ============================================================ */
 let cardsFilter = new Set(CATEGORIES.map(c => c.id));
 let cardsScope = 'doc';
@@ -1983,10 +2045,10 @@ function renderCardsView() {
 
   if (!filtered.length) {
     list.innerHTML = `<div class="empty"><div class="icon">🃏</div>
-      <div class="title">Nessuna scheda</div>
+      <div class="title">Nessuna domanda</div>
       <div class="sub">${cardsScope === 'doc'
-        ? 'Tocca "Genera schede" per crearle dagli evidenziati di questo testo.'
-        : 'Salva o genera schede da altri testi per vederle qui.'}</div></div>`;
+        ? 'Tocca "Genera domande" per crearle dal testo.'
+        : 'Salva o genera domande da altri testi per vederle qui.'}</div></div>`;
     return;
   }
   list.innerHTML = '';
@@ -1996,16 +2058,19 @@ function renderCardsView() {
       : (r.due <= Date.now() ? 'da ripassare'
       : `tra ${Math.max(1, Math.ceil((r.due - Date.now()) / 86400000))}g`);
     const reviewable = isReviewable(c);
+    const catColor = CATEGORIES.find(x => x.id === c.sourceCat)?.color || '--c-key';
     const el = document.createElement('div');
     el.className = 'card-item';
     el.innerHTML = `
       <div class="card-head">
-        <span class="badge" style="background:var(${CATEGORIES.find(x=>x.id===c.sourceCat)?.color});color:var(--ink)">${TYPE_LABELS[c.type] || c.type}</span>
+        <span class="badge" style="background:var(${catColor});color:var(--ink)">${cardDisplayType(c)}</span>
+        ${c.type === 'ai-mcq' ? '<span class="badge ai-badge">AI</span>' : ''}
         <span class="card-due">${due}${!reviewable ? ' · non ripassabile' : ''}</span>
       </div>
       <div class="card-front">${escapeHTML(c.front)}</div>
       <div class="card-back">${escapeHTML(c.back)}</div>
-      ${cardsScope === 'all' && c.docTitle ? `<div style="font-size:.75rem;color:var(--ink-3);margin-top:6px">da: ${escapeHTML(c.docTitle.slice(0,60))}</div>` : ''}
+      ${c.distractors && c.distractors.length ? `<div style="font-size:.75rem;color:var(--ink-3);margin-bottom:8px"><strong>Distrattori:</strong> ${c.distractors.map(d=>escapeHTML(d)).join(' · ')}</div>` : ''}
+      ${cardsScope === 'all' && c.docTitle ? `<div style="font-size:.75rem;color:var(--ink-3);margin-bottom:8px">da: ${escapeHTML(c.docTitle.slice(0,60))}</div>` : ''}
       <div class="card-actions">
         <button class="tbtn card-edit">Modifica</button>
         <button class="tbtn card-delete" style="color:var(--danger)">Elimina</button>
@@ -2024,21 +2089,13 @@ function renderCardsView() {
 let cardEditCtx = null;
 function openCardEditor(card, isNew) {
   cardEditCtx = { card, isNew: !!isNew };
-  $('cardEditTitle').textContent = isNew ? 'Nuova scheda' : 'Modifica scheda';
+  $('cardEditTitle').textContent = isNew ? 'Nuova domanda' : 'Modifica domanda';
   $('cardEditFront').value = card.front;
   $('cardEditBack').value = card.back;
-  const isManual = card.type === 'manual';
-  $('cardEditDistractorsSection').style.display = isManual ? 'block' : 'none';
-  if (isManual) {
-    const d = card.distractors || [];
-    $('cardEditD1').value = d[0] || '';
-    $('cardEditD2').value = d[1] || '';
-    $('cardEditD3').value = d[2] || '';
-  } else {
-    $('cardEditD1').value = '';
-    $('cardEditD2').value = '';
-    $('cardEditD3').value = '';
-  }
+  const d = Array.isArray(card.distractors) ? card.distractors : [];
+  $('cardEditD1').value = d[0] || '';
+  $('cardEditD2').value = d[1] || '';
+  $('cardEditD3').value = d[2] || '';
   $('btnDeleteCard').style.display = isNew ? 'none' : 'inline-flex';
   openModal('modalCardEdit');
   setTimeout(() => $('cardEditFront').focus(), 100);
@@ -2047,6 +2104,141 @@ function openCardEditor(card, isNew) {
 /* ============================================================
    UTILITY (invariate)
    ============================================================ */
+const CAT_PRIORITY = { quote:10, num:9, def:8, list:7, name:6, key:5, sentence:4 };
+const CAT_TO_CLASS = { num:'c-num', name:'c-name', key:'c-key', quote:'c-quote', list:'c-list', def:'c-def', sentence:'c-sentence' };
+const CATEGORIES = [
+  { id:'num', label:'Numeri', color:'--c-num' },
+  { id:'name', label:'Nomi', color:'--c-name' },
+  { id:'key', label:'Concetti', color:'--c-key' },
+  { id:'def', label:'Definizioni', color:'--c-def' },
+  { id:'quote', label:'Citazioni', color:'--c-quote' },
+  { id:'list', label:'Elenchi', color:'--c-list' },
+  { id:'sentence', label:'Frasi', color:'--c-sentence' }
+];
+
+function buildRuns(text, spans) {
+  const n = text.length;
+  const owner = new Uint16Array(n);
+  const weight = new Uint8Array(n);
+  const catIndex = {};
+  for (const s of spans) {
+    const priority = (CAT_PRIORITY[s.cat] || 1) * 10 + (s.w || 1);
+    for (let i = s.start; i < s.end; i++) {
+      if (priority > weight[i]) {
+        weight[i] = Math.min(priority, 255);
+        if (!catIndex[s.cat]) catIndex[s.cat] = Object.keys(catIndex).length + 1;
+        owner[i] = catIndex[s.cat];
+      }
+    }
+  }
+  const runs = [];
+  let i = 0;
+  while (i < n) {
+    if (!owner[i]) { i++; continue; }
+    const cat = owner[i];
+    let j = i + 1;
+    while (j < n && owner[j] === cat) j++;
+    runs.push({ start: i, end: j, catIdx: cat });
+    i = j;
+  }
+  return { runs, catIndex };
+}
+function catIdFromIdx(catIndex, idx) {
+  for (const [k, v] of Object.entries(catIndex)) if (v === idx) return k;
+  return null;
+}
+function combineSpans(autoSpans, manualAdds, manualRemoves) {
+  const removeKeys = new Set(manualRemoves.map(s => s.start + ':' + s.end + ':' + s.cat));
+  const filteredAuto = autoSpans.filter(s => !removeKeys.has(s.start + ':' + s.end + ':' + s.cat));
+  const addKeys = new Set();
+  const filteredAdds = [];
+  for (const s of manualAdds) {
+    const k = s.start + ':' + s.end + ':' + s.cat;
+    if (addKeys.has(k)) continue;
+    addKeys.add(k);
+    filteredAdds.push(s);
+  }
+  return [...filteredAuto, ...filteredAdds];
+}
+function renderAnnotated(text, spans, activeCats) {
+  const combined = combineSpans(spans, state.manualAdds, state.manualRemoves);
+  if (!combined.length) return escapeHTML(text);
+  const { runs, catIndex } = buildRuns(text, combined);
+  if (!runs.length) return escapeHTML(text);
+  let html = '';
+  let cursor = 0;
+  for (const r of runs) {
+    if (r.start > cursor) html += escapeHTML(text.slice(cursor, r.start));
+    const catId = catIdFromIdx(catIndex, r.catIdx);
+    if (activeCats.has(catId)) {
+      const cls = CAT_TO_CLASS[catId] || 'c-key';
+      const hn = hasNote(r.start, r.end, catId) ? ' has-note' : '';
+      html += `<mark class="${cls}${hn}" data-s="${r.start}" data-e="${r.end}" data-c="${catId}">${escapeHTML(text.slice(r.start, r.end))}</mark>`;
+    } else {
+      html += escapeHTML(text.slice(r.start, r.end));
+    }
+    cursor = r.end;
+  }
+  if (cursor < text.length) html += escapeHTML(text.slice(cursor));
+  return html;
+}
+function computeCategoryStats(text, spans) {
+  const combined = combineSpans(spans, state.manualAdds, state.manualRemoves);
+  const { runs, catIndex } = buildRuns(text, combined);
+  const stats = {};
+  for (const r of runs) {
+    const cat = catIdFromIdx(catIndex, r.catIdx);
+    if (!cat) continue;
+    if (!stats[cat]) stats[cat] = { count: 0, chars: 0 };
+    stats[cat].count++;
+    stats[cat].chars += r.end - r.start;
+  }
+  return stats;
+}
+function computeCoverage(text, spans, activeCats) {
+  const combined = combineSpans(spans, state.manualAdds, state.manualRemoves);
+  if (!combined.length) return { pct: 0, count: 0 };
+  const { runs, catIndex } = buildRuns(text, combined);
+  let hlChars = 0, count = 0;
+  for (const r of runs) {
+    const catId = catIdFromIdx(catIndex, r.catIdx);
+    if (activeCats.has(catId)) { hlChars += r.end - r.start; count++; }
+  }
+  const pct = text.length ? Math.round(100 * hlChars / text.length) : 0;
+  return { pct, count };
+}
+
+const LIB_KEY = 'annota.library.v7';
+const SES_KEY = 'annota.session.v7';
+const INPUT_H_KEY = 'annota.inputHeight.v1';
+const CATS_KEY = 'annota.cats.v1';
+const CONTROLS_KEY = 'annota.controlsHidden.v1';
+
+function loadLibrary() { try { return JSON.parse(localStorage.getItem(LIB_KEY) || '[]'); } catch { return []; } }
+function saveLibrary(list) {
+  try { localStorage.setItem(LIB_KEY, JSON.stringify(list)); } catch { toast('Spazio esaurito'); }
+}
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+
+const state = {
+  text: '', activeCats: new Set(), spans: [],
+  manualAdds: [], manualRemoves: [],
+  editMode: false, editCategory: 'key',
+  controlsHidden: JSON.parse(localStorage.getItem(CONTROLS_KEY) || 'false'),
+  lang: 'en', library: loadLibrary(), view: 'annotate',
+  currentLibId: null, searchHits: [], searchIdx: -1,
+  lastStats: null, aiApplied: false
+};
+
+try {
+  const saved = JSON.parse(localStorage.getItem(CATS_KEY) || 'null');
+  if (saved && Array.isArray(saved)) state.activeCats = new Set(saved);
+} catch {}
+if (!state.activeCats.size) state.activeCats = new Set(CATEGORIES.map(c => c.id));
+
+function saveActiveCats() {
+  try { localStorage.setItem(CATS_KEY, JSON.stringify([...state.activeCats])); } catch {}
+}
 
 function updateControlsToggle() {
   document.body.classList.toggle('controls-hidden', state.controlsHidden);
@@ -2062,22 +2254,17 @@ function updateControlsToggle() {
     btn.title = 'Nascondi controlli';
   }
 }
-
 function toggleControls() {
   state.controlsHidden = !state.controlsHidden;
   if (state.controlsHidden && state.editMode) toggleEditMode();
   if (state.controlsHidden) {
     const bar = $('searchBar');
-    if (bar.style.display !== 'none') {
-      bar.style.display = 'none';
-      clearSearchHits();
-    }
+    if (bar.style.display !== 'none') { bar.style.display = 'none'; clearSearchHits(); }
   }
   try { localStorage.setItem(CONTROLS_KEY, JSON.stringify(state.controlsHidden)); } catch {}
   updateControlsToggle();
   vibrate(6);
 }
-
 function renderLegend() {
   const box = $('legend');
   box.innerHTML = '';
@@ -2109,7 +2296,6 @@ function renderLegend() {
     box.appendChild(el);
   }
 }
-
 function toggleEditMode() {
   state.editMode = !state.editMode;
   document.body.classList.toggle('edit-mode', state.editMode);
@@ -2122,7 +2308,6 @@ function toggleEditMode() {
   }
   vibrate(8);
 }
-
 async function runAnalyze() {
   const text = state.text;
   if (!text.trim()) {
@@ -2158,11 +2343,9 @@ async function runAnalyze() {
   renderLegend();
   saveSession();
 }
-
 function redrawOutput() {
   $('output').innerHTML = renderAnnotated(state.text, state.spans, state.activeCats);
 }
-
 function renderStats() {
   const text = state.text;
   const cov = computeCoverage(text, state.spans, state.activeCats);
@@ -2176,11 +2359,10 @@ function renderStats() {
   box.innerHTML = `
     <div class="stat ${warn ? 'warn' : (ok ? 'ok' : '')}"><div class="k">Copertura</div><div class="v">${cov.pct}%</div></div>
     <div class="stat"><div class="k">Parole</div><div class="v">${words.toLocaleString('it-IT')}</div></div>
-    <div class="stat"><div class="k">Schede</div><div class="v">${cardCount}</div></div>
+    <div class="stat"><div class="k">Domande</div><div class="v">${cardCount}</div></div>
     <div class="stat ${dueCount > 0 ? 'warn' : ''}"><div class="k">Da ripassare</div><div class="v">${dueCount}</div></div>
   `;
 }
-
 function saveSession() {
   try {
     localStorage.setItem(SES_KEY, JSON.stringify({
@@ -2189,7 +2371,6 @@ function saveSession() {
     }));
   } catch {}
 }
-
 function initResize() {
   const ta = $('input');
   const handle = $('resizeHandle');
@@ -2221,7 +2402,6 @@ function initResize() {
   handle.addEventListener('pointercancel', onUp);
   handle.addEventListener('lostpointercapture', onUp);
 }
-
 function clearSearchHits() {
   $('output').querySelectorAll('mark.search-hit').forEach(m => {
     const p = m.parentNode;
@@ -2232,7 +2412,6 @@ function clearSearchHits() {
   state.searchHits = []; state.searchIdx = -1;
   $('searchCount').textContent = '';
 }
-
 function runSearch(q) {
   clearSearchHits();
   if (!q || q.length < 2) return;
@@ -2268,14 +2447,12 @@ function runSearch(q) {
   $('searchCount').textContent = state.searchHits.length ? `1/${state.searchHits.length}` : '0';
   if (state.searchHits.length) { state.searchIdx = 0; focusHit(); }
 }
-
 function focusHit() {
   state.searchHits.forEach((h, i) => h.classList.toggle('current', i === state.searchIdx));
   const h = state.searchHits[state.searchIdx];
   if (h) h.scrollIntoView({ behavior: 'smooth', block: 'center' });
   $('searchCount').textContent = `${state.searchIdx + 1}/${state.searchHits.length}`;
 }
-
 function renderLibrary(filter = '') {
   const list = $('libList');
   const empty = $('libEmpty');
@@ -2300,17 +2477,13 @@ function renderLibrary(filter = '') {
     const manualCount = (it.manualAdds || []).length;
     const manualBadge = manualCount ? `<span class="badge manual">+${manualCount} ✎</span>` : '';
     el.innerHTML = `
-      <div class="row1">
-        ${manualBadge}
-        <span class="date">${date}</span>
-      </div>
+      <div class="row1">${manualBadge}<span class="date">${date}</span></div>
       <div class="title">${escapeHTML(it.title || 'Senza titolo')}</div>
       <div class="snippet">${escapeHTML(snippet)}…</div>
       <div class="meta">
         <span>${(it.text.match(/\p{L}+/gu) || []).length} parole</span>
         <span>copertura ${it.pct ?? '—'}%</span>
-      </div>
-    `;
+      </div>`;
     el.addEventListener('click', () => openFromLibrary(it.id));
     el.addEventListener('contextmenu', e => { e.preventDefault(); askDelete(it.id); });
     let t;
@@ -2320,7 +2493,6 @@ function renderLibrary(filter = '') {
     list.appendChild(el);
   }
 }
-
 function openFromLibrary(id) {
   const it = state.library.find(x => x.id === id);
   if (!it) return;
@@ -2334,7 +2506,6 @@ function openFromLibrary(id) {
   $('scrollAnnotate').scrollTop = 0;
   toast('Aperto dalla libreria');
 }
-
 function askDelete(id) {
   const it = state.library.find(x => x.id === id);
   if (!it) return;
@@ -2350,13 +2521,11 @@ function askDelete(id) {
     vibrate(10);
   };
 }
-
 function openModal(id) { $(id).classList.add('open'); }
 function closeModal(id) { $(id).classList.remove('open'); }
 document.querySelectorAll('.modal-bg').forEach(bg => {
   bg.addEventListener('click', e => { if (e.target === bg) bg.classList.remove('open'); });
 });
-
 function saveToLibrary() {
   if (!state.text.trim()) { toast('Nulla da salvare'); return; }
   const suggested = state.text.trim().slice(0, 60).replace(/\s+/g, ' ').replace(/[.,;:!?]+$/, '');
@@ -2365,7 +2534,6 @@ function saveToLibrary() {
   openModal('modalSave');
   setTimeout(() => $('saveTitle').focus(), 100);
 }
-
 function confirmSave() {
   const title = $('saveTitle').value.trim() || state.text.trim().slice(0, 60).replace(/\s+/g, ' ');
   const cov = computeCoverage(state.text, state.spans, state.activeCats);
@@ -2390,17 +2558,13 @@ function confirmSave() {
   toast('Salvato in libreria');
   vibrate(10);
 }
-
 async function shareOrExport() {
   if (!state.text.trim()) { toast('Nulla da condividere'); return; }
   const html = buildExportHTML();
   const blob = new Blob([html], { type: 'text/html' });
   const file = new File([blob], `annotazione-${Date.now()}.html`, { type: 'text/html' });
   if (navigator.canShare && navigator.canShare({ files: [file] })) {
-    try {
-      await navigator.share({ files: [file], title: 'Annotazione', text: state.text.slice(0, 120) });
-      return;
-    } catch {}
+    try { await navigator.share({ files: [file], title: 'Annotazione', text: state.text.slice(0, 120) }); return; } catch {}
   }
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -2409,91 +2573,31 @@ async function shareOrExport() {
   URL.revokeObjectURL(url);
   toast('File esportato');
 }
-
 function buildExportHTML() {
   const annotated = renderAnnotated(state.text, state.spans, state.activeCats);
   const styles = `body{font-family:Georgia,serif;max-width:720px;margin:32px auto;padding:0 20px;line-height:1.8;font-size:1.08rem;color:#1b1815;background:#faf7f2}h1{font-size:1.1rem;font-family:system-ui;color:#8a8178;font-weight:600;margin-bottom:4px}.meta{font-family:system-ui;font-size:.78rem;color:#8a8178;margin-bottom:24px}mark{padding:1px 0;border-radius:3px;background:transparent;color:inherit}mark.c-num{background:#ffe680} mark.c-name{background:#d9b8ff}mark.c-key{background:#b6e6b6} mark.c-quote{background:#ffc1cf}mark.c-list{background:#a9d8ff} mark.c-def{background:#ffe0b6}mark.c-sentence{background:rgba(255,201,160,.45)}`;
   return `<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Annotazione</title><style>${styles}</style></head><body><h1>ANNOTT</h1><div class="meta">${new Date().toLocaleString('it-IT')}</div><div>${annotated}</div></body></html>`;
 }
-
 function exportPDF() {
   if (!state.text.trim()) { toast('Nulla da salvare'); return; }
   const annotated = renderAnnotated(state.text, state.spans, state.activeCats);
-  const pdfHTML = `<!doctype html>
-<html lang="it">
-<head>
-<meta charset="utf-8">
-<title>Annotazione · ${new Date().toLocaleDateString('it-IT')}</title>
-<style>
-  @page { size: A4; margin: 18mm 16mm; }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  body { font-family: Georgia, "Times New Roman", serif; color: #1b1815; background: #ffffff; font-size: 12pt; line-height: 1.7; }
-  .header { margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #d9d2c5; }
-  .header h1 { margin: 0 0 4px; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; font-size: 14pt; font-weight: 700; letter-spacing: -0.01em; color: #1b1815; }
-  .header .meta { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; font-size: 9pt; color: #8a8178; }
-  .content { text-align: justify; white-space: pre-wrap; word-wrap: break-word; hyphens: auto; -webkit-hyphens: auto; }
-  mark { padding: 1px 1px; border-radius: 2px; background: transparent; color: inherit; -webkit-print-color-adjust: exact; print-color-adjust: exact; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-  mark.c-num { background: #ffe680; } mark.c-name { background: #d9b8ff; } mark.c-key { background: #b6e6b6; }
-  mark.c-quote { background: #ffc1cf; } mark.c-list { background: #a9d8ff; } mark.c-def { background: #ffe0b6; }
-  mark.c-sentence { background: rgba(255, 201, 160, 0.45); }
-  .legend { margin-top: 24px; padding-top: 12px; border-top: 1px solid #d9d2c5; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; font-size: 8.5pt; color: #57534e; display: flex; flex-wrap: wrap; gap: 6px 14px; }
-  .legend .item { display: inline-flex; align-items: center; gap: 5px; }
-  .legend .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 1px solid rgba(0,0,0,0.1); }
-</style>
-</head>
-<body>
-  <div class="header">
-    <h1>ANNOTT · lettura strutturata</h1>
-    <div class="meta">${new Date().toLocaleString('it-IT')}</div>
-  </div>
-  <div class="content">${annotated}</div>
-  <div class="legend">
-    <span class="item"><span class="swatch" style="background:#ffe680"></span>Numeri</span>
-    <span class="item"><span class="swatch" style="background:#d9b8ff"></span>Nomi</span>
-    <span class="item"><span class="swatch" style="background:#b6e6b6"></span>Concetti</span>
-    <span class="item"><span class="swatch" style="background:#ffe0b6"></span>Definizioni</span>
-    <span class="item"><span class="swatch" style="background:#ffc1cf"></span>Citazioni</span>
-    <span class="item"><span class="swatch" style="background:#a9d8ff"></span>Elenchi</span>
-    <span class="item"><span class="swatch" style="background:rgba(255,201,160,0.45)"></span>Frasi</span>
-  </div>
-</body>
-</html>`;
+  const pdfHTML = `<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Annotazione</title><style>@page{size:A4;margin:18mm 16mm}*{box-sizing:border-box}html,body{margin:0;padding:0}body{font-family:Georgia,serif;color:#1b1815;background:#fff;font-size:12pt;line-height:1.7}.header{margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid #d9d2c5}.header h1{margin:0 0 4px;font-family:system-ui;font-size:14pt}.header .meta{font-family:system-ui;font-size:9pt;color:#8a8178}.content{text-align:justify;white-space:pre-wrap;word-wrap:break-word}mark{padding:1px 1px;border-radius:2px;background:transparent;color:inherit;-webkit-print-color-adjust:exact;print-color-adjust:exact;box-decoration-break:clone}mark.c-num{background:#ffe680}mark.c-name{background:#d9b8ff}mark.c-key{background:#b6e6b6}mark.c-quote{background:#ffc1cf}mark.c-list{background:#a9d8ff}mark.c-def{background:#ffe0b6}mark.c-sentence{background:rgba(255,201,160,.45)}</style></head><body><div class="header"><h1>ANNOTT · lettura strutturata</h1><div class="meta">${new Date().toLocaleString('it-IT')}</div></div><div class="content">${annotated}</div></body></html>`;
   const win = window.open('', '_blank');
   if (!win) {
     const iframe = document.createElement('iframe');
-    iframe.style.position = 'fixed';
-    iframe.style.right = '0';
-    iframe.style.bottom = '0';
-    iframe.style.width = '0';
-    iframe.style.height = '0';
-    iframe.style.border = '0';
+    iframe.style.position = 'fixed'; iframe.style.right = '0'; iframe.style.bottom = '0';
+    iframe.style.width = '0'; iframe.style.height = '0'; iframe.style.border = '0';
     document.body.appendChild(iframe);
-    iframe.contentDocument.open();
-    iframe.contentDocument.write(pdfHTML);
-    iframe.contentDocument.close();
+    iframe.contentDocument.open(); iframe.contentDocument.write(pdfHTML); iframe.contentDocument.close();
     setTimeout(() => {
-      try {
-        iframe.contentWindow.focus();
-        iframe.contentWindow.print();
-      } catch (e) { toast('Stampa non disponibile'); }
+      try { iframe.contentWindow.focus(); iframe.contentWindow.print(); } catch (e) { toast('Stampa non disponibile'); }
       setTimeout(() => { document.body.removeChild(iframe); }, 2000);
     }, 400);
     return;
   }
-  win.document.open();
-  win.document.write(pdfHTML);
-  win.document.close();
-  setTimeout(() => {
-    try {
-      win.focus();
-      win.print();
-    } catch (e) {
-      toast('Stampa non disponibile. Prova a condividere il file HTML.');
-    }
-  }, 500);
+  win.document.open(); win.document.write(pdfHTML); win.document.close();
+  setTimeout(() => { try { win.focus(); win.print(); } catch (e) { toast('Stampa non disponibile'); } }, 500);
 }
-
 function switchView(v) {
   state.view = v;
   document.querySelectorAll('.view').forEach(el => el.classList.toggle('active', el.id === 'view-' + v));
@@ -2502,7 +2606,6 @@ function switchView(v) {
   if (v === 'cards') renderCardsView();
   if (v === 'review') startReviewSession('doc');
 }
-
 function toggleSearch() {
   const bar = $('searchBar');
   if (state.controlsHidden) {
@@ -2515,14 +2618,12 @@ function toggleSearch() {
   if (on) setTimeout(() => $('searchInput').focus(), 80);
   else { $('searchInput').value = ''; clearSearchHits(); }
 }
-
 function updateReadProgress() {
   const el = $('scrollAnnotate');
   const max = el.scrollHeight - el.clientHeight;
   const p = max > 0 ? (el.scrollTop / max) * 100 : 0;
   $('readProgress').style.width = p + '%';
 }
-
 function renderModelList() {
   const box = $('modelList');
   box.innerHTML = '';
@@ -2534,7 +2635,6 @@ function renderModelList() {
     box.appendChild(el);
   }
 }
-
 function openModelPicker() {
   if (ai.loading) return;
   renderModelList();
@@ -2549,7 +2649,6 @@ function openModelPicker() {
   }
   openModal('modalAISetup');
 }
-
 function findTokenAt(text, pos) {
   const tokens = tokenize(text);
   for (const t of tokens) if (pos >= t.start && pos <= t.end) return t;
@@ -2561,7 +2660,6 @@ function findTokenAt(text, pos) {
   if (best && bestDist < 5) return best;
   return null;
 }
-
 function getClickPosition(outputEl, clientX, clientY) {
   let node = null, offset = 0;
   if (document.caretRangeFromPoint) {
@@ -2590,18 +2688,15 @@ function getClickPosition(outputEl, clientX, clientY) {
   }
   return -1;
 }
-
 function findExistingSpanForRange(start, end) {
   for (const s of state.spans) if (s.start === start && s.end === end) return { span: s, source: 'auto' };
   for (const s of state.manualAdds) if (s.start === start && s.end === end) return { span: s, source: 'manual' };
   return null;
 }
-
 function toggleTokenHighlight(token) {
   const cat = state.editCategory;
   const start = token.start, end = token.end;
   const existing = findExistingSpanForRange(start, end);
-
   if (existing && existing.span.cat === cat) {
     if (existing.source === 'auto') state.manualRemoves.push({ start, end, cat });
     else state.manualAdds = state.manualAdds.filter(s => !(s.start === start && s.end === end && s.cat === cat));
@@ -2617,7 +2712,6 @@ function toggleTokenHighlight(token) {
   vibrate(8);
   return 'added';
 }
-
 function onOutputClick(e) {
   if (!state.editMode) {
     const mark = e.target.closest('mark');
@@ -2704,15 +2798,13 @@ function bindEvents() {
     try {
       const t = await navigator.clipboard.readText();
       if (t) {
-        input.value = t;
-        state.text = t;
+        input.value = t; state.text = t;
         state.currentLibId = null;
         state.manualAdds = []; state.manualRemoves = [];
-        if (ai.ready) runAnalyze();
-        else runStatOnly();
+        if (ai.ready) runAnalyze(); else runStatOnly();
         vibrate(8);
       } else toast('Appunti vuoti');
-    } catch { toast('Incolla manualmente (tieni premuto nel campo)'); }
+    } catch { toast('Incolla manualmente'); }
   });
 
   $('btnClear').addEventListener('click', () => {
@@ -2733,7 +2825,6 @@ function bindEvents() {
 
   $('btnEdit').addEventListener('click', toggleEditMode);
   $('output').addEventListener('click', onOutputClick);
-
   $('btnSaveLib').addEventListener('click', saveToLibrary);
   $('btnSavePDF').addEventListener('click', exportPDF);
 
@@ -2794,10 +2885,10 @@ function bindEvents() {
 
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applySystemTheme);
 
-  /* --- Schede --- */
-  $('btnGenCards').addEventListener('click', () => {
-    if (!state.text.trim() || !state.spans.length) { toast('Analizza prima un testo'); return; }
-    openCardPreview(state.text, state.spans, state.lang);
+  $('btnGenCards').addEventListener('click', async () => {
+    if (!state.text.trim()) { toast('Incolla prima un testo'); return; }
+    if (!state.spans.length && !ai.ready) { toast('Analizza prima un testo'); return; }
+    await openCardPreview(state.text, state.spans, state.lang);
   });
   $('btnNewCard').addEventListener('click', () => {
     const manual = {
@@ -2807,9 +2898,7 @@ function bindEvents() {
       docTitle: docTitle(state.text),
       sourceCat: 'key',
       type: 'manual',
-      front: '',
-      back: '',
-      distractors: [],
+      front: '', back: '', distractors: [],
       createdAt: Date.now()
     };
     openCardEditor(manual, true);
@@ -2840,14 +2929,12 @@ function bindEvents() {
     const { card, isNew } = cardEditCtx;
     const f = $('cardEditFront').value.trim();
     const b = $('cardEditBack').value.trim();
-    if (!f || !b) { toast('Fronte e risposta sono obbligatori'); return; }
+    if (!f || !b) { toast('Domanda e risposta sono obbligatorie'); return; }
+    const ds = [$('cardEditD1').value, $('cardEditD2').value, $('cardEditD3').value]
+      .map(s => s.trim()).filter(s => s && s !== b);
     card.front = f;
     card.back = b;
-    if (card.type === 'manual') {
-      const ds = [$('cardEditD1').value, $('cardEditD2').value, $('cardEditD3').value]
-        .map(s => s.trim()).filter(s => s && s !== b);
-      card.distractors = ds;
-    }
+    card.distractors = ds.slice(0, 3);
     card.contentId = cardContentId(card.type || 'manual', f, b);
     if (isNew) {
       card.docKey = docKey(state.text);
@@ -2860,7 +2947,7 @@ function bindEvents() {
     saveCards();
     closeModal('modalCardEdit');
     renderCardsView();
-    toast(isNew ? 'Scheda creata' : 'Scheda aggiornata');
+    toast(isNew ? 'Domanda creata' : 'Domanda aggiornata');
   });
   $('btnDeleteCard').addEventListener('click', () => {
     if (!cardEditCtx) return;
@@ -2904,7 +2991,6 @@ function runStatOnly() {
 
 function init() {
   applySystemTheme();
-
   let restored = false;
   try {
     const s = JSON.parse(localStorage.getItem(SES_KEY) || 'null');
