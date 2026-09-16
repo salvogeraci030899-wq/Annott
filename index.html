@@ -39,9 +39,34 @@ button,input,textarea{font-family:inherit;font-size:inherit;color:inherit}
 button{cursor:pointer;border:none;background:none;padding:0}
 .app{display:flex;flex-direction:column;height:100dvh;padding-top:env(safe-area-inset-top)}
 .topbar{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:1px solid var(--border);flex:0 0 auto}
-.brand-title{font-weight:800;font-size:1.02rem;letter-spacing:-.01em}
-.brand-title span{display:inline-block;padding:1px 3px;border-radius:3px;margin-right:1px;color:var(--ink)}
-.brand-title .space{display:inline-block;width:.35em}
+
+/* ============================================================
+   ANIMATED BRAND TITLE — each letter cycles through colors
+   ============================================================ */
+.brand-title{font-weight:800;font-size:1.02rem;letter-spacing:-.01em;display:inline-flex;align-items:center}
+.brand-title span.letter{
+  display:inline-block;
+  padding:1px 3px;
+  border-radius:3px;
+  margin-right:1px;
+  color:var(--ink);
+  animation:brandColorCycle 6s linear infinite;
+}
+.brand-title span.space{display:inline-block;width:.35em}
+@keyframes brandColorCycle{
+  0%{background-color:var(--c-number)}
+  14%{background-color:var(--c-name)}
+  28%{background-color:var(--c-concept)}
+  42%{background-color:var(--c-quote)}
+  57%{background-color:var(--c-list)}
+  71%{background-color:var(--c-definition)}
+  85%{background-color:var(--c-sentence)}
+  100%{background-color:var(--c-number)}
+}
+@media (prefers-reduced-motion: reduce){
+  .brand-title span.letter{animation:none;background-color:var(--c-number)}
+}
+
 .iconbtn{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;color:var(--ink-3);transition:color .2s}
 .iconbtn:active{background:var(--surface-3)}
 .iconbtn svg{width:20px;height:20px}
@@ -61,6 +86,8 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .tbtn.on{background:var(--ai-soft);color:var(--ai);border-color:color-mix(in srgb,var(--ai) 30%,transparent)}
 .tbtn svg{width:15px;height:15px}
 .tbtn.danger{color:var(--danger)}
+.tbtn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink);font-weight:600}
+.tbtn.primary:active{background:var(--ink)}
 .cats-row{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none}
 .cats-row::-webkit-scrollbar{display:none}
 .cat-pill{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;padding:5px 9px 5px 7px;border-radius:999px;font-size:.7rem;font-weight:600;background:var(--surface);border:1px solid var(--border);color:var(--ink-2);white-space:nowrap;line-height:1}
@@ -93,14 +120,18 @@ mark.has-note{box-shadow:inset 0 -3px 0 0 var(--ai)}
 .badge.tpl{background:var(--ok-soft);color:var(--ok)}
 .badge.due{background:var(--danger);color:#fff}
 .badge.sched{background:var(--surface-3);color:var(--ink-2)}
+.badge.new{background:var(--accent-soft);color:var(--accent)}
 .card-item{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px}
 .card-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
 .card-front{font-weight:600;margin-bottom:8px;font-size:.95rem;white-space:pre-wrap;line-height:1.5}
 .card-back{color:var(--accent);font-size:.92rem;font-family:Georgia,serif;white-space:pre-wrap;margin-bottom:10px}
-.distr-line{font-size:.78rem;color:var(--ink-3);margin-top:6px;line-height:1.5}
-.distr-line strong{color:var(--ink-2)}
+.card-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.card-actions .tbtn{font-size:.75rem;padding:6px 10px}
 #card-preview-list{display:flex;flex-direction:column;gap:10px;max-height:50dvh;overflow-y:auto}
 #all-questions-list{display:flex;flex-direction:column;gap:10px}
+.section-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);margin:20px 0 10px;display:flex;align-items:center;justify-content:space-between}
+.section-title:first-child{margin-top:0}
+.section-title button{font-size:.72rem;color:var(--ai);font-weight:600;text-transform:none;letter-spacing:0}
 .review-progress{text-align:center;font-size:.82rem;color:var(--ink-3);margin-bottom:14px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
 .review-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:14px}
 .review-front{font-size:1.06rem;line-height:1.7;font-family:Georgia,serif;white-space:pre-wrap}
@@ -145,8 +176,9 @@ mark.has-note{box-shadow:inset 0 -3px 0 0 var(--ai)}
 .modal{background:var(--surface);border-radius:20px 20px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom));width:100%;max-width:560px;max-height:85dvh;overflow-y:auto}
 .modal h3{margin:0 0 8px;font-size:1.05rem}
 .modal p{margin:0 0 14px;color:var(--ink-2);font-size:.9rem;line-height:1.5}
+.modal label{display:block;font-size:.72rem;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
 .modal input,.modal textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--border-2);background:var(--surface-2);font-size:16px;outline:none;margin-bottom:12px;font-family:inherit}
-.modal textarea{min-height:100px;resize:vertical;line-height:1.5}
+.modal textarea{min-height:70px;resize:vertical;line-height:1.5}
 .row-actions{display:flex;gap:8px;margin-top:12px}
 .btn{flex:1;padding:12px 16px;border-radius:11px;font-weight:600;font-size:.92rem;text-align:center}
 .btn.primary{background:var(--ink);color:var(--bg)}
@@ -174,7 +206,6 @@ mark.has-note{box-shadow:inset 0 -3px 0 0 var(--ai)}
 .stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px}
 .stat .k{font-size:.6rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em;font-weight:700}
 .stat .v{font-size:1rem;font-weight:700;margin-top:2px}
-.section-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);margin:20px 0 10px}
 #error-banner{position:fixed;top:0;left:0;right:0;background:#c0392b;color:#fff;padding:10px;font-family:monospace;font-size:12px;z-index:9999;white-space:pre-wrap;max-height:40vh;overflow:auto;display:none}
 </style>
 </head>
@@ -311,6 +342,24 @@ mark.has-note{box-shadow:inset 0 -3px 0 0 var(--ai)}
   </div>
 </div>
 
+<div class="modal-bg" id="modal-card-edit">
+  <div class="modal">
+    <h3 id="card-edit-title">Edit question</h3>
+    <label>Question</label>
+    <textarea id="card-edit-front" placeholder="The question…"></textarea>
+    <label>Correct answer</label>
+    <input id="card-edit-back" placeholder="The correct answer" autocomplete="off">
+    <label>Wrong answers (3)</label>
+    <input id="card-edit-d1" placeholder="Wrong answer 1" autocomplete="off">
+    <input id="card-edit-d2" placeholder="Wrong answer 2" autocomplete="off">
+    <input id="card-edit-d3" placeholder="Wrong answer 3" autocomplete="off">
+    <div class="row-actions">
+      <button class="btn ghost" id="btn-cancel-card-edit">Cancel</button>
+      <button class="btn primary" id="btn-save-card-edit">Save</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-bg" id="modal-ai-setup">
   <div class="modal">
     <h3>Local AI model</h3>
@@ -415,7 +464,7 @@ var CATEGORIES = [
 var CATEGORY_PRIORITY = { quote:10, num:9, def:8, list:7, name:6, key:5, sentence:4 };
 
 // ============================================================
-// SAMPLE TEXTS — diverse short samples in different domains
+// SAMPLE TEXTS
 // ============================================================
 var SAMPLE_TEXTS = [
   {
@@ -441,7 +490,7 @@ var SAMPLE_TEXTS = [
 ];
 
 // ============================================================
-// DICTIONARY (enhancement layer)
+// DICTIONARY
 // ============================================================
 var DICTIONARY = {
   commonYears: [1492,1517,1648,1776,1789,1815,1848,1861,1870,1914,1918,1922,1929,1933,1939,1943,1945,1946,1947,1948,1957,1962,1968,1969,1978,1989,1991,1992,2001,2008,2020],
@@ -530,8 +579,8 @@ function fsrsInterval(stability){
 // ============================================================
 // STORE
 // ============================================================
-var STORAGE_KEY = 'highlight-ai.v120.data';
-var DATA = { version:120, docs:{}, highlights:{}, cards:{}, review:{}, activeDocId:null, settings:{ activeCategories:[], editMode:false } };
+var STORAGE_KEY = 'highlight-ai.v130.data';
+var DATA = { version:130, docs:{}, highlights:{}, cards:{}, review:{}, activeDocId:null, settings:{ activeCategories:[], editMode:false } };
 
 function loadData(){
   try {
@@ -621,6 +670,13 @@ function addCard(card){
   DATA.cards[card.id] = card;
   saveData();
   return card;
+}
+
+function updateCard(id, changes){
+  var c = DATA.cards[id];
+  if (!c) return;
+  for (var k in changes) c[k] = changes[k];
+  saveData();
 }
 
 function removeCard(id){
@@ -899,7 +955,7 @@ function renderLegend(){
 }
 
 // ============================================================
-// EDIT PANEL — fixed color palette at bottom
+// EDIT PANEL
 // ============================================================
 function buildEditPanel(){
   var inner = $('edit-panel-inner');
@@ -916,9 +972,7 @@ function buildEditPanel(){
     button.innerHTML = '<span class="dot" style="background:var(' + cssVar + ')"></span>';
     button.title = category.label;
     (function(catId){
-      button.addEventListener('click', function(){
-        applyColorToSelection(catId);
-      });
+      button.addEventListener('click', function(){ applyColorToSelection(catId); });
     })(category.id);
     inner.appendChild(button);
   }
@@ -948,7 +1002,6 @@ function applyColorToSelection(categoryId){
   if (window.getSelection) window.getSelection().removeAllRanges();
 }
 
-/** Compute the offset of the current selection in the output text */
 function currentSelectionOffset(){
   var sel = window.getSelection();
   if (!sel || sel.rangeCount === 0 || sel.isCollapsed) return null;
@@ -968,13 +1021,12 @@ function currentSelectionOffset(){
 }
 
 // ============================================================
-// SELECTION BAR (floating, shown when text is selected)
+// SELECTION BAR
 // ============================================================
 function initSelection(){
   document.addEventListener('selectionchange', function(){
     var active = document.activeElement;
     if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;
-    // If edit panel is open, don't show the floating bar
     if ($('edit-panel').classList.contains('show')){
       $('selection-bar').classList.remove('show');
       return;
@@ -1083,7 +1135,7 @@ function openNoteModal(highlight){
 }
 
 // ============================================================
-// QUESTION GENERATION (improved)
+// QUESTION GENERATION
 // ============================================================
 function hashQuestion(string){
   var hash = 5381;
@@ -1111,38 +1163,26 @@ function classifyEntity(surface){
   return 'unknown';
 }
 
-/**
- * Build a question from an entity. Improved with more template
- * variations and better quality filtering.
- */
 function buildUniversalQuestion(type, entity, sentence, language){
   var index = sentence.toLowerCase().indexOf(entity.toLowerCase());
   if (index < 0) return null;
   var before = sentence.slice(0, index).replace(/^[«"'(\[]\s*/, '').trim();
   var after = sentence.slice(index + entity.length).replace(/[.,;:!?]+$/, '').trim();
   var isItalian = language === 'it';
-  // Clean leading conjunctions/articles from before
   var beforeClean = before.replace(/^(and|but|or|so|e|ma|o|però|che|dove|quando)\s+/i, '').trim();
-  // Remove trailing prepositions
   beforeClean = beforeClean.replace(/\s+(of|in|on|at|for|to|by|with|della|del|di|al|nel)\s*$/i, '').trim();
 
-  // ----- DATES AND YEARS -----
   if (type === 'date' || type === 'year'){
-    // Prefer: "When did X happen?"
     if (beforeClean.length > 8 && beforeClean.length < 120){
-      // Skip if the before text contains question words (would create weird question)
       if (!/\b(when|quando|what|cosa|which|quale)\b/i.test(beforeClean)){
         return isItalian ? 'Quando ' + beforeClean.toLowerCase() + '?' : 'When did ' + beforeClean.toLowerCase() + ' happen?';
       }
     }
-    // Fallback: use after
     if (after.length > 8 && after.length < 120){
       return isItalian ? 'In quale anno: ' + after + '?' : 'In which year: ' + after + '?';
     }
     return null;
   }
-
-  // ----- PERCENTAGES -----
   if (type === 'percentage'){
     if (beforeClean.length > 8 && beforeClean.length < 120){
       if (!/\b(what|which|how|quanto|quale)\b/i.test(beforeClean)){
@@ -1151,8 +1191,6 @@ function buildUniversalQuestion(type, entity, sentence, language){
     }
     return null;
   }
-
-  // ----- NUMBERS -----
   if (type === 'number'){
     if (beforeClean.length > 8 && beforeClean.length < 120){
       if (!/\b(what|which|how|quanto|quale|quanti|quante)\b/i.test(beforeClean)){
@@ -1161,13 +1199,10 @@ function buildUniversalQuestion(type, entity, sentence, language){
     }
     return null;
   }
-
-  // Person, organization, treaty → cloze is safer
   return null;
 }
 
 function buildUniversalDistractors(type, correct, doc, count){
-  // STRATEGY 1: Perturbation
   if (type === 'year'){
     var year = parseInt(correct, 10);
     if (!isNaN(year)){
@@ -1209,7 +1244,6 @@ function buildUniversalDistractors(type, correct, doc, count){
       if (numberCandidates.length >= count) return shuffle(numberCandidates).slice(0, count);
     }
   }
-  // STRATEGY 2: Dictionary
   if (type === 'person' && DICT_SETS.usPresidents[correct.toLowerCase()]){
     var usPool = shuffle(DICTIONARY.usPresidents.filter(function(n){ return n.toLowerCase() !== correct.toLowerCase(); })).slice(0, count);
     if (usPool.length >= count) return usPool;
@@ -1226,7 +1260,6 @@ function buildUniversalDistractors(type, correct, doc, count){
     var treatyPool = shuffle(DICTIONARY.treaties.filter(function(n){ return n.toLowerCase() !== correct.toLowerCase(); })).slice(0, count);
     if (treatyPool.length >= count) return treatyPool;
   }
-  // STRATEGY 3: Text itself
   var candidates = [];
   if (type === 'person' || type === 'organization' || type === 'treaty'){
     var properNouns = findProperNouns(doc.text);
@@ -1316,7 +1349,7 @@ var AI_MODELS = {
 
 var aiState = {
   engine:null, loading:false, ready:false, failed:false,
-  modelKey: localStorage.getItem('highlight-ai.v120.model') || 'qwen15'
+  modelKey: localStorage.getItem('highlight-ai.v130.model') || 'qwen15'
 };
 
 function hasWebGPU(){ return typeof navigator !== 'undefined' && !!navigator.gpu; }
@@ -1359,7 +1392,7 @@ function loadAIModel(key){
   var model = AI_MODELS[key];
   if (!model) return Promise.resolve(false);
   aiState.loading = true; aiState.failed = false;
-  localStorage.setItem('highlight-ai.v120.model', key);
+  localStorage.setItem('highlight-ai.v130.model', key);
   mainAIStatus('loading', 'Downloading ' + model.label + '…', 0);
   modalAIStatus('loading', 'Downloading ' + model.label + '…', 0);
   return import(/* @vite-ignore */ AI_CDN_URL).then(function(webllm){
@@ -1554,7 +1587,6 @@ function validateProposal(proposal){
   }
   if (/all of the above|none of the above/i.test(correct)) return false;
   if (/^(what is|who was|tell me about|cos'è|cosa sono|chi era|chi erano)/i.test(question)) return false;
-  // Reject questions with placeholder-like content
   if (/\b____\s*$/.test(question)) return false;
   return true;
 }
@@ -1611,6 +1643,12 @@ function showPreview(proposals, templateCount){
   $('modal-card-preview').classList.add('open');
 }
 
+/**
+ * Preview renderer.
+ * IMPORTANT: shows ONLY the question, no distractors, no answer.
+ * This is intentional — the user reviews the question quality
+ * without being influenced by the correct answer.
+ */
 function renderPreview(){
   var box = $('card-preview-list');
   box.innerHTML = '';
@@ -1628,8 +1666,7 @@ function renderPreview(){
           '<input type="checkbox" data-idx="' + i + '" ' + (p.alreadyExists ? 'disabled' : 'checked') + ' style="width:18px;height:18px;accent-color:var(--ai)">' +
         '</label>' +
       '</div>' +
-      '<div class="card-front">' + escapeHtml(p.front) + '</div>' +
-      '<div class="distr-line"><strong>Suggested answers:</strong> ' + p.distractors.map(escapeHtml).join(' · ') + '</div>';
+      '<div class="card-front">' + escapeHtml(p.front) + '</div>';
     box.appendChild(element);
   }
 }
@@ -1745,20 +1782,19 @@ function buildMCQ(card){
   return { options:options, correctIndex:options.indexOf(correct) };
 }
 
-/** Show the review tab: overview + all-questions list */
+/**
+ * Review overview — the main Review tab.
+ * Always shows a Start button (even after session completion).
+ */
 function renderReviewOverview(){
   var doc = getActiveDocument();
   var box = $('review-content');
   var due = cardsDue(doc ? doc.id : null).filter(function(c){ return buildMCQ(c); });
   var all = doc ? cardsForDocument(doc.id) : allCards();
-  var scheduled = all.filter(function(c){
-    var r = DATA.review[c.id];
-    return r && r.due && r.due > Date.now();
-  });
 
   var html = '';
 
-  // Top section: review session or empty state
+  // ---- Top section: Start review ----
   html += '<div class="section-title">Review session</div>';
   if (due.length > 0){
     html += '<div class="card-item" style="display:flex;align-items:center;gap:12px;padding:16px">' +
@@ -1766,20 +1802,32 @@ function renderReviewOverview(){
         '<div style="font-weight:700;font-size:1rem">' + due.length + ' card' + (due.length===1?'':'s') + ' due</div>' +
         '<div style="font-size:.82rem;color:var(--ink-3);margin-top:2px">Ready to practice</div>' +
       '</div>' +
-      '<button class="tbtn on" id="btn-start-session" style="flex:0 0 auto;padding:10px 18px">Start</button>' +
+      '<button class="tbtn primary" id="btn-start-session" style="flex:0 0 auto;padding:10px 18px">Start</button>' +
+    '</div>';
+  } else if (all.length > 0){
+    html += '<div class="card-item" style="display:flex;align-items:center;gap:12px;padding:16px">' +
+      '<div style="flex:1">' +
+        '<div style="font-weight:600;color:var(--ink-2)">All caught up</div>' +
+        '<div style="font-size:.82rem;color:var(--ink-3);margin-top:2px">No cards due · ' + all.length + ' total</div>' +
+      '</div>' +
+      '<button class="tbtn" id="btn-start-anyway" style="flex:0 0 auto;padding:10px 18px">Practice anyway</button>' +
     '</div>';
   } else {
     html += '<div class="card-item" style="text-align:center;padding:24px">' +
-      '<div style="font-weight:600;color:var(--ink-2);margin-bottom:4px">All caught up</div>' +
-      '<div style="font-size:.85rem;color:var(--ink-3)">No cards due right now</div>' +
+      '<div style="font-weight:600;color:var(--ink-2);margin-bottom:4px">No questions yet</div>' +
+      '<div style="font-size:.85rem;color:var(--ink-3)">Generate some from the Text tab first</div>' +
     '</div>';
   }
 
-  // Bottom section: all questions
-  html += '<div class="section-title">All questions (' + all.length + ')</div>';
+  // ---- Bottom section: All questions ----
+  html += '<div class="section-title">' +
+    '<span>All questions (' + all.length + ')</span>' +
+    '<button id="btn-new-question">+ New question</button>' +
+  '</div>';
+
   if (!all.length){
     html += '<div class="empty" style="padding:40px 24px"><div class="title">No questions yet</div>' +
-      '<div class="sub">Highlight some text and tap "Questions" to create them.</div></div>';
+      '<div class="sub">Highlight some text and tap "Questions", or create one manually.</div></div>';
   } else {
     html += '<div id="all-questions-list"></div>';
   }
@@ -1787,9 +1835,13 @@ function renderReviewOverview(){
   box.innerHTML = html;
 
   var startBtn = $('btn-start-session');
-  if (startBtn){
-    startBtn.addEventListener('click', function(){ startReviewSession(); });
-  }
+  if (startBtn) startBtn.addEventListener('click', function(){ startReviewSession(due); });
+
+  var startAnywayBtn = $('btn-start-anyway');
+  if (startAnywayBtn) startAnywayBtn.addEventListener('click', function(){ startReviewSession(all); });
+
+  var newBtn = $('btn-new-question');
+  if (newBtn) newBtn.addEventListener('click', function(){ openCardEditor(null); });
 
   // Render the all-questions list
   if (all.length){
@@ -1805,68 +1857,68 @@ function renderReviewOverview(){
           '</div>' +
           '<div class="card-front">' + escapeHtml(card.front) + '</div>' +
           '<div class="card-back">' + escapeHtml(card.back) + '</div>' +
-          '<div class="card-actions" style="margin-top:8px">' +
+          '<div class="card-actions">' +
             '<button class="tbtn btn-review-single" data-id="' + card.id + '">Review now</button>' +
-            '<button class="tbtn btn-delete-card" data-id="' + card.id + '" style="color:var(--danger);margin-left:auto">Delete</button>' +
+            '<button class="tbtn btn-edit-card" data-id="' + card.id + '">Edit</button>' +
+            '<button class="tbtn danger btn-delete-card" data-id="' + card.id + '" style="margin-left:auto">Delete</button>' +
           '</div>';
         listBox.appendChild(element);
       })(all[i]);
     }
 
-    // Wire up the review-single and delete buttons
     var reviewBtns = listBox.querySelectorAll('.btn-review-single');
     for (var j = 0; j < reviewBtns.length; j++){
       (function(btn){
         btn.addEventListener('click', function(){
-          var cardId = btn.dataset.id;
-          var card = DATA.cards[cardId];
+          var card = DATA.cards[btn.dataset.id];
           if (!card) return;
-          startSingleCardReview(card);
+          startReviewSession([card]);
         });
       })(reviewBtns[j]);
     }
-    var deleteBtns = listBox.querySelectorAll('.btn-delete-card');
-    for (var k = 0; k < deleteBtns.length; k++){
+    var editBtns = listBox.querySelectorAll('.btn-edit-card');
+    for (var k = 0; k < editBtns.length; k++){
       (function(btn){
         btn.addEventListener('click', function(){
-          var cardId = btn.dataset.id;
-          removeCard(cardId);
+          var card = DATA.cards[btn.dataset.id];
+          if (!card) return;
+          openCardEditor(card);
+        });
+      })(editBtns[k]);
+    }
+    var deleteBtns = listBox.querySelectorAll('.btn-delete-card');
+    for (var l = 0; l < deleteBtns.length; l++){
+      (function(btn){
+        btn.addEventListener('click', function(){
+          removeCard(btn.dataset.id);
           updateReviewBadge();
           renderReviewOverview();
         });
-      })(deleteBtns[k]);
+      })(deleteBtns[l]);
     }
   }
 }
 
 function cardStatus(card){
   var r = DATA.review[card.id];
-  if (!r) return { label:'New', cls:'tpl' };
+  if (!r) return { label:'New', cls:'new' };
   if (r.due && r.due <= Date.now()) return { label:'Due', cls:'due' };
   var days = Math.max(1, Math.ceil((r.due - Date.now()) / 86400000));
   return { label:'in ' + days + 'd', cls:'sched' };
 }
 
-function startReviewSession(){
-  var doc = getActiveDocument();
-  var due = cardsDue(doc ? doc.id : null).filter(function(c){ return buildMCQ(c); });
-  if (!due.length){ showToast('No cards due'); return; }
-  due.sort(function(){ return Math.random() - 0.5; });
-  reviewState.queue = due.slice();
+function startReviewSession(cards){
+  if (!cards || !cards.length){ showToast('No cards to review'); return; }
+  // Filter only valid cards
+  var valid = cards.filter(function(c){ return buildMCQ(c); });
+  if (!valid.length){ showToast('No valid cards'); return; }
+  valid.sort(function(){ return Math.random() - 0.5; });
+  reviewState.queue = valid.slice();
   reviewState.idx = 0;
   reviewState.done = 0;
   reviewState.correct = 0;
   reviewState.forIdx = -1;
-  reviewState.active = true;
-  renderReviewCard();
-}
-
-function startSingleCardReview(card){
-  reviewState.queue = [card];
-  reviewState.idx = 0;
-  reviewState.done = 0;
-  reviewState.correct = 0;
-  reviewState.forIdx = -1;
+  reviewState.selected = -1;
   reviewState.active = true;
   renderReviewCard();
 }
@@ -1880,10 +1932,23 @@ function renderReviewCard(){
       '<div class="empty">' +
         '<div class="title">Session complete</div>' +
         '<div class="sub">' + reviewState.done + ' questions · ' + reviewState.correct + ' correct (' + accuracy + '%)</div>' +
-        '<div class="row-actions" style="justify-content:center;margin-top:20px">' +
-          '<button class="btn primary" id="btn-back-overview" style="max-width:200px">Back to all questions</button>' +
+        '<div class="row-actions" style="justify-content:center;margin-top:20px;flex-wrap:wrap;gap:8px">' +
+          '<button class="btn ghost" id="btn-restart-session" style="max-width:200px">Practice again</button>' +
+          '<button class="btn primary" id="btn-back-overview" style="max-width:200px">All questions</button>' +
         '</div>' +
       '</div>';
+    var restartBtn = $('btn-restart-session');
+    if (restartBtn) restartBtn.addEventListener('click', function(){
+      // Reset and reuse the same queue
+      reviewState.idx = 0;
+      reviewState.done = 0;
+      reviewState.correct = 0;
+      reviewState.forIdx = -1;
+      reviewState.selected = -1;
+      reviewState.queue = shuffle(reviewState.queue.slice());
+      reviewState.active = true;
+      renderReviewCard();
+    });
     var backBtn = $('btn-back-overview');
     if (backBtn) backBtn.addEventListener('click', function(){ renderReviewOverview(); });
     updateReviewBadge();
@@ -1951,7 +2016,10 @@ function renderReviewCard(){
     }
   } else {
     var btnContinue = $('btn-continue');
-    if (btnContinue) btnContinue.addEventListener('click', function(){ reviewState.idx++; renderReviewCard(); });
+    if (btnContinue) btnContinue.addEventListener('click', function(){
+      reviewState.idx++;
+      renderReviewCard();
+    });
   }
 }
 
@@ -1963,8 +2031,69 @@ function updateReviewBadge(){
 }
 
 // ============================================================
+// CARD EDITOR (create / edit)
+// ============================================================
+var cardBeingEdited = null;
+var isCreatingCard = false;
+
+function openCardEditor(card){
+  isCreatingCard = !card;
+  cardBeingEdited = card || {
+    front: '', back: '', distractors: ['', '', ''], type: 'manual',
+    docId: DATA.activeDocId, highlightId: null, sourceCat: 'key', origin: 'manual',
+    contentId: 'manual-' + generateId()
+  };
+  $('card-edit-title').textContent = isCreatingCard ? 'New question' : 'Edit question';
+  $('card-edit-front').value = cardBeingEdited.front || '';
+  $('card-edit-back').value = cardBeingEdited.back || '';
+  var ds = cardBeingEdited.distractors || ['', '', ''];
+  $('card-edit-d1').value = ds[0] || '';
+  $('card-edit-d2').value = ds[1] || '';
+  $('card-edit-d3').value = ds[2] || '';
+  $('modal-card-edit').classList.add('open');
+  setTimeout(function(){ $('card-edit-front').focus(); }, 100);
+}
+
+function saveCardEditor(){
+  var front = $('card-edit-front').value.trim();
+  var back = $('card-edit-back').value.trim();
+  var d1 = $('card-edit-d1').value.trim();
+  var d2 = $('card-edit-d2').value.trim();
+  var d3 = $('card-edit-d3').value.trim();
+  if (!front || !back) { showToast('Question and answer are required'); return; }
+  var distractors = [d1, d2, d3].filter(function(x){ return x && x !== back; });
+  if (distractors.length < 3) { showToast('Need 3 wrong answers'); return; }
+
+  if (isCreatingCard){
+    addCard({
+      docId: cardBeingEdited.docId,
+      highlightId: cardBeingEdited.highlightId,
+      contentId: cardBeingEdited.contentId,
+      type: 'manual',
+      front: front, back: back,
+      distractors: distractors.slice(0, 3),
+      sourceCat: 'key',
+      origin: 'manual'
+    });
+    showToast('Question created');
+  } else {
+    updateCard(cardBeingEdited.id, { front: front, back: back, distractors: distractors.slice(0, 3) });
+    showToast('Question updated');
+  }
+  $('modal-card-edit').classList.remove('open');
+  updateReviewBadge();
+  redraw();
+  if (currentViewIs('review')) renderReviewOverview();
+}
+
+// ============================================================
 // VIEWS
 // ============================================================
+function currentViewIs(name){
+  var view = document.querySelector('.view.active');
+  return view && view.id === 'view-' + name;
+}
+
 function switchView(name){
   var views = document.querySelectorAll('.view');
   for (var i = 0; i < views.length; i++) views[i].classList.toggle('active', views[i].id === 'view-' + name);
@@ -1978,14 +2107,13 @@ function switchView(name){
 }
 
 // ============================================================
-// TITLE AND THEME
+// TITLE (animated letter-by-letter)
 // ============================================================
 function buildTitle(){
   var element = $('brand-title');
   var text = 'HIGHLIGHT AI';
-  var colorClasses = ['num','name','key','quote','list','def'];
   element.innerHTML = '';
-  var colorIndex = 0;
+  var letterIndex = 0;
   for (var i = 0; i < text.length; i++){
     var character = text[i];
     if (character === ' '){
@@ -1994,12 +2122,12 @@ function buildTitle(){
       element.appendChild(space);
     } else {
       var span = document.createElement('span');
-      var colorName = colorClasses[colorIndex % colorClasses.length];
-      var cssVar = '--c-' + colorName.replace('num','number').replace('name','name').replace('key','concept').replace('def','definition').replace('quote','quote').replace('list','list');
-      span.style.background = 'var(' + cssVar + ')';
+      span.className = 'letter';
       span.textContent = character;
+      // Stagger the animation so colors flow as a wave across letters
+      span.style.animationDelay = (-letterIndex * 0.3) + 's';
       element.appendChild(span);
-      colorIndex++;
+      letterIndex++;
     }
   }
 }
@@ -2051,7 +2179,7 @@ function renderModelList(){
       element.addEventListener('click', function(){
         if (aiState.loading) return;
         aiState.modelKey = k;
-        localStorage.setItem('highlight-ai.v120.model', k);
+        localStorage.setItem('highlight-ai.v130.model', k);
         renderModelList();
         vibrate(4);
       });
@@ -2060,7 +2188,6 @@ function renderModelList(){
   }
 }
 
-// Debounced auto-analysis: analyze 200ms after last input
 var autoAnalysisTimer = null;
 function scheduleAutoAnalysis(delay){
   clearTimeout(autoAnalysisTimer);
@@ -2089,20 +2216,12 @@ function bindEvents(){
     })(tabs[i]);
   }
 
-  // Input: schedule auto-analysis on every keystroke
-  $('input').addEventListener('input', function(){
-    scheduleAutoAnalysis(200);
-  });
+  $('input').addEventListener('input', function(){ scheduleAutoAnalysis(200); });
 
-  // Edit: toggle the fixed color panel
-  $('btn-edit').addEventListener('click', function(){
-    toggleEditPanel();
-  });
+  $('btn-edit').addEventListener('click', function(){ toggleEditPanel(); });
 
-  // Questions
   $('btn-generate-cards').addEventListener('click', openCardPreview);
 
-  // Save
   $('btn-save').addEventListener('click', function(){
     var doc = getActiveDocument();
     if (!doc){ showToast('No text'); return; }
@@ -2121,7 +2240,6 @@ function bindEvents(){
     showToast('Saved');
   });
 
-  // New
   $('btn-new').addEventListener('click', function(){
     var sample = SAMPLE_TEXTS[Math.floor(Math.random() * SAMPLE_TEXTS.length)];
     createDocument(sample.text, sample.title);
@@ -2133,7 +2251,6 @@ function bindEvents(){
     showToast('New document');
   });
 
-  // Clear
   $('btn-clear').addEventListener('click', function(){
     var doc = getActiveDocument();
     if (!doc) return;
@@ -2154,7 +2271,6 @@ function bindEvents(){
   });
   $('btn-cancel-confirm').addEventListener('click', function(){ $('modal-confirm').classList.remove('open'); });
 
-  // Notes
   $('btn-save-note').addEventListener('click', function(){
     if (!highlightInNote) return;
     updateHighlight(highlightInNote.id, { note: $('note-text').value.trim() });
@@ -2170,9 +2286,12 @@ function bindEvents(){
     showToast('Removed');
   });
 
-  // Card preview
   $('btn-cancel-cards').addEventListener('click', function(){ $('modal-card-preview').classList.remove('open'); });
   $('btn-confirm-cards').addEventListener('click', confirmCardAdd);
+
+  // Card editor
+  $('btn-cancel-card-edit').addEventListener('click', function(){ $('modal-card-edit').classList.remove('open'); });
+  $('btn-save-card-edit').addEventListener('click', saveCardEditor);
 
   // AI modal
   $('btn-ai-status').addEventListener('click', function(){
@@ -2185,10 +2304,8 @@ function bindEvents(){
   $('btn-unload-ai').addEventListener('click', unloadAIModel);
   $('btn-close-ai-ready').addEventListener('click', function(){ $('modal-ai-setup').classList.remove('open'); });
 
-  // Library search
   $('library-search').addEventListener('input', function(e){ renderLibrary(e.target.value); });
 
-  // Output click: open note on mark
   var output = $('output');
   output.addEventListener('click', function(e){
     var target = e.target;
@@ -2202,7 +2319,6 @@ function bindEvents(){
     }
   });
 
-  // Close modals on backdrop
   var modals = document.querySelectorAll('.modal-bg');
   for (var m = 0; m < modals.length; m++){
     (function(modal){
@@ -2225,7 +2341,6 @@ function initialize(){
     updateAIIcon();
     updateAIModalButtons();
 
-    // Restore edit panel state
     if (DATA.settings.editMode) toggleEditPanel(true);
 
     var doc = getActiveDocument();
