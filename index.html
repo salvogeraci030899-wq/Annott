@@ -11,28 +11,22 @@
 <style>
 /* ============================================================
    CSS VARIABLES
-   Change these to modify the global look of the app.
-   Light theme is default; dark theme overrides below.
    ============================================================ */
 :root {
   color-scheme: light;
 
-  /* Backgrounds */
   --bg: #f6f3ee;
   --surface: #ffffff;
   --surface-2: #fbf9f5;
   --surface-3: #f1ede6;
 
-  /* Text colors */
   --ink: #1b1815;
   --ink-2: #57534e;
   --ink-3: #a8a29e;
 
-  /* Borders */
   --border: #e6e0d6;
   --border-2: #d9d2c5;
 
-  /* Accents */
   --accent: #b8893d;
   --accent-soft: #f3e6cf;
   --danger: #c0392b;
@@ -41,7 +35,6 @@
   --ok: #3b8f4b;
   --ok-soft: #dff0e2;
 
-  /* Highlight category colors */
   --c-number: #ffe680;
   --c-name: #d9b8ff;
   --c-concept: #b6e6b6;
@@ -83,9 +76,6 @@
   --c-sentence: rgba(255, 165, 90, 0.20);
 }
 
-/* ============================================================
-   RESET AND BASE STYLES
-   ============================================================ */
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
@@ -121,9 +111,6 @@ button {
   padding: 0;
 }
 
-/* ============================================================
-   APP SHELL
-   ============================================================ */
 .app {
   display: flex;
   flex-direction: column;
@@ -140,9 +127,6 @@ button {
   flex: 0 0 auto;
 }
 
-/* ============================================================
-   ANIMATED BRAND TITLE
-   ============================================================ */
 .brand-title {
   font-weight: 800;
   font-size: 1.02rem;
@@ -183,9 +167,6 @@ button {
   }
 }
 
-/* ============================================================
-   ICON BUTTONS
-   ============================================================ */
 .iconbtn {
   width: 38px;
   height: 38px;
@@ -213,9 +194,6 @@ button {
   flex: 1;
 }
 
-/* ============================================================
-   VIEWS (tab containers)
-   ============================================================ */
 .view {
   display: none;
   flex: 1;
@@ -240,9 +218,6 @@ button {
   margin: 0 auto;
 }
 
-/* ============================================================
-   TEXT INPUT
-   ============================================================ */
 .input-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -269,9 +244,6 @@ button {
   color: var(--ink-3);
 }
 
-/* ============================================================
-   TOOLBAR
-   ============================================================ */
 .actions {
   display: flex;
   gap: 6px;
@@ -330,9 +302,6 @@ button {
   background: var(--ink);
 }
 
-/* ============================================================
-   CATEGORY LEGEND
-   ============================================================ */
 .cats-row {
   display: flex;
   gap: 6px;
@@ -384,13 +353,6 @@ button {
   font-weight: 600;
 }
 
-/* ============================================================
-   ANNOTATED OUTPUT
-   The output is now composed of many inline <span class="seg">
-   segments, one per line plus one per newline character. The
-   redraw logic reuses existing spans and only rewrites the ones
-   whose content or highlight structure changed.
-   ============================================================ */
 .output-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -434,9 +396,6 @@ mark.has-note {
   box-shadow: inset 0 -3px 0 0 var(--ai);
 }
 
-/* ============================================================
-   EMPTY STATES
-   ============================================================ */
 .empty {
   text-align: center;
   padding: 60px 24px;
@@ -455,9 +414,6 @@ mark.has-note {
   line-height: 1.5;
 }
 
-/* ============================================================
-   LIBRARY LIST
-   ============================================================ */
 .lib-list {
   display: flex;
   flex-direction: column;
@@ -504,9 +460,6 @@ mark.has-note {
   flex-wrap: wrap;
 }
 
-/* ============================================================
-   BADGES
-   ============================================================ */
 .badge {
   display: inline-block;
   font-size: 0.66rem;
@@ -526,9 +479,6 @@ mark.has-note {
 .badge.sched   { background: var(--surface-3); color: var(--ink-2); }
 .badge.new     { background: var(--accent-soft); color: var(--accent); }
 
-/* ============================================================
-   CARDS
-   ============================================================ */
 .card-item {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -587,9 +537,6 @@ mark.has-note {
   gap: 10px;
 }
 
-/* ============================================================
-   SECTION TITLES
-   ============================================================ */
 .section-title {
   font-size: 0.7rem;
   font-weight: 700;
@@ -614,9 +561,6 @@ mark.has-note {
   letter-spacing: 0;
 }
 
-/* ============================================================
-   REVIEW
-   ============================================================ */
 .review-progress {
   text-align: center;
   font-size: 0.82rem;
@@ -652,9 +596,6 @@ mark.has-note {
   padding: 0 4px;
 }
 
-/* ============================================================
-   MCQ OPTIONS
-   ============================================================ */
 .mcq-option {
   display: flex;
   align-items: flex-start;
@@ -741,9 +682,6 @@ mark.has-note {
   color: var(--danger);
 }
 
-/* ============================================================
-   SELECTION BAR
-   ============================================================ */
 .sel-bar {
   position: fixed;
   bottom: calc(96px + env(safe-area-inset-bottom));
@@ -802,9 +740,6 @@ mark.has-note {
   color: white;
 }
 
-/* ============================================================
-   EDIT PANEL
-   ============================================================ */
 .edit-panel {
   position: fixed;
   left: 0;
@@ -874,9 +809,6 @@ mark.has-note {
   line-height: 1;
 }
 
-/* ============================================================
-   TAB BAR
-   ============================================================ */
 .tabbar {
   display: flex;
   background: var(--bg);
@@ -923,9 +855,6 @@ mark.has-note {
   font-weight: 700;
 }
 
-/* ============================================================
-   MODALS
-   ============================================================ */
 .modal-bg {
   position: fixed;
   inset: 0;
@@ -1015,9 +944,6 @@ mark.has-note {
   color: #1a0f3d;
 }
 
-/* ============================================================
-   MODEL OPTIONS
-   ============================================================ */
 .model-option {
   display: flex;
   align-items: center;
@@ -1058,9 +984,6 @@ mark.has-note {
   margin-top: 2px;
 }
 
-/* ============================================================
-   TOAST
-   ============================================================ */
 .toast {
   position: fixed;
   left: 50%;
@@ -1084,9 +1007,6 @@ mark.has-note {
   opacity: 1;
 }
 
-/* ============================================================
-   AI STATUS BAR
-   ============================================================ */
 .ai-bar {
   display: none;
   align-items: center;
@@ -1143,9 +1063,6 @@ mark.has-note {
   color: var(--danger);
 }
 
-/* ============================================================
-   STATS ROW
-   ============================================================ */
 .stats-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1174,9 +1091,6 @@ mark.has-note {
   margin-top: 2px;
 }
 
-/* ============================================================
-   ERROR BANNER
-   ============================================================ */
 #error-banner {
   position: fixed;
   top: 0;
@@ -1655,12 +1569,6 @@ mark.has-note {
   // ============================================================
   // FSRS — Free Spaced Repetition Scheduler 4.5
   // ============================================================
-  // Faithful implementation. Three regimes are modeled:
-  //  - initialization (new card, first grade)
-  //  - short-term (learning / relearning / same-day review)
-  //  - long-term (review state with elapsed >= 1 day)
-  // Parameters w[0..18] are the FSRS-4.5 default weights.
-
   var FSRS_PARAMS = [
     0.4072, 1.1829, 3.1262, 15.4722, 7.2102, 0.5316, 1.0651,
     0.0234, 1.616, 0.1544, 1.0824, 1.9813, 0.0953, 0.2975,
@@ -1670,10 +1578,6 @@ mark.has-note {
   var FSRS_FACTOR = 19 / 81;
   var FSRS_TARGET = 0.9;
 
-  /**
-   * Initialize FSRS state for a brand new card (first grade).
-   * @param {number} rating - 1..4
-   */
   function fsrsInitialize(rating) {
     var S = Math.max(0.1, FSRS_PARAMS[rating - 1]);
     var D = clamp(
@@ -1692,18 +1596,11 @@ mark.has-note {
     };
   }
 
-  /**
-   * Compute the next FSRS state given a rating.
-   * Short-term formula used when in learning/relearning OR when
-   * elapsed time since last review is less than one day.
-   * Long-term formula used in review state with elapsed >= 1 day.
-   */
   function fsrsNext(card, rating, now) {
     var S = Math.max(0.1, card.stability);
     var D = clamp(card.difficulty, 1, 10);
     var elapsedDays = Math.max(0, (now - (card.lastReview || now)) / 86400000);
 
-    // Retrievability for the long-term path
     var R = Math.exp(Math.log(FSRS_TARGET) * elapsedDays / S);
 
     var newD = clamp(D - FSRS_PARAMS[6] * (rating - 3), 1, 10);
@@ -1717,7 +1614,6 @@ mark.has-note {
       elapsedDays < 1;
 
     if (useShortTerm) {
-      // Short-term stability update
       newS = S * Math.exp(FSRS_PARAMS[17] * (rating - 3 + FSRS_PARAMS[18]));
       newS = Math.max(0.1, newS);
 
@@ -1731,7 +1627,6 @@ mark.has-note {
       }
     } else {
       if (rating === 1) {
-        // Lapse path (post-lapse stability)
         newS = FSRS_PARAMS[11]
           * Math.pow(newD, -FSRS_PARAMS[12])
           * (Math.pow(S + 1, FSRS_PARAMS[13]) - 1)
@@ -1765,9 +1660,6 @@ mark.has-note {
     };
   }
 
-  /**
-   * Convert stability into an interval in days.
-   */
   function fsrsInterval(stability) {
     var days = (stability / FSRS_FACTOR)
       * (Math.pow(FSRS_TARGET, 1 / FSRS_DECAY) - 1);
@@ -1775,15 +1667,8 @@ mark.has-note {
   }
 
   // ============================================================
-  // STORE — data persistence, per-document
+  // STORE — per-document persistence
   // ============================================================
-  // Storage layout (v131):
-  //   highlight-ai.v131.index          → { version, activeDocId, docIds, settings }
-  //   highlight-ai.v131.doc.<docId>    → { id, title, text, lang, createdAt,
-  //                                        updatedAt, highlights, cards, review }
-  // Migration: on first run after upgrade, the legacy single-key blob
-  // (highlight-ai.v130.data) is split into per-document keys and removed.
-
   var STORAGE_INDEX_KEY = 'highlight-ai.v131.index';
   var STORAGE_DOC_PREFIX = 'highlight-ai.v131.doc.';
   var STORAGE_OLD_KEY = 'highlight-ai.v130.data';
@@ -1802,7 +1687,6 @@ mark.has-note {
     }
   };
 
-  // Dirty tracking: we only persist documents that actually changed.
   var pendingDocSaves = {};
   var pendingIndexSave = false;
   var saveTimer = null;
@@ -1883,25 +1767,14 @@ mark.has-note {
     }
   }
 
-  /**
-   * Debounced save (kept as a public entry point for existing code).
-   */
   function saveData() {
     scheduleFlush();
   }
 
-  /**
-   * Immediate save (used after deletes and destructive actions).
-   */
   function saveDataNow() {
     flushSaves();
   }
 
-  /**
-   * Load the entire dataset from localStorage.
-   * Handles both the new per-document layout and migration from
-   * the legacy single-key blob.
-   */
   function loadData() {
     var indexRaw = null;
     try {
@@ -1939,7 +1812,6 @@ mark.has-note {
         console.warn('Index parse error:', error);
       }
     } else {
-      // Attempt migration from v130 legacy blob
       var oldRaw = null;
       try { oldRaw = localStorage.getItem(STORAGE_OLD_KEY); } catch (e) {}
       if (oldRaw) {
@@ -1947,7 +1819,6 @@ mark.has-note {
       }
     }
 
-    // Ensure settings are initialized
     if (!DATA.settings) {
       DATA.settings = { activeCategories: [], editMode: false };
     }
@@ -1955,17 +1826,12 @@ mark.has-note {
       DATA.settings.activeCategories = CATEGORIES.map(function (c) { return c.id; });
     }
 
-    // Recover if activeDocId points to a missing document
     if (DATA.activeDocId && !DATA.docs[DATA.activeDocId]) {
       DATA.activeDocId = null;
       markIndexDirty();
     }
   }
 
-  /**
-   * Split the legacy single-key blob into per-document keys,
-   * then remove the old key. All data is preserved.
-   */
   function migrateFromLegacy(raw) {
     try {
       var parsed = JSON.parse(raw);
@@ -1978,11 +1844,9 @@ mark.has-note {
       DATA.activeDocId = parsed.activeDocId || null;
       DATA.settings = parsed.settings || { activeCategories: [], editMode: false };
 
-      // Persist in the new layout
       markAllDocsDirty();
       flushSaves();
 
-      // Drop the legacy key
       try { localStorage.removeItem(STORAGE_OLD_KEY); } catch (e) {}
 
       console.info('Migrated legacy data (' +
@@ -1991,10 +1855,6 @@ mark.has-note {
       console.warn('Migration failed:', error);
     }
   }
-
-  // ------------------------------------------------------------
-  // DATA ACCESS
-  // ------------------------------------------------------------
 
   function getActiveDocument() {
     return DATA.activeDocId ? DATA.docs[DATA.activeDocId] : null;
@@ -2140,8 +2000,12 @@ mark.has-note {
   }
 
   // ============================================================
-  // ANALYZER — universal entity detection
-  // ============================================================
+  // ANALYZER — entity detection primitives
+  // ===========================================================
+=
+  // These operate on plain strings and return block-relative spans.
+  // The document-level driver (analyzeIncremental) is responsible
+  // for chunking the text and adding the block offset.
 
   function findNumbers(text) {
     var spans = [];
@@ -2265,26 +2129,6 @@ mark.has-note {
     return spans;
   }
 
-  function findConcepts(text) {
-    var frequencies = {};
-    var tokens = tokenize(text);
-
-    for (var i = 0; i < tokens.length; i++) {
-      var token = tokens[i];
-      if (token.lower.length < 6 || STOPWORD_SET[token.lower]) continue;
-      frequencies[token.lower] = (frequencies[token.lower] || 0) + 1;
-    }
-
-    var spans = [];
-    for (var j = 0; j < tokens.length; j++) {
-      var tk = tokens[j];
-      if (frequencies[tk.lower] >= 2 && tk.lower.length >= 6) {
-        spans.push({ start: tk.start, end: tk.end, cat: 'key', w: 3 });
-      }
-    }
-    return spans;
-  }
-
   function findDefinitions(text) {
     var spans = [];
     var match;
@@ -2312,27 +2156,263 @@ mark.has-note {
     return spans;
   }
 
-  function analyzeText(text) {
-    if (!text.trim()) return [];
-    return [].concat(
-      findNumbers(text),
-      findQuotes(text),
-      findDefinitions(text),
-      findProperNouns(text),
-      findConcepts(text)
-    );
+  // ============================================================
+  // INCREMENTAL ANALYZER
+  // ============================================================
+  // The text is split into blocks (paragraphs, with automatic
+  // sub-splitting of very long paragraphs at sentence boundaries).
+  // Each block is hashed. On re-analysis, blocks whose hash matches
+  // a cached block reuse its spans and frequency map. Only the
+  // blocks that actually changed are re-analyzed.
+
+  var analysisCache = { docId: null, blocks: [] };
+  var MAX_BLOCK_CHARS = 2500;
+
+  function blockHash(text) {
+    var hash = 5381;
+    for (var i = 0; i < text.length; i++) {
+      hash = ((hash << 5) + hash + text.charCodeAt(i)) | 0;
+    }
+    return hash.toString(36);
+  }
+
+  function splitIntoSentences(text) {
+    var sentences = [];
+    var start = 0;
+    var match;
+    var regex = /[.!?…]+(?=\s|$)/g;
+
+    while ((match = regex.exec(text)) !== null) {
+      var end = match.index + match[0].length;
+      if (end - start >= 15) sentences.push({ start: start, end: end });
+      start = end;
+      while (start < text.length && /\s/.test(text[start])) start++;
+    }
+    if (text.length - start >= 15) sentences.push({ start: start, end: text.length });
+    return sentences;
+  }
+
+  function computeBlocks(text) {
+    // First pass: split on blank lines
+    var rawRanges = [];
+    var pos = 0;
+    var re = /\n{2,}/g;
+    var match;
+    while ((match = re.exec(text)) !== null) {
+      if (match.index > pos) rawRanges.push({ start: pos, end: match.index });
+      pos = match.index + match[0].length;
+    }
+    if (pos < text.length) rawRanges.push({ start: pos, end: text.length });
+
+    // Second pass: sub-split oversized paragraphs at sentence boundaries
+    var blocks = [];
+    for (var i = 0; i < rawRanges.length; i++) {
+      var rb = rawRanges[i];
+      var len = rb.end - rb.start;
+      if (len <= MAX_BLOCK_CHARS) {
+        var t = text.slice(rb.start, rb.end);
+        blocks.push({ start: rb.start, end: rb.end, text: t, hash: blockHash(t) });
+        continue;
+      }
+
+      var subText = text.slice(rb.start, rb.end);
+      var sentences = splitIntoSentences(subText);
+      if (sentences.length < 2) {
+        blocks.push({ start: rb.start, end: rb.end, text: subText, hash: blockHash(subText) });
+        continue;
+      }
+
+      var subStart = 0;
+      for (var s = 0; s < sentences.length; s++) {
+        var sent = sentences[s];
+        if (sent.end - subStart > MAX_BLOCK_CHARS && subStart < sent.start) {
+          var subEnd = sentences[s - 1].end;
+          var st = subText.slice(subStart, subEnd);
+          blocks.push({
+            start: rb.start + subStart,
+            end: rb.start + subEnd,
+            text: st,
+            hash: blockHash(st)
+          });
+          subStart = sent.start;
+        }
+      }
+      var lastText = subText.slice(subStart);
+      if (lastText.length) {
+        blocks.push({
+          start: rb.start + subStart,
+          end: rb.end,
+          text: lastText,
+          hash: blockHash(lastText)
+        });
+      }
+    }
+
+    return blocks;
+  }
+
+  function analyzeIncremental(doc) {
+    var text = doc.text;
+
+    // 1. Build the new block list
+    var newBlocks = computeBlocks(text);
+
+    // 2. Index the cached blocks by hash so we can reuse them
+    var oldByHash = {};
+    if (analysisCache.docId === doc.id) {
+      for (var i = 0; i < analysisCache.blocks.length; i++) {
+        var ob = analysisCache.blocks[i];
+        if (!oldByHash[ob.hash]) oldByHash[ob.hash] = [];
+        oldByHash[ob.hash].push(ob);
+      }
+    }
+
+    // 3. Match each new block against the cache by content hash
+    var dirty = [];
+    for (var j = 0; j < newBlocks.length; j++) {
+      var nb = newBlocks[j];
+      var cands = oldByHash[nb.hash];
+      var reused = null;
+      if (cands && cands.length) {
+        reused = cands.shift();
+      }
+      if (reused) {
+        nb.spans = reused.spans;
+        nb.freqMap = reused.freqMap;
+      } else {
+        nb.spans = null;
+        nb.freqMap = null;
+        dirty.push(nb);
+      }
+    }
+
+    // 4. Tokenize dirty blocks once, keep tokens around for step 6
+    var pendingTokens = [];
+    for (var k = 0; k < dirty.length; k++) {
+      var d = dirty[k];
+      var tokens = tokenize(d.text);
+      var freqMap = {};
+      for (var t = 0; t < tokens.length; t++) {
+        var tl = tokens[t].lower;
+        if (tl.length < 6 || STOPWORD_SET[tl]) continue;
+        freqMap[tl] = (freqMap[tl] || 0) + 1;
+      }
+      d.freqMap = freqMap;
+      pendingTokens.push(tokens);
+    }
+
+    // 5. Build the global frequency map from all blocks' freq maps    //    (cheap — proportional to unique tokens, not text length)
+    var globalFreq = {};
+    for (var b = 0; b < newBlocks.length; b++) {
+      var fm = newBlocks[b].freqMap;
+      if (!fm) continue;
+      for (var tok in fm) {
+        globalFreq[tok] = (globalFreq[tok] || 0) + fm[tok];
+      }
+    }
+
+    // 6. Analyze dirty blocks with full detectors + global-freq concepts
+    for (var m = 0; m < dirty.length; m++) {
+      var dm = dirty[m];
+      var tks = pendingTokens[m];
+      var spans = [].concat(
+        findNumbers(dm.text),
+        findQuotes(dm.text),
+        findDefinitions(dm.text),
+        findProperNouns(dm.text)
+      );
+      for (var n = 0; n < tks.length; n++) {
+        var tk = tks[n];
+        if (tk.lower.length < 6 || STOPWORD_SET[tk.lower]) continue;
+        if ((globalFreq[tk.lower] || 0) >= 2) {
+          spans.push({ start: tk.start, end: tk.end, cat: 'key', w: 3 });
+        }
+      }
+      dm.spans = spans;
+    }
+
+    // 7. Store the new cache
+    analysisCache = { docId: doc.id, blocks: newBlocks };
+
+    // 8. Collect document-relative spans
+    var result = [];
+    for (var p = 0; p < newBlocks.length; p++) {
+      var blk = newBlocks[p];
+      for (var q = 0; q < blk.spans.length; q++) {
+        var s = blk.spans[q];
+        result.push({
+          start: blk.start + s.start,
+          end: blk.start + s.end,
+          cat: s.cat,
+          w: s.w
+        });
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Reconcile the auto highlights with the new span set.
+   * Highlights whose (start, end, cat) matches an existing auto
+   * highlight keep their ID — that is what lets the incremental
+   * renderer skip re-rendering their segments.
+   * User-created highlights are never touched.
+   */
+  function reconcileAutoHighlights(doc, spans) {
+    var highlights = highlightsForDocument(doc.id);
+    var oldAuto = {};
+    for (var i = 0; i < highlights.length; i++) {
+      var h = highlights[i];
+      if (h.source === 'auto') {
+        oldAuto[h.start + ':' + h.end + ':' + h.cat] = h;
+      }
+    }
+
+    var usedKeys = {};
+    var keep = {};
+
+    for (var j = 0; j < spans.length; j++) {
+      var span = spans[j];
+      var key = span.start + ':' + span.end + ':' + span.cat;
+      if (oldAuto[key] && !usedKeys[key]) {
+        usedKeys[key] = true;
+        var reuse = oldAuto[key];
+        keep[reuse.id] = true;
+        reuse.before = doc.text.slice(Math.max(0, span.start - 30), span.start);
+        reuse.after = doc.text.slice(span.end, span.end + 30);
+      } else {
+        var id = generateId();
+        DATA.highlights[id] = {
+          id: id,
+          docId: doc.id,
+          start: span.start,
+          end: span.end,
+          cat: span.cat,
+          source: 'auto',
+          before: doc.text.slice(Math.max(0, span.start - 30), span.start),
+          after: doc.text.slice(span.end, span.end + 30),
+          note: '',
+          createdAt: Date.now()
+        };
+      }
+    }
+
+    // Drop auto highlights that were not matched by any new span
+    for (var k = 0; k < highlights.length; k++) {
+      var hh = highlights[k];
+      if (hh.source === 'auto' && !keep[hh.id]) {
+        delete DATA.highlights[hh.id];
+      }
+    }
   }
 
   // ============================================================
-  // INCREMENTAL RENDER
+  // INCREMENTAL RENDERER
   // ============================================================
-  // The output card is built from inline <span class="seg"> nodes.
-  // Each segment holds either a run of characters between newlines
-  // or a single newline. On redraw, we compute a per-segment hash
-  // (segment text + intersecting highlight IDs + their categories
-  // + their visibility) and skip re-rendering segments whose hash
-  // did not change. Typing at the end of a long document only
-  // re-renders the last segment.
+  // The output is a flat list of <span class="seg"> children, one
+  // per line + one per newline character. Each child stores the
+  // hash of what it last rendered. On redraw, only children whose
+  // hash changed are rebuilt.
 
   function splitSegments(text) {
     var segs = [];
@@ -2377,7 +2457,6 @@ mark.has-note {
     var segEnd = seg.end;
     var length = segText.length;
 
-    // Fast path: no intersecting highlights
     var any = false;
     for (var q = 0; q < allHl.length; q++) {
       var h0 = allHl[q];
@@ -2388,7 +2467,6 @@ mark.has-note {
       return;
     }
 
-    // Build ownership map
     var owner = new Array(length);
     var hlId = new Array(length);
     var weight = new Array(length);
@@ -2416,7 +2494,6 @@ mark.has-note {
       }
     }
 
-    // Build DOM fragment
     var frag = document.createDocumentFragment();
     var idx = 0;
     var pending = '';
@@ -2481,15 +2558,13 @@ mark.has-note {
 
     var segments = splitSegments(text);
 
-    // Trim extra children first
     while (output.children.length > segments.length) {
       output.removeChild(output.lastChild);
     }
 
-    // Update or create segments
-    for (var i = 0; i < segments.length; i++) {
-      var seg = segments[i];
-      var child = output.children[i];
+    for (var j = 0; j < segments.length; j++) {
+      var seg = segments[j];
+      var child = output.children[j];
       if (!child) {
         child = document.createElement('span');
         child.className = 'seg';
@@ -2504,9 +2579,6 @@ mark.has-note {
     }
   }
 
-  /**
-   * Full redraw — output (incremental), stats and legend.
-   */
   function redraw() {
     var doc = getActiveDocument();
     if (!doc) {
@@ -2956,7 +3028,6 @@ mark.has-note {
   }
 
   function buildUniversalDistractors(type, correct, doc, count) {
-    // STRATEGY 1: Perturbation
     if (type === 'year') {
       var year = parseInt(correct, 10);
       if (!isNaN(year)) {
@@ -3007,7 +3078,6 @@ mark.has-note {
       }
     }
 
-    // STRATEGY 2: Dictionary
     if (type === 'person' && DICT_SETS.usPresidents[correct.toLowerCase()]) {
       var usPool = shuffle(DICTIONARY.usPresidents.filter(function (n) {
         return n.toLowerCase() !== correct.toLowerCase();
@@ -3033,7 +3103,6 @@ mark.has-note {
       if (treatyPool.length >= count) return treatyPool;
     }
 
-    // STRATEGY 3: From the text itself
     var candidates = [];
 
     if (type === 'person' || type === 'organization' || type === 'treaty') {
@@ -3064,22 +3133,6 @@ mark.has-note {
     return null;
   }
 
-  function splitIntoSentences(text) {
-    var sentences = [];
-    var start = 0;
-    var match;
-    var regex = /[.!?…]+(?=\s|$)/g;
-
-    while ((match = regex.exec(text)) !== null) {
-      var end = match.index + match[0].length;
-      if (end - start >= 15) sentences.push({ start: start, end: end });
-      start = end;
-      while (start < text.length && /\s/.test(text[start])) start++;
-    }
-    if (text.length - start >= 15) sentences.push({ start: start, end: text.length });
-    return sentences;
-  }
-
   function proposeFromAnalyzer(doc) {
     var highlights = highlightsForDocument(doc.id).filter(function (h) { return h.start >= 0; });
     var sentences = splitIntoSentences(doc.text);
@@ -3108,10 +3161,8 @@ mark.has-note {
       var sentenceText = doc.text.slice(containerSentence.start, containerSentence.end);
       if (sentenceText.length < 20 || sentenceText.length > 400) continue;
 
-      var question = null;
+      var question = buildUniversalQuestion(type, surface, sentenceText, language);
       var cardType = type;
-
-      question = buildUniversalQuestion(type, surface, sentenceText, language);
 
       if (!question) {
         var relative = highlight.start - containerSentence.start;
@@ -3768,8 +3819,8 @@ mark.has-note {
         }
       }
       if (DATA.activeDocId === id) DATA.activeDocId = null;
+      if (analysisCache.docId === id) analysisCache = { docId: null, blocks: [] };
 
-      // Force the doc key to be removed on flush, then flush immediately.
       pendingDocSaves[id] = true;
       markIndexDirty();
       flushSaves();
@@ -4255,39 +4306,27 @@ mark.has-note {
   }
 
   // ============================================================
-  // AUTO ANALYSIS
+  // AUTO ANALYSIS — entry point
   // ============================================================
   function analyzeCurrentDocument() {
     var doc = getActiveDocument();
-    if (!doc || !doc.text.trim()) return;
+    if (!doc) return;
+    if (!doc.text.trim()) {
+      // Reset cache when the document becomes empty
+      if (analysisCache.docId === doc.id) {
+        analysisCache = { docId: doc.id, blocks: [] };
+      }
+      return;
+    }
 
     doc.lang = detectLanguage(doc.text);
-    var spans = analyzeText(doc.text);
-    var highlights = highlightsForDocument(doc.id);
 
-    for (var i = 0; i < highlights.length; i++) {
-      if (highlights[i].source === 'auto') {
-        delete DATA.highlights[highlights[i].id];
-      }
+    if (analysisCache.docId !== doc.id) {
+      analysisCache = { docId: doc.id, blocks: [] };
     }
 
-    for (var j = 0; j < spans.length; j++) {
-      var span = spans[j];
-      var id = generateId();
-      DATA.highlights[id] = {
-        id: id,
-        docId: doc.id,
-        start: span.start,
-        end: span.end,
-        cat: span.cat,
-        source: 'auto',
-        before: doc.text.slice(Math.max(0, span.start - 30), span.start),
-        after: doc.text.slice(span.end, span.end + 30),
-        note: '',
-        createdAt: Date.now()
-      };
-    }
-
+    var spans = analyzeIncremental(doc);
+    reconcileAutoHighlights(doc, spans);
     markDocDirty(doc.id);
   }
 
@@ -4321,7 +4360,6 @@ mark.has-note {
     }
   }
 
-  // Debounced auto-analysis timer
   var autoAnalysisTimer = null;
 
   function scheduleAutoAnalysis(delay) {
@@ -4389,6 +4427,7 @@ mark.has-note {
     $('btn-new').addEventListener('click', function () {
       var sample = SAMPLE_TEXTS[Math.floor(Math.random() * SAMPLE_TEXTS.length)];
       createDocument(sample.text, sample.title);
+      analysisCache = { docId: null, blocks: [] };
       $('input').value = sample.text;
       analyzeCurrentDocument();
       redraw();
@@ -4415,6 +4454,9 @@ mark.has-note {
           }
         }
         doc.text = '';
+        if (analysisCache.docId === doc.id) {
+          analysisCache = { docId: doc.id, blocks: [] };
+        }
         $('input').value = '';
         markDocDirty(doc.id);
         saveDataNow();
@@ -4500,7 +4542,6 @@ mark.has-note {
       })(modals[m]);
     }
 
-    // Persist any pending writes when the page is hidden or unloaded.
     window.addEventListener('pagehide', function () { flushSaves(); });
     window.addEventListener('beforeunload', function () { flushSaves(); });
     document.addEventListener('visibilitychange', function () {
