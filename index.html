@@ -31,8 +31,8 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .view.active{display:flex}
 .scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px;padding-bottom:120px}
 .wrap{max-width:760px;margin:0 auto}
-.input-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden}
-.input-card textarea{width:100%;border:none;outline:none;background:transparent;font-size:15px;line-height:1.55;resize:none;padding:14px;min-height:100px;max-height:500px;display:block;overflow-y:auto}
+.input-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden;display:flex;flex-direction:column}
+.input-card textarea{width:100%;border:none;outline:none;background:transparent;font-size:15px;line-height:1.55;resize:none;padding:12px 14px;min-height:90px;max-height:400px;display:block;overflow-y:auto}
 .input-card textarea::placeholder{color:var(--ink-3)}
 .actions{display:flex;gap:6px;margin-bottom:12px;overflow-x:auto;padding:0 2px;scrollbar-width:none}
 .actions::-webkit-scrollbar{display:none}
@@ -165,7 +165,7 @@ body.edit-mode .edit-hint{display:block}
     <div class="scroll" id="scrollText">
       <div class="wrap">
         <div class="input-card">
-          <textarea id="input" placeholder="Incolla un testo per evidenziarlo…" rows="3"></textarea>
+          <textarea id="input" placeholder="Incolla o scrivi un testo… evidenziazione automatica"></textarea>
         </div>
 
         <div class="cats-row" id="legend"></div>
@@ -1149,7 +1149,9 @@ function loadAIModel(key){
 }
 
 function unloadAIModel(){
-  if (ai.engine && ai.engine.unload){ try { ai.engine.unload(); } catch(e){} }
+  if (ai.engine && ai.engine.unload){
+    try { ai.engine.unload(); } catch(e){}
+  }
   ai.engine = null;
   ai.ready = false;
   ai.loading = false;
@@ -1199,10 +1201,9 @@ function buildExtractPrompt(text){
     'Regole: entita deve essere breve (1-8 parole). soggetto è la parte di frase prima dell\'entità.\n\n' +
     'Testo:\n' + text + '\n\n' +
     'Esempio di risposta valida:\n' +
-    '[{"entita":"1948","tipo":"anno","soggetto":"La Costituzione entrò in vigore il"}]\n\n' +
-    'Rispondi SOLO con array JSON:';
+    '[{"entita":"1948","tipo":"anno","soggetto":"La Costituzione entrò in vigore il"},{"entita":"1 gennaio 1948","tipo":"data","soggetto":"entrò in vigore il"}]\n\n' +
+    'Rispondi SOLO con array JSON, nessun testo prima o dopo:';
 }
-
 function parseExtract(raw){
   if (!raw || typeof raw !== 'string') return [];
   var c = raw.trim();
@@ -1217,7 +1218,6 @@ function parseExtract(raw){
   while ((m = re.exec(c)) !== null){ try { objs.push(JSON.parse(m[0])); } catch(e){} }
   return objs;
 }
-
 function splitChunks(text, maxWords){
   maxWords = maxWords || 100;
   var sents = segmentSentences(text);
@@ -1235,7 +1235,6 @@ function splitChunks(text, maxWords){
   if (curStart < text.length) chunks.push(text.slice(curStart).trim());
   return chunks.filter(function(c){ return c.length > 40; });
 }
-
 function proposeFromAI(doc, onProgress){
   var chunks = splitChunks(doc.text, 100);
   if (!chunks.length) return Promise.resolve([]);
@@ -1334,24 +1333,23 @@ function openCardPreview(useAI){
   if (!doc){ toast('Nessun testo'); return; }
   var hls = highlightsForDoc(doc.id).filter(function(h){ return h.start >= 0; });
   if (!hls.length){ toast('Evidenzia prima qualcosa'); return; }
-
   var dictProps = proposeFromDict(doc).filter(validateProposal);
   var dictCount = dictProps.length;
   var dictContentIds = {};
   for (var i = 0; i < dictProps.length; i++) dictContentIds[dictProps[i].contentId] = true;
-
   if (!useAI || !ai.ready || !hasWebGPU()){
     if (!dictProps.length){ toast('Nessuna domanda generabile'); return; }
     if (useAI && !ai.ready) toast('AI non attiva · uso solo dizionario');
     showPreview(dictProps, 0);
     return;
   }
-
-  setMainStatus('working', 'Dizionario: ' + dictCount + ' · AI in corso…');
+  setMainStatus('working', 'Dizionario: ' + dictCount + ' domande · preparo AI…');
   proposeFromAI(doc, function(cur, tot){
     setMainStatus('working', 'AI estrazione ' + cur + '/' + tot + '…');
   }).then(function(aiProps){
-    var validAI = aiProps.filter(validateProposal).filter(function(p){ return !dictContentIds[p.contentId]; });
+    var validAI = aiProps.filter(validateProposal).filter(function(p){
+      return !dictContentIds[p.contentId];
+    });
     var all = dictProps.concat(validAI);
     setMainStatus('hidden');
     if (!all.length){ toast('Nessuna domanda generata'); return; }
@@ -1363,7 +1361,6 @@ function openCardPreview(useAI){
     showPreview(dictProps, 0);
   });
 }
-
 function showPreview(props, dictCount){
   var existing = {};
   for (var id in DATA.cards) existing[DATA.cards[id].contentId] = true;
@@ -1376,7 +1373,6 @@ function showPreview(props, dictCount){
   $('cardPreviewCount').textContent = summary;
   $('modalCardPreview').classList.add('open');
 }
-
 function renderPending(){
   var box = $('cardPreviewList');
   box.innerHTML = '';
@@ -1387,7 +1383,8 @@ function renderPending(){
     var type = p.type.replace('fact-', '').replace('concept-', '');
     var origin = p.origin === 'ai' ? '<span class="badge ai">AI</span>' : '<span class="badge tpl">Template</span>';
     el.innerHTML =
-      '<div class="card-head">' + origin +
+      '<div class="card-head">' +
+        origin +
         '<span class="badge">' + esc(type) + '</span>' +
         (p.alreadyExists ? '<span style="font-size:.72rem;color:var(--ink-3);margin-left:auto">già presente</span>' : '') +
         '<label style="margin-left:auto;display:flex;align-items:center;gap:6px">' +
@@ -1400,7 +1397,6 @@ function renderPending(){
     box.appendChild(el);
   }
 }
-
 function confirmCards(){
   var doc = getActiveDoc();
   if (!doc) return;
@@ -1457,7 +1453,7 @@ function openDoc(id){
   DATA.activeDocId = id;
   save();
   $('input').value = d.text;
-  autoGrowInput();
+  autoGrow();
   redraw();
   switchView('text');
   $('scrollText').scrollTop = 0;
@@ -1621,10 +1617,14 @@ function initAnalysis(){
   }
   save();
 }
-function autoGrowInput(){
+
+// Auto-grow textarea
+function autoGrow(){
   var ta = $('input');
+  if (!ta) return;
   ta.style.height = 'auto';
-  var h = Math.min(ta.scrollHeight, 500);
+  var h = Math.min(ta.scrollHeight, 400);
+  if (h < 90) h = 90;
   ta.style.height = h + 'px';
 }
 
@@ -1649,51 +1649,33 @@ function renderModelList(){
   }
 }
 
+// Analisi automatica: debounce
+var autoAnalyzeTimer = null;
+function scheduleAutoAnalyze(delay){
+  clearTimeout(autoAnalyzeTimer);
+  autoAnalyzeTimer = setTimeout(function(){
+    var doc = getActiveDoc();
+    if (!doc) return;
+    var newText = $('input').value;
+    if (newText === doc.text) return;
+    doc.text = newText;
+    doc.updatedAt = Date.now();
+    save();
+    initAnalysis();
+    redraw();
+  }, delay || 400);
+}
+
 function bindEvents(){
   document.querySelectorAll('.tabbar .tab').forEach(function(t){
     t.addEventListener('click', function(){ switchView(t.dataset.view); vib(4); });
   });
 
-  // AUTO-ANALISI: input event con debounce
-  var inputTimer = null;
-  var input = $('input');
-  input.addEventListener('input', function(){
-    autoGrowInput();
-    clearTimeout(inputTimer);
-    inputTimer = setTimeout(function(){
-      var text = input.value;
-      var doc = getActiveDoc();
-      if (!text.trim()){
-        if (doc){
-          for (var hid in DATA.highlights) if (DATA.highlights[hid].docId === doc.id) delete DATA.highlights[hid];
-          doc.text = '';
-          save();
-          redraw();
-        }
-        return;
-      }
-      if (!doc) doc = newDoc(text);
-      else if (doc.text !== text) updateDoc(doc.id, { text: text });
-      initAnalysis();
-      redraw();
-    }, 800);
-  });
-
-  // Anche paste accelerato
-  input.addEventListener('paste', function(){
-    setTimeout(function(){
-      autoGrowInput();
-      clearTimeout(inputTimer);
-      inputTimer = setTimeout(function(){
-        var text = input.value;
-        var doc = getActiveDoc();
-        if (!text.trim()) return;
-        if (!doc) doc = newDoc(text);
-        else if (doc.text !== text) updateDoc(doc.id, { text: text });
-        initAnalysis();
-        redraw();
-      }, 150);
-    }, 20);
+  // Input: auto-grow + analisi automatica
+  var ta = $('input');
+  ta.addEventListener('input', function(){
+    autoGrow();
+    scheduleAutoAnalyze(400);
   });
 
   $('btnEdit').addEventListener('click', function(){
@@ -1736,7 +1718,7 @@ function bindEvents(){
   $('btnNew').addEventListener('click', function(){
     newDoc('', 'Senza titolo');
     $('input').value = '';
-    $('input').style.height = '100px';
+    autoGrow();
     $('output').innerHTML = '';
     $('stats').style.display = 'none';
     redraw();
@@ -1755,7 +1737,7 @@ function bindEvents(){
       for (var cid in DATA.cards){ if (DATA.cards[cid].docId === doc.id){ delete DATA.cards[cid]; delete DATA.review[cid]; } }
       doc.text = '';
       $('input').value = '';
-      $('input').style.height = '100px';
+      autoGrow();
       saveNow();
       redraw();
       $('modalConfirm').classList.remove('open');
@@ -1839,7 +1821,7 @@ function init(){
       initAnalysis();
     }
     $('input').value = doc.text;
-    autoGrowInput();
+    autoGrow();
     redraw();
     updateBadge();
   } catch(err){
