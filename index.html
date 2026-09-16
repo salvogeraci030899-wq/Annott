@@ -7,7 +7,7 @@
 <meta name="theme-color" id="metaThemeColor" content="#f6f3ee">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="HIGHLIGHT AI">
-<title>HIGHLIGHT AI</title>
+<title>HIGHLIGHT AI v5</title>
 <style>
 :root{
   color-scheme: light;
@@ -16,7 +16,6 @@
   --border:#e6e0d6;--border-2:#d9d2c5;
   --accent:#b8893d;--accent-soft:#f3e6cf;--danger:#c0392b;
   --ai:#7c4dff;--ai-soft:#ece5ff;--ok:#3b8f4b;--ok-soft:#dff0e2;
-  --gold:#c9a227;--gold-soft:#f5ecc9;
   --shadow:0 1px 2px rgba(0,0,0,.04),0 8px 24px -12px rgba(0,0,0,.10);
   --c-num:#ffe680;--c-name:#d9b8ff;--c-key:#b6e6b6;
   --c-quote:#ffc1cf;--c-list:#a9d8ff;--c-def:#ffe0b6;--c-sentence:rgba(255,201,160,.45);
@@ -28,7 +27,6 @@
   --border:#302a27;--border-2:#3d3632;
   --accent:#d4b478;--accent-soft:#3a2f1c;--danger:#e57373;
   --ai:#b39dff;--ai-soft:#2a1f4d;--ok:#7bd88f;--ok-soft:#1c3322;
-  --gold:#e8c552;--gold-soft:#3a2f1c;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -12px rgba(0,0,0,.6);
   --c-num:rgba(255,205,50,.42);--c-name:rgba(200,140,255,.42);
   --c-key:rgba(100,220,110,.36);--c-quote:rgba(255,140,175,.38);
@@ -53,8 +51,6 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .iconbtn:active{background:var(--surface-3)}
 .iconbtn svg{width:20px;height:20px}
 .iconbtn.on{background:var(--ai-soft);color:var(--ai)}
-.iconbtn.gold{color:var(--gold)}
-.badge-pro{position:absolute;top:2px;right:2px;width:8px;height:8px;background:var(--gold);border-radius:50%}
 .view{display:none;flex:1;flex-direction:column;min-height:0}
 .view.active{display:flex}
 .scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px;padding-bottom:120px}
@@ -112,7 +108,6 @@ button{cursor:pointer;border:none;background:none;padding:0}
 .tbtn:active{transform:scale(.97);background:var(--surface-3);color:var(--ink)}
 .tbtn svg{width:15px;height:15px}
 .tbtn.on{background:var(--ai-soft);color:var(--ai);border-color:color-mix(in srgb,var(--ai) 30%,transparent)}
-.tbtn.gold{background:var(--gold-soft);color:var(--gold);border-color:color-mix(in srgb,var(--gold) 30%,transparent)}
 .output-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow);font-family:"New York",Georgia,"Iowan Old Style","Times New Roman",serif;font-size:1.10rem;line-height:1.85;white-space:pre-wrap;word-wrap:break-word;color:var(--ink);margin-top:10px;transition:box-shadow .2s}
 .output-card:empty{display:none}
 .output-card.edit-active{box-shadow:0 0 0 2px var(--ai),var(--shadow);cursor:crosshair}
@@ -147,7 +142,6 @@ body.edit-mode .edit-hint{display:flex}
 .lib-item .row1{display:flex;align-items:center;gap:8px;margin-bottom:6px}
 .badge{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
 .badge.ai-badge{background:var(--ai-soft);color:var(--ai)}
-.badge.gold-badge{background:var(--gold-soft);color:var(--gold)}
 .lib-item .date{font-size:.78rem;color:var(--ink-3);margin-left:auto}
 .lib-item .title{font-weight:600;font-size:.98rem;margin-bottom:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .lib-item .snippet{font-size:.86rem;color:var(--ink-2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -162,9 +156,8 @@ body.edit-mode .edit-hint{display:flex}
 .modal .row-actions{display:flex;gap:8px;margin-top:12px}
 .modal label{font-size:.78rem;color:var(--ink-2);font-weight:600;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.03em}
 .model-list{display:flex;flex-direction:column;gap:8px;margin:14px 0 4px}
-.model-option{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface-2);cursor:pointer;position:relative}
+.model-option{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface-2);cursor:pointer}
 .model-option.selected{border-color:var(--ai);background:var(--ai-soft)}
-.model-option.locked{opacity:.7;cursor:not-allowed}
 .model-option .radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--border-2);flex:0 0 auto;display:grid;place-items:center}
 .model-option.selected .radio{border-color:var(--ai);background:var(--ai)}
 .model-option.selected .radio::after{content:"";width:6px;height:6px;border-radius:50%;background:#fff}
@@ -172,7 +165,6 @@ body.edit-mode .edit-hint{display:flex}
 .model-option .name{font-weight:600;font-size:.92rem}
 .model-option .name .sz{font-weight:500;font-size:.78rem;color:var(--ink-3);margin-left:6px}
 .model-option .desc{font-size:.78rem;color:var(--ink-2)}
-.model-option .lock{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:.72rem;color:var(--gold);font-weight:700}
 .toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:.88rem;font-weight:500;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:200;box-shadow:var(--shadow);max-width:90vw;text-align:center;display:flex;align-items:center;gap:12px}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
 .toast button{background:transparent;color:var(--ai);font-weight:700;padding:4px 8px;border-radius:6px;border:1px solid currentColor;font-size:.82rem;cursor:pointer}
@@ -240,13 +232,12 @@ body.reading .reading-bar{display:flex}
 .reading-bar .progress{flex:1;height:4px;background:var(--surface-3);border-radius:2px;overflow:hidden}
 .reading-bar .progress > i{display:block;height:100%;width:0;background:var(--accent);transition:width .1s}
 body.controls-hidden #controlsBlock{display:none}
-.tier-badge{display:inline-flex;align-items:center;gap:4px;font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:999px;letter-spacing:.03em;text-transform:uppercase}
-.tier-badge.free{background:var(--surface-3);color:var(--ink-2)}
-.tier-badge.pro{background:var(--gold-soft);color:var(--gold)}
-.upgrade-card{background:linear-gradient(135deg,var(--gold-soft),var(--surface));border:1px solid var(--gold);border-radius:14px;padding:16px;margin-top:16px;text-align:left}
-.upgrade-card h4{margin:0 0 6px;color:var(--gold);font-size:.95rem;font-weight:700}
-.upgrade-card p{margin:0 0 10px;font-size:.82rem;color:var(--ink-2);line-height:1.5}
-.upgrade-card button{background:var(--gold);color:#fff;padding:10px 16px;border-radius:10px;font-weight:700;font-size:.85rem;cursor:pointer}
+.dict-panel{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px;margin-top:10px;box-shadow:var(--shadow)}
+.dict-panel h4{margin:0 0 8px;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);font-weight:700}
+.dict-row{display:flex;gap:8px;font-size:.82rem;padding:4px 0;border-bottom:1px solid var(--border)}
+.dict-row:last-child{border-bottom:none}
+.dict-row .dlabel{flex:0 0 140px;font-weight:600;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dict-row .dval{flex:1;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -255,7 +246,6 @@ body.controls-hidden #controlsBlock{display:none}
   <header class="topbar">
     <div class="brand"><span class="brand-title" id="brandTitle" data-text="HIGHLIGHT AI"></span></div>
     <div class="spacer"></div>
-    <span class="tier-badge" id="tierBadge"><span id="tierText">Free</span></span>
     <button class="iconbtn" id="btnToggleControls" title="Mostra/nascondi controlli">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
@@ -458,7 +448,7 @@ body.controls-hidden #controlsBlock{display:none}
 <div class="modal-bg" id="modalAISetup">
   <div class="modal">
     <h3 id="aiSetupTitle">Scegli il modello AI</h3>
-    <p id="aiSetupDesc">Scaricato una sola volta, resta sul dispositivo. Funziona offline.</p>
+    <p id="aiSetupDesc">Scaricato una sola volta, resta sul dispositivo.</p>
     <div class="model-list" id="modelList"></div>
     <div class="row-actions">
       <button class="btn ghost" id="btnCancelAI">Annulla</button>
@@ -534,24 +524,13 @@ body.controls-hidden #controlsBlock{display:none}
   </div>
 </div>
 
-<div class="modal-bg" id="modalUpgrade">
+<div class="modal-bg" id="modalDict">
   <div class="modal">
-    <h3>Passa a Pro</h3>
-    <p>Sblocca i modelli AI più potenti e molto altro.</p>
-    <div style="font-size:.9rem;line-height:1.7;color:var(--ink-2);margin-bottom:16px">
-      <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px"><span style="color:var(--gold);font-weight:700">✓</span><span><strong>Modelli AI grandi (7B, 14B, cloud)</strong> — domande di qualità superiore</span></div>
-      <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px"><span style="color:var(--gold);font-weight:700">✓</span><span><strong>Generazioni illimitate</strong> — nessun limite giornaliero</span></div>
-      <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px"><span style="color:var(--gold);font-weight:700">✓</span><span><strong>Export PDF, Anki, Obsidian</strong> illimitati</span></div>
-      <div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:8px"><span style="color:var(--gold);font-weight:700">✓</span><span><strong>Sync multi-dispositivo</strong></span></div>
-      <div style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--gold);font-weight:700">✓</span><span><strong>Supporto allo sviluppo</strong></span></div>
-    </div>
-    <div style="text-align:center;margin:16px 0">
-      <div style="font-size:1.8rem;font-weight:800;color:var(--gold)">€5<span style="font-size:.9rem;font-weight:500;color:var(--ink-2)">/mese</span></div>
-      <div style="font-size:.8rem;color:var(--ink-3)">oppure €39/anno · €79 lifetime</div>
-    </div>
+    <h3>Dizionario di dominio</h3>
+    <p>Il motore usa queste liste per generare distrattori plausibili. Ogni voce è curata per il dominio storico-concorsuale italiano.</p>
+    <div id="dictContent" style="max-height:50vh;overflow-y:auto"></div>
     <div class="row-actions">
-      <button class="btn ghost" id="btnCancelUpgrade">Non ora</button>
-      <button class="btn primary" id="btnConfirmUpgrade" style="background:var(--gold);color:#fff">Passa a Pro</button>
+      <button class="btn ghost" id="btnCloseDict">Chiudi</button>
     </div>
   </div>
 </div>
@@ -582,10 +561,6 @@ function shuffle(a){
     var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
   }
   return arr;
-}
-function extractNumber(s){
-  var m = String(s).replace(',', '.').match(/-?\d+(?:\.\d+)?/);
-  return m ? parseFloat(m[0]) : NaN;
 }
 var _toastTimer = null;
 function toast(msg, opts){
@@ -623,98 +598,62 @@ var CATEGORIES = [
 ];
 var CAT_PRIORITY = { quote:10, num:9, def:8, list:7, name:6, key:5, sentence:4 };
 var CAT_TO_CLASS = { num:'c-num', name:'c-name', key:'c-key', quote:'c-quote', list:'c-list', def:'c-def', sentence:'c-sentence' };
-
+var AI_TYPE_LABELS = {
+  evento:'Evento', data:'Data', causa:'Causa', conseguenza:'Conseguenza',
+  concetto:'Concetto', definizione:'Definizione', protagonista:'Protagonista',
+  anno:'Anno', nome:'Nome', cifra:'Cifra', luogo:'Luogo'
+};
 var STORE_KEY = 'hl.v5.store';
 var SETTINGS_KEY = 'hl.v5.settings';
 var AI_CDN = 'https://esm.run/@mlc-ai/web-llm';
-
-// Modelli: id, dimensione, tier richiesto
 var AI_MODELS = {
-  qwen05: { id:'Qwen2.5-0.5B-Instruct-q4f16_1-MLC', label:'Qwen 0.5B', size:'~400 MB', desc:'Velocissimo. Base.', tier:'free', minMem:4 },
-  qwen15: { id:'Qwen2.5-1.5B-Instruct-q4f16_1-MLC', label:'Qwen 1.5B', size:'~1 GB',   desc:'Bilanciato. Consigliato.', tier:'free', minMem:6 },
-  qwen3:  { id:'Qwen2.5-3B-Instruct-q4f16_1-MLC',   label:'Qwen 3B',   size:'~1.8 GB', desc:'Alta qualità.', tier:'free', minMem:8 },
-  qwen7:  { id:'Qwen2.5-7B-Instruct-q4f16_1-MLC',   label:'Qwen 7B',   size:'~4.5 GB', desc:'Massima qualità on-device.', tier:'pro', minMem:16 },
-  qwen14: { id:'Qwen2.5-14B-Instruct-q4f16_1-MLC',  label:'Qwen 14B',  size:'~8 GB',   desc:'Solo Mac/iPad Pro potenti.', tier:'pro', minMem:24 }
+  qwen05:  { id:'Qwen2.5-0.5B-Instruct-q4f16_1-MLC', label:'Qwen 0.5B', size:'~400 MB', desc:'Velocissimo. Per telefoni modesti.' },
+  qwen15:  { id:'Qwen2.5-1.5B-Instruct-q4f16_1-MLC', label:'Qwen 1.5B', size:'~1 GB',   desc:'Bilanciato. Default mobile.' },
+  qwen3:   { id:'Qwen2.5-3B-Instruct-q4f16_1-MLC',   label:'Qwen 3B',   size:'~1.8 GB', desc:'Alta qualità. Per tablet recenti.' },
+  llama3:  { id:'Llama-3.2-3B-Instruct-q4f16_1-MLC', label:'Llama 3.2 3B', size:'~1.9 GB', desc:'Ottimo su testi inglesi.' }
 };
 
 // ============================================================
-// DIZIONARIO DI DOMINIO — Storia italiana / concorsi pubblici
+// DIZIONARIO DI DOMINIO — il cuore del vantaggio competitivo
 // ============================================================
 var DIZIONARIO = {
-  anni_storici_italiani: [1815, 1848, 1859, 1860, 1861, 1866, 1870, 1882, 1887, 1892, 1896, 1900, 1911, 1915, 1917, 1918, 1919, 1921, 1922, 1924, 1925, 1929, 1935, 1936, 1938, 1939, 1940, 1943, 1944, 1945, 1946, 1947, 1948, 1949, 1951, 1953, 1954, 1955, 1957, 1958, 1960, 1962, 1963, 1964, 1968, 1969, 1970, 1973, 1974, 1976, 1977, 1978, 1979, 1980, 1981, 1982, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
-  presidenti_repubblica: ['De Nicola','Einaudi','Gronchi','Segni','Saragat','Leone','Pertini','Cossiga','Scalfaro','Ciampi','Napolitano','Mattarella'],
-  presidenti_consiglio: ['De Gasperi','Pella','Fanfani','Scelba','Segni','Zoli','Tambroni','Moro','Leone','Rumor','Colombo','Andreotti','Craxi','Goria','De Mita','Amato','Ciampi','Dini','Prodi','D\u2019Alema','Berlusconi','Monti','Letta','Renzi','Gentiloni','Conte','Draghi','Meloni'],
-  trattati_europei: ['Trattato di Roma','Atto Unico Europeo','Trattato di Maastricht','Trattato di Amsterdam','Trattato di Nizza','Trattato di Lisbona'],
-  articoli_costituzione: ['1','2','3','5','9','11','13','21','27','32','33','34','48','52','54','75','76','77','101','104','117','138','139'],
-  partiti_storici: ['Democrazia Cristiana','PCI','PSI','MSI','PRI','PLI','PSDI','PDS','DS','FI','AN','Lega Nord','UDC','PD','M5S','FdI'],
-  regioni_italiane: ['Abruzzo','Basilicata','Calabria','Campania','Emilia-Romagna','Friuli-Venezia Giulia','Lazio','Liguria','Lombardia','Marche','Molise','Piemonte','Puglia','Sardegna','Sicilia','Toscana','Trentino-Alto Adige','Umbria','Valle d\u2019Aosta','Veneto'],
+  anni_storici_italiani: [1848, 1861, 1870, 1915, 1918, 1922, 1929, 1936, 1939, 1943, 1945, 1946, 1947, 1948, 1955, 1957, 1962, 1963, 1968, 1969, 1974, 1978, 1981, 1989, 1992, 1993, 1994, 2001, 2008, 2011, 2020, 2022],
+  presidenti_repubblica: ['De Nicola', 'Einaudi', 'Gronchi', 'Segni', 'Saragat', 'Leone', 'Pertini', 'Cossiga', 'Scalfaro', 'Ciampi', 'Napolitano', 'Mattarella'],
+  presidenti_consiglio: ['De Gasperi', 'Pella', 'Fanfani', 'Scelba', 'Segni', 'Zoli', 'Tambroni', 'Moro', 'Leone', 'Rumor', 'Colombo', 'Andreotti', 'Craxi', 'Goria', 'De Mita', 'Amato', 'Ciampi', 'D\'Alema', 'Prodi', 'Berlusconi', 'Monti', 'Renzi', 'Gentiloni', 'Conte', 'Draghi', 'Meloni'],
+  trattati_europei: ['Trattato di Roma', 'Atto Unico Europeo', 'Trattato di Maastricht', 'Trattato di Amsterdam', 'Trattato di Nizza', 'Trattato di Lisbona'],
+  articoli_costituzione: ['1', '2', '3', '5', '9', '11', '13', '21', '27', '32', '33', '34', '48', '52', '54', '75', '76', '77', '101', '104', '117', '138', '139'],
+  partiti_storici: ['Democrazia Cristiana', 'PCI', 'PSI', 'MSI', 'PRI', 'PLI', 'PSDI', 'PDS', 'DS', 'Forza Italia', 'AN', 'Lega Nord', 'UDC', 'PD', 'M5S', 'FdI'],
+  regioni_italiane: ['Abruzzo', 'Basilicata', 'Calabria', 'Campania', 'Emilia-Romagna', 'Friuli-Venezia Giulia', 'Lazio', 'Liguria', 'Lombardia', 'Marche', 'Molise', 'Piemonte', 'Puglia', 'Sardegna', 'Sicilia', 'Toscana', 'Trentino-Alto Adige', 'Umbria', 'Valle d\'Aosta', 'Veneto'],
+  mesi: ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'],
   eventi_chiave: {
-    'unità d\u2019Italia': 1861,
-    'breccia di Porta Pia': 1870,
-    'prima guerra mondiale (ingresso italiano)': 1915,
-    'fine prima guerra mondiale': 1918,
-    'marcia su Roma': 1922,
+    'Unità d\'Italia': 1861,
+    'Breccia di Porta Pia': 1870,
+    'Ingresso in WWI': 1915,
+    'Fine WWI': 1918,
+    'Marcia su Roma': 1922,
     'Patti Lateranensi': 1929,
-    'inizio seconda guerra mondiale': 1939,
-    'caduta del fascismo': 1943,
-    'fine seconda guerra mondiale': 1945,
-    'referendum istituzionale': 1946,
-    'entrata in vigore della Costituzione': 1948,
-    'Trattato di Roma (CEE)': 1957,
+    'Inizio WWII': 1939,
+    'Caduta del fascismo': 1943,
+    'Fine WWII': 1945,
+    'Referendum istituzionale': 1946,
+    'Costituzione in vigore': 1948,
+    'Trattato di Roma': 1957,
     'Trattato di Maastricht': 1992,
     'Trattato di Lisbona': 2009
   }
 };
 
-function distrattoriDaDizionario(tipo, corretta, n){
-  var pool = [];
-  var numCorretta = extractNumber(corretta);
-  if (tipo === 'data' || tipo === 'anno'){
-    if (!isNaN(numCorretta) && numCorretta > 1800 && numCorretta < 2100){
-      // Prendi dal dizionario gli anni più vicini
-      var tutti = DIZIONARIO.anni_storici_italiani.slice();
-      tutti.sort(function(a, b){ return Math.abs(a - numCorretta) - Math.abs(b - numCorretta); });
-      var out = [];
-      for (var i = 0; i < tutti.length && out.length < n * 2; i++){
-        if (tutti[i] !== numCorretta) out.push(String(tutti[i]));
-      }
-      return shuffle(out).slice(0, n);
-    }
-  }
-  if (tipo === 'nome'){
-    // Verifica se è un presidente, un pdc, un partito
-    var nomi = [];
-    var corrLower = corretta.toLowerCase();
-    var lists = [DIZIONARIO.presidenti_repubblica, DIZIONARIO.presidenti_consiglio, DIZIONARIO.partiti_storici];
-    for (var l = 0; l < lists.length; l++){
-      var lst = lists[l];
-      for (var k = 0; k < lst.length; k++){
-        if (lst[k].toLowerCase() === corrLower){
-          // Scegli dalla stessa lista
-          for (var m = 0; m < lst.length && nomi.length < n * 2; m++){
-            if (lst[m].toLowerCase() !== corrLower) nomi.push(lst[m]);
-          }
-          return shuffle(nomi).slice(0, n);
-        }
-      }
-    }
-  }
-  if (tipo === 'trattato'){
-    var pool2 = [];
-    for (var t = 0; t < DIZIONARIO.trattati_europei.length; t++){
-      if (DIZIONARIO.trattati_europei[t].toLowerCase() !== corretta.toLowerCase()) pool2.push(DIZIONARIO.trattati_europei[t]);
-    }
-    return shuffle(pool2).slice(0, n);
-  }
-  if (tipo === 'partito'){
-    var pool3 = [];
-    for (var p = 0; p < DIZIONARIO.partiti_storici.length; p++){
-      if (DIZIONARIO.partiti_storici[p].toLowerCase() !== corretta.toLowerCase()) pool3.push(DIZIONARIO.partiti_storici[p]);
-    }
-    return shuffle(pool3).slice(0, n);
-  }
-  return [];
-}
+// Mappa tipo → campo del dizionario (per generazione distrattori)
+var TIPO_A_DIZIONARIO = {
+  anno: 'anni_storici_italiani',
+  presidente_repubblica: 'presidenti_repubblica',
+  presidente_consiglio: 'presidenti_consiglio',
+  trattato: 'trattati_europei',
+  articolo: 'articoli_costituzione',
+  partito: 'partiti_storici',
+  regione: 'regioni_italiane',
+  mese: 'mesi'
+};
 
 // ============================================================
 // FSRS-4.5
@@ -745,13 +684,7 @@ function fsrsNext(card, rating, now){
     S = card.stability * (1 + Math.exp(FSRS_W[8]) * (11 - D) * Math.pow(card.stability, -FSRS_W[9]) * (Math.exp(FSRS_W[10] * (1 - R)) - 1) * hardPenalty * easyBonus);
   }
   S = Math.max(0.1, S);
-  return {
-    stability:S, difficulty:D,
-    reps:(card.reps || 0) + 1,
-    lapses:(card.lapses || 0) + (rating === 1 ? 1 : 0),
-    state: rating === 1 ? 'relearning' : 'review',
-    lastReview: now
-  };
+  return { stability:S, difficulty:D, reps:(card.reps || 0) + 1, lapses:(card.lapses || 0) + (rating === 1 ? 1 : 0), state: rating === 1 ? 'relearning' : 'review', lastReview: now };
 }
 function fsrsInterval(S){
   var d = (S / FSRS_FACTOR) * (Math.pow(FSRS_TARGET_R, 1 / FSRS_DECAY) - 1);
@@ -762,19 +695,8 @@ function fsrsInterval(S){
 // STORE
 // ============================================================
 var Store = {
-  data: {
-    version: 5,
-    docs: {}, highlights: {}, cards: {}, review: {}, reviewLog: [], activeDocId: null
-  },
-  settings: {
-    activeCats: CATEGORIES.map(function(c){ return c.id; }),
-    controlsHidden: false,
-    tier: 'free',              // 'free' | 'pro'
-    modelKey: localStorage.getItem('hl.ai.model') || 'qwen15',
-    hasEverDownloaded: !!localStorage.getItem('hl.ai.model'),
-    freeGenerationsToday: 0,
-    freeGenerationDate: null
-  },
+  data: { version: 5, docs: {}, highlights: {}, cards: {}, review: {}, reviewLog: [], activeDocId: null },
+  settings: { activeCats: CATEGORIES.map(function(c){ return c.id; }), controlsHidden: false, aiModel: null },
   _saveTimer: null,
   _undoStack: [],
   _redoStack: [],
@@ -807,18 +729,13 @@ var Store = {
       localStorage.setItem(SETTINGS_KEY, JSON.stringify(this.settings));
     } catch(e){ console.warn('save', e); }
   },
-
-  getActiveDoc: function(){
-    return this.data.activeDocId ? this.data.docs[this.data.activeDocId] : null;
-  },
-  isPro: function(){ return this.settings.tier === 'pro'; },
-
+  getActiveDoc: function(){ return this.data.activeDocId ? this.data.docs[this.data.activeDocId] : null; },
   newDoc: function(text, title){
     var id = uid();
     this.data.docs[id] = {
       id: id,
       title: title || text.trim().slice(0, 60).replace(/\s+/g, ' ') || 'Senza titolo',
-      text: text, lang: 'it', source: 'paste',
+      text: text, lang: 'en', source: 'paste',
       createdAt: Date.now(), updatedAt: Date.now()
     };
     this.data.activeDocId = id;
@@ -835,10 +752,8 @@ var Store = {
   addHighlight: function(opts){
     var id = uid();
     this.data.highlights[id] = {
-      id: id, docId: opts.docId,
-      start: opts.start, end: opts.end, cat: opts.cat,
-      source: opts.source || 'user',
-      before: opts.before || '', after: opts.after || '',
+      id: id, docId: opts.docId, start: opts.start, end: opts.end, cat: opts.cat,
+      source: opts.source || 'user', before: opts.before || '', after: opts.after || '',
       note: '', createdAt: Date.now()
     };
     this.save();
@@ -862,16 +777,12 @@ var Store = {
   },
   highlightsForDoc: function(docId){
     var out = [];
-    for (var id in this.data.highlights){
-      if (this.data.highlights[id].docId === docId) out.push(this.data.highlights[id]);
-    }
+    for (var id in this.data.highlights) if (this.data.highlights[id].docId === docId) out.push(this.data.highlights[id]);
     return out;
   },
   cardsForDoc: function(docId){
     var out = [];
-    for (var id in this.data.cards){
-      if (this.data.cards[id].docId === docId) out.push(this.data.cards[id]);
-    }
+    for (var id in this.data.cards) if (this.data.cards[id].docId === docId) out.push(this.data.cards[id]);
     return out;
   },
   addCard: function(card){
@@ -901,11 +812,7 @@ var Store = {
     var interval = fsrsInterval(next.stability);
     next.due = now + interval * 86400000;
     this.data.review[cardId] = next;
-    this.data.reviewLog.push({
-      cardId: cardId, rating: rating, ts: now,
-      elapsedMs: prev && prev.lastReview ? now - prev.lastReview : 0,
-      scheduledDays: interval
-    });
+    this.data.reviewLog.push({ cardId: cardId, rating: rating, ts: now, scheduledDays: interval });
     if (this.data.reviewLog.length > 5000) this.data.reviewLog = this.data.reviewLog.slice(-4000);
     this.save();
     return { interval: interval, requeue: rating < 3 };
@@ -921,15 +828,10 @@ var Store = {
     }
     return out;
   },
-
   snapshot: function(docId){
     var hls = {}, cds = {};
-    for (var hid in this.data.highlights){
-      if (this.data.highlights[hid].docId === docId) hls[hid] = JSON.parse(JSON.stringify(this.data.highlights[hid]));
-    }
-    for (var cid in this.data.cards){
-      if (this.data.cards[cid].docId === docId) cds[cid] = JSON.parse(JSON.stringify(this.data.cards[cid]));
-    }
+    for (var hid in this.data.highlights) if (this.data.highlights[hid].docId === docId) hls[hid] = JSON.parse(JSON.stringify(this.data.highlights[hid]));
+    for (var cid in this.data.cards) if (this.data.cards[cid].docId === docId) cds[cid] = JSON.parse(JSON.stringify(this.data.cards[cid]));
     return { docId: docId, highlights: hls, cards: cds };
   },
   pushUndo: function(docId){
@@ -959,54 +861,59 @@ var Store = {
     this._undoStack.push(this.snapshot(snap.docId));
     this.restoreSnapshot(snap);
     return true;
-  },
-
-  canGenerateToday: function(){
-    if (this.isPro()) return true;
-    var today = new Date().toISOString().slice(0, 10);
-    if (this.settings.freeGenerationDate !== today){
-      this.settings.freeGenerationDate = today;
-      this.settings.freeGenerationsToday = 0;
-      this.save();
-    }
-    return this.settings.freeGenerationsToday < 10;
-  },
-  recordGeneration: function(){
-    if (this.isPro()) return;
-    var today = new Date().toISOString().slice(0, 10);
-    if (this.settings.freeGenerationDate !== today){
-      this.settings.freeGenerationDate = today;
-      this.settings.freeGenerationsToday = 0;
-    }
-    this.settings.freeGenerationsToday++;
-    this.save();
   }
 };
 
 // ============================================================
-// ANALISI — euristiche
+// LINGUA / ANALISI
 // ============================================================
+var LANG_PROFILES = {
+  it: 'il lo la i gli le un uno una e ed o od ma però perciò in con su per tra fra da di al allo alla ai agli alle del dello della dei degli delle nel nello nella nei negli nelle sul sullo sulla sui sugli sulle dal dallo dalla dai dagli dalle questo questa questi queste quello quella quelli quelle che chi cui non più anche solo come dove quando perché essere avere sono è era fu sia stata stato stati state viene venga fatto fare può devono deve loro lei lui noi voi egli ella essi esse',
+  en: 'the a an and or but of in on at to for from by with as is are was were be been being this that these those it its he she they them him her his hers their theirs we us our ours you your yours i me my mine not no so very more most much many few some any all every each both either neither one two who whom whose which what where when why how if then else than too also just only can could will would shall should may might must do does did done have has had having about after before during between into through over under above below again further once here there'
+};
+var LANG_SIGNATURE = {
+  it: ['il','lo','la','gli','della','nella','perché','quindi','sono','questo','questa','anche','però','molto','più','già','dopo','prima','stato','viene'],
+  en: ['the','and','of','with','that','this','which','their','would','could','should','very','also','from','into','between','through','during','about']
+};
 var UNIT_WHITELIST = {};
 (function(){
-  var u = ['%','‰','°','km','cm','mm','mi','ft','in','kg','g','mg','lb','oz','t','l','ml','cl','dl','h','min','s','ms','ore','ora','minuti','minuto','secondi','secondo','giorni','giorno','settimane','settimana','mesi','mese','anni','anno','secoli','secolo','j','kj','w','kw','v','kv','hz','khz','mhz','ghz','pa','kpa','mpa','n','mol','b','kb','mb','gb','tb','px','usd','eur','gbp','milioni','miliardi','mila'];
+  var u = ['%','‰','°','km','cm','mm','km','mi','ft','kg','g','mg','t','l','ml','h','min','s','ms','ore','ora','minuti','minuto','secondi','secondo','giorni','giorno','anni','anno','secoli','secolo','hours','hour','minutes','minute','days','day','years','year','j','kj','w','kw','v','hz','bit','byte','px','eur','usd','milioni','miliardi','mila'];
   for (var i = 0; i < u.length; i++) UNIT_WHITELIST[u[i]] = true;
 })();
-var MONTHS_RE = '(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)';
-var QUOTE_PAIRS = [['«','»'],['\u201C','\u201D'],['\u201E','\u201C'],['「','」'],['『','』'],['‹','›'],['❝','❞']];
+var MONTHS_RE = '(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre|january|february|march|april|may|june|july|august|september|october|november|december)';
+var QUOTE_PAIRS = [['«','»'],['"','"'],['"','"'],['„','"'],['「','」'],['『','』'],['‹','›']];
 
+function detectLang(text){
+  var words = text.toLowerCase().match(/\p{L}+/gu) || [];
+  if (!words.length) return 'en';
+  var sample = {};
+  for (var i = 0; i < Math.min(300, words.length); i++) sample[words[i]] = true;
+  var scores = {};
+  for (var lang in LANG_SIGNATURE){
+    var s = 0;
+    var arr = LANG_SIGNATURE[lang];
+    for (var j = 0; j < arr.length; j++) if (sample[arr[j]]) s++;
+    scores[lang] = s;
+  }
+  return (scores.it || 0) > (scores.en || 0) ? 'it' : 'en';
+}
+function getStopwords(lang){
+  var words = (LANG_PROFILES[lang] || LANG_PROFILES.it).split(/\s+/);
+  var set = {};
+  for (var i = 0; i < words.length; i++) set[words[i]] = true;
+  return set;
+}
 function tokenize(text){
   var tokens = [];
-  var re = /[\p{L}\p{M}][\p{L}\p{M}'\u2019\-]*/gu;
+  var re = /[\p{L}\p{M}][\p{L}\p{M}'\-]*/gu;
   var m;
-  while ((m = re.exec(text)) !== null){
-    tokens.push({ word: m[0], lower: m[0].toLowerCase(), start: m.index, end: m.index + m[0].length });
-  }
+  while ((m = re.exec(text)) !== null) tokens.push({ word: m[0], lower: m[0].toLowerCase(), start: m.index, end: m.index + m[0].length });
   return tokens;
 }
 function segmentSentences(text){
   var sentences = [];
   var start = 0;
-  var re = /[.!?…]+(?=\s|$)/g;
+  var re = /[.!?…。！？]+(?=\s|$)/g;
   var m;
   while ((m = re.exec(text)) !== null){
     var end = m.index + m[0].length;
@@ -1042,86 +949,84 @@ function findQuotes(text){
   var spans = [];
   for (var p = 0; p < QUOTE_PAIRS.length; p++){
     var open = QUOTE_PAIRS[p][0], close = QUOTE_PAIRS[p][1];
-    var idx = 0;
-    while ((idx = text.indexOf(open, idx)) !== -1){
-      var ci = text.indexOf(close, idx + 1);
-      if (ci === -1) break;
-      var len = ci - idx - 1;
-      if (len >= 8 && len < 600) spans.push({ start:idx, end:ci + 1, cat:'quote', w:5 });
-      idx = ci + 1;
+    if (open === close){
+      var i = 0, openAt = -1;
+      while (i < text.length){
+        if (text[i] === open){
+          if (openAt < 0) openAt = i;
+          else { if (i - openAt >= 8) spans.push({ start:openAt, end:i + 1, cat:'quote', w:5 }); openAt = -1; }
+        }
+        i++;
+      }
+    } else {
+      var idx = 0;
+      while ((idx = text.indexOf(open, idx)) !== -1){
+        var ci = text.indexOf(close, idx + 1);
+        if (ci === -1) break;
+        var len = ci - idx - 1;
+        if (len >= 8 && len < 600) spans.push({ start:idx, end:ci + 1, cat:'quote', w:5 });
+        idx = ci + 1;
+      }
     }
-  }
-  return spans;
-}
-function findDefinitions(text){
-  var spans = [];
-  var re = /([\p{L}\p{M}][\p{L}\p{M}\s'\u2019\-]{1,40})\s*[:：]\s*([^\n.;]{20,300})/gu;
-  var m;
-  while ((m = re.exec(text)) !== null){
-    var headStart = m.index;
-    var headEnd = headStart + m[1].length;
-    var wc = m[1].trim().split(/\s+/).length;
-    if (wc > 5 || m[1].trim().length < 3) continue;
-    var sliceAfter = m[0].slice(m[1].length);
-    var cm = sliceAfter.match(/^\s*[:：]\s*/);
-    var defStart = headEnd + (cm ? cm[0].length : 1);
-    spans.push({ start:headStart, end:headEnd, cat:'def', w:4 });
-    spans.push({ start:defStart, end:defStart + m[2].length, cat:'def', w:2 });
   }
   return spans;
 }
 function findProperNouns(text, tokens, stopwords){
   var spans = [];
-  var skipWords = { 'il':1,'lo':1,'la':1,'i':1,'gli':1,'le':1,'un':1,'uno':1,'una':1,'e':1,'ed':1,'o':1,'od':1,'ma':1,'però':1,'tuttavia':1,'inoltre':1,'perciò':1,'quindi':1,'dunque':1,'quando':1,'come':1,'dove':1,'perché':1,'se':1,'allora':1,'infine':1,'prima':1,'dopo':1,'poi':1,'ora':1,'anche':1,'non':1,'più':1,'meno':1,'molto':1,'poco':1,'sempre':1,'mai':1,'questo':1,'questa':1,'questi':1,'queste':1,'quello':1,'quella':1,'quelli':1,'quelle':1,'nel':1,'nello':1,'nella':1,'nei':1,'negli':1,'nelle':1,'sul':1,'sullo':1,'sulla':1,'sui':1,'sugli':1,'sulle':1,'dal':1,'dallo':1,'dalla':1,'dai':1,'dagli':1,'dalle':1,'al':1,'allo':1,'alla':1,'ai':1,'agli':1,'alle':1,'del':1,'dello':1,'della':1,'dei':1,'degli':1,'delle':1,'col':1,'coi':1,'tra':1,'fra':1,'che':1,'chi':1,'cui':1,'con':1,'senza':1,'tra':1,'fra':1,'contro':1,'verso':1,'durante':1};
   for (var i = 0; i < tokens.length; i++){
     var t = tokens[i];
     var c0 = t.word[0];
     if (c0 !== c0.toUpperCase() || c0 === c0.toLowerCase()) continue;
     if (/^[IVXLCDM]+$/.test(t.word) && t.word.length >= 2 && t.word.length <= 6) continue;
-    if (skipWords[t.lower]) continue;
     var j = i;
     while (j + 1 < tokens.length){
       var next = tokens[j + 1];
       var between = text.slice(tokens[j].end, next.start);
-      if (!/^[\s'\u2019\-]{1,3}$/.test(between)) break;
-      if (skipWords[next.lower]) break;
+      if (!/^[\s'\-']{1,3}$/.test(between)) break;
       var nc = next.word[0];
       if (nc === nc.toUpperCase() && nc !== nc.toLowerCase()) j++;
       else break;
     }
-    if (j > i){
-      // Nome composto, accetta
-      spans.push({ start:t.start, end:tokens[j].end, cat:'name', w:4 });
-      i = j;
-      continue;
-    }
-    // Nome singolo: accetta solo se non è a inizio frase o è lungo
     var before = text.slice(0, t.start).trim();
-    var atStart = !before || /[.!?…»"'\u201D]\s*$/.test(before);
-    if (!atStart && t.word.length >= 3){
-      spans.push({ start:t.start, end:t.end, cat:'name', w:4 });
-    } else if (atStart && t.word.length >= 6){
-      spans.push({ start:t.start, end:t.end, cat:'name', w:3 });
-    }
+    var atStart = !before || /[.!?…。！？»"']\s*$/.test(before);
+    var isMulti = j > i;
+    var isStop = stopwords[t.lower];
+    var accept = false;
+    if (isMulti) accept = true;
+    else if (!atStart && !isStop) accept = true;
+    else if (atStart && !isStop && t.word.length >= 7) accept = true;
+    if (accept) spans.push({ start:t.start, end:tokens[j].end, cat:'name', w:4 });
+    i = j;
   }
   return spans;
 }
-
+function findConceptSpans(tokens, stopwords){
+  var freq = {};
+  for (var i = 0; i < tokens.length; i++){
+    var t = tokens[i];
+    if (t.lower.length < 3 || stopwords[t.lower]) continue;
+    freq[t.lower] = (freq[t.lower] || 0) + 1;
+  }
+  var spans = [];
+  for (var k = 0; k < tokens.length; k++){
+    var tk = tokens[k];
+    var c = freq[tk.lower] || 0;
+    if (c >= 2 && tk.lower.length >= 6) spans.push({ start:tk.start, end:tk.end, cat:'key', w:3 });
+  }
+  return spans;
+}
 function analyzeText(text){
   if (!text.trim()) return { spans: [], lang: 'it' };
+  var lang = detectLang(text);
+  var stopwords = getStopwords(lang);
   var tokens = tokenize(text);
-  var stopwords = {};
   var spans = []
     .concat(findNumbers(text))
     .concat(findQuotes(text))
-    .concat(findDefinitions(text))
-    .concat(findProperNouns(text, tokens, stopwords));
-  return { spans: spans, lang: 'it' };
+    .concat(findProperNouns(text, tokens, stopwords))
+    .concat(findConceptSpans(tokens, stopwords));
+  return { spans: spans, lang: lang };
 }
-
-// ============================================================
-// ANCHORING
-// ============================================================
 function anchorHighlights(doc){
   var text = doc.text;
   var hls = Store.highlightsForDoc(doc.id);
@@ -1133,350 +1038,356 @@ function anchorHighlights(doc){
     var before = text.slice(Math.max(0, h.start - 30), h.start);
     var after = text.slice(h.end, h.end + 30);
     if (before === h.before && after === h.after) continue;
-    var needle = h.before + slice + h.after;
-    var idx = text.indexOf(needle);
+    var idx = text.indexOf(h.before + slice + h.after);
     if (idx >= 0){
       h.start = idx + h.before.length;
       h.end = h.start + slice.length;
       h.before = text.slice(Math.max(0, h.start - 30), h.start);
       h.after = text.slice(h.end, h.end + 30);
       changed++;
-      continue;
-    }
-    if (slice.length >= 4){
-      var bestPos = -1, bestDist = Infinity;
-      var p = 0;
-      while ((p = text.indexOf(slice, p)) !== -1){
-        var d = Math.abs(p - h.start);
-        if (d < bestDist){ bestDist = d; bestPos = p; }
-        p++;
-      }
-      if (bestPos >= 0 && bestDist < 500){
-        h.start = bestPos;
-        h.end = bestPos + slice.length;
-        h.before = text.slice(Math.max(0, h.start - 30), h.start);
-        h.after = text.slice(h.end, h.end + 30);
-        changed++;
-        continue;
-      }
-    }
-    h.start = -1;
-    h.end = -1;
+    } else h.start = h.end = -1;
   }
   if (changed) Store.save();
   return changed;
 }
 
 // ============================================================
-// ESTRAZIONE ENTITÀ + TEMPLATE (la novità della v5)
+// ESTRAZIONE ENTITÀ (nuova pipeline ibrida)
 // ============================================================
-// Da un highlight, classifica il tipo e genera una domanda con template
-function classifyEntity(text){
-  var t = text.trim();
-  // Data completa: "14 luglio 1789", "1° gennaio 1948"
-  if (/^\d{1,2}\s+(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)\s+\d{3,4}/i.test(t)) return 'data_completa';
-  if (/^(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)\s+\d{1,2},?\s+\d{3,4}/i.test(t)) return 'data_completa';
-  if (/^\d{1,2}°?\s+(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)/i.test(t)) return 'data_completa';
-  // Anno singolo: 1789
-  if (/^\d{3,4}$/.test(t)) return 'anno';
-  // Percentuale
-  if (/^\d+(?:[.,]\d+)?\s*%$/.test(t)) return 'percentuale';
-  // Numero con unità
-  if (/^\d+(?:[.,]\d+)?\s*[a-zA-ZÀ-ÿ]+$/.test(t)) return 'numero';
-  // Numero puro
-  if (/^\d+(?:[.,]\d+)?$/.test(t)) return 'numero';
-  // Nome proprio
-  if (/^[A-ZÀ-Ý][a-zà-ÿ\u2019']+(?:\s+[A-ZÀ-Ý][a-zà-ÿ\u2019']+)*$/.test(t) && t.length >= 3 && t.length <= 60) return 'nome';
-  return 'altro';
+// Tipi supportati:
+// - anno: 4 cifre 1000-2099
+// - data: giorno mese anno (es. "14 luglio 1789")
+// - percentuale: numero con %
+// - numero: numero semplice (importi, abitanti, ecc.)
+// - presidente_repubblica, presidente_consiglio, trattato, articolo, partito, regione: entità da dizionario
+// - nome_proprio: nome proprio generico (fallback)
+
+var PRESIDENTI_REP_SET = {};
+var PRESIDENTI_CONS_SET = {};
+var TRATTATI_SET = {};
+var PARTITI_SET = {};
+var REGIONI_SET = {};
+(function(){
+  for (var i = 0; i < DIZIONARIO.presidenti_repubblica.length; i++) PRESIDENTI_REP_SET[DIZIONARIO.presidenti_repubblica[i].toLowerCase()] = true;
+  for (var j = 0; j < DIZIONARIO.presidenti_consiglio.length; j++) PRESIDENTI_CONS_SET[DIZIONARIO.presidenti_consiglio[j].toLowerCase()] = true;
+  for (var k = 0; k < DIZIONARIO.trattati_europei.length; k++) TRATTATI_SET[DIZIONARIO.trattati_europei[k].toLowerCase()] = true;
+  for (var l = 0; l < DIZIONARIO.partiti_storici.length; l++) PARTITI_SET[DIZIONARIO.partiti_storici[l].toLowerCase()] = true;
+  for (var m = 0; m < DIZIONARIO.regioni_italiane.length; m++) REGIONI_SET[DIZIONARIO.regioni_italiane[m].toLowerCase()] = true;
+})();
+
+function classifyEntity(surface){
+  var s = surface.toLowerCase().trim();
+  // data completa "14 luglio 1789"
+  if (new RegExp('\\d{1,2}\\s+' + MONTHS_RE + '\\s+\\d{3,4}').test(s)) return 'data';
+  // anno
+  if (/^(1\d{3}|20\d{2})$/.test(s)) return 'anno';
+  // percentuale
+  if (/^\d+(?:[.,]\d+)?\s*%$/.test(s)) return 'percentuale';
+  // numero semplice
+  if (/^\d+(?:[.,]\d+)?$/.test(s)) return 'numero';
+  // trattato (multi-word, check prima degli altri per specificità)
+  if (TRATTATI_SET[s]) return 'trattato';
+  // presidente repubblica
+  if (PRESIDENTI_REP_SET[s]) return 'presidente_repubblica';
+  // presidente consiglio
+  if (PRESIDENTI_CONS_SET[s]) return 'presidente_consiglio';
+  // partito
+  if (PARTITI_SET[s]) return 'partito';
+  // regione
+  if (REGIONI_SET[s]) return 'regione';
+  // articolo (numero + "articolo" prima o dopo)
+  if (/articolo\s+\d+/i.test(s)) return 'articolo';
+  // nome proprio (due parole capitalizzate)
+  if (/^[A-ZÀ-Ý][a-zà-ÿ]+\s+[A-ZÀ-Ý][a-zà-ÿ]+/.test(surface)) return 'nome_proprio';
+  return 'sconosciuto';
 }
 
-function isInDictionary(text, dictArray){
-  var t = text.trim().toLowerCase();
-  for (var i = 0; i < dictArray.length; i++){
-    if (dictArray[i].toLowerCase() === t) return true;
+// ============================================================
+// GENERAZIONE DOMANDE — templating
+// ============================================================
+function distrattoriDaDizionario(tipo, corretta, n){
+  var key = TIPO_A_DIZIONARIO[tipo];
+  if (!key) return null;
+  var pool = DIZIONARIO[key] || [];
+  if (!pool.length) return null;
+  var corrStr = String(corretta);
+  var out = [];
+  // Per anni e articoli: prendi i più vicini numericamente
+  if (tipo === 'anno' || tipo === 'articolo'){
+    var corrNum = parseInt(corrStr, 10);
+    if (!isNaN(corrNum)){
+      var sorted = pool.map(function(v){ return { v: v, d: Math.abs(parseInt(v, 10) - corrNum) }; })
+        .filter(function(x){ return String(x.v) !== corrStr; })
+        .sort(function(a, b){ return a.d - b.d; });
+      for (var i = 0; i < sorted.length && out.length < n; i++) out.push(String(sorted[i].v));
+      return shuffle(out).slice(0, n);
+    }
   }
-  return false;
+  // Per altri tipi: mescola e prendi i primi diversi dalla corretta
+  var shuffled = shuffle(pool);
+  for (var j = 0; j < shuffled.length && out.length < n; j++){
+    if (String(shuffled[j]).toLowerCase() !== corrStr.toLowerCase() && out.indexOf(shuffled[j]) === -1) out.push(String(shuffled[j]));
+  }
+  return out.length >= n ? out.slice(0, n) : null;
 }
 
-function classifyNomeSpecific(text){
-  var t = text.trim();
-  if (isInDictionary(t, DIZIONARIO.presidenti_repubblica)) return 'presidente_repubblica';
-  if (isInDictionary(t, DIZIONARIO.presidenti_consiglio)) return 'presidente_consiglio';
-  if (isInDictionary(t, DIZIONARIO.partiti_storici)) return 'partito';
-  if (isInDictionary(t, DIZIONARIO.trattati_europei)) return 'trattato';
-  if (isInDictionary(t, DIZIONARIO.regioni_italiane)) return 'regione';
-  return 'nome_generico';
-}
-
-// Trova il soggetto della frase (semplice: prime 5 parole prima del gap)
-function extractSubjectFromSentence(sentence, entityStart, entityEnd){
-  var before = sentence.slice(0, entityStart);
-  // Prendi le ultime 5 parole prima dell'entità
-  var words = before.trim().split(/\s+/);
-  var subject = words.slice(Math.max(0, words.length - 6)).join(' ');
-  // Rimuovi preposizioni iniziali che non hanno senso
-  subject = subject.replace(/^[a-zà-ÿ\u2019'\s]+/, function(m){
-    // Tieni solo le parole con lunghezza >= 3
-    return m;
-  }).trim();
-  return subject;
-}
-
-// Genera una card da un highlight usando template + dizionario
-function cardFromHighlight(doc, hl){
-  var text = doc.text.slice(hl.start, hl.end).trim();
-  if (!text) return null;
-
-  // Trova la frase contenente
-  var sentences = segmentSentences(doc.text);
-  var sent = null;
-  for (var s = 0; s < sentences.length; s++){
-    if (hl.start >= sentences[s].start && hl.end <= sentences[s].end){ sent = sentences[s]; break; }
-  }
-  if (!sent) return null;
-  var sentText = doc.text.slice(sent.start, sent.end);
-  if (sentText.length < 20 || sentText.length > 400) return null;
-
-  var entityType = classifyEntity(text);
-  var front, back, type, distractors;
-
-  // CASO 1: ANNO
-  if (entityType === 'anno'){
-    var num = extractNumber(text);
-    if (isNaN(num) || num < 1000 || num > 2100) return null;
-    // Cerca un soggetto prima dell'anno nella frase
-    var relStart = hl.start - sent.start;
-    var before = sentText.slice(0, relStart);
-    var after = sentText.slice(relStart + text.length);
-    // Soggetto = ultime 6 parole significative prima
-    var subj = before.replace(/\s+/g, ' ').trim();
-    if (subj.length < 8){
-      // prova a prendere la frase intera riformulata
-      front = sentText.replace(new RegExp('\\b' + escRE(text) + '\\b'), '____').replace(/\s+/g, ' ').trim();
-      type = 'fact-year';
-    } else {
-      front = subj + ' in quale anno?';
-      type = 'fact-year';
+function distrattoriDaPerturbazione(tipo, corretta, n){
+  if (tipo === 'anno'){
+    var num = parseInt(corretta, 10);
+    if (isNaN(num)) return null;
+    var offs = [-1, 1, -2, 2, -3, 3, -5, 5, -7, 7, -10, 10];
+    var out = [];
+    for (var i = 0; i < offs.length; i++){
+      var v = num + offs[i];
+      if (v >= 1000 && v <= 2099) out.push(String(v));
     }
-    back = String(num);
-    distractors = distrattoriDaDizionario('anno', back, 3);
-    if (distractors.length < 3){
-      // Fallback: perturba matematicamente
-      distractors = [];
-      var offs = [-1, 1, -2, 2, -3, 3, -5, 5, -10, 10];
-      for (var o = 0; o < offs.length && distractors.length < 3; o++){
-        var v = num + offs[o];
-        if (v >= 1000 && v <= 2100) distractors.push(String(v));
-      }
-    }
+    return out.length >= n ? shuffle(out).slice(0, n) : null;
   }
-  // CASO 2: DATA COMPLETA
-  else if (entityType === 'data_completa'){
-    var relStart2 = hl.start - sent.start;
-    var before2 = sentText.slice(0, relStart2).replace(/\s+/g, ' ').trim();
-    front = before2 + ' in quale data?';
-    type = 'fact-date';
-    back = text;
-    // Distrattori: prendi date vicine dai mesi/anni
-    var num2 = extractNumber(text);
-    distractors = [];
-    if (!isNaN(num2)){
-      var allYears = DIZIONARIO.anni_storici_italiani.slice();
-      allYears.sort(function(a, b){ return Math.abs(a - num2) - Math.abs(b - num2); });
-      var monthMatch = text.match(/(gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)/i);
-      var month = monthMatch ? monthMatch[1].toLowerCase() : 'gennaio';
-      for (var y = 0; y < allYears.length && distractors.length < 3; y++){
-        if (allYears[y] !== num2) distractors.push('1° ' + month + ' ' + allYears[y]);
-      }
+  if (tipo === 'percentuale'){
+    var m = String(corretta).match(/^(\d+(?:[.,]\d+)?)\s*%$/);
+    if (!m) return null;
+    var p = parseFloat(m[1].replace(',', '.'));
+    var offsP = [-0.5, 0.5, -1, 1, -2, 2, -3, 3, -5, 5];
+    var outP = [];
+    for (var j = 0; j < offsP.length; j++){
+      var v2 = p + offsP[j];
+      if (v2 > 0 && v2 < 100) outP.push(v2.toString().replace('.', ',') + '%');
     }
+    return outP.length >= n ? shuffle(outP).slice(0, n) : null;
   }
-  // CASO 3: PERCENTUALE
-  else if (entityType === 'percentuale'){
-    var pct = extractNumber(text);
-    if (isNaN(pct)) return null;
-    var relStart3 = hl.start - sent.start;
-    var before3 = sentText.slice(0, relStart3).replace(/\s+/g, ' ').trim();
-    var after3 = sentText.slice(relStart3 + text.length).replace(/\s+/g, ' ').trim();
-    front = before3 + ' quale percentuale' + (after3 ? ' ' + after3 : '') + '?';
-    type = 'fact-percent';
-    back = pct + '%';
-    distractors = [];
-    var offs2 = [-0.5, 0.5, -1, 1, -2, 2, -3, 3, -5, 5, -10, 10];
-    for (var o2 = 0; o2 < offs2.length && distractors.length < 3; o2++){
-      var v2 = pct + offs2[o2];
-      if (v2 > 0 && v2 < 100) distractors.push(v2.toString().replace('.', ',') + '%');
-    }
-  }
-  // CASO 4: NOME
-  else if (entityType === 'nome'){
-    var nomeType = classifyNomeSpecific(text);
-    var relStart4 = hl.start - sent.start;
-    var before4 = sentText.slice(0, relStart4).replace(/\s+/g, ' ').trim();
-    var after4 = sentText.slice(relStart4 + text.length).replace(/\s+/g, ' ').trim();
-
-    if (nomeType === 'presidente_repubblica'){
-      front = 'Chi era il Presidente della Repubblica ' + (before4 ? 'di ' + before4 : 'in questo contesto') + '?';
-      type = 'fact-name';
-      back = text;
-      distractors = distrattoriDaDizionario('nome', text, 3);
-      if (distractors.length < 3) distractors = [];
-      // Se non ho distrattori buoni, prova con la lista presidenti
-      if (distractors.length < 3){
-        var lista = DIZIONARIO.presidenti_repubblica.slice();
-        distractors = lista.filter(function(x){ return x !== text; }).slice(0, 3);
-      }
-    } else if (nomeType === 'presidente_consiglio'){
-      front = 'Chi era il Presidente del Consiglio ' + (before4 ? 'di ' + before4 : 'in questo contesto') + '?';
-      type = 'fact-name';
-      back = text;
-      var lista2 = DIZIONARIO.presidenti_consiglio.slice();
-      distractors = shuffle(lista2.filter(function(x){ return x !== text; })).slice(0, 3);
-    } else if (nomeType === 'partito'){
-      front = 'Quale partito ' + (before4 ? before4 : 'in questo contesto') + '?';
-      type = 'fact-name';
-      back = text;
-      var lista3 = DIZIONARIO.partiti_storici.slice();
-      distractors = shuffle(lista3.filter(function(x){ return x !== text; })).slice(0, 3);
-    } else if (nomeType === 'trattato'){
-      front = 'Quale trattato ' + (before4 ? before4 : 'in questo contesto') + '?';
-      type = 'fact-name';
-      back = text;
-      var lista4 = DIZIONARIO.trattati_europei.slice();
-      distractors = shuffle(lista4.filter(function(x){ return x !== text; })).slice(0, 3);
-    } else {
-      // Nome generico: cloze
-      front = before4 + '____' + after4;
-      type = 'fact-name';
-      back = text;
-      distractors = [];
-    }
-  }
-  // CASO 5: NUMERO con unità
-  else if (entityType === 'numero'){
-    var numVal = extractNumber(text);
-    if (isNaN(numVal)) return null;
-    var relStart5 = hl.start - sent.start;
-    var before5 = sentText.slice(0, relStart5).replace(/\s+/g, ' ').trim();
-    var after5 = sentText.slice(relStart5 + text.length).replace(/\s+/g, ' ').trim();
-    front = before5 + ' quanto' + (after5 ? ' ' + after5 : '') + '?';
-    type = 'fact-number';
-    back = text;
-    distractors = [];
-    var unit = text.replace(/[\d.,\s-]+/g, '').trim();
-    var dec = (text.split(/[.,]/)[1] || '').length;
-    var offs3 = [-1, 1, -2, 2, -5, 5, -10, 10, -20, 20];
-    for (var o3 = 0; o3 < offs3.length && distractors.length < 3; o3++){
-      var v3 = numVal + offs3[o3];
+  if (tipo === 'numero'){
+    var num2 = parseFloat(String(corretta).replace(',', '.'));
+    if (isNaN(num2)) return null;
+    var unit = String(corretta).replace(/[\d.,\s]+/g, '').trim();
+    var dec = (String(corretta).split(/[.,]/)[1] || '').length;
+    var offsN = [-1, 1, -2, 2, -5, 5, -10, 10, -100, 100];
+    var outN = [];
+    for (var k = 0; k < offsN.length; k++){
+      var v3 = num2 + offsN[k];
       if (v3 > 0){
-        var formatted = dec > 0 ? v3.toFixed(dec).replace('.', ',') : String(Math.round(v3));
-        distractors.push(unit ? formatted + ' ' + unit : formatted);
+        var s = dec > 0 ? v3.toFixed(dec).replace('.', ',') : String(Math.round(v3));
+        outN.push(unit ? s + ' ' + unit : s);
       }
     }
+    return outN.length >= n ? shuffle(outN).slice(0, n) : null;
   }
-  else {
-    // Cloze generico
-    if (text.length < 4 || text.length > 80) return null;
-    var relStart6 = hl.start - sent.start;
-    var before6 = sentText.slice(0, relStart6).replace(/\s+/g, ' ').trim();
-    var after6 = sentText.slice(relStart6 + text.length).replace(/\s+/g, ' ').trim();
-    front = before6 + ' ____ ' + after6;
-    type = 'concept-cloze';
-    back = text;
-    distractors = [];
+  return null;
+}
+
+// Costruisce i distrattori usando prima il dizionario, poi la perturbazione, poi altri highlight
+function costruisciDistrattori(tipo, corretta, doc, excludeHlId, n){
+  // 1. dizionario
+  var d = distrattoriDaDizionario(tipo, corretta, n);
+  if (d && d.length >= n) return d.slice(0, n);
+  // 2. perturbazione
+  d = distrattoriDaPerturbazione(tipo, corretta, n);
+  if (d && d.length >= n) return d.slice(0, n);
+  // 3. altri highlight dello stesso tipo nel documento
+  var others = Store.highlightsForDoc(doc.id).filter(function(h){
+    return h.id !== excludeHlId && h.start >= 0;
+  });
+  var out = [];
+  for (var i = 0; i < others.length && out.length < n; i++){
+    var txt = doc.text.slice(others[i].start, others[i].end).trim();
+    if (txt && txt.toLowerCase() !== corretta.toLowerCase() && out.indexOf(txt) === -1) out.push(txt);
   }
+  if (out.length >= n) return out.slice(0, n);
+  return null;
+}
 
-  if (!front || !back) return null;
-  if (distractors.length < 3) return null;
+// Trova il soggetto attorno all'entità (per costruire la domanda)
+function estraiSoggetto(frase, entita){
+  var idx = frase.toLowerCase().indexOf(entita.toLowerCase());
+  if (idx < 0) return null;
+  // Prendi le parole prima e dopo l'entità
+  var before = frase.slice(0, idx).trim();
+  var after = frase.slice(idx + entita.length).trim();
+  // Pulizia: rimuovi punteggiatura di apertura
+  before = before.replace(/^[«"'(\[]\s*/, '').replace(/[.,;:!?]+$/, '').trim();
+  after = after.replace(/[.,;:!?]+$/, '').trim();
+  return { before: before, after: after };
+}
 
-  return {
-    type: type,
-    front: front.trim(),
-    back: back.trim(),
-    distractors: distractors.slice(0, 3),
-    highlightId: hl.id,
-    sourceCat: hl.cat
-  };
+// Templating: costruisce la domanda da tipo + soggetto
+function costruisciDomanda(tipo, entita, frase){
+  var sog = estraiSoggetto(frase, entita);
+  if (!sog) return null;
+  var before = sog.before, after = sog.after;
+
+  if (tipo === 'data' || tipo === 'anno'){
+    // "La Costituzione entrò in vigore il 1° gennaio 1948" → "Quando entrò in vigore la Costituzione?"
+    if (before.length > 5){
+      return 'Quando ' + before.toLowerCase() + '?';
+    }
+    if (after.length > 5){
+      return 'In quale anno avvenne: ' + before + ' ' + after.replace(/\s+il\s*$/i, '') + '?';
+    }
+    return null;
+  }
+  if (tipo === 'percentuale' || tipo === 'numero'){
+    if (before.length > 5){
+      var q = before.replace(/^.*\b(fu|era|ottenne|raggiunse|arrivò|ammontava|vide)\b/i, '$1');
+      return 'Quanto ' + q.toLowerCase() + '?';
+    }
+    return null;
+  }
+  if (tipo === 'presidente_repubblica'){
+    return 'Chi fu il Presidente della Repubblica ' + (after ? 'che ' + after.toLowerCase().replace(/^[a-z]/, function(c){ return c; }) : '—') + '?';
+  }
+  if (tipo === 'presidente_consiglio'){
+    return 'Chi era il Presidente del Consiglio quando ' + after.toLowerCase() + '?';
+  }
+  if (tipo === 'trattato'){
+    return 'Quale trattato ' + (after ? after.toLowerCase() : 'fu firmato in questo periodo') + '?';
+  }
+  if (tipo === 'partito'){
+    return 'Quale partito ' + (after ? after.toLowerCase() : '—') + '?';
+  }
+  if (tipo === 'regione'){
+    return 'Quale regione ' + (after ? after.toLowerCase() : '—') + '?';
+  }
+  if (tipo === 'articolo'){
+    return 'Quale articolo ' + (after ? after.toLowerCase() : 'stabilisce questo') + '?';
+  }
+  if (tipo === 'nome_proprio'){
+    // Fallback: cloze sulla frase
+    return null;
+  }
+  return null;
 }
 
 // ============================================================
-// VALIDAZIONE
+// PROPOSTE DA HIGHLIGHT — pipeline ibrida
+// ============================================================
+function proposeFromHighlights(doc){
+  var hls = Store.highlightsForDoc(doc.id).filter(function(h){ return h.start >= 0; });
+  var sentences = segmentSentences(doc.text);
+  var props = [];
+  var seen = {};
+
+  for (var i = 0; i < hls.length; i++){
+    var h = hls[i];
+    var surface = doc.text.slice(h.start, h.end).trim();
+    if (!surface || surface.length < 2 || surface.length > 120) continue;
+
+    // Classifica l'entità
+    var tipo = classifyEntity(surface);
+
+    // Salta entità sconosciute o nomi propri generici
+    if (tipo === 'sconosciuto') continue;
+
+    // Trova la frase contenitrice
+    var sent = null;
+    for (var s = 0; s < sentences.length; s++){
+      if (h.start >= sentences[s].start && h.end <= sentences[s].end){ sent = sentences[s]; break; }
+    }
+    if (!sent) continue;
+    var frase = doc.text.slice(sent.start, sent.end);
+    if (frase.length < 20 || frase.length > 400) continue;
+
+    // Prova a costruire la domanda con il templating
+    var domanda = null;
+    var tipoCard = tipo;
+
+    if (tipo === 'data' || tipo === 'anno' || tipo === 'percentuale' || tipo === 'numero' ||
+        tipo === 'presidente_repubblica' || tipo === 'presidente_consiglio' ||
+        tipo === 'trattato' || tipo === 'partito' || tipo === 'regione' || tipo === 'articolo'){
+      domanda = costruisciDomanda(tipo, surface, frase);
+    }
+
+    // Fallback per nome proprio: cloze
+    if (!domanda && tipo === 'nome_proprio'){
+      var rel = h.start - sent.start;
+      var cloze = frase.slice(0, rel) + '____' + frase.slice(rel + surface.length);
+      cloze = cloze.replace(/\s+/g, ' ').trim();
+      if (cloze.length >= 20 && cloze.length <= 300){
+        domanda = cloze;
+        tipoCard = 'cloze';
+      }
+    }
+
+    if (!domanda || domanda.length < 10 || domanda.length > 220) continue;
+
+    // Costruisci distrattori
+    var distrattori = costruisciDistrattori(tipoCard, surface, doc, h.id, 3);
+    if (!distrattori || distrattori.length < 3) continue;
+
+    // Content ID per deduplicazione
+    var cid = mcqHash(tipoCard + '|' + domanda + '|' + surface);
+    if (seen[cid]) continue;
+    seen[cid] = true;
+
+    props.push({
+      type: tipoCard === 'cloze' ? 'concept-cloze' : ('fact-' + tipoCard),
+      front: domanda,
+      back: surface,
+      distractors: distrattori.slice(0, 3),
+      highlightId: h.id,
+      sourceCat: tipoCard === 'anno' || tipoCard === 'data' || tipoCard === 'percentuale' || tipoCard === 'numero' ? 'num' : 'name',
+      contentId: cid,
+      origin: 'template'
+    });
+  }
+  return props;
+}
+
+// ============================================================
+// VALIDAZIONE (arricchita con check contro testo)
 // ============================================================
 function lev(a, b){
   var m = a.length, n = b.length;
   var d = [];
   for (var i = 0; i <= m; i++){ d[i] = [i]; for (var j = 1; j <= n; j++) d[i][j] = 0; }
   for (var j2 = 0; j2 <= n; j2++) d[0][j2] = j2;
-  for (var i2 = 1; i2 <= m; i2++){
+  for (var i2 = 1; i2 <= m; i2++)
     for (var j3 = 1; j3 <= n; j3++){
       var cost = a[i2 - 1] === b[j3 - 1] ? 0 : 1;
       d[i2][j3] = Math.min(d[i2 - 1][j3] + 1, d[i2][j3 - 1] + 1, d[i2 - 1][j3 - 1] + cost);
     }
-  }
   return d[m][n];
 }
-
-function validateCard(card, doc){
-  if (!card || !card.front || !card.back) return false;
-  if (card.distractors.length < 3) return false;
-
-  var dom = card.front.trim();
-  var cor = card.back.trim();
-  var sb = card.distractors.map(function(s){ return String(s).trim(); }).filter(Boolean);
+function validateMCQ(q, testoOriginale){
+  if (!q || typeof q !== 'object') return false;
+  var dom = String(q.domanda || '').trim();
+  var cor = String(q.corretta || '').trim();
+  if (!Array.isArray(q.sbagliate)) return false;
+  var sb = q.sbagliate.map(function(s){ return String(s).trim(); }).filter(Boolean);
+  if (dom.length < 10 || cor.length < 1) return false;
   if (sb.length < 3) return false;
-
   var corL = cor.toLowerCase();
-
-  // 1. Distrattori distinti
-  if (sb.indexOf(cor) !== -1) return false;
+  var sbL = sb.map(function(s){ return s.toLowerCase(); });
+  if (sbL.indexOf(corL) !== -1) return false;
   var seen = {};
-  for (var i = 0; i < sb.length; i++){
-    if (seen[sb[i].toLowerCase()]) return false;
-    seen[sb[i].toLowerCase()] = true;
-  }
-
-  // 2. Corretta non nella domanda
-  if (dom.toLowerCase().indexOf(corL) !== -1 && corL.length > 3) return false;
-
-  // 3. Lunghezze bilanciate (con tolleranza maggiore per cloze)
-  for (var d = 0; d < sb.length; d++){
-    var ratio = sb[d].length / Math.max(1, cor.length);
-    if (ratio < 0.3 || ratio > 3.0) return false;
-  }
-
-  // 4. Domanda non troppo lunga
+  for (var i = 0; i < sbL.length; i++) seen[sbL[i]] = true;
+  if (Object.keys(seen).length < 3) return false;
+  if (dom.toLowerCase().indexOf(corL) !== -1 && corL.length > 4) return false;
+  var forbidden = /tutte le precedenti|nessuna delle precedenti|all of the above|none of the above/i;
+  if (forbidden.test(cor)) return false;
+  for (var k = 0; k < sb.length; k++) if (forbidden.test(sb[k])) return false;
+  for (var k2 = 0; k2 < sb.length; k2++) if (lev(sb[k2].toLowerCase(), corL) < 3 && sb[k2].length > 6) return false;
   if (dom.length > 220) return false;
-
-  // 5. No domande meta
   if (/secondo il testo|secondo l'autore|nel brano|nel testo|paragrafo/i.test(dom)) return false;
-
-  // 6. Validazione contro il testo: la corretta deve essere nel testo
-  if (doc && doc.text){
-    var textLower = doc.text.toLowerCase();
-    var corLTrimmed = corL.replace(/[.,;:!?]/g, '').trim();
-    if (corLTrimmed.length >= 3){
-      if (textLower.indexOf(corLTrimmed) === -1){
-        // prova come numero
-        var num = extractNumber(cor);
-        if (isNaN(num) || textLower.indexOf(String(num)) === -1) return false;
-      }
+  if (cor.length > 60) return false;
+  for (var d = 0; d < sb.length; d++){
+    var ratio = sb[d].length / cor.length;
+    if (ratio < 0.4 || ratio > 2.5) return false;
+  }
+  if (/^(cos'è|cosa sono|chi era|chi erano|cosa significa|parlami di)/i.test(dom)) return false;
+  // Check contro testo originale
+  if (testoOriginale){
+    var testoLower = testoOriginale.toLowerCase();
+    if (testoLower.indexOf(corL) === -1){
+      // Non è nel testo — potrebbe essere un'astrazione, ma segnaliamo
+      // (non blocchiamo se è un anno perché "1948" può essere "1° gennaio 1948")
+      if (!/^\d+$/.test(cor) && cor.length > 10) return false;
+    }
+    // Distrattori non devono co-occorrere vicino alla corretta
+    var posCorr = testoLower.indexOf(corL);
+    for (var e = 0; e < sb.length; e++){
+      var posD = testoLower.indexOf(sb[e].toLowerCase());
+      if (posD >= 0 && posCorr >= 0 && Math.abs(posD - posCorr) < 30 && sb[e].length > 4) return false;
     }
   }
-
-  // 7. Distrattori non devono essere presenti nel testo vicino alla corretta
-  if (doc && doc.text){
-    var textL = doc.text.toLowerCase();
-    var posCorr = textL.indexOf(cor.toLowerCase().slice(0, Math.min(20, cor.length)));
-    if (posCorr >= 0){
-      for (var k = 0; k < sb.length; k++){
-        var posD = textL.indexOf(sb[k].toLowerCase().slice(0, Math.min(20, sb[k].length)));
-        if (posD >= 0 && Math.abs(posD - posCorr) < 100){
-          // Distrattore presente vicino: rischioso, scarta
-          return false;
-        }
-      }
-    }
-  }
-
   return true;
 }
 
@@ -1485,29 +1396,22 @@ function validateCard(card, doc){
 // ============================================================
 var ai = {
   engine: null, loading: false,
-  modelKey: Store.settings.modelKey,
-  hasEver: Store.settings.hasEverDownloaded,
-  ready: false
+  modelKey: Store.settings.aiModel || 'qwen15',
+  ready: false, failed: false
 };
 function hasWebGPU(){ return typeof navigator !== 'undefined' && !!navigator.gpu; }
 
 function suggestModel(){
-  var mem = (navigator.deviceMemory || 4);
-  var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  var isAppleSilicon = /Macintosh|Mac OS X/i.test(navigator.userAgent);
-  // iPad moderno appare come Mac
-  if (isAppleSilicon && mem >= 16) return 'qwen7';
-  if (isAppleSilicon && mem >= 8) return 'qwen3';
+  var mem = navigator.deviceMemory || 4;
+  var ua = navigator.userAgent || '';
+  var isMobile = /iPhone|iPad|Android/i.test(ua);
+  var isMac = /Macintosh|Mac OS X/.test(ua);
+  // iPad moderno (M-series) si presenta come Mac
+  if (isMac && mem >= 16) return 'qwen3';
+  if (isMac && mem >= 8) return 'qwen15';
   if (isMobile && mem >= 8) return 'qwen15';
   if (isMobile) return 'qwen05';
   return 'qwen15';
-}
-
-function isModelAllowed(key){
-  var m = AI_MODELS[key];
-  if (!m) return false;
-  if (m.tier === 'pro' && !Store.isPro()) return false;
-  return true;
 }
 
 function setAIStatus(kind, msg, pct){
@@ -1534,29 +1438,19 @@ function setAIStatus(kind, msg, pct){
 function initAI(modelKey){
   if (ai.loading) return Promise.resolve();
   if (ai.ready && ai.modelKey === modelKey) return Promise.resolve();
-  if (!isModelAllowed(modelKey)){
-    toast('Modello Pro — passa a Pro per usarlo');
-    return Promise.resolve();
-  }
   if (!hasWebGPU()){
     setAIStatus('error', 'WebGPU non supportato. Serve Chrome 113+ o Safari iOS 26+.');
     return Promise.resolve();
   }
-  var model = AI_MODELS[modelKey];
-  if (!model){ return Promise.resolve(); }
+  var model = AI_MODELS[modelKey] || AI_MODELS.qwen15;
   ai.loading = true;
   ai.modelKey = modelKey;
-  Store.settings.modelKey = modelKey;
-  localStorage.setItem('hl.ai.model', modelKey);
-  ai.hasEver = true;
-  Store.settings.hasEverDownloaded = true;
+  Store.settings.aiModel = modelKey;
   Store.save();
   setAIStatus('loading', 'Scaricamento ' + model.label + '…', 0);
-  var promise = import(AI_CDN).then(function(webllm){
+  return import(AI_CDN).then(function(webllm){
     return webllm.CreateMLCEngine(model.id, {
-      initProgressCallback: function(r){
-        setAIStatus('loading', r.text || '', r.progress || 0);
-      }
+      initProgressCallback: function(r){ setAIStatus('loading', r.text || '', r.progress || 0); }
     });
   }).then(function(engine){
     ai.engine = engine;
@@ -1567,17 +1461,17 @@ function initAI(modelKey){
   }).catch(function(e){
     console.error('AI load', e);
     ai.loading = false;
+    ai.failed = true;
     setAIStatus('error', 'Errore: ' + String(e.message || e).slice(0, 80));
     toast('Modello troppo grande per questo dispositivo?', { ms: 3500 });
   });
-  return promise;
 }
 
 function llmChat(prompt, maxTokens, temperature){
   if (!ai.engine) return Promise.reject(new Error('AI non caricata'));
-  maxTokens = maxTokens || 500;
+  maxTokens = maxTokens || 400;
   temperature = temperature == null ? 0.2 : temperature;
-  var timeoutMs = Math.max(30000, maxTokens * 300);
+  var timeoutMs = Math.max(30000, maxTokens * 250);
   var to = new Promise(function(_, rej){ setTimeout(function(){ rej(new Error('timeout')); }, timeoutMs); });
   var call = ai.engine.chat.completions.create({
     messages: [{ role: 'user', content: prompt }],
@@ -1588,24 +1482,133 @@ function llmChat(prompt, maxTokens, temperature){
   });
 }
 
-// ============================================================
-// PROPOSTE — templating + AI fallback
-// ============================================================
-function proposeFromHighlightsTemplating(doc){
-  var hls = Store.highlightsForDoc(doc.id).filter(function(h){ return h.start >= 0; });
-  var props = [];
-  var seen = {};
-  for (var i = 0; i < hls.length; i++){
-    var card = cardFromHighlight(doc, hls[i]);
-    if (!card) continue;
-    if (!validateCard(card, doc)) continue;
-    var cid = 'tpl|' + card.type + '|' + card.front + '|' + card.back;
-    if (seen[cid]) continue;
-    seen[cid] = true;
-    card.contentId = cid;
-    props.push(card);
+// Prompt semplificato per 1.5B — compito ridotto a estrazione
+function buildExtractPrompt(chunk, lang){
+  if (lang !== 'it'){
+    return 'Extract facts from this text. For each fact, output JSON.\n\nText: "' + chunk + '"\n\n' +
+      'Rules: only extract dates, years, names, numbers. Skip everything else.\n\n' +
+      'Format: [{"entita":"...","tipo":"anno|data|percentuale|numero|nome","soggetto":"..."}]\n\n' +
+      'Example: text "The Constitution came into force on 1 January 1948." → [{"entita":"1 January 1948","tipo":"data","soggetto":"The Constitution came into force"}]\n\nNow extract:';
   }
-  return props;
+  return 'Estrai i fatti da questo testo. Per ogni fatto scrivi un JSON.\n\nTesto: "' + chunk + '"\n\n' +
+    'Regole: estrai SOLO date, anni, nomi di persona, numeri, percentuali. Salta tutto il resto.\n\n' +
+    'Formato: [{"entita":"...","tipo":"anno|data|percentuale|numero|nome","soggetto":"..."}]\n\n' +
+    'Esempio: testo "La Costituzione entrò in vigore il 1° gennaio 1948." → [{"entita":"1° gennaio 1948","tipo":"data","soggetto":"La Costituzione entrò in vigore"}]\n\nOra estrai:';
+}
+
+function mcqHash(s){
+  var h = 5381;
+  var str = s.slice(0, 1000);
+  for (var i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) | 0;
+  return 'm' + Math.abs(h).toString(36);
+}
+function parseExtractResponse(raw){
+  if (!raw || typeof raw !== 'string') return [];
+  var c = raw.trim();
+  var f = c.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (f) c = f[1].trim();
+  try {
+    var p = JSON.parse(c);
+    if (Array.isArray(p)) return p;
+    if (p && typeof p === 'object') return [p];
+  } catch(e){}
+  var arr = c.match(/\[[\s\S]*\]/);
+  if (arr){ try { var p2 = JSON.parse(arr[0]); if (Array.isArray(p2)) return p2; } catch(e){} }
+  return [];
+}
+function splitIntoChunks(text, maxWords){
+  maxWords = maxWords || 90;
+  var sents = segmentSentences(text);
+  if (!sents.length) return text.trim() ? [text.trim()] : [];
+  var chunks = [];
+  var curStart = sents[0].start, curWords = 0;
+  for (var i = 0; i < sents.length; i++){
+    var s = sents[i];
+    var w = (text.slice(s.start, s.end).match(/\p{L}+/gu) || []).length;
+    if (curWords > 0 && curWords + w > maxWords){
+      chunks.push(text.slice(curStart, sents[i - 1].end).trim());
+      curStart = s.start; curWords = w;
+    } else curWords += w;
+  }
+  if (curStart < text.length) chunks.push(text.slice(curStart).trim());
+  return chunks.filter(function(c){ return c.length > 30; });
+}
+
+// Genera via AI estraendo entità, poi costruisce domande con templating
+function generateViaAI(text, lang, onProgress){
+  var chunks = splitIntoChunks(text, 90);
+  var out = [];
+  var seen = {};
+  var i = 0;
+  function next(){
+    if (i >= chunks.length) return Promise.resolve(out);
+    if (onProgress) onProgress(i + 1, chunks.length);
+    var chunk = chunks[i];
+    return llmChat(buildExtractPrompt(chunk, lang), 400, 0.2).then(function(raw){
+      var items = parseExtractResponse(raw);
+      for (var j = 0; j < items.length; j++){
+        var it = items[j];
+        if (!it.entita || !it.tipo) continue;
+        var entita = String(it.entita).trim();
+        var tipo = String(it.tipo).trim().toLowerCase();
+        // Normalizza tipo
+        if (tipo === 'data') tipo = 'data';
+        else if (tipo === 'anno') tipo = 'anno';
+        else if (tipo === 'percentuale') tipo = 'percentuale';
+        else if (tipo === 'numero' || tipo === 'cifra') tipo = 'numero';
+        else if (tipo === 'nome') tipo = 'nome_proprio';
+        else continue;
+
+        // Classifica di nuovo per sicurezza
+        var verified = classifyEntity(entita);
+        if (verified !== 'sconosciuto' && verified !== 'nome_proprio') tipo = verified;
+
+        // Trova la frase di riferimento
+        var idx = text.indexOf(entita);
+        if (idx < 0) continue;
+        var sent = null;
+        var sents = segmentSentences(text);
+        for (var s2 = 0; s2 < sents.length; s2++){
+          if (idx >= sents[s2].start && idx < sents[s2].end){ sent = sents[s2]; break; }
+        }
+        if (!sent) continue;
+        var frase = text.slice(sent.start, sent.end);
+
+        var domanda = costruisciDomanda(tipo, entita, frase);
+        if (!domanda && tipo === 'nome_proprio'){
+          var rel = idx - sent.start;
+          var cloze = frase.slice(0, rel) + '____' + frase.slice(rel + entita.length);
+          cloze = cloze.replace(/\s+/g, ' ').trim();
+          if (cloze.length >= 20 && cloze.length <= 300){
+            domanda = cloze;
+            tipo = 'cloze';
+          }
+        }
+        if (!domanda) continue;
+
+        // Distrattori dal dizionario
+        var tipoPerDict = tipo;
+        var distr = costruisciDistrattori(tipoPerDict, entita, Store.getActiveDoc() || { id: null, text: text }, null, 3);
+        if (!distr || distr.length < 3) continue;
+
+        var cid = mcqHash(tipo + '|' + domanda + '|' + entita);
+        if (seen[cid]) continue;
+        seen[cid] = true;
+
+        out.push({
+          domanda: domanda,
+          corretta: entita,
+          sbagliate: distr.slice(0, 3),
+          tipo: tipo,
+          highlightId: null,
+          sourceCat: (tipo === 'anno' || tipo === 'data' || tipo === 'percentuale' || tipo === 'numero') ? 'num' : 'name'
+        });
+      }
+      i++;
+      return next();
+    }).catch(function(e){ console.warn('chunk fail', e); i++; return next(); });
+  }
+  return next();
 }
 
 // ============================================================
@@ -1672,7 +1675,6 @@ function renderAnnotated(doc){
   if (cursor < text.length) html += esc(text.slice(cursor));
   return html;
 }
-
 function redraw(){
   var doc = Store.getActiveDoc();
   if (!doc){
@@ -1752,12 +1754,7 @@ function renderLegend(doc){
 // ============================================================
 // STATE
 // ============================================================
-var state = {
-  editMode: false,
-  editCategory: 'key',
-  searchHits: [],
-  searchIdx: -1
-};
+var state = { editMode: false, editCategory: 'key', searchHits: [], searchIdx: -1 };
 
 // ============================================================
 // SELEZIONE
@@ -1880,10 +1877,13 @@ function applyHighlight(start, end, cat, silent){
 // ============================================================
 function findTokenAt(text, pos){
   var tokens = tokenize(text);
-  for (var i = 0; i < tokens.length; i++){
-    if (pos >= tokens[i].start && pos <= tokens[i].end) return tokens[i];
+  for (var i = 0; i < tokens.length; i++) if (pos >= tokens[i].start && pos <= tokens[i].end) return tokens[i];
+  var best = null, bestDist = Infinity;
+  for (var j = 0; j < tokens.length; j++){
+    var d = Math.min(Math.abs(tokens[j].start - pos), Math.abs(tokens[j].end - pos));
+    if (d < bestDist){ bestDist = d; best = tokens[j]; }
   }
-  return null;
+  return (best && bestDist < 5) ? best : null;
 }
 function getClickPos(outputEl, clientX, clientY){
   var node = null, offset = 0;
@@ -1917,9 +1917,7 @@ function toggleTokenHighlight(token){
   if (!doc) return;
   var cat = state.editCategory;
   var start = token.start, end = token.end;
-  var existing = Store.highlightsForDoc(doc.id).filter(function(h){
-    return h.start === start && h.end === end;
-  })[0];
+  var existing = Store.highlightsForDoc(doc.id).filter(function(h){ return h.start === start && h.end === end; })[0];
   Store.pushUndo(doc.id);
   if (existing){
     if (existing.cat === cat){
@@ -1998,59 +1996,33 @@ function runTextSearch(q){
   state.searchHits = [];
   var hh = out.querySelectorAll('mark.search-hit');
   for (var k = 0; k < hh.length; k++) state.searchHits.push(hh[k]);
-  if (state.searchHits.length){
-    state.searchIdx = 0;
-    focusSearchHit();
-  } else {
-    var cnt2 = $('searchCount');
-    if (cnt2) cnt2.textContent = '0';
-  }
+  if (state.searchHits.length){ state.searchIdx = 0; focusSearchHit(); }
+  else { var cnt2 = $('searchCount'); if (cnt2) cnt2.textContent = '0'; }
 }
 function focusSearchHit(){
   if (!state.searchHits.length) return;
-  for (var i = 0; i < state.searchHits.length; i++){
-    state.searchHits[i].classList.toggle('current', i === state.searchIdx);
-  }
+  for (var i = 0; i < state.searchHits.length; i++) state.searchHits[i].classList.toggle('current', i === state.searchIdx);
   var h = state.searchHits[state.searchIdx];
   if (h) h.scrollIntoView({ behavior:'smooth', block:'center' });
   var cnt = $('searchCount');
   if (cnt) cnt.textContent = (state.searchIdx + 1) + '/' + state.searchHits.length;
 }
-function nextSearchHit(){
-  if (!state.searchHits.length) return;
-  state.searchIdx = (state.searchIdx + 1) % state.searchHits.length;
-  focusSearchHit();
-}
-function prevSearchHit(){
-  if (!state.searchHits.length) return;
-  state.searchIdx = (state.searchIdx - 1 + state.searchHits.length) % state.searchHits.length;
-  focusSearchHit();
-}
+function nextSearchHit(){ if (!state.searchHits.length) return; state.searchIdx = (state.searchIdx + 1) % state.searchHits.length; focusSearchHit(); }
+function prevSearchHit(){ if (!state.searchHits.length) return; state.searchIdx = (state.searchIdx - 1 + state.searchHits.length) % state.searchHits.length; focusSearchHit(); }
 function toggleSearchBar(force){
   var bar = $('searchBar');
   if (!bar) return;
   var isOpen = bar.classList.contains('show');
   var shouldOpen = force != null ? force : !isOpen;
-  if (shouldOpen){
-    bar.classList.add('show');
-    setTimeout(function(){ $('searchInput').focus(); }, 80);
-  } else {
-    bar.classList.remove('show');
-    $('searchInput').value = '';
-    clearSearchHits();
-  }
+  if (shouldOpen){ bar.classList.add('show'); setTimeout(function(){ $('searchInput').focus(); }, 80); }
+  else { bar.classList.remove('show'); $('searchInput').value = ''; clearSearchHits(); }
 }
 
 // ============================================================
-// READING MODE
+// READING
 // ============================================================
-function enterReading(){
-  document.body.classList.add('reading');
-  updateReadProgress();
-}
-function exitReading(){
-  document.body.classList.remove('reading');
-}
+function enterReading(){ document.body.classList.add('reading'); updateReadProgress(); }
+function exitReading(){ document.body.classList.remove('reading'); }
 function updateReadProgress(){
   var el = $('scrollAnnotate');
   if (!el) return;
@@ -2089,39 +2061,56 @@ function openCardPreview(){
   var hls = Store.highlightsForDoc(doc.id).filter(function(h){ return h.start >= 0; });
   if (!hls.length){ toast('Evidenzia prima qualcosa'); return; }
 
-  if (!Store.canGenerateToday()){
-    toast('Limite giornaliero raggiunto (10). Passa a Pro per illimitato.', { ms: 4000 });
-    openModal('modalUpgrade');
-    return;
-  }
+  // PRIMA: pipeline ibrida (templating + dizionario)
+  var base = proposeFromHighlights(doc);
 
-  // Pipeline v5: templating con dizionario (funziona sempre, senza AI)
-  setAIStatus('working', 'Analisi evidenziazioni…', 0);
-  var props = proposeFromHighlightsTemplating(doc);
-
-  // Se AI è pronta, la usiamo per raffinare (opzionale)
-  if (ai.ready && hasWebGPU() && props.length > 0){
-    setAIStatus('ready', props.length + ' domande generate dal dizionario');
-  } else if (props.length > 0){
-    setAIStatus('ready', props.length + ' domande generate');
+  // POI: se AI pronta, integra con estrazione AI
+  if (ai.ready && hasWebGPU()){
+    setAIStatus('working', 'Estrazione AI…', '0%');
+    var focusText = hls.map(function(h){ return doc.text.slice(h.start, h.end).trim(); }).filter(Boolean).join('. ');
+    generateViaAI(focusText, doc.lang, function(cur, tot){
+      setAIStatus('working', 'Estrazione ' + cur + '/' + tot + '…', Math.round(cur / tot * 100) + '%');
+    }).then(function(aiItems){
+      var existing = {};
+      for (var i = 0; i < base.length; i++) existing[base[i].contentId] = true;
+      for (var j = 0; j < aiItems.length; j++){
+        var it = aiItems[j];
+        var cid = mcqHash(it.tipo + '|' + it.domanda + '|' + it.corretta);
+        if (existing[cid]) continue;
+        existing[cid] = true;
+        base.push({
+          type: 'fact-' + it.tipo,
+          front: it.domanda,
+          back: it.corretta,
+          distractors: it.sbagliate.slice(0, 3),
+          highlightId: it.highlightId,
+          sourceCat: it.sourceCat,
+          contentId: cid,
+          origin: 'ai'
+        });
+      }
+      setAIStatus('ready', base.length + ' domande pronte');
+      finishCardPreview(base);
+    }).catch(function(e){
+      console.error(e);
+      setAIStatus('error', 'AI non ha risposto, uso templating');
+      finishCardPreview(base);
+    });
   } else {
-    setAIStatus('error', 'Nessuna domanda di qualità trovata');
+    if (base.length) toast(base.length + ' domande dal templating');
+    finishCardPreview(base);
   }
-
-  pendingProposals = props;
-  if (!pendingProposals.length){
-    toast('Nessuna domanda di qualità. Prova a evidenziare date, nomi o cifre.');
-    return;
-  }
-  Store.recordGeneration();
-  finishCardPreview();
 }
-function finishCardPreview(){
+function finishCardPreview(proposals){
+  pendingProposals = proposals.filter(function(p){
+    return validateMCQ({
+      domanda: p.front, corretta: p.back, sbagliate: p.distractors
+    }, Store.getActiveDoc() ? Store.getActiveDoc().text : '');
+  });
+  if (!pendingProposals.length){ toast('Nessuna domanda di qualità trovata'); return; }
   var existing = {};
   for (var id in Store.data.cards) existing[Store.data.cards[id].contentId] = true;
-  for (var i = 0; i < pendingProposals.length; i++){
-    pendingProposals[i].alreadyExists = !!existing[pendingProposals[i].contentId];
-  }
+  for (var i = 0; i < pendingProposals.length; i++) pendingProposals[i].alreadyExists = !!existing[pendingProposals[i].contentId];
   renderCardPreview();
   openModal('modalCardPreview');
 }
@@ -2142,11 +2131,11 @@ function renderCardPreview(){
     el.className = 'card-item' + (p.alreadyExists ? ' disabled' : '');
     var catColor = '--c-key', catLabel = '?';
     for (var c = 0; c < CATEGORIES.length; c++) if (CATEGORIES[c].id === p.sourceCat){ catColor = CATEGORIES[c].color; catLabel = CATEGORIES[c].label; }
-    var map = { 'fact-year':'Anno', 'fact-date':'Data', 'fact-percent':'Percentuale', 'fact-number':'Numero', 'fact-name':'Nome', 'concept-cloze':'Cloze' };
-    var typeLabel = map[p.type] || p.type;
+    var typeLabel = p.type.replace('fact-', '').replace('concept-', '');
     el.innerHTML =
       '<div class="card-head">' +
         '<span class="badge" style="background:var(' + catColor + ');color:var(--ink)">' + esc(typeLabel) + '</span>' +
+        (p.origin === 'ai' ? '<span class="badge ai-badge">AI</span>' : '<span class="badge">TPL</span>') +
         (p.alreadyExists ? '<span class="card-due">già presente</span>' : '') +
         '<label style="margin-left:auto;display:flex;align-items:center;gap:6px;cursor:pointer">' +
           '<input type="checkbox" data-idx="' + j + '" ' + (p.alreadyExists ? 'disabled' : 'checked') + ' style="width:18px;height:18px;accent-color:var(--ai)">' +
@@ -2170,7 +2159,8 @@ function confirmCardGeneration(){
       Store.addCard({
         docId: doc.id, highlightId: p.highlightId || null, contentId: p.contentId,
         type: p.type, front: p.front, back: p.back,
-        distractors: p.distractors, sourceCat: p.sourceCat
+        distractors: p.distractors || null, sourceCat: p.sourceCat,
+        origin: p.origin || 'template'
       });
       added++;
     }
@@ -2260,10 +2250,7 @@ function askDeleteDoc(id){
     delete Store.data.docs[id];
     for (var hid in Store.data.highlights) if (Store.data.highlights[hid].docId === id) delete Store.data.highlights[hid];
     for (var cid in Store.data.cards){
-      if (Store.data.cards[cid].docId === id){
-        delete Store.data.cards[cid];
-        delete Store.data.review[cid];
-      }
+      if (Store.data.cards[cid].docId === id){ delete Store.data.cards[cid]; delete Store.data.review[cid]; }
     }
     if (Store.data.activeDocId === id){
       Store.data.activeDocId = null;
@@ -2293,12 +2280,10 @@ function renderCardsView(){
   for (var i = 0; i < source.length; i++){
     var c = source[i];
     var r = Store.data.review[c.id];
-    var duePro;
+    var due;
     if (!r) due = 'nuova';
-    else';
- if (r.due <= Date.now()) due  = 'da ripassare }';
-    else due = 'tra ' + else Math.max(1, Math {
-.ceil((r.due - Date.now()) / 86400000)) + 'g';
+    else if (r.due <= Date.now()) due = 'da ripassare';
+    else due = 'tra ' + Math.max(1, Math.ceil((r.due - Date.now()) / 86400000)) + 'g';
     var catColor = '--c-key', catLabel = '?';
     for (var j = 0; j < CATEGORIES.length; j++) if (CATEGORIES[j].id === c.sourceCat){ catColor = CATEGORIES[j].color; catLabel = CATEGORIES[j].label; }
     var hl = c.highlightId ? Store.data.highlights[c.highlightId] : null;
@@ -2309,6 +2294,7 @@ function renderCardsView(){
     el.innerHTML =
       '<div class="card-head">' +
         '<span class="badge" style="background:var(' + catColor + ');color:var(--ink)">' + esc(catLabel) + '</span>' +
+        (c.origin === 'ai' ? '<span class="badge ai-badge">AI</span>' : '') +
         '<span class="card-due">' + esc(due) + '</span>' +
       '</div>' +
       '<div class="card-front">' + esc(c.front) + '</div>' +
@@ -2359,19 +2345,8 @@ function openCardEditor(card, isNew){
 var rev = { queue: [], idx: 0, done: 0, correct: 0, start: 0, mcq: null, mcqForIdx: -1, selected: -1 };
 function buildMCQ(card){
   var correct = card.back;
-  var ds = Array.isArray(card.distractors) ? card.distractors.filter(function(x){
-    return x && x.trim() && x.trim() !== correct.trim();
-  }) : [];
+  var ds = Array.isArray(card.distractors) ? card.distractors.filter(function(x){ return x && x.trim() && x.trim() !== correct.trim(); }) : [];
   var finalDs = ds.slice(0, 3);
-  if (finalDs.length < 3){
-    for (var id in Store.data.cards){
-      if (finalDs.length >= 3) break;
-      var p = Store.data.cards[id];
-      if (p.id === card.id || p.type !== card.type) continue;
-      if (!p.back || p.back.trim() === correct.trim() || finalDs.indexOf(p.back) !== -1) continue;
-      finalDs.push(p.back);
-    }
-  }
   if (finalDs.length < 3) return null;
   var options = shuffle([correct].concat(finalDs.slice(0, 3)));
   return { options: options, correctIndex: options.indexOf(correct) };
@@ -2448,6 +2423,7 @@ function renderReviewCard(){
     '<div class="review-progress">Domanda ' + (rev.idx + 1) + ' di ' + rev.queue.length + '</div>' +
     '<div class="review-source">' +
       '<span class="badge" style="background:var(' + catColor + ');color:var(--ink)">' + esc(catLabel) + '</span>' +
+      (card.origin === 'ai' ? '<span class="badge ai-badge">AI</span>' : '') +
       (doc ? '<span>· ' + esc(doc.title.slice(0, 40)) + '</span>' : '') +
     '</div>' +
     '<div class="review-card">' +
@@ -2485,11 +2461,11 @@ function updateReviewBadge(){
 }
 
 // ============================================================
-// STATS
+// STATS VIEW
 // ============================================================
-function renderStatsView(){
-  var box = $('statsContent');
-  var log = Store.data.reviewLog;
+zionifunction renderStatsView(){
+  var box = $('statsContent per');
+  var log = Store.data.reviewLog l;
   var byCat = {};
   for (var i = 0; i < log.length; i++){
     var entry = log[i];
@@ -2537,36 +2513,42 @@ function renderStatsView(){
     }
   }
   html += '</div>';
-  var orphans = 0;
-  for (var hid in Store.data.highlights) if (Store.data.highlights[hid].start < 0) orphans++;
-  if (orphans){
-    html += '<div class="retention-block"><h4>Evidenziazioni orfane (' + orphans + ')</h4>' +
-      '<div style="font-size:.82rem;color:var(--ink-2);line-height:1.6">Il testo è stato modificato e non è stato possibile ri-ancorarle.</div>' +
-    '</div>';
-  }
-  var used = {};
-  for (var cid in Store.data.cards) if (Store.data.cards[cid].highlightId) used[Store.data.cards[cid].highlightId] = true;
-  var dead = 0;
-  for (var hid2 in Store.data.highlights){
-    var h2 = Store.data.highlights[hid2];
-    if (h2.start >= 0 && !used[hid2]) dead++;
-  }
-  if (dead){
-    html += '<div class="retention-block"><h4>Evidenziazioni senza domande (' + dead + ')</h4>' +
-      '<div style="font-size:.82rem;color:var(--ink-2);line-height:1.6">Evidenziate ma mai trasformate in domande.</div>' +
-    '</div>';
-  }
-  if (!Store.isPro()){
-    var remaining = Math.max(0, 10 - (Store.settings.freeGenerationsToday || 0));
-    html += '<div class="upgrade-card">' +
-      '<h4>Passa a Pro</h4>' +
-      '<p>Hai ' + remaining + ' generazioni gratuite rimaste oggi. Con Pro: illimitate, modelli AI più potenti, export PDF completo.</p>' +
-      '<button id="btnUpgradeFromStats">Scopri Pro</button>' +
-    '</div>';
-  }
+  // Dizionario
+  html += '<div class="retention-block"><h4>Dizionario di dominio</h4>' +
+    '<div style="font-size:.82rem;color:var(--ink-2);line-height:1.6;margin-bottom:10px">Il motore usa queste liste per generare distrattori plausibili. Ogni voce è curata per il dominio storico-concorsuale italiano.</div>' +
+    '<button class="tbtn" id="btnOpenDict">Apri dizionario</button>' +
+  '</div>';
   box.innerHTML = html;
-  var bu = $('btnUpgradeFromStats');
-  if (bu) bu.addEventListener('click', function(){ openModal('modalUpgrade'); });
+  var bd = $('btnOpenDict');
+  if (bd) bd.addEventListener('click', renderDictModal);
+}
+
+function renderDictModal(){
+  var box = $('dictContent');
+  box.innerHTML = '';
+  var labels = {
+    anni_storici_italiani: 'Anni storici italiani',
+    presidenti_repubblica: 'Presidenti della Repubblica',
+    presidenti_consiglio: 'Presidenti del Consiglio',
+    trattati_europei: 'Trattati europei',
+    articoli_costituzione: 'Articoli della Costituzione',
+    partiti_storici: 'Partiti storici',
+    regioni_italiane: 'Regioni italiane',
+    mesi: 'Mesi'
+  };
+  for (var key in labels){
+    var arr = DIZIONARIO[key] || [];
+    var row = document.createElement('div');
+    row.className = 'dict-row';
+    row.innerHTML = '<div class="dlabel">' + esc(labels[key]) + '</div><div class="dval">' + arr.length + ' voci · ' + esc(arr.slice(0, 8).join(', ')) + (arr.length > 8 ? '…' : '') + '</div>';
+    box.appendChild(row);
+  }
+  var evRow = document.createElement('div');
+  evRow.className = 'dict-row';
+  var evCount = Object.keys(DIZIONARIO.eventi_chiave || {}).length;
+  evRow.innerHTML = '<div class="dlabel">Eventi chiave</div><div class="dval">' + evCount + ' voci</div>';
+  box.appendChild(evRow);
+  openModal('modalDict');
 }
 
 // ============================================================
@@ -2633,6 +2615,13 @@ function buildStandaloneHTML(){
   var css = 'body{font-family:Georgia,serif;max-width:720px;margin:32px auto;padding:0 20px;line-height:1.8;font-size:1.08rem;color:#1b1815;background:#faf7f2}h1{font-size:1.1rem;font-family:system-ui;color:#8a8178;font-weight:600;margin-bottom:4px}.meta{font-family:system-ui;font-size:.78rem;color:#8a8178;margin-bottom:24px}mark{padding:1px 0;border-radius:3px;background:transparent;color:inherit}mark.c-num{background:#ffe680}mark.c-name{background:#d9b8ff}mark.c-key{background:#b6e6b6}mark.c-quote{background:#ffc1cf}mark.c-list{background:#a9d8ff}mark.c-def{background:#ffe0b6}mark.c-sentence{background:rgba(255,201,160,.45)}';
   return '<!doctype html><html lang="it"><head><meta charset="utf-8"><title>' + esc(doc.title) + '</title><style>' + css + '</style></head><body><h1>HIGHLIGHT AI · ' + esc(doc.title) + '</h1><div class="meta">' + new Date().toLocaleString('it-IT') + '</div><div>' + annotated + '</div></body></html>';
 }
+function exportHTML(){
+  var doc = Store.getActiveDoc();
+  if (!doc){ toast('Nessun testo attivo'); return; }
+  var html = buildStandaloneHTML();
+  downloadBlob(html, 'highlight-' + Date.now() + '.html', 'text/html');
+  toast('HTML esportato');
+}
 function exportPDF(){
   var doc = Store.getActiveDoc();
   if (!doc || !doc.text.trim()){ toast('Nessun testo'); return; }
@@ -2691,56 +2680,33 @@ function fallbackCopy(text){
 // ============================================================
 function openModal(id){ var el = $(id); if (el) el.classList.add('open'); }
 function closeModal(id){ var el = $(id); if (el) el.classList.remove('open'); }
-
 function renderModelList(){
   var box = $('modelList');
   box.innerHTML = '';
   var suggested = suggestModel();
   for (var key in AI_MODELS){
     var m = AI_MODELS[key];
-    var locked = (m.tier === 'pro' && !Store.isPro());
     var el = document.createElement('div');
-    el.className = 'model-option' + (key === ai.modelKey ? ' selected' : '') + (locked ? ' locked' : '');
-    var suggestTag = (key === suggested && !locked) ? ' · <span style="color:var(--ai);font-weight:700">consigliato</span>' : '';
-    el.innerHTML = '<span class="radio"></span><div class="info"><div class="name">' + m.label + '<span class="sz">' + m.size + '</span>' + suggestTag + '</div><div class="desc">' + m.desc + '</div></div>' + (locked ? '<span class="lock">🔒 Pro</span>' : '');
-    if (!locked){
-      el.addEventListener('click', (function(k){
-        return function(){ ai.modelKey = k; renderModelList(); vib(5); };
-      })(key));
-    } else {
-      el.addEventListener('click', function(){
-        toast('Modello Pro — passa a Pro per usarlo');
-        closeModal('modalAISetup');
-        setTimeout(function(){ openModal('modalUpgrade'); }, 200);
-      });
-    }
+    el.className = 'model-option' + (key === ai.modelKey ? ' selected' : '');
+    var isSuggested = key === suggested;
+    el.innerHTML = '<span class="radio"></span><div class="info"><div class="name">' + m.label + '<span class="sz">' + m.size + '</span>' + (isSuggested ? ' <span style="color:var(--ai);font-size:.72rem;font-weight:700">· consigliato</span>' : '') + '</div><div class="desc">' + m.desc + '</div></div>';
+    el.addEventListener('click', (function(k){ return function(){ ai.modelKey = k; renderModelList(); vib(5); }; })(key));
     box.appendChild(el);
   }
 }
 function openModelPicker(){
   if (ai.loading) return;
   renderModelList();
-  if (ai.hasEver){
+  if (ai.ready || ai.failed){
     $('aiSetupTitle').textContent = 'Cambia modello AI';
     $('aiSetupDesc').textContent = 'Il nuovo modello verrà scaricato (una sola volta).';
     $('btnConfirmAI').textContent = 'Cambia';
   } else {
     $('aiSetupTitle').textContent = 'Scegli il modello AI';
-    $('aiSetupDesc').textContent = 'Scaricato una sola volta, resta sul dispositivo. Funziona offline.';
+    $('aiSetupDesc').textContent = 'Consigliato per il tuo dispositivo: ' + AI_MODELS[suggestModel()].label + '.';
     $('btnConfirmAI').textContent = 'Scarica';
   }
   openModal('modalAISetup');
-}
-
-function updateTierBadge(){
-  var badge = $('tierBadge');
-  var txt = $('tierText');
-  if (!badge || !txt) return;
-  if (Store.isPro()){
-    badge.className = 'tier-badge pro';
-    txt.textContent = '    badge.className = 'tier-badge free';
-    txt.textContent = 'Free';
-  }
 }
 
 // ============================================================
@@ -2787,20 +2753,15 @@ function analyzeDoc(doc){
   var result = analyzeText(doc.text);
   doc.lang = result.lang;
   var hls = Store.highlightsForDoc(doc.id);
-  for (var i = 0; i < hls.length; i++){
-    if (hls[i].source === 'auto') delete Store.data.highlights[hls[i].id];
-  }
+  for (var i = 0; i < hls.length; i++) if (hls[i].source === 'auto') delete Store.data.highlights[hls[i].id];
   for (var j = 0; j < result.spans.length; j++){
     var s = result.spans[j];
     var before = doc.text.slice(Math.max(0, s.start - 30), s.start);
     var after = doc.text.slice(s.end, s.end + 30);
     var id = uid();
     Store.data.highlights[id] = {
-      id: id, docId: doc.id,
-      start: s.start, end: s.end,
-      cat: s.cat, source: 'auto',
-      before: before, after: after,
-      note: '', createdAt: Date.now()
+      id: id, docId: doc.id, start: s.start, end: s.end, cat: s.cat, source: 'auto',
+      before: before, after: after, note: '', createdAt: Date.now()
     };
   }
   doc.updatedAt = Date.now();
@@ -2808,21 +2769,17 @@ function analyzeDoc(doc){
 }
 
 // ============================================================
-// EVENT BINDING
+// EVENTI
 // ============================================================
 function on(id, evt, fn){
   var el = $(id);
   if (el) el.addEventListener(evt, fn);
-  else console.warn('Elemento non trovato:', id);
 }
 function bindEvents(){
   var tabs = document.querySelectorAll('.tabbar .tab');
   for (var i = 0; i < tabs.length; i++){
-    (function(t){
-      t.addEventListener('click', function(){ switchView(t.dataset.view); vib(5); });
-    })(tabs[i]);
+    (function(t){ t.addEventListener('click', function(){ switchView(t.dataset.view); vib(5); }); })(tabs[i]);
   }
-
   var input = $('input');
   var inputTimer = null;
   if (input){
@@ -2835,16 +2792,11 @@ function bindEvents(){
       doc.updatedAt = Date.now();
       Store.save();
       clearTimeout(inputTimer);
-      inputTimer = setTimeout(function(){
-        anchorHighlights(doc);
-        redraw();
-      }, 500);
+      inputTimer = setTimeout(function(){ anchorHighlights(doc); redraw(); }, 500);
     });
   }
-
-  // Resize
   var handle = $('resizeHandle');
-  if (handle){
+  if (handle && input){
     var savedH = parseInt(localStorage.getItem('hl.inputH') || '0', 10);
     if (savedH && savedH >= 80 && savedH <= 2000) input.style.height = savedH + 'px';
     var dragging = false, startY = 0, startH = 0;
@@ -2866,8 +2818,6 @@ function bindEvents(){
       localStorage.setItem('hl.inputH', String(input.offsetHeight));
     });
   }
-
-  // AI button
   var btnAI = $('btnAI');
   if (btnAI){
     var lpTimer = null, lpFired = false;
@@ -2878,7 +2828,7 @@ function bindEvents(){
       cancelLP();
       lpTimer = setTimeout(function(){ lpFired = true; vib(20); openModelPicker(); }, 500);
     });
-    ['pointerup', 'pointercancel', 'pointerleave'].forEach(function(ev){ btnAI.addEventListener(ev, cancelLP); });
+    ['pointerup','pointercancel','pointerleave'].forEach(function(ev){ btnAI.addEventListener(ev, cancelLP); });
     btnAI.addEventListener('contextmenu', function(e){ e.preventDefault(); });
     btnAI.addEventListener('click', function(e){
       if (lpFired){ e.preventDefault(); e.stopPropagation(); lpFired = false; return; }
@@ -2895,7 +2845,6 @@ function bindEvents(){
       }, 10);
     });
   }
-
   on('btnPaste', 'click', function(){
     if (navigator.clipboard && navigator.clipboard.readText){
       navigator.clipboard.readText().then(function(t){
@@ -2908,9 +2857,7 @@ function bindEvents(){
       }).catch(function(){ toast('Incolla manualmente'); });
     } else toast('Incolla manualmente');
   });
-
   on('btnUndo', 'click', function(){ if (Store.undo()) redraw(); });
-
   on('btnClear', 'click', function(){
     var doc = Store.getActiveDoc();
     if (!doc) return;
@@ -2920,15 +2867,12 @@ function bindEvents(){
     $('btnOkConfirm').onclick = function(){
       doc.text = '';
       $('input').value = '';
-      for (var hid in Store.data.highlights){
-        if (Store.data.highlights[hid].docId === doc.id) delete Store.data.highlights[hid];
-      }
+      for (var hid in Store.data.highlights) if (Store.data.highlights[hid].docId === doc.id) delete Store.data.highlights[hid];
       Store.save();
       redraw();
       closeModal('modalConfirm');
     };
   });
-
   on('btnSaveLib', 'click', function(){
     var doc = Store.getActiveDoc();
     if (!doc){ toast('Nessun testo'); return; }
@@ -2947,9 +2891,7 @@ function bindEvents(){
     toast('Salvato');
     vib(10);
   });
-
   on('btnGenCards', 'click', openCardPreview);
-
   on('btnEdit', 'click', function(){
     state.editMode = !state.editMode;
     document.body.classList.toggle('edit-mode', state.editMode);
@@ -2959,11 +2901,9 @@ function bindEvents(){
     redraw();
     vib(6);
   });
-
   on('btnReading', 'click', enterReading);
   on('btnExitReading', 'click', exitReading);
   on('btnSearchReading', 'click', function(){ toggleSearchBar(true); });
-
   on('btnSearchOpen', 'click', function(){ toggleSearchBar(); });
   on('btnSearchClose', 'click', function(){ toggleSearchBar(false); });
   on('btnSearchNext', 'click', nextSearchHit);
@@ -2977,10 +2917,8 @@ function bindEvents(){
       siTimer = setTimeout(function(){ runTextSearch(v); }, 200);
     });
   }
-
   on('btnSavePDF', 'click', exportPDF);
   on('btnCopy', 'click', copyToClipboard);
-
   on('btnShare', 'click', function(){
     var doc = Store.getActiveDoc();
     if (!doc){ toast('Nessun testo'); return; }
@@ -2991,14 +2929,10 @@ function bindEvents(){
       navigator.share({ files: [file], title: doc.title }).catch(function(){ downloadBlob(html, 'highlight-' + Date.now() + '.html', 'text/html'); });
       return;
     }
-    if (navigator.share){
-      navigator.share({ title: doc.title, text: doc.text }).catch(function(){});
-      return;
-    }
+    if (navigator.share){ navigator.share({ title: doc.title, text: doc.text }).catch(function(){}); return; }
     downloadBlob(html, 'highlight-' + Date.now() + '.html', 'text/html');
     toast('HTML esportato');
   });
-
   on('btnToggleControls', 'click', function(){
     Store.settings.controlsHidden = !Store.settings.controlsHidden;
     document.body.classList.toggle('controls-hidden', Store.settings.controlsHidden);
@@ -3006,10 +2940,8 @@ function bindEvents(){
     Store.save();
     vib(5);
   });
-
   var libSearch = $('libSearch');
   if (libSearch) libSearch.addEventListener('input', function(e){ renderLibrary(e.target.value); });
-
   on('btnNewCard', 'click', function(){
     var doc = Store.getActiveDoc();
     if (!doc){ toast('Nessun testo attivo'); return; }
@@ -3024,9 +2956,9 @@ function bindEvents(){
     if (!f || !b){ toast('Domanda e risposta obbligatorie'); return; }
     var ds = [$('cardEditD1').value.trim(), $('cardEditD2').value.trim(), $('cardEditD3').value.trim()].filter(function(s){ return s && s !== b; }).slice(0, 3);
     if (isNew){
-      Store.addCard({ docId: card.docId, highlightId: null, contentId: 'manual|' + f + '|' + b, type:'manual', front: f, back: b, distractors: ds, sourceCat:'key' });
+      Store.addCard({ docId: card.docId, highlightId: null, contentId: mcqHash('manual|' + f + '|' + b), type:'manual', front: f, back: b, distractors: ds, sourceCat:'key', origin:'manual' });
     } else {
-      Store.updateCard(card.id, { front: f, back: b, distractors: ds });
+      Store.updateCard(card.id, { front: f, back: b, distractors: ds, contentId: mcqHash(card.type + '|' + f + '|' + b) });
     }
     closeModal('modalCardEdit');
     renderCardsView();
@@ -3042,7 +2974,6 @@ function bindEvents(){
     toast('Eliminata');
   });
   on('btnCancelCardEdit', 'click', function(){ closeModal('modalCardEdit'); });
-
   on('btnExport', 'click', function(){ openModal('modalExport'); });
   on('btnCancelExport', 'click', function(){ closeModal('modalExport'); });
   var expList = $('exportList');
@@ -3060,7 +2991,6 @@ function bindEvents(){
       })(opts[e]);
     }
   }
-
   on('btnSaveNote', 'click', function(){
     if (!noteCtxHl) return;
     Store.updateHighlight(noteCtxHl.id, { note: $('noteText').value.trim() });
@@ -3079,7 +3009,6 @@ function bindEvents(){
     toast('Evidenziazione rimossa', { action: 'Annulla', onAction: function(){ if (Store.undo()) redraw(); } });
   });
   on('btnCancelNote', 'click', function(){ closeModal('modalNote'); });
-
   on('btnConfirmCardPreview', 'click', confirmCardGeneration);
   on('btnCancelCardPreview', 'click', function(){ closeModal('modalCardPreview'); });
   on('btnSelectAllCards', 'click', function(){
@@ -3090,21 +3019,11 @@ function bindEvents(){
     var checks = $('cardPreviewList').querySelectorAll('input[type=checkbox]:not(:disabled)');
     for (var i = 0; i < checks.length; i++) checks[i].checked = false;
   });
-
-  // Upgrade
-  on('btnCancelUpgrade', 'click', function(){ closeModal('modalUpgrade'); });
-  on('btnConfirmUpgrade', 'click', function(){
-    closeModal('modalUpgrade');
-    toast('Pro in arrivo! Presto disponibile.', { ms: 3500 });
-  });
-
+  on('btnCloseDict', 'click', function(){ closeModal('modalDict'); });
   var bgs = document.querySelectorAll('.modal-bg');
   for (var b = 0; b < bgs.length; b++){
-    (function(bg){
-      bg.addEventListener('click', function(e){ if (e.target === bg) bg.classList.remove('open'); });
-    })(bgs[b]);
+    (function(bg){ bg.addEventListener('click', function(e){ if (e.target === bg) bg.classList.remove('open'); }); })(bgs[b]);
   }
-
   var output = $('output');
   if (output){
     output.addEventListener('click', function(e){
@@ -3132,18 +3051,14 @@ function bindEvents(){
       }
     });
   }
-
   var sa = $('scrollAnnotate');
   if (sa) sa.addEventListener('scroll', updateReadProgress, { passive: true });
-
   on('btnCancelAI', 'click', function(){ closeModal('modalAISetup'); });
   on('btnConfirmAI', 'click', function(){
     closeModal('modalAISetup');
     initAI(ai.modelKey);
   });
-
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
-
   document.addEventListener('keydown', function(e){
     var ae = e.target;
     if (ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA')) return;
@@ -3169,24 +3084,20 @@ function init(){
     initBrand();
     initSelection();
     bindEvents();
-    updateTierBadge();
-
     if (Store.settings.controlsHidden){
       document.body.classList.add('controls-hidden');
       var tc = $('btnToggleControls');
       if (tc) tc.classList.add('on');
     }
-
     var doc = Store.getActiveDoc();
     if (!doc){
-      var sample = 'La Repubblica Italiana nacque il 2 giugno 1946, quando gli italiani furono chiamati a scegliere tra monarchia e repubblica attraverso un referendum istituzionale. La consultazione vide la vittoria della repubblica con il 54,3% dei voti, mentre la monarchia ottenne il 45,7%. Nello stesso giorno si tennero le elezioni per l\'Assemblea Costituente, che vide il successo della Democrazia Cristiana con il 35,2% dei consensi.\n\nL\'Assemblea Costituente elesse Enrico De Nicola come Capo provvisorio dello Stato. La Costituzione italiana fu approvata il 22 dicembre 1947 ed entrò in vigore il 1° gennaio 1948.\n\nIl 18 aprile 1948 si tennero le prime elezioni politiche della Repubblica, vinte dalla Democrazia Cristiana. Alcide De Gasperi divenne Presidente del Consiglio. Il 1949 segnò l\'ingresso dell\'Italia nella NATO, mentre nel 1957 il Trattato di Roma istituì la Comunità Economica Europea.';
+      var sample = 'La Repubblica Italiana nacque il 2 giugno 1946, quando gli italiani furono chiamati a scegliere tra monarchia e repubblica attraverso un referendum istituzionale. La consultazione vide la vittoria della repubblica con il 54,3% dei voti, mentre la monarchia ottenne il 45,7%. Nello stesso giorno si tennero le ele\'Assemblea Costituente, che vide il successo della Democrazia Cristiana con il 35,2% dei consensi.\n\nL\'Assemblea Costituente, composta da 556 membri, iniziò i lavori il 25 giugno 1946 ed elesse Enrico De Nicola come Capo provvisorio dello Stato. La Costituzione italiana fu approvata il 22 dicembre 1947 con 453 voti favorevoli su 515 votanti ed entrò in vigore il 1° gennaio 1948.\n\nIl 18 aprile 1948 si tennero le prime elezioni politiche della Repubblica, vinte dalla Democrazia Cristiana con il 48,5% dei voti. Alcide De Gasperi divenne Presidente del Consiglio e guidò il primo governo repubblicano. Il 1949 segnò l\'ingresso dell\'Italia nella NATO, mentre nel 1957 il Trattato di Roma istituì la Comunità Economica Europea.';
       doc = Store.newDoc(sample);
       analyzeDoc(doc);
     }
     $('input').value = doc.text;
     redraw();
     updateReviewBadge();
-
     if (ai.hasEver && hasWebGPU()){
       setTimeout(function(){ initAI(ai.modelKey); }, 1500);
     }
