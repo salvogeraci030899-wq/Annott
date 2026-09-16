@@ -7,8 +7,8 @@
 <meta name="theme-color" id="metaThemeColor" content="#f6f3ee">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="ANNOTT">
-<title>ANNOTT · lettura strutturata</title>
+<meta name="apple-mobile-web-app-title" content="HIGHLIGHT AI">
+<title>HIGHLIGHT AI · lettura strutturata</title>
 <style>
 :root{
   color-scheme: light;
@@ -265,6 +265,12 @@ body.reading .reading-bar{display:flex}
 .review-source{text-align:center;font-size:.75rem;color:var(--ink-3);margin-bottom:14px;display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap}
 .review-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow);margin-bottom:14px}
 .review-front{font-size:1.08rem;line-height:1.7;font-family:Georgia,serif;white-space:pre-wrap;color:var(--ink)}
+.review-front .blank{
+  display:inline-block;min-width:60px;text-align:center;
+  border-bottom:2px solid var(--ai);
+  font-weight:700;color:var(--ai);
+  padding:0 4px;margin:0 2px;
+}
 
 .mcq-options{display:flex;flex-direction:column;gap:10px;margin-top:6px}
 .mcq-option{
@@ -310,13 +316,67 @@ body.reading .reading-bar{display:flex}
 
 #modalNote textarea.input-name{min-height:110px;resize:vertical;font-family:inherit;line-height:1.5}
 #modalNote p em{font-style:normal;color:var(--ink-2)}
+
+/* === Brand title animato === */
+.brand-title {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg,
+    #b8893d 0%,
+    #7c4dff 20%,
+    #3b8f4b 40%,
+    #c0392b 60%,
+    #b8893d 80%,
+    #7c4dff 100%);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: brandShift 12s ease-in-out infinite, brandPulse 4s ease-in-out infinite;
+}
+
+[data-theme="dark"] .brand-title {
+  background: linear-gradient(90deg,
+    #d4b478 0%,
+    #b39dff 20%,
+    #7bd88f 40%,
+    #e57373 60%,
+    #d4b478 80%,
+    #b39dff 100%);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+@keyframes brandShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes brandPulse {
+  0%, 100% { filter: drop-shadow(0 0 0 transparent); }
+  50%      { filter: drop-shadow(0 0 6px color-mix(in srgb, var(--ai) 45%, transparent)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-title { animation: none; background-position: 0% 50%; }
+}
+
+/* Nasconde il toggle quando NON siamo nella view annotate */
+body:not([data-view="annotate"]) #btnToggleControls {
+  display: none;
+}
 </style>
 </head>
-<body>
+<body data-view="annotate">
 
 <div class="app" id="app">
   <header class="topbar">
-    <div class="brand"><span class="dotlogo"></span><span>ANNOTT</span></div>
+    <div class="brand"><span class="dotlogo"></span><span class="brand-title">HIGHLIGHT AI</span></div>
     <div class="spacer"></div>
     <button class="iconbtn" id="btnToggleControls" title="Mostra/nascondi controlli" aria-label="Mostra/nascondi controlli">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="iconToggleControls">
@@ -1046,7 +1106,7 @@ async function initAI(modelKey) {
     updateAIButton();
     setAIStatus('ready', `${model.label} pronta`);
     toast(`${model.label} caricata`, 2200);
-    if (state.text.trim()) runAnalyze();
+    if (state.text.trim()) runStatOnly();
   } catch (e) {
     console.error('AI load error:', e);
     ai.loading = false; ai.failed = true;
@@ -1078,7 +1138,6 @@ let mcqCache = {};
 try { mcqCache = JSON.parse(localStorage.getItem(MCQ_CACHE_KEY) || '{}'); } catch {}
 function saveMcqCache() {
   try {
-    // Limita a 200 voci più recenti per evitare di saturare localStorage
     const keys = Object.keys(mcqCache);
     if (keys.length > 200) {
       for (const k of keys.slice(0, keys.length - 200)) delete mcqCache[k];
@@ -1161,7 +1220,6 @@ function isValidMCQ(o) {
   if (!Array.isArray(o.sbagliate)) return false;
   const wrongs = o.sbagliate.filter(s => typeof s === 'string' && s.trim().length > 0);
   if (wrongs.length < 3) return false;
-  // Evita distrattori duplicati con la corretta
   const correctLower = o.corretta.trim().toLowerCase();
   const unique = new Set(wrongs.map(s => s.trim().toLowerCase()));
   if (unique.has(correctLower)) return false;
@@ -1172,18 +1230,15 @@ function parseMCQResponse(raw) {
   if (!raw || typeof raw !== 'string') return [];
   let candidate = raw.trim();
 
-  // Rimuovi eventuale markdown ```json ... ```
   const fenceMatch = candidate.match(/```(?:json)?\s*([\s\S]*?)```/);
   if (fenceMatch) candidate = fenceMatch[1].trim();
 
-  // 1. Prova JSON.parse diretto
   try {
     const parsed = JSON.parse(candidate);
     if (Array.isArray(parsed)) return parsed.filter(isValidMCQ);
     if (parsed && typeof parsed === 'object') return [parsed].filter(isValidMCQ);
   } catch {}
 
-  // 2. Estrai array [ ... ] (greedy fino all'ultima ])
   const arrMatch = candidate.match(/\[[\s\S]*\]/);
   if (arrMatch) {
     try {
@@ -1192,7 +1247,6 @@ function parseMCQResponse(raw) {
     } catch {}
   }
 
-  // 3. Estrai oggetti { ... } uno per uno
   const objs = [];
   const objRe = /\{[^{}]*?"domanda"[\s\S]*?"sbagliate"\s*:\s*\[[^\]]*\][^{}]*?\}/g;
   let m;
@@ -1204,7 +1258,6 @@ function parseMCQResponse(raw) {
   }
   if (objs.length) return objs;
 
-  // 4. Ultimo tentativo: cerca in raw
   if (candidate !== raw) return parseMCQResponse(candidate.replace(/```/g, ''));
   return [];
 }
@@ -1955,14 +2008,14 @@ function exportAnkiCSV() {
   const cs = cards.filter(c => c.docKey === docKey(state.text));
   if (!cs.length) { toast('Nessuna scheda da esportare'); return; }
   const rows = [['Front','Back','Tags']];
-  for (const c of cs) rows.push([c.front, c.back, `ANNOTT::${c.sourceCat}::${c.type}`]);
+  for (const c of cs) rows.push([c.front, c.back, `HIGHLIGHTAI::${c.sourceCat}::${c.type}`]);
   const csv = rows.map(r => r.map(f => `"${String(f).replace(/"/g,'""')}"`).join(',')).join('\n');
-  downloadBlob('\ufeff' + csv, `annott-anki-${Date.now()}.csv`, 'text/csv');
+  downloadBlob('\ufeff' + csv, `highlight-ai-anki-${Date.now()}.csv`, 'text/csv');
   toast(`${cs.length} schede esportate per Anki`);
 }
 function exportMarkdown(obsidian = false) {
   const cs = cards.filter(c => c.docKey === docKey(state.text));
-  let md = `# ANNOTT · ${new Date().toLocaleString('it-IT')}\n\n## Testo annotato\n\n`;
+  let md = `# HIGHLIGHT AI · ${new Date().toLocaleString('it-IT')}\n\n## Testo annotato\n\n`;
   md += state.text + '\n\n';
   if (Object.keys(notes).length) {
     md += '## Note\n\n';
@@ -1978,7 +2031,7 @@ function exportMarkdown(obsidian = false) {
     md += '## Domande\n\n';
     for (const c of cs) md += `### ${c.front}\n\n**${c.back}**\n\n`;
   }
-  downloadBlob(md, `annott-${Date.now()}.md`, 'text/markdown');
+  downloadBlob(md, `highlight-ai-${Date.now()}.md`, 'text/markdown');
   toast(obsidian ? 'Obsidian esportato' : 'Markdown esportato');
 }
 
@@ -2308,7 +2361,7 @@ function toggleEditMode() {
   }
   vibrate(8);
 }
-async function runAnalyze() {
+function runAnalyze() {
   const text = state.text;
   if (!text.trim()) {
     state.spans = [];
@@ -2320,24 +2373,10 @@ async function runAnalyze() {
   }
   const result = analyzeStatistical(text);
   state.lang = result.lang;
-  let spans = result.spans;
+  state.spans = result.spans;
   state.aiApplied = false;
-  if (ai.ready) {
-    const sentences = segmentSentences(text);
-    const before = spans.filter(s => s._concept).length;
-    setAIStatus('working', 'Validazione concetti con AI…', '0%');
-    try {
-      spans = await aiValidateSpans(text, spans, result.lang, sentences);
-      state.aiApplied = true;
-      const after = spans.filter(s => s._concept).length;
-      setAIStatus('ready', `AI ha validato: ${after}/${before} concetti mantenuti`);
-    } catch (e) {
-      console.error('AI validation error:', e);
-      setAIStatus('error', 'Errore durante la validazione AI');
-    }
-  } else setAIStatus('hidden');
-  state.spans = spans;
-  state.lastStats = computeCategoryStats(text, spans);
+  setAIStatus('hidden');
+  state.lastStats = computeCategoryStats(text, state.spans);
   redrawOutput();
   renderStats();
   renderLegend();
@@ -2576,12 +2615,12 @@ async function shareOrExport() {
 function buildExportHTML() {
   const annotated = renderAnnotated(state.text, state.spans, state.activeCats);
   const styles = `body{font-family:Georgia,serif;max-width:720px;margin:32px auto;padding:0 20px;line-height:1.8;font-size:1.08rem;color:#1b1815;background:#faf7f2}h1{font-size:1.1rem;font-family:system-ui;color:#8a8178;font-weight:600;margin-bottom:4px}.meta{font-family:system-ui;font-size:.78rem;color:#8a8178;margin-bottom:24px}mark{padding:1px 0;border-radius:3px;background:transparent;color:inherit}mark.c-num{background:#ffe680} mark.c-name{background:#d9b8ff}mark.c-key{background:#b6e6b6} mark.c-quote{background:#ffc1cf}mark.c-list{background:#a9d8ff} mark.c-def{background:#ffe0b6}mark.c-sentence{background:rgba(255,201,160,.45)}`;
-  return `<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Annotazione</title><style>${styles}</style></head><body><h1>ANNOTT</h1><div class="meta">${new Date().toLocaleString('it-IT')}</div><div>${annotated}</div></body></html>`;
+  return `<!doctype html><html lang="it"><head><meta charset="utf-8"><title>HIGHLIGHT AI</title><style>${styles}</style></head><body><h1>HIGHLIGHT AI</h1><div class="meta">${new Date().toLocaleString('it-IT')}</div><div>${annotated}</div></body></html>`;
 }
 function exportPDF() {
   if (!state.text.trim()) { toast('Nulla da salvare'); return; }
   const annotated = renderAnnotated(state.text, state.spans, state.activeCats);
-  const pdfHTML = `<!doctype html><html lang="it"><head><meta charset="utf-8"><title>Annotazione</title><style>@page{size:A4;margin:18mm 16mm}*{box-sizing:border-box}html,body{margin:0;padding:0}body{font-family:Georgia,serif;color:#1b1815;background:#fff;font-size:12pt;line-height:1.7}.header{margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid #d9d2c5}.header h1{margin:0 0 4px;font-family:system-ui;font-size:14pt}.header .meta{font-family:system-ui;font-size:9pt;color:#8a8178}.content{text-align:justify;white-space:pre-wrap;word-wrap:break-word}mark{padding:1px 1px;border-radius:2px;background:transparent;color:inherit;-webkit-print-color-adjust:exact;print-color-adjust:exact;box-decoration-break:clone}mark.c-num{background:#ffe680}mark.c-name{background:#d9b8ff}mark.c-key{background:#b6e6b6}mark.c-quote{background:#ffc1cf}mark.c-list{background:#a9d8ff}mark.c-def{background:#ffe0b6}mark.c-sentence{background:rgba(255,201,160,.45)}</style></head><body><div class="header"><h1>ANNOTT · lettura strutturata</h1><div class="meta">${new Date().toLocaleString('it-IT')}</div></div><div class="content">${annotated}</div></body></html>`;
+  const pdfHTML = `<!doctype html><html lang="it"><head><meta charset="utf-8"><title>HIGHLIGHT AI</title><style>@page{size:A4;margin:18mm 16mm}*{box-sizing:border-box}html,body{margin:0;padding:0}body{font-family:Georgia,serif;color:#1b1815;background:#fff;font-size:12pt;line-height:1.7}.header{margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid #d9d2c5}.header h1{margin:0 0 4px;font-family:system-ui;font-size:14pt}.header .meta{font-family:system-ui;font-size:9pt;color:#8a8178}.content{text-align:justify;white-space:pre-wrap;word-wrap:break-word}mark{padding:1px 1px;border-radius:2px;background:transparent;color:inherit;-webkit-print-color-adjust:exact;print-color-adjust:exact;box-decoration-break:clone}mark.c-num{background:#ffe680}mark.c-name{background:#d9b8ff}mark.c-key{background:#b6e6b6}mark.c-quote{background:#ffc1cf}mark.c-list{background:#a9d8ff}mark.c-def{background:#ffe0b6}mark.c-sentence{background:rgba(255,201,160,.45)}</style></head><body><div class="header"><h1>HIGHLIGHT AI · lettura strutturata</h1><div class="meta">${new Date().toLocaleString('it-IT')}</div></div><div class="content">${annotated}</div></body></html>`;
   const win = window.open('', '_blank');
   if (!win) {
     const iframe = document.createElement('iframe');
@@ -2600,6 +2639,7 @@ function exportPDF() {
 }
 function switchView(v) {
   state.view = v;
+  document.body.dataset.view = v;
   document.querySelectorAll('.view').forEach(el => el.classList.toggle('active', el.id === 'view-' + v));
   document.querySelectorAll('.tabbar .tab').forEach(t => t.classList.toggle('active', t.dataset.view === v));
   if (v === 'library') renderLibrary($('libSearch').value);
@@ -2756,8 +2796,7 @@ function bindEvents() {
     clearTimeout(timer);
     timer = setTimeout(() => {
       if (state.text.trim().length > 60) {
-        if (ai.ready) runAnalyze();
-        else runStatOnly();
+        runStatOnly();
       }
     }, 500);
   });
@@ -2786,8 +2825,8 @@ function bindEvents() {
     if (!ai.ready) { openModelPicker(); return; }
     btnAI.classList.add('busy');
     requestAnimationFrame(() => {
-      setTimeout(async () => {
-        await runAnalyze();
+      setTimeout(() => {
+        runStatOnly();
         btnAI.classList.remove('busy');
         vibrate(10);
       }, 10);
@@ -2801,7 +2840,7 @@ function bindEvents() {
         input.value = t; state.text = t;
         state.currentLibId = null;
         state.manualAdds = []; state.manualRemoves = [];
-        if (ai.ready) runAnalyze(); else runStatOnly();
+        runStatOnly();
         vibrate(8);
       } else toast('Appunti vuoti');
     } catch { toast('Incolla manualmente'); }
@@ -2865,7 +2904,7 @@ function bindEvents() {
     closeModal('modalAISetup');
     const wasReady = ai.ready;
     const modelChanged = ai.readyModelKey !== ai.modelKey;
-    if (wasReady && !modelChanged) { if (state.text.trim()) runAnalyze(); return; }
+    if (wasReady && !modelChanged) { if (state.text.trim()) runStatOnly(); return; }
     await initAI(ai.modelKey);
   });
 
@@ -2887,7 +2926,6 @@ function bindEvents() {
 
   $('btnGenCards').addEventListener('click', async () => {
     if (!state.text.trim()) { toast('Incolla prima un testo'); return; }
-    if (!state.spans.length && !ai.ready) { toast('Analizza prima un testo'); return; }
     await openCardPreview(state.text, state.spans, state.lang);
   });
   $('btnNewCard').addEventListener('click', () => {
@@ -2991,6 +3029,8 @@ function runStatOnly() {
 
 function init() {
   applySystemTheme();
+  document.body.dataset.view = 'annotate';
+
   let restored = false;
   try {
     const s = JSON.parse(localStorage.getItem(SES_KEY) || 'null');
