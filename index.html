@@ -10,23 +10,28 @@
 <title>HIGHLIGHT AI</title>
 <style>
 /* ============================================================
-   CSS VARIABLES — Change these to modify the global look
+   CSS VARIABLES
+   Change these to modify the global look of the app.
    ============================================================ */
 :root {
   color-scheme: light;
 
+  /* Backgrounds */
   --color-bg: #f6f3ee;
   --color-surface: #ffffff;
   --color-surface-2: #fbf9f5;
   --color-surface-3: #f1ede6;
 
+  /* Text */
   --color-ink: #1b1815;
   --color-ink-2: #57534e;
   --color-ink-3: #a8a29e;
 
+  /* Borders */
   --color-border: #e6e0d6;
   --color-border-2: #d9d2c5;
 
+  /* Accents */
   --color-accent: #b8893d;
   --color-accent-soft: #f3e6cf;
   --color-danger: #c0392b;
@@ -35,6 +40,7 @@
   --color-ok: #3b8f4b;
   --color-ok-soft: #dff0e2;
 
+  /* Highlight category colors */
   --color-number: #ffe680;
   --color-name: #d9b8ff;
   --color-concept: #b6e6b6;
@@ -77,7 +83,7 @@
 }
 
 /* ============================================================
-   RESET AND BASE STYLES
+   RESET AND BASE
    ============================================================ */
 * {
   box-sizing: border-box;
@@ -115,7 +121,7 @@ button {
 }
 
 /* ============================================================
-   MAIN LAYOUT
+   APP SHELL
    ============================================================ */
 .app {
   display: flex;
@@ -124,6 +130,7 @@ button {
   padding-top: env(safe-area-inset-top);
 }
 
+/* Top bar with brand, language badge, AI status */
 .topbar {
   display: flex;
   align-items: center;
@@ -171,6 +178,7 @@ button {
   height: 20px;
 }
 
+/* AI button with green dot when model is loaded */
 .iconbtn.ai-active {
   color: var(--color-ai);
 }
@@ -187,6 +195,7 @@ button {
   border: 2px solid var(--color-bg);
 }
 
+/* Small badge showing detected language */
 .iconbtn .lang-badge {
   position: absolute;
   bottom: 2px;
@@ -204,6 +213,9 @@ button {
   flex: 1;
 }
 
+/* ============================================================
+   VIEWS
+   ============================================================ */
 .view {
   display: none;
   flex: 1;
@@ -248,6 +260,7 @@ button {
   line-height: 23px;
   resize: none;
   padding: 12px 14px;
+  /* 6 lines × 23px + 24px padding = 162px */
   height: 162px;
   display: block;
   overflow-y: auto;
@@ -369,7 +382,7 @@ button {
 }
 
 /* ============================================================
-   OUTPUT
+   ANNOTATED OUTPUT
    ============================================================ */
 .output-card {
   background: var(--color-surface);
@@ -451,7 +464,7 @@ body.edit-mode .edit-hint {
 }
 
 /* ============================================================
-   LIBRARY LIST
+   LIBRARY
    ============================================================ */
 .lib-list {
   display: flex;
@@ -979,6 +992,9 @@ body.edit-mode .edit-hint {
   margin-top: 2px;
 }
 
+/* ============================================================
+   TOAST
+   ============================================================ */
 .toast {
   position: fixed;
   left: 50%;
@@ -1002,6 +1018,9 @@ body.edit-mode .edit-hint {
   opacity: 1;
 }
 
+/* ============================================================
+   AI STATUS BAR
+   ============================================================ */
 .ai-bar {
   display: none;
   align-items: center;
@@ -1058,6 +1077,9 @@ body.edit-mode .edit-hint {
   color: var(--color-danger);
 }
 
+/* ============================================================
+   STATS ROW
+   ============================================================ */
 .stats-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1086,6 +1108,9 @@ body.edit-mode .edit-hint {
   margin-top: 2px;
 }
 
+/* ============================================================
+   ERROR BANNER
+   ============================================================ */
 #error-banner {
   position: fixed;
   top: 0;
@@ -1128,66 +1153,39 @@ body.edit-mode .edit-hint {
     <div class="scroll" id="scroll-text">
       <div class="wrap">
         <div class="input-card">
-          <textarea
-            id="input"
-            placeholder="Paste or type a text — highlighting is automatic (Italian or English)"
-          ></textarea>
+          <textarea id="input" placeholder="Paste any text with facts — news, textbooks, Wikipedia, articles. Highlighting is automatic."></textarea>
         </div>
-
         <div class="cats-row" id="legend"></div>
-
         <div class="actions" id="toolbar">
           <button class="tbtn" id="btn-edit">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 20h9"/>
-              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             Edit
           </button>
           <button class="tbtn" id="btn-generate-cards">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="5" width="18" height="14" rx="2"/>
-              <line x1="7" y1="9" x2="17" y2="9"/>
-              <line x1="7" y1="13" x2="13" y2="13"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="13" y2="13"/></svg>
             Questions
           </button>
           <button class="tbtn" id="btn-save">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-              <polyline points="17 21 17 13 7 13 7 21"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
             Save
           </button>
           <button class="tbtn" id="btn-new">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="12" y1="5" x2="12" y2="19"/>
-              <line x1="5" y1="12" x2="19" y2="12"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             New
           </button>
           <button class="tbtn danger" id="btn-clear">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="3 6 5 6 21 6"/>
-              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
             Clear
           </button>
         </div>
-
         <div class="ai-bar" id="ai-bar">
           <span class="spinner"></span>
           <span class="msg" id="ai-msg">Preparing AI…</span>
           <span class="pct" id="ai-pct"></span>
         </div>
-
-        <div class="edit-hint" id="edit-hint">
-          Edit mode: tap a word to highlight or remove it
-        </div>
-
+        <div class="edit-hint" id="edit-hint">Edit mode: tap a word to highlight or remove it</div>
         <div class="output-card" id="output"></div>
-
-        <div class="stats-row" id="stats" style="display: none;"></div>
+        <div class="stats-row" id="stats" style="display:none"></div>
       </div>
     </div>
   </section>
@@ -1195,14 +1193,9 @@ body.edit-mode .edit-hint {
   <section class="view" id="view-library">
     <div class="scroll">
       <div class="wrap">
-        <input
-          id="library-search"
-          type="search"
-          placeholder="Search library…"
-          style="width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--color-border-2); background: var(--color-surface-2); margin-bottom: 14px; outline: none;"
-        >
+        <input id="library-search" type="search" placeholder="Search library…" style="width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--color-border-2);background:var(--color-surface-2);margin-bottom:14px;outline:none">
         <div class="lib-list" id="library-list"></div>
-        <div class="empty" id="library-empty" style="display: none;">
+        <div class="empty" id="library-empty" style="display:none">
           <div class="title">Library is empty</div>
           <div class="sub">Save a text to find it here later.</div>
         </div>
@@ -1218,30 +1211,19 @@ body.edit-mode .edit-hint {
 
   <nav class="tabbar">
     <button class="tab active" data-view="text">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-        <polyline points="14 2 14 8 20 8"/>
-        <line x1="8" y1="13" x2="16" y2="13"/>
-        <line x1="8" y1="17" x2="13" y2="17"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>
       <span>Text</span>
     </button>
     <button class="tab" data-view="library">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
       <span>Library</span>
     </button>
     <button class="tab" data-view="review" id="tab-review">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
       <span>Review</span>
-      <span class="badge-dot" id="review-badge" style="display: none;">0</span>
+      <span class="badge-dot" id="review-badge" style="display:none">0</span>
     </button>
   </nav>
-
 </div>
 
 <div class="sel-bar" id="selection-bar"></div>
@@ -1275,7 +1257,7 @@ body.edit-mode .edit-hint {
     <p id="note-context"></p>
     <textarea id="note-text" placeholder="Write your note…"></textarea>
     <div class="row-actions">
-      <button class="btn ghost" id="btn-delete-highlight" style="color: var(--color-danger);">Remove</button>
+      <button class="btn ghost" id="btn-delete-highlight" style="color:var(--color-danger)">Remove</button>
       <button class="btn primary" id="btn-save-note">Save</button>
     </div>
   </div>
@@ -1284,16 +1266,13 @@ body.edit-mode .edit-hint {
 <div class="modal-bg" id="modal-ai-setup">
   <div class="modal">
     <h3>Local AI model</h3>
-    <p id="ai-setup-description">
-      The model is downloaded once and stays on your device.
-      AI extracts facts from the text, the dictionary builds the questions.
-    </p>
+    <p id="ai-setup-description">The model is downloaded once and stays on your device. AI extracts facts from the text, the dictionary builds the questions.</p>
     <div id="model-list"></div>
     <div class="row-actions" id="ai-actions-idle">
       <button class="btn ghost" id="btn-cancel-ai">Close</button>
       <button class="btn ai" id="btn-load-ai">Download and activate</button>
     </div>
-    <div class="row-actions" id="ai-actions-ready" style="display: none;">
+    <div class="row-actions" id="ai-actions-ready" style="display:none">
       <button class="btn ghost" id="btn-unload-ai">Deactivate AI</button>
       <button class="btn primary" id="btn-close-ai-ready">Close</button>
     </div>
@@ -1325,6 +1304,7 @@ body.edit-mode .edit-hint {
 
   // ============================================================
   // GLOBAL ERROR HANDLER
+  // Any uncaught error is displayed in the red banner at the top.
   // ============================================================
   var errorBanner = document.getElementById('error-banner');
   window.addEventListener('error', function (event) {
@@ -1336,10 +1316,12 @@ body.edit-mode .edit-hint {
   // BASIC UTILITIES
   // ============================================================
 
+  /** Shortcut for document.getElementById */
   function $(id) {
     return document.getElementById(id);
   }
 
+  /** Escape HTML special characters to prevent XSS */
   function escapeHtml(text) {
     return String(text).replace(/[&<>"']/g, function (character) {
       return {
@@ -1352,20 +1334,26 @@ body.edit-mode .edit-hint {
     });
   }
 
+  /** Generate a unique ID based on timestamp + randomness */
   function generateId() {
     return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   }
 
+  /** Vibrate the device if supported (mobile only) */
   function vibrate(ms) {
     try {
       if (navigator.vibrate) navigator.vibrate(ms);
-    } catch (error) { /* ignore */ }
+    } catch (error) {
+      /* silently ignore */
+    }
   }
 
+  /** Clamp a value between min and max */
   function clamp(value, minimum, maximum) {
     return Math.max(minimum, Math.min(maximum, value));
   }
 
+  /** Fisher-Yates shuffle, returns a new array */
   function shuffle(array) {
     var copy = array.slice();
     for (var i = copy.length - 1; i > 0; i--) {
@@ -1377,6 +1365,7 @@ body.edit-mode .edit-hint {
     return copy;
   }
 
+  /** Show a temporary toast message at the bottom */
   var toastTimer = null;
   function showToast(message, duration) {
     duration = duration || 2200;
@@ -1393,6 +1382,9 @@ body.edit-mode .edit-hint {
   // CONSTANTS
   // ============================================================
 
+  // The 7 highlight categories.
+  // "id" is used internally, "label" is shown to the user,
+  // "cssClass" determines the mark color.
   var CATEGORIES = [
     { id: 'num',      label: 'Numbers',     cssClass: 'c-num' },
     { id: 'name',     label: 'Names',       cssClass: 'c-name' },
@@ -1403,6 +1395,7 @@ body.edit-mode .edit-hint {
     { id: 'sentence', label: 'Sentences',   cssClass: 'c-sentence' }
   ];
 
+  // When two highlights overlap, the higher priority wins.
   var CATEGORY_PRIORITY = {
     quote: 10,
     num: 9,
@@ -1414,10 +1407,12 @@ body.edit-mode .edit-hint {
   };
 
   // ============================================================
-  // DICTIONARY — multilingual, multi-domain
+  // DICTIONARY — optional enhancement layer
   // ============================================================
-  // No longer just Italian history. Covers common facts across
-  // history, politics, geography, in both IT and EN.
+  // The app works WITHOUT the dictionary: the universal engine
+  // pulls distractors from the text itself. But when the
+  // dictionary recognizes an entity, it produces better
+  // distractors (e.g. "Roosevelt" → "Truman, Eisenhower").
 
   var DICTIONARY = {
     commonYears: [
@@ -1426,59 +1421,28 @@ body.edit-mode .edit-hint {
       1947, 1948, 1957, 1962, 1968, 1969, 1978, 1989, 1991,
       1992, 2001, 2008, 2020
     ],
-
-    italianPresidents: [
-      'De Nicola', 'Einaudi', 'Gronchi', 'Segni', 'Saragat', 'Leone',
-      'Pertini', 'Cossiga', 'Scalfaro', 'Ciampi', 'Napolitano', 'Mattarella'
-    ],
-
-    italianPrimeMinisters: [
-      'De Gasperi', 'Pella', 'Fanfani', 'Scelba', 'Segni', 'Zoli',
-      'Tambroni', 'Moro', 'Leone', 'Rumor', 'Colombo', 'Andreotti',
-      'Craxi', 'Goria', 'De Mita', 'Amato', 'Ciampi', "D'Alema",
-      'Prodi', 'Berlusconi', 'Monti', 'Renzi', 'Gentiloni',
-      'Conte', 'Draghi', 'Meloni'
-    ],
-
     usPresidents: [
       'Washington', 'Adams', 'Jefferson', 'Madison', 'Monroe',
       'Jackson', 'Lincoln', 'Grant', 'Roosevelt', 'Truman',
       'Eisenhower', 'Kennedy', 'Johnson', 'Nixon', 'Carter',
       'Reagan', 'Bush', 'Clinton', 'Obama', 'Trump', 'Biden'
     ],
-
     ukPrimeMinisters: [
       'Churchill', 'Attlee', 'Eden', 'Macmillan', 'Wilson',
       'Heath', 'Callaghan', 'Thatcher', 'Major', 'Blair',
       'Brown', 'Cameron', 'May', 'Johnson', 'Sunak'
     ],
-
     treaties: [
       'Treaty of Versailles', 'Treaty of Vienna', 'Treaty of Rome',
-      'Maastricht Treaty', 'Lisbon Treaty', 'Treaty of Paris',
-      'Trattato di Roma', 'Trattato di Maastricht', 'Trattato di Lisbona',
-      'Trattato di Versailles'
+      'Maastricht Treaty', 'Lisbon Treaty', 'Treaty of Paris'
     ],
-
-    italianParties: [
-      'Democrazia Cristiana', 'PCI', 'PSI', 'MSI', 'PRI', 'PLI',
-      'PSDI', 'PDS', 'DS', 'Forza Italia', 'AN', 'Lega Nord',
-      'UDC', 'PD', 'M5S', 'FdI'
-    ],
-
-    italianRegions: [
-      'Abruzzo', 'Basilicata', 'Calabria', 'Campania',
-      'Emilia-Romagna', 'Friuli-Venezia Giulia', 'Lazio', 'Liguria',
-      'Lombardia', 'Marche', 'Molise', 'Piemonte', 'Puglia',
-      'Sardegna', 'Sicilia', 'Toscana', 'Trentino-Alto Adige',
-      'Umbria', "Valle d'Aosta", 'Veneto'
-    ],
-
-    continents: [
-      'Europe', 'Asia', 'Africa', 'America', 'Oceania', 'Antarctica'
+    organizations: [
+      'United Nations', 'NATO', 'European Union', 'WHO',
+      'UNESCO', 'UNICEF', 'IMF', 'World Bank', 'WTO'
     ]
   };
 
+  /** Build a lowercase lookup Set from an array (for fast membership test) */
   function buildLookupSet(array) {
     var set = {};
     for (var i = 0; i < array.length; i++) {
@@ -1487,32 +1451,21 @@ body.edit-mode .edit-hint {
     return set;
   }
 
-  var DICTIONARY_SETS = {
-    italianPresidents: buildLookupSet(DICTIONARY.italianPresidents),
-    italianPrimeMinisters: buildLookupSet(DICTIONARY.italianPrimeMinisters),
+  var DICT_SETS = {
     usPresidents: buildLookupSet(DICTIONARY.usPresidents),
     ukPrimeMinisters: buildLookupSet(DICTIONARY.ukPrimeMinisters),
     treaties: buildLookupSet(DICTIONARY.treaties),
-    italianParties: buildLookupSet(DICTIONARY.italianParties),
-    italianRegions: buildLookupSet(DICTIONARY.italianRegions)
+    organizations: buildLookupSet(DICTIONARY.organizations)
   };
 
-  // Bilingual month regex
-  var MONTH_REGEX = '(?:gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre|january|february|march|april|may|june|july|august|september|october|november|december|janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)';
+  // Bilingual month regex (IT + EN + FR)
+  var MONTH_REGEX =
+    '(?:january|february|march|april|may|june|july|august|september|' +
+    'october|november|december|gennaio|febbraio|marzo|aprile|maggio|' +
+    'giugno|luglio|agosto|settembre|ottobre|novembre|dicembre|' +
+    'janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre)';
 
-  // Italian stopwords
-  var STOPWORDS_IT = (
-    'il lo la i gli le un uno una e ed o od ma però perciò ' +
-    'in con su per tra fra da di al allo alla ai agli alle ' +
-    'del dello della dei degli delle nel nello nella nei negli nelle ' +
-    'sul sullo sulla sui sugli sulle dal dallo dalla dai dagli dalle ' +
-    'questo questa questi queste quello quella quelli quelle ' +
-    'che chi cui non più anche solo come dove quando perché ' +
-    'essere avere sono è era fu sia stata stato stati state ' +
-    'viene venga fatto fare può devono deve loro lei lui noi voi egli ella essi esse'
-  ).split(/\s+/);
-
-  // English stopwords
+  // English stopwords — common words that are never proper nouns
   var STOPWORDS_EN = (
     'the a an and or but of in on at to for from by with as is are was were ' +
     'be been being this that these those it its he she they them him her his ' +
@@ -1525,15 +1478,23 @@ body.edit-mode .edit-hint {
     'below again further once here there'
   ).split(/\s+/);
 
+  // Italian stopwords
+  var STOPWORDS_IT = (
+    'il lo la i gli le un uno una e ed o od ma però perciò ' +
+    'in con su per tra fra da di al allo alla ai agli alle ' +
+    'del dello della dei degli delle nel nello nella nei negli nelle ' +
+    'sul sullo sulla sui sugli sulle dal dallo dalla dai dagli dalle ' +
+    'questo questa questi queste quello quella quelli quelle ' +
+    'che chi cui non più anche solo come dove quando perché ' +
+    'essere avere sono è era fu sia stata stato stati state ' +
+    'viene venga fatto fare può devono deve loro lei lui noi voi'
+  ).split(/\s+/);
+
   // Unified stopword set
   var STOPWORD_SET = {};
   (function () {
-    for (var i = 0; i < STOPWORDS_IT.length; i++) {
-      STOPWORD_SET[STOPWORDS_IT[i]] = true;
-    }
-    for (var j = 0; j < STOPWORDS_EN.length; j++) {
-      STOPWORD_SET[STOPWORDS_EN[j]] = true;
-    }
+    for (var i = 0; i < STOPWORDS_EN.length; i++) STOPWORD_SET[STOPWORDS_EN[i]] = true;
+    for (var j = 0; j < STOPWORDS_IT.length; j++) STOPWORD_SET[STOPWORDS_IT[j]] = true;
   })();
 
   // ============================================================
@@ -1541,49 +1502,41 @@ body.edit-mode .edit-hint {
   // ============================================================
 
   /**
-   * Detects the language of a text (IT or EN).
-   * Returns "it" or "en".
+   * Detects the language of a text: "it" or "en".
+   * Uses signal words + accent counting.
    */
   function detectLanguage(text) {
     if (!text || text.length < 10) return 'en';
-
     var words = text.toLowerCase().match(/\p{L}+/gu) || [];
     if (words.length < 3) return 'en';
 
     var sample = {};
-    var limit = Math.min(200, words.length);
-    for (var i = 0; i < limit; i++) {
+    for (var i = 0; i < Math.min(200, words.length); i++) {
       sample[words[i]] = true;
     }
 
-    // Italian signal words
-    var italianSignals = ['il', 'lo', 'la', 'gli', 'della', 'nella', 'perché',
+    var itSignals = ['il', 'lo', 'la', 'gli', 'della', 'nella', 'perché',
       'quindi', 'sono', 'questo', 'questa', 'anche', 'però', 'molto',
-      'più', 'già', 'dopo', 'prima', 'stato', 'viene', 'anno', 'nel', 'sul'];
-    var italianScore = 0;
-    for (var k = 0; k < italianSignals.length; k++) {
-      if (sample[italianSignals[k]]) italianScore++;
-    }
+      'più', 'già', 'dopo', 'prima', 'stato', 'viene'];
+    var enSignals = ['the', 'and', 'of', 'with', 'that', 'this', 'which',
+      'their', 'would', 'could', 'should', 'very', 'also', 'from',
+      'into', 'between', 'through', 'during', 'about'];
 
-    // English signal words
-    var englishSignals = ['the', 'and', 'of', 'with', 'that', 'this', 'which',
-      'their', 'would', 'could', 'should', 'very', 'also', 'from', 'into',
-      'between', 'through', 'during', 'about', 'were', 'have', 'been'];
-    var englishScore = 0;
-    for (var m = 0; m < englishSignals.length; m++) {
-      if (sample[englishSignals[m]]) englishScore++;
-    }
+    var itScore = 0, enScore = 0;
+    for (var k = 0; k < itSignals.length; k++) if (sample[itSignals[k]]) itScore++;
+    for (var m = 0; m < enSignals.length; m++) if (sample[enSignals[m]]) enScore++;
 
-    // Italian accented characters
-    var italianAccents = (text.match(/[àèéìòù]/gi) || []).length;
-    if (italianAccents > 3) italianScore += italianAccents * 0.3;
+    var accents = (text.match(/[àèéìòù]/gi) || []).length;
+    if (accents > 3) itScore += accents * 0.3;
 
-    return italianScore >= englishScore ? 'it' : 'en';
+    return itScore >= enScore ? 'it' : 'en';
   }
 
   // ============================================================
-  // FSRS — Free Spaced Repetition Scheduler
+  // FSRS — Free Spaced Repetition Scheduler 4.5
   // ============================================================
+  // Pre-trained weights. Do not change unless you know what
+  // you're doing — these come from the FSRS-4.5 optimizer.
 
   var FSRS_PARAMS = [
     0.4072, 1.1829, 3.1262, 15.4722, 7.2102, 0.5316, 1.0651,
@@ -1594,6 +1547,7 @@ body.edit-mode .edit-hint {
   var FSRS_FACTOR = 19 / 81;
   var FSRS_TARGET_RETENTION = 0.9;
 
+  /** Initialize FSRS state for a new card */
   function fsrsInitialize(initialRating) {
     var difficulty = clamp(
       FSRS_PARAMS[4] - Math.exp(FSRS_PARAMS[5] * (initialRating - 1)) + 1,
@@ -1611,6 +1565,7 @@ body.edit-mode .edit-hint {
     };
   }
 
+  /** Compute the next FSRS state given a rating (1-4) */
   function fsrsNext(card, rating, now) {
     var elapsedDays = Math.max(0, (now - (card.lastReview || now)) / 86400000);
     var retrievability = Math.exp(Math.log(0.9) * elapsedDays / card.stability);
@@ -1618,6 +1573,7 @@ body.edit-mode .edit-hint {
     var newStability;
 
     if (rating === 1) {
+      // Rating 1 = "I forgot it" → near-complete reset
       newStability = FSRS_PARAMS[11]
         * Math.pow(newDifficulty, -FSRS_PARAMS[12])
         * (Math.pow(card.stability + 1, FSRS_PARAMS[13]) - 1)
@@ -1635,7 +1591,6 @@ body.edit-mode .edit-hint {
     }
 
     newStability = Math.max(0.1, newStability);
-
     return {
       stability: newStability,
       difficulty: newDifficulty,
@@ -1647,6 +1602,7 @@ body.edit-mode .edit-hint {
     };
   }
 
+  /** Convert stability into an interval in days */
   function fsrsInterval(stability) {
     var days = (stability / FSRS_FACTOR)
       * (Math.pow(FSRS_TARGET_RETENTION, 1 / FSRS_DECAY) - 1);
@@ -1654,13 +1610,13 @@ body.edit-mode .edit-hint {
   }
 
   // ============================================================
-  // STORE — data persistence
+  // STORE — data persistence with localStorage
   // ============================================================
 
-  var STORAGE_KEY = 'highlight-ai.v90.data';
+  var STORAGE_KEY = 'highlight-ai.v110.data';
 
   var DATA = {
-    version: 90,
+    version: 110,
     docs: {},
     highlights: {},
     cards: {},
@@ -1672,6 +1628,7 @@ body.edit-mode .edit-hint {
     }
   };
 
+  /** Load all data from localStorage */
   function loadData() {
     try {
       var saved = localStorage.getItem(STORAGE_KEY);
@@ -1690,12 +1647,13 @@ body.edit-mode .edit-hint {
     }
     if (!DATA.settings.activeCategories ||
         DATA.settings.activeCategories.length === 0) {
-      DATA.settings.activeCategories = CATEGORIES.map(function (cat) {
-        return cat.id;
+      DATA.settings.activeCategories = CATEGORIES.map(function (c) {
+        return c.id;
       });
     }
   }
 
+  // Debounced save (waits 200ms before writing to avoid thrashing)
   var saveTimer = null;
   function saveData() {
     clearTimeout(saveTimer);
@@ -1708,6 +1666,7 @@ body.edit-mode .edit-hint {
     }, 200);
   }
 
+  /** Save immediately without debouncing */
   function saveDataNow() {
     clearTimeout(saveTimer);
     try {
@@ -1715,10 +1674,12 @@ body.edit-mode .edit-hint {
     } catch (error) { /* ignore */ }
   }
 
+  /** Return the currently active document */
   function getActiveDocument() {
     return DATA.activeDocId ? DATA.docs[DATA.activeDocId] : null;
   }
 
+  /** Create a new document */
   function createDocument(text, title) {
     var id = generateId();
     DATA.docs[id] = {
@@ -1734,6 +1695,7 @@ body.edit-mode .edit-hint {
     return DATA.docs[id];
   }
 
+  /** Update an existing document */
   function updateDocument(id, changes) {
     var doc = DATA.docs[id];
     if (!doc) return;
@@ -1744,6 +1706,7 @@ body.edit-mode .edit-hint {
     saveData();
   }
 
+  /** Add a new highlight */
   function addHighlight(options) {
     var id = generateId();
     DATA.highlights[id] = {
@@ -1762,6 +1725,7 @@ body.edit-mode .edit-hint {
     return DATA.highlights[id];
   }
 
+  /** Remove a highlight and any cards created from it */
   function removeHighlight(id) {
     delete DATA.highlights[id];
     for (var cardId in DATA.cards) {
@@ -1773,6 +1737,7 @@ body.edit-mode .edit-hint {
     saveData();
   }
 
+  /** Update a highlight with new values */
   function updateHighlight(id, changes) {
     var highlight = DATA.highlights[id];
     if (!highlight) return;
@@ -1782,6 +1747,7 @@ body.edit-mode .edit-hint {
     saveData();
   }
 
+  /** Get all highlights for a document */
   function highlightsForDocument(docId) {
     var result = [];
     for (var id in DATA.highlights) {
@@ -1792,6 +1758,7 @@ body.edit-mode .edit-hint {
     return result;
   }
 
+  /** Get all cards for a document */
   function cardsForDocument(docId) {
     var result = [];
     for (var id in DATA.cards) {
@@ -1802,6 +1769,7 @@ body.edit-mode .edit-hint {
     return result;
   }
 
+  /** Add a new card */
   function addCard(card) {
     card.id = generateId();
     card.createdAt = Date.now();
@@ -1810,20 +1778,24 @@ body.edit-mode .edit-hint {
     return card;
   }
 
+  /** Grade a card (0-4) and update its FSRS state */
   function gradeCard(cardId, rating) {
     var now = Date.now();
     var previous = DATA.review[cardId];
     var next;
+
     if (!previous || previous.state === 'new') {
       next = fsrsInitialize(rating);
     } else {
       next = fsrsNext(previous, rating, now);
     }
+
     next.due = now + fsrsInterval(next.stability) * 86400000;
     DATA.review[cardId] = next;
     saveData();
   }
 
+  /** Get all cards due for review (optionally filtered by doc) */
   function cardsDue(docId) {
     var now = Date.now();
     var result = [];
@@ -1839,27 +1811,26 @@ body.edit-mode .edit-hint {
   }
 
   // ============================================================
-  // ANALYZER — works in IT and EN
+  // ANALYZER — universal entity detection
   // ============================================================
+  // These functions scan the text and find candidate spans for
+  // each category. They work on any language that uses Latin
+  // script (IT, EN, FR, ES, DE, PT, etc.).
 
+  /** Find all numbers, dates, and percentages */
   function findNumbers(text) {
     var spans = [];
     var match;
     var used = {};
 
-    // Full dates (IT + EN)
+    // Full dates: "July 4, 1776" or "14 luglio 1789"
     var dateRegex = new RegExp(
       '\\b\\d{1,2}\\s+' + MONTH_REGEX + '\\s+\\d{3,4}\\b|' +
       '\\b' + MONTH_REGEX + '\\s+\\d{1,2},?\\s+\\d{3,4}\\b',
       'gi'
     );
     while ((match = dateRegex.exec(text)) !== null) {
-      spans.push({
-        start: match.index,
-        end: match.index + match[0].length,
-        cat: 'num',
-        w: 5
-      });
+      spans.push({ start: match.index, end: match.index + match[0].length, cat: 'num', w: 5 });
       for (var i = match.index; i < match.index + match[0].length; i++) {
         used[i] = true;
       }
@@ -1869,25 +1840,16 @@ body.edit-mode .edit-hint {
     var numberRegex = /(?<![\p{L}\p{M}])\d+(?:[.,]\d+)?(?:\s*%|\s*‰)?(?![\p{L}\p{M}])/gu;
     while ((match = numberRegex.exec(text)) !== null) {
       if (used[match.index]) continue;
-      spans.push({
-        start: match.index,
-        end: match.index + match[0].length,
-        cat: 'num',
-        w: 5
-      });
+      spans.push({ start: match.index, end: match.index + match[0].length, cat: 'num', w: 5 });
     }
 
     return spans;
   }
 
+  /** Find quoted text between various quote pairs */
   function findQuotes(text) {
     var spans = [];
-    var pairs = [
-      ['«', '»'],
-      ['"', '"'],
-      ['"', '"'],
-      ['「', '」']
-    ];
+    var pairs = [['«', '»'], ['"', '"'], ['"', '"'], ['「', '」']];
 
     for (var p = 0; p < pairs.length; p++) {
       var opening = pairs[p][0];
@@ -1895,40 +1857,30 @@ body.edit-mode .edit-hint {
 
       if (opening === closing) {
         var i = 0;
-        var openingIndex = -1;
+        var openIdx = -1;
         while (i < text.length) {
           if (text[i] === opening) {
-            if (openingIndex < 0) {
-              openingIndex = i;
+            if (openIdx < 0) {
+              openIdx = i;
             } else {
-              if (i - openingIndex >= 10) {
-                spans.push({
-                  start: openingIndex,
-                  end: i + 1,
-                  cat: 'quote',
-                  w: 5
-                });
+              if (i - openIdx >= 10) {
+                spans.push({ start: openIdx, end: i + 1, cat: 'quote', w: 5 });
               }
-              openingIndex = -1;
+              openIdx = -1;
             }
           }
           i++;
         }
       } else {
-        var index = 0;
-        while ((index = text.indexOf(opening, index)) !== -1) {
-          var closingIndex = text.indexOf(closing, index + 1);
-          if (closingIndex === -1) break;
-          var length = closingIndex - index - 1;
-          if (length >= 10 && length < 500) {
-            spans.push({
-              start: index,
-              end: closingIndex + 1,
-              cat: 'quote',
-              w: 5
-            });
+        var idx = 0;
+        while ((idx = text.indexOf(opening, idx)) !== -1) {
+          var ci = text.indexOf(closing, idx + 1);
+          if (ci === -1) break;
+          var len = ci - idx - 1;
+          if (len >= 10 && len < 500) {
+            spans.push({ start: idx, end: ci + 1, cat: 'quote', w: 5 });
           }
-          index = closingIndex + 1;
+          idx = ci + 1;
         }
       }
     }
@@ -1936,6 +1888,7 @@ body.edit-mode .edit-hint {
     return spans;
   }
 
+  /** Tokenize a text into word tokens with positions */
   function tokenize(text) {
     var tokens = [];
     var match;
@@ -1951,29 +1904,30 @@ body.edit-mode .edit-hint {
     return tokens;
   }
 
+  /**
+   * Find proper nouns — capitalized words not at sentence start.
+   * Handles multi-word names like "De Gasperi" or "New York".
+   */
   function findProperNouns(text) {
     var spans = [];
     var tokens = tokenize(text);
 
     for (var i = 0; i < tokens.length; i++) {
       var token = tokens[i];
-      var firstLetter = token.word[0];
+      var first = token.word[0];
 
-      if (firstLetter !== firstLetter.toUpperCase() ||
-          firstLetter === firstLetter.toLowerCase()) {
-        continue;
-      }
-
+      // Must start with uppercase
+      if (first !== first.toUpperCase() || first === first.toLowerCase()) continue;
       if (token.word.length < 3) continue;
 
+      // Merge consecutive capitalized words
       var j = i;
       while (j + 1 < tokens.length) {
         var next = tokens[j + 1];
         var between = text.slice(tokens[j].end, next.start);
         if (!/^[\s'\-]{1,2}$/.test(between)) break;
-        var nextFirst = next.word[0];
-        if (nextFirst === nextFirst.toUpperCase() &&
-            nextFirst !== nextFirst.toLowerCase()) {
+        var nf = next.word[0];
+        if (nf === nf.toUpperCase() && nf !== nf.toLowerCase()) {
           j++;
         } else {
           break;
@@ -1981,26 +1935,18 @@ body.edit-mode .edit-hint {
       }
 
       var before = text.slice(0, token.start).trim();
-      var atSentenceStart = !before || /[.!?…»"']\s*$/.test(before);
-      var multiWord = j > i;
-      var isStopword = STOPWORD_SET[token.lower];
+      var atStart = !before || /[.!?…»"']\s*$/.test(before);
+      var multi = j > i;
+      var stop = STOPWORD_SET[token.lower];
 
+      // Accept if: multi-word, or not at sentence start, or long enough at start
       var accept = false;
-      if (multiWord) {
-        accept = true;
-      } else if (!atSentenceStart && !isStopword) {
-        accept = true;
-      } else if (atSentenceStart && !isStopword && token.word.length >= 7) {
-        accept = true;
-      }
+      if (multi) accept = true;
+      else if (!atStart && !stop) accept = true;
+      else if (atStart && !stop && token.word.length >= 7) accept = true;
 
       if (accept) {
-        spans.push({
-          start: token.start,
-          end: tokens[j].end,
-          cat: 'name',
-          w: 4
-        });
+        spans.push({ start: token.start, end: tokens[j].end, cat: 'name', w: 4 });
       }
 
       i = j;
@@ -2009,6 +1955,10 @@ body.edit-mode .edit-hint {
     return spans;
   }
 
+  /**
+   * Find repeated concepts — words that appear 2+ times
+   * and are 6+ characters (likely to be important terms).
+   */
   function findConcepts(text) {
     var frequencies = {};
     var tokens = tokenize(text);
@@ -2023,18 +1973,17 @@ body.edit-mode .edit-hint {
     for (var j = 0; j < tokens.length; j++) {
       var tk = tokens[j];
       if (frequencies[tk.lower] >= 2 && tk.lower.length >= 6) {
-        spans.push({
-          start: tk.start,
-          end: tk.end,
-          cat: 'key',
-          w: 3
-        });
+        spans.push({ start: tk.start, end: tk.end, cat: 'key', w: 3 });
       }
     }
 
     return spans;
   }
 
+  /**
+   * Find definitions of the form "Term: long explanation".
+   * The term must be 1-5 words, the explanation 20+ chars.
+   */
   function findDefinitions(text) {
     var spans = [];
     var match;
@@ -2047,29 +1996,20 @@ body.edit-mode .edit-hint {
 
       if (wordCount > 5 || match[1].trim().length < 3) continue;
 
-      spans.push({
-        start: headStart,
-        end: headEnd,
-        cat: 'def',
-        w: 4
-      });
+      spans.push({ start: headStart, end: headEnd, cat: 'def', w: 4 });
 
       var defStart = headEnd;
       var after = match[0].slice(match[1].length);
       var separator = after.match(/^\s*[:：]\s*/);
       if (separator) defStart += separator[0].length;
 
-      spans.push({
-        start: defStart,
-        end: defStart + match[2].length,
-        cat: 'def',
-        w: 2
-      });
+      spans.push({ start: defStart, end: defStart + match[2].length, cat: 'def', w: 2 });
     }
 
     return spans;
   }
 
+  /** Master analyzer — combines all detection strategies */
   function analyzeText(text) {
     if (!text.trim()) return [];
     return [].concat(
@@ -2085,28 +2025,32 @@ body.edit-mode .edit-hint {
   // RENDER
   // ============================================================
 
+  /**
+   * Convert overlapping highlights into non-overlapping "runs".
+   * Each run is a contiguous segment with the same category.
+   * Uses priorities to resolve overlaps.
+   */
   function buildRuns(text, highlights) {
     var length = text.length;
     var owner = new Array(length);
     var weight = new Array(length);
-    var highlightId = new Array(length);
+    var hlId = new Array(length);
     var categoryIndex = {};
 
     for (var i = 0; i < highlights.length; i++) {
-      var highlight = highlights[i];
-      if (highlight.start < 0 || highlight.end > length ||
-          highlight.start >= highlight.end) continue;
+      var h = highlights[i];
+      if (h.start < 0 || h.end > length || h.start >= h.end) continue;
 
-      var priority = (CATEGORY_PRIORITY[highlight.cat] || 1) * 10 + 1;
+      var priority = (CATEGORY_PRIORITY[h.cat] || 1) * 10 + 1;
 
-      for (var p = highlight.start; p < highlight.end; p++) {
+      for (var p = h.start; p < h.end; p++) {
         if (!weight[p] || priority >= weight[p]) {
           weight[p] = priority;
-          if (!categoryIndex[highlight.cat]) {
-            categoryIndex[highlight.cat] = Object.keys(categoryIndex).length + 1;
+          if (!categoryIndex[h.cat]) {
+            categoryIndex[h.cat] = Object.keys(categoryIndex).length + 1;
           }
-          owner[p] = categoryIndex[highlight.cat];
-          highlightId[p] = highlight.id;
+          owner[p] = categoryIndex[h.cat];
+          hlId[p] = h.id;
         }
       }
     }
@@ -2119,20 +2063,17 @@ body.edit-mode .edit-hint {
         continue;
       }
       var cat = owner[index];
-      var hlId = highlightId[index];
+      var hid = hlId[index];
       var end = index + 1;
-      while (end < length &&
-             owner[end] === cat &&
-             highlightId[end] === hlId) {
-        end++;
-      }
-      runs.push({ start: index, end: end, catIdx: cat, hlId: hlId });
+      while (end < length && owner[end] === cat && hlId[end] === hid) end++;
+      runs.push({ start: index, end: end, catIdx: cat, hlId: hid });
       index = end;
     }
 
     return { runs: runs, categoryIndex: categoryIndex };
   }
 
+  /** Reverse lookup: numeric index → category id */
   function categoryFromIndex(categoryIndex, index) {
     for (var key in categoryIndex) {
       if (categoryIndex[key] === index) return key;
@@ -2140,9 +2081,9 @@ body.edit-mode .edit-hint {
     return null;
   }
 
+  /** Generate the annotated HTML for the output card */
   function renderAnnotated(doc) {
     if (!doc) return '';
-
     var text = doc.text;
     var highlights = highlightsForDocument(doc.id).filter(function (h) {
       return h.start >= 0;
@@ -2166,37 +2107,31 @@ body.edit-mode .edit-hint {
 
     for (var r = 0; r < runs.length; r++) {
       var run = runs[r];
-
       if (run.start > cursor) {
         html += escapeHtml(text.slice(cursor, run.start));
       }
-
       var catId = categoryFromIndex(categoryIndex, run.catIdx);
-
       if (activeCategories[catId]) {
         var cssClass = 'c-key';
         for (var c = 0; c < CATEGORIES.length; c++) {
           if (CATEGORIES[c].id === catId) cssClass = CATEGORIES[c].cssClass;
         }
-        var highlight = DATA.highlights[run.hlId];
-        var hasNote = highlight && highlight.note ? ' has-note' : '';
+        var h = DATA.highlights[run.hlId];
+        var hasNote = h && h.note ? ' has-note' : '';
         html += '<mark class="' + cssClass + hasNote + '" data-hl="' + run.hlId + '">' +
                 escapeHtml(text.slice(run.start, run.end)) +
                 '</mark>';
       } else {
         html += escapeHtml(text.slice(run.start, run.end));
       }
-
       cursor = run.end;
     }
 
-    if (cursor < text.length) {
-      html += escapeHtml(text.slice(cursor));
-    }
-
+    if (cursor < text.length) html += escapeHtml(text.slice(cursor));
     return html;
   }
 
+  /** Redraw the entire output area */
   function redraw() {
     var doc = getActiveDocument();
     if (!doc) {
@@ -2206,13 +2141,13 @@ body.edit-mode .edit-hint {
       updateLanguageBadge(null);
       return;
     }
-
     $('output').innerHTML = renderAnnotated(doc);
     renderStats(doc);
     renderLegend();
     updateLanguageBadge(doc);
   }
 
+  /** Update the language badge in the top bar */
   function updateLanguageBadge(doc) {
     var badge = $('language-badge');
     if (!badge) return;
@@ -2224,6 +2159,7 @@ body.edit-mode .edit-hint {
     badge.textContent = lang === 'it' ? 'IT' : 'EN';
   }
 
+  /** Render the stats row */
   function renderStats(doc) {
     var highlights = highlightsForDocument(doc.id).filter(function (h) {
       return h.start >= 0;
@@ -2249,6 +2185,7 @@ body.edit-mode .edit-hint {
       '</div></div>';
   }
 
+  /** Render the category legend */
   function renderLegend() {
     var doc = getActiveDocument();
     var box = $('legend');
@@ -2258,7 +2195,6 @@ body.edit-mode .edit-hint {
     var highlights = highlightsForDocument(doc.id).filter(function (h) {
       return h.start >= 0;
     });
-
     var counts = {};
     for (var i = 0; i < highlights.length; i++) {
       counts[highlights[i].cat] = (counts[highlights[i].cat] || 0) + 1;
@@ -2275,37 +2211,35 @@ body.edit-mode .edit-hint {
       var category = CATEGORIES[c];
       var button = document.createElement('button');
       var selected = editMode && state.editCategory === category.id;
-      var isActive = active[category.id];
 
       button.className = 'cat-pill' +
-        (selected ? ' sel' : (isActive ? '' : ' off'));
+        (selected ? ' sel' : (active[category.id] ? '' : ' off'));
 
       var count = counts[category.id] || 0;
-      var cssVar = '--color-' +
-        category.id.replace('num', 'number')
-          .replace('name', 'name')
-          .replace('key', 'concept')
-          .replace('def', 'definition')
-          .replace('quote', 'quote')
-          .replace('list', 'list')
-          .replace('sentence', 'sentence');
+      var cssVar = '--color-' + category.id.replace('num', 'number')
+        .replace('name', 'name')
+        .replace('key', 'concept')
+        .replace('def', 'definition')
+        .replace('quote', 'quote')
+        .replace('list', 'list')
+        .replace('sentence', 'sentence');
 
       button.innerHTML =
         '<span class="dot" style="background: var(' + cssVar + ')"></span>' +
         category.label +
         (count ? '<span class="count">' + count + '</span>' : '');
 
-      (function (categoryId, isEditMode) {
+      (function (catId, isEdit) {
         button.addEventListener('click', function () {
-          if (isEditMode) {
-            state.editCategory = categoryId;
+          if (isEdit) {
+            state.editCategory = catId;
             renderLegend();
           } else {
-            var idx = DATA.settings.activeCategories.indexOf(categoryId);
+            var idx = DATA.settings.activeCategories.indexOf(catId);
             if (idx >= 0) {
               DATA.settings.activeCategories.splice(idx, 1);
             } else {
-              DATA.settings.activeCategories.push(categoryId);
+              DATA.settings.activeCategories.push(catId);
             }
             saveData();
             redraw();
@@ -2318,12 +2252,13 @@ body.edit-mode .edit-hint {
     }
   }
 
+  // Global app state (only what's not persisted)
   var state = {
-    editCategory: 'key'
+    editCategory: 'key'  // default category for edit mode
   };
 
   // ============================================================
-  // SELECTION
+  // SELECTION — floating bar when text is selected
   // ============================================================
 
   var selection = {
@@ -2337,9 +2272,7 @@ body.edit-mode .edit-hint {
 
     document.addEventListener('selectionchange', function () {
       var active = document.activeElement;
-      if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) {
-        return;
-      }
+      if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;
 
       var sel = window.getSelection();
       if (!sel || sel.isCollapsed || sel.rangeCount === 0) {
@@ -2351,8 +2284,7 @@ body.edit-mode .edit-hint {
       if (!output) return;
 
       var range = sel.getRangeAt(0);
-      if (!output.contains(range.startContainer) ||
-          !output.contains(range.endContainer)) {
+      if (!output.contains(range.startContainer) || !output.contains(range.endContainer)) {
         scheduleHide();
         return;
       }
@@ -2377,15 +2309,13 @@ body.edit-mode .edit-hint {
   }
 
   function hideSelectionBar() {
-    if (selection.element) {
-      selection.element.classList.remove('show');
-    }
+    if (selection.element) selection.element.classList.remove('show');
   }
 
+  /** Compute selection offsets in plain-text character positions */
   function calculateOffset(output) {
     var sel = window.getSelection();
     if (!sel.rangeCount) return null;
-
     var range = sel.getRangeAt(0);
 
     var pre1 = document.createRange();
@@ -2398,12 +2328,10 @@ body.edit-mode .edit-hint {
     pre2.setEnd(range.endContainer, range.endOffset);
     var end = pre2.toString().length;
 
-    return {
-      start: Math.min(start, end),
-      end: Math.max(start, end)
-    };
+    return { start: Math.min(start, end), end: Math.max(start, end) };
   }
 
+  /** Show the floating selection bar with category buttons */
   function showSelectionBar() {
     var bar = selection.element;
     if (!bar) return;
@@ -2413,25 +2341,18 @@ body.edit-mode .edit-hint {
       var category = CATEGORIES[i];
       var button = document.createElement('button');
       button.className = 'cat-btn';
+      var cssVar = '--color-' + category.id.replace('num', 'number')
+        .replace('name', 'name').replace('key', 'concept')
+        .replace('def', 'definition').replace('quote', 'quote')
+        .replace('list', 'list').replace('sentence', 'sentence');
+      button.innerHTML = '<span class="dot" style="background: var(' + cssVar + ')"></span>';
 
-      var cssVar = '--color-' +
-        category.id.replace('num', 'number')
-          .replace('name', 'name')
-          .replace('key', 'concept')
-          .replace('def', 'definition')
-          .replace('quote', 'quote')
-          .replace('list', 'list')
-          .replace('sentence', 'sentence');
-
-      button.innerHTML =
-        '<span class="dot" style="background: var(' + cssVar + ')"></span>';
-
-      (function (categoryId) {
+      (function (catId) {
         button.addEventListener('click', function () {
           clearTimeout(selection.hideTimer);
           var offset = selection.offset;
           if (!offset) return;
-          applyHighlight(offset.start, offset.end, categoryId);
+          applyHighlight(offset.start, offset.end, catId);
           selection.offset = null;
           hideSelectionBar();
           if (window.getSelection) window.getSelection().removeAllRanges();
@@ -2447,11 +2368,7 @@ body.edit-mode .edit-hint {
 
     var noteBtn = document.createElement('button');
     noteBtn.className = 'cat-btn note-btn';
-    noteBtn.innerHTML =
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
-      'stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-      '<path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>' +
-      '</svg>';
+    noteBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>';
 
     noteBtn.addEventListener('click', function () {
       clearTimeout(selection.hideTimer);
@@ -2468,6 +2385,7 @@ body.edit-mode .edit-hint {
     bar.classList.add('show');
   }
 
+  /** Apply or update a highlight in the given range */
   function applyHighlight(start, end, categoryId, silent) {
     var doc = getActiveDocument();
     if (!doc || end - start < 2) return null;
@@ -2488,6 +2406,7 @@ body.edit-mode .edit-hint {
       updateHighlight(existing.id, { cat: categoryId, source: 'user' });
       highlight = existing;
     } else {
+      // Remove highlights fully contained in the new one
       var toRemove = [];
       for (var j = 0; j < all.length; j++) {
         var other = all[j];
@@ -2500,17 +2419,14 @@ body.edit-mode .edit-hint {
         removeHighlight(toRemove[k]);
       }
 
-      var before = doc.text.slice(Math.max(0, start - 30), start);
-      var after = doc.text.slice(end, end + 30);
-
       highlight = addHighlight({
         docId: doc.id,
         start: start,
         end: end,
         cat: categoryId,
         source: 'user',
-        before: before,
-        after: after
+        before: doc.text.slice(Math.max(0, start - 30), start),
+        after: doc.text.slice(end, end + 30)
       });
     }
 
@@ -2529,16 +2445,20 @@ body.edit-mode .edit-hint {
   }
 
   // ============================================================
-  // EDIT MODE
+  // EDIT MODE — tap on a word to toggle highlighting
   // ============================================================
 
+  /** Find the token closest to the given position */
   function findToken(text, position) {
     var tokens = tokenize(text);
+
     for (var i = 0; i < tokens.length; i++) {
       if (position >= tokens[i].start && position <= tokens[i].end) {
         return tokens[i];
       }
     }
+
+    // Fallback: closest token within 5 chars
     var best = null;
     var minDistance = Infinity;
     for (var j = 0; j < tokens.length; j++) {
@@ -2554,6 +2474,7 @@ body.edit-mode .edit-hint {
     return (best && minDistance < 5) ? best : null;
   }
 
+  /** Translate click coordinates into a character position */
   function calculateClickPosition(outputElement, x, y) {
     var node = null;
     var offset = 0;
@@ -2574,21 +2495,21 @@ body.edit-mode .edit-hint {
 
     if (!node) return -1;
 
+    // Normalize to a text node
     if (node.nodeType !== 3) {
       if (node.firstChild && node.firstChild.nodeType === 3) {
         node = node.firstChild;
         offset = 0;
       } else {
         var prev = node.firstChild;
-        while (prev && prev.nodeType !== 3) {
-          prev = prev.firstChild;
-        }
+        while (prev && prev.nodeType !== 3) prev = prev.firstChild;
         if (!prev) return -1;
         node = prev;
         offset = node.nodeValue.length;
       }
     }
 
+    // Walk text nodes to find absolute position
     var walker = document.createTreeWalker(outputElement, NodeFilter.SHOW_TEXT, null);
     var absolute = 0;
     var current;
@@ -2599,6 +2520,7 @@ body.edit-mode .edit-hint {
     return -1;
   }
 
+  /** Toggle the highlight state of a token */
   function toggleToken(token) {
     var doc = getActiveDocument();
     if (!doc) return;
@@ -2608,8 +2530,7 @@ body.edit-mode .edit-hint {
 
     var existing = null;
     for (var i = 0; i < highlights.length; i++) {
-      if (highlights[i].start === token.start &&
-          highlights[i].end === token.end) {
+      if (highlights[i].start === token.start && highlights[i].end === token.end) {
         existing = highlights[i];
         break;
       }
@@ -2629,17 +2550,14 @@ body.edit-mode .edit-hint {
       }
     }
 
-    var before = doc.text.slice(Math.max(0, token.start - 30), token.start);
-    var after = doc.text.slice(token.end, token.end + 30);
-
     addHighlight({
       docId: doc.id,
       start: token.start,
       end: token.end,
       cat: category,
       source: 'user',
-      before: before,
-      after: after
+      before: doc.text.slice(Math.max(0, token.start - 30), token.start),
+      after: doc.text.slice(token.end, token.end + 30)
     });
 
     redraw();
@@ -2660,11 +2578,8 @@ body.edit-mode .edit-hint {
 
     var snippet = doc.text.slice(highlight.start, highlight.end);
     var categoryLabel = highlight.cat;
-
     for (var i = 0; i < CATEGORIES.length; i++) {
-      if (CATEGORIES[i].id === highlight.cat) {
-        categoryLabel = CATEGORIES[i].label;
-      }
+      if (CATEGORIES[i].id === highlight.cat) categoryLabel = CATEGORIES[i].label;
     }
 
     $('note-context').innerHTML =
@@ -2678,9 +2593,12 @@ body.edit-mode .edit-hint {
   }
 
   // ============================================================
-  // QUESTION GENERATION
+  // UNIVERSAL QUESTION GENERATION
   // ============================================================
+  // This is the core engine. It works on any text with facts,
+  // in any language. The dictionary is only an enhancement.
 
+  /** Simple hash for deduplication */
   function hashQuestion(string) {
     var hash = 5381;
     var limited = string.slice(0, 1000);
@@ -2690,141 +2608,58 @@ body.edit-mode .edit-hint {
     return 'm' + Math.abs(hash).toString(36);
   }
 
+  /**
+   * Classify an entity into a universal type:
+   * date, year, percentage, number, person, organization,
+   * treaty, or unknown.
+   */
   function classifyEntity(surface) {
     var s = surface.toLowerCase().trim();
 
     if (new RegExp('\\d{1,2}\\s+' + MONTH_REGEX + '\\s+\\d{3,4}').test(s)) return 'date';
+    if (new RegExp(MONTH_REGEX + '\\s+\\d{1,2},?\\s+\\d{3,4}').test(s)) return 'date';
     if (/^(1\d{3}|20\d{2})$/.test(s)) return 'year';
     if (/^\d+(?:[.,]\d+)?\s*%$/.test(s)) return 'percentage';
     if (/^\d+(?:[.,]\d+)?$/.test(s)) return 'number';
 
-    if (DICTIONARY_SETS.treaties[s]) return 'treaty';
-    if (DICTIONARY_SETS.italianPresidents[s]) return 'italian_president';
-    if (DICTIONARY_SETS.italianPrimeMinisters[s]) return 'italian_pm';
-    if (DICTIONARY_SETS.usPresidents[s]) return 'us_president';
-    if (DICTIONARY_SETS.ukPrimeMinisters[s]) return 'uk_pm';
-    if (DICTIONARY_SETS.italianParties[s]) return 'party';
-    if (DICTIONARY_SETS.italianRegions[s]) return 'region';
-
+    // Multi-word proper nouns
     if (/^[A-ZÀ-Ý][a-zà-ÿ]+\s+[A-ZÀ-Ý][a-zà-ÿ]+/.test(surface)) {
-      return 'proper_noun';
+      if (DICT_SETS.organizations[s]) return 'organization';
+      if (DICT_SETS.treaties[s]) return 'treaty';
+      return 'person';
     }
+
+    if (DICT_SETS.usPresidents[s] || DICT_SETS.ukPrimeMinisters[s]) return 'person';
+    if (DICT_SETS.treaties[s]) return 'treaty';
+    if (DICT_SETS.organizations[s]) return 'organization';
+
+    if (/^[A-ZÀ-Ý][a-zà-ÿ]+$/.test(surface) && surface.length >= 4) return 'person';
 
     return 'unknown';
   }
 
-  function perturbationDistractors(type, correct, count) {
-    if (type === 'year') {
-      var year = parseInt(correct, 10);
-      if (isNaN(year)) return null;
-      var yearOffsets = [-1, 1, -2, 2, -3, 3, -5, 5];
-      var yearResults = [];
-      for (var i = 0; i < yearOffsets.length; i++) {
-        var v = year + yearOffsets[i];
-        if (v >= 1000 && v <= 2099) yearResults.push(String(v));
-      }
-      return yearResults.length >= count ? shuffle(yearResults).slice(0, count) : null;
-    }
-
-    if (type === 'percentage') {
-      var match = String(correct).match(/^(\d+(?:[.,]\d+)?)\s*%$/);
-      if (!match) return null;
-      var p = parseFloat(match[1].replace(',', '.'));
-      var percentOffsets = [-0.5, 0.5, -1, 1, -2, 2];
-      var percentResults = [];
-      for (var j = 0; j < percentOffsets.length; j++) {
-        var vp = p + percentOffsets[j];
-        if (vp > 0 && vp < 100) {
-          percentResults.push(vp.toString().replace('.', ',') + '%');
-        }
-      }
-      return percentResults.length >= count
-        ? shuffle(percentResults).slice(0, count) : null;
-    }
-
-    if (type === 'number') {
-      var number = parseFloat(String(correct).replace(',', '.'));
-      if (isNaN(number)) return null;
-      var unit = String(correct).replace(/[\d.,\s]+/g, '').trim();
-      var numberOffsets = [-1, 1, -2, 2, -5, 5, -10, 10];
-      var numberResults = [];
-      for (var k = 0; k < numberOffsets.length; k++) {
-        var vn = number + numberOffsets[k];
-        if (vn > 0) {
-          var str = String(Math.round(vn));
-          numberResults.push(unit ? str + ' ' + unit : str);
-        }
-      }
-      return numberResults.length >= count
-        ? shuffle(numberResults).slice(0, count) : null;
-    }
-
-    return null;
-  }
-
-  function dictionaryDistractors(type, correct, count) {
-    var mapping = {
-      year: 'commonYears',
-      italian_president: 'italianPresidents',
-      italian_pm: 'italianPrimeMinisters',
-      us_president: 'usPresidents',
-      uk_pm: 'ukPrimeMinisters',
-      treaty: 'treaties',
-      party: 'italianParties',
-      region: 'italianRegions'
-    };
-
-    var key = mapping[type];
-    if (!key) return null;
-
-    var pool = DICTIONARY[key];
-    if (!pool || !pool.length) return null;
-
-    var correctStr = String(correct).toLowerCase();
-
-    if (type === 'year') {
-      var correctYear = parseInt(correct, 10);
-      if (!isNaN(correctYear)) {
-        var sorted = pool
-          .filter(function (v) { return String(v) !== String(correct); })
-          .map(function (v) {
-            return { v: v, d: Math.abs(parseInt(v, 10) - correctYear) };
-          })
-          .sort(function (a, b) { return a.d - b.d; });
-        var result = [];
-        for (var i = 0; i < sorted.length && result.length < count; i++) {
-          result.push(String(sorted[i].v));
-        }
-        return result;
-      }
-    }
-
-    var shuffled = shuffle(pool.slice());
-    var out = [];
-    for (var j = 0; j < shuffled.length && out.length < count; j++) {
-      if (String(shuffled[j]).toLowerCase() !== correctStr) {
-        out.push(String(shuffled[j]));
-      }
-    }
-    return out.length >= count ? out : null;
-  }
-
-  function buildQuestion(type, entity, sentence, language) {
+  /**
+   * Build a question using a universal template.
+   * Returns null if no good template applies (caller falls back to cloze).
+   */
+  function buildUniversalQuestion(type, entity, sentence, language) {
     var index = sentence.toLowerCase().indexOf(entity.toLowerCase());
     if (index < 0) return null;
 
     var before = sentence.slice(0, index).replace(/^[«"'(\[]\s*/, '').trim();
     var after = sentence.slice(index + entity.length).replace(/[.,;:!?]+$/, '').trim();
-
     var isItalian = language === 'it';
 
+    // Clean leading conjunctions
+    var beforeClean = before.replace(/^(and|but|or|e|ma|o|però|che)\s+/i, '').trim();
+
     if (type === 'date' || type === 'year') {
-      if (before.length > 5) {
+      if (beforeClean.length > 5) {
         return isItalian
-          ? 'Quando ' + before.toLowerCase() + '?'
-          : 'When did ' + before.toLowerCase() + ' happen?';
+          ? 'Quando ' + beforeClean.toLowerCase() + '?'
+          : 'When did ' + beforeClean.toLowerCase() + ' happen?';
       }
-      if (after.length > 5) {
+      if (after.length > 5 && after.length < 100) {
         return isItalian
           ? 'In quale anno avvenne: ' + after + '?'
           : 'In which year did this happen: ' + after + '?';
@@ -2832,67 +2667,158 @@ body.edit-mode .edit-hint {
       return null;
     }
 
-    if (type === 'percentage' || type === 'number') {
-      if (before.length > 5) {
+    if (type === 'percentage') {
+      if (beforeClean.length > 5) {
         return isItalian
-          ? 'Quanto ' + before.toLowerCase() + '?'
-          : 'How much ' + before.toLowerCase() + '?';
+          ? 'Quale percentuale ' + beforeClean.toLowerCase() + '?'
+          : 'What percentage ' + beforeClean.toLowerCase() + '?';
       }
       return null;
     }
 
-    if (type === 'italian_president') {
-      return isItalian
-        ? 'Chi fu il Presidente della Repubblica ' +
-          (after ? 'che ' + after.toLowerCase() : 'in questo periodo') + '?'
-        : 'Who was the President of the Italian Republic ' +
-          (after ? 'who ' + after.toLowerCase() : 'in this period') + '?';
+    if (type === 'number') {
+      if (beforeClean.length > 5) {
+        return isItalian
+          ? 'Quanto ' + beforeClean.toLowerCase() + '?'
+          : 'How much ' + beforeClean.toLowerCase() + '?';
+      }
+      return null;
     }
 
-    if (type === 'italian_pm') {
-      return isItalian
-        ? 'Chi era il Presidente del Consiglio quando ' + after.toLowerCase() + '?'
-        : 'Who was the Italian Prime Minister when ' + after.toLowerCase() + '?';
+    // For person/organization/treaty, cloze is safer
+    return null;
+  }
+
+  /**
+   * Build distractors using three strategies in order:
+   * 1. Perturbation (for numbers, percentages, years) — always works
+   * 2. Dictionary (when the entity is recognized) — excellent
+   * 3. From the text itself (extract similar-format entities)
+   */
+  function buildUniversalDistractors(type, correct, doc, count) {
+    // STRATEGY 1: Perturbation (numbers, years, percentages)
+    if (type === 'year') {
+      var year = parseInt(correct, 10);
+      if (!isNaN(year)) {
+        var yearOffsets = [-1, 1, -2, 2, -3, 3, -5, 5, -10, 10];
+        var yearCandidates = [];
+        for (var i = 0; i < yearOffsets.length; i++) {
+          var v = year + yearOffsets[i];
+          if (v >= 1000 && v <= 2099) yearCandidates.push(String(v));
+        }
+        if (yearCandidates.length >= count) {
+          return shuffle(yearCandidates).slice(0, count);
+        }
+      }
     }
 
-    if (type === 'us_president') {
-      return isItalian
-        ? 'Quale presidente americano ' + (after ? after.toLowerCase() : 'in questo periodo') + '?'
-        : 'Which US president ' + (after ? after.toLowerCase() : 'in this period') + '?';
+    if (type === 'percentage') {
+      var match = String(correct).match(/^(\d+(?:[.,]\d+)?)\s*%$/);
+      if (match) {
+        var p = parseFloat(match[1].replace(',', '.'));
+        var percentOffsets = [-0.5, 0.5, -1, 1, -2, 2, -5, 5];
+        var percentCandidates = [];
+        for (var j = 0; j < percentOffsets.length; j++) {
+          var vp = p + percentOffsets[j];
+          if (vp > 0 && vp < 100) {
+            percentCandidates.push(vp.toString().replace('.', ',') + '%');
+          }
+        }
+        if (percentCandidates.length >= count) {
+          return shuffle(percentCandidates).slice(0, count);
+        }
+      }
     }
 
-    if (type === 'uk_pm') {
-      return isItalian
-        ? 'Quale primo ministro britannico ' + (after ? after.toLowerCase() : 'in questo periodo') + '?'
-        : 'Which UK prime minister ' + (after ? after.toLowerCase() : 'in this period') + '?';
+    if (type === 'number') {
+      var number = parseFloat(String(correct).replace(',', '.'));
+      if (!isNaN(number)) {
+        var unit = String(correct).replace(/[\d.,\s]+/g, '').trim();
+        var numberOffsets = [-1, 1, -2, 2, -5, 5, -10, 10];
+        var numberCandidates = [];
+        for (var k = 0; k < numberOffsets.length; k++) {
+          var vn = number + numberOffsets[k];
+          if (vn > 0) {
+            var str = String(Math.round(vn));
+            numberCandidates.push(unit ? str + ' ' + unit : str);
+          }
+        }
+        if (numberCandidates.length >= count) {
+          return shuffle(numberCandidates).slice(0, count);
+        }
+      }
     }
 
-    if (type === 'treaty') {
-      return isItalian
-        ? 'Quale trattato ' + (after ? after.toLowerCase() : 'fu firmato in questo periodo') + '?'
-        : 'Which treaty ' + (after ? after.toLowerCase() : 'was signed in this period') + '?';
+    // STRATEGY 2: Dictionary (only if the entity is recognized)
+    if (type === 'person' && DICT_SETS.usPresidents[correct.toLowerCase()]) {
+      var usPool = shuffle(DICTIONARY.usPresidents.filter(function (n) {
+        return n.toLowerCase() !== correct.toLowerCase();
+      })).slice(0, count);
+      if (usPool.length >= count) return usPool;
+    }
+    if (type === 'person' && DICT_SETS.ukPrimeMinisters[correct.toLowerCase()]) {
+      var ukPool = shuffle(DICTIONARY.ukPrimeMinisters.filter(function (n) {
+        return n.toLowerCase() !== correct.toLowerCase();
+      })).slice(0, count);
+      if (ukPool.length >= count) return ukPool;
+    }
+    if (type === 'organization' && DICT_SETS.organizations[correct.toLowerCase()]) {
+      var orgPool = shuffle(DICTIONARY.organizations.filter(function (n) {
+        return n.toLowerCase() !== correct.toLowerCase();
+      })).slice(0, count);
+      if (orgPool.length >= count) return orgPool;
+    }
+    if (type === 'treaty' && DICT_SETS.treaties[correct.toLowerCase()]) {
+      var treatyPool = shuffle(DICTIONARY.treaties.filter(function (n) {
+        return n.toLowerCase() !== correct.toLowerCase();
+      })).slice(0, count);
+      if (treatyPool.length >= count) return treatyPool;
     }
 
-    if (type === 'party') {
-      return isItalian
-        ? 'Quale partito ' + (after ? after.toLowerCase() : '—') + '?'
-        : 'Which Italian party ' + (after ? after.toLowerCase() : '—') + '?';
+    // STRATEGY 3: Extract from the text itself
+    // Find other entities of the same format in the text.
+    var candidates = [];
+
+    if (type === 'person' || type === 'organization' || type === 'treaty') {
+      // Other proper nouns in the text
+      var properNouns = findProperNouns(doc.text);
+      for (var p = 0; p < properNouns.length; p++) {
+        var candidate = doc.text.slice(properNouns[p].start, properNouns[p].end).trim();
+        if (candidate.toLowerCase() !== correct.toLowerCase() &&
+            candidate.length >= 3 &&
+            candidates.indexOf(candidate) === -1) {
+          candidates.push(candidate);
+        }
+      }
     }
 
-    if (type === 'region') {
-      return isItalian
-        ? 'Quale regione ' + (after ? after.toLowerCase() : '—') + '?'
-        : 'Which Italian region ' + (after ? after.toLowerCase() : '—') + '?';
+    if (type === 'number' || type === 'year' || type === 'percentage') {
+      // Other numbers in the text
+      var numbers = findNumbers(doc.text);
+      for (var n = 0; n < numbers.length; n++) {
+        var numCandidate = doc.text.slice(numbers[n].start, numbers[n].end).trim();
+        if (numCandidate.toLowerCase() !== correct.toLowerCase() &&
+            numCandidate !== correct &&
+            candidates.indexOf(numCandidate) === -1) {
+          candidates.push(numCandidate);
+        }
+      }
+    }
+
+    if (candidates.length >= count) {
+      return shuffle(candidates).slice(0, count);
     }
 
     return null;
   }
 
+  /** Split a text into sentences with start/end positions */
   function splitIntoSentences(text) {
     var sentences = [];
     var start = 0;
     var match;
     var regex = /[.!?…]+(?=\s|$)/g;
+
     while ((match = regex.exec(text)) !== null) {
       var end = match.index + match[0].length;
       if (end - start >= 15) sentences.push({ start: start, end: end });
@@ -2903,7 +2829,13 @@ body.edit-mode .edit-hint {
     return sentences;
   }
 
-  function proposeFromDictionary(doc) {
+  /**
+   * Main universal proposal generator.
+   * Analyzes highlights, classifies entities, builds questions
+   * with universal templates, sources distractors from dict
+   * or text. Works WITHOUT AI.
+   */
+  function proposeFromAnalyzer(doc) {
     var highlights = highlightsForDocument(doc.id).filter(function (h) {
       return h.start >= 0;
     });
@@ -2920,10 +2852,10 @@ body.edit-mode .edit-hint {
       var type = classifyEntity(surface);
       if (type === 'unknown') continue;
 
+      // Find the containing sentence
       var containerSentence = null;
       for (var s = 0; s < sentences.length; s++) {
-        if (highlight.start >= sentences[s].start &&
-            highlight.end <= sentences[s].end) {
+        if (highlight.start >= sentences[s].start && highlight.end <= sentences[s].end) {
           containerSentence = sentences[s];
           break;
         }
@@ -2936,14 +2868,13 @@ body.edit-mode .edit-hint {
       var question = null;
       var cardType = type;
 
-      if (type !== 'proper_noun') {
-        question = buildQuestion(type, surface, sentenceText, language);
-      }
+      // Try universal template
+      question = buildUniversalQuestion(type, surface, sentenceText, language);
 
-      if (!question && type === 'proper_noun') {
+      // Fallback: cloze (works for any entity)
+      if (!question) {
         var relative = highlight.start - containerSentence.start;
-        var cloze = sentenceText.slice(0, relative) +
-                    '____' +
+        var cloze = sentenceText.slice(0, relative) + '____' +
                     sentenceText.slice(relative + surface.length);
         cloze = cloze.replace(/\s+/g, ' ').trim();
         if (cloze.length >= 20 && cloze.length <= 300) {
@@ -2954,30 +2885,8 @@ body.edit-mode .edit-hint {
 
       if (!question || question.length < 10 || question.length > 220) continue;
 
-      var distractors = null;
-      if (cardType !== 'cloze' && cardType !== 'proper_noun') {
-        distractors = dictionaryDistractors(cardType, surface, 3);
-        if (!distractors || distractors.length < 3) {
-          distractors = perturbationDistractors(cardType, surface, 3);
-        }
-      }
-
-      if (!distractors || distractors.length < 3) {
-        var others = [];
-        for (var o = 0; o < highlights.length && others.length < 3; o++) {
-          if (highlights[o].id === highlight.id) continue;
-          var otherText = doc.text.slice(
-            highlights[o].start, highlights[o].end
-          ).trim();
-          if (otherText &&
-              otherText.toLowerCase() !== surface.toLowerCase() &&
-              others.indexOf(otherText) === -1) {
-            others.push(otherText);
-          }
-        }
-        if (others.length >= 3) distractors = others.slice(0, 3);
-      }
-
+      // Build distractors
+      var distractors = buildUniversalDistractors(type, surface, doc, 3);
       if (!distractors || distractors.length < 3) continue;
 
       var contentId = hashQuestion(cardType + '|' + question + '|' + surface);
@@ -2991,8 +2900,7 @@ body.edit-mode .edit-hint {
         distractors: distractors.slice(0, 3),
         highlightId: highlight.id,
         sourceCat: (cardType === 'year' || cardType === 'date' ||
-                    cardType === 'percentage' || cardType === 'number')
-                   ? 'num' : 'name',
+                    cardType === 'percentage' || cardType === 'number') ? 'num' : 'name',
         contentId: contentId,
         origin: 'template'
       });
@@ -3002,7 +2910,7 @@ body.edit-mode .edit-hint {
   }
 
   // ============================================================
-  // AI — WebLLM
+  // AI — WebLLM integration
   // ============================================================
 
   var AI_CDN_URL = 'https://esm.run/@mlc-ai/web-llm';
@@ -3033,13 +2941,14 @@ body.edit-mode .edit-hint {
     loading: false,
     ready: false,
     failed: false,
-    modelKey: localStorage.getItem('highlight-ai.v90.model') || 'qwen15'
+    modelKey: localStorage.getItem('highlight-ai.v110.model') || 'qwen15'
   };
 
   function hasWebGPU() {
     return typeof navigator !== 'undefined' && !!navigator.gpu;
   }
 
+  /** Update an AI status bar (in the page or in the modal) */
   function setAIStatus(barId, msgId, pctId, kind, message, percentage) {
     var bar = $(barId);
     bar.classList.remove('ready', 'error');
@@ -3070,7 +2979,8 @@ body.edit-mode .edit-hint {
       $(msgId).textContent = message || 'Loading…';
       if (pctId) {
         $(pctId).textContent = percentage != null
-          ? Math.round(percentage * 100) + '%' : '';
+          ? Math.round(percentage * 100) + '%'
+          : '';
       }
     }
   }
@@ -3083,6 +2993,7 @@ body.edit-mode .edit-hint {
     setAIStatus('ai-bar-modal', 'ai-modal-msg', 'ai-modal-pct', kind, msg, pct);
   }
 
+  /** Load an AI model into memory */
   function loadAIModel(key) {
     if (aiState.loading) return Promise.resolve(false);
     if (aiState.ready && aiState.modelKey === key) return Promise.resolve(true);
@@ -3098,7 +3009,7 @@ body.edit-mode .edit-hint {
 
     aiState.loading = true;
     aiState.failed = false;
-    localStorage.setItem('highlight-ai.v90.model', key);
+    localStorage.setItem('highlight-ai.v110.model', key);
 
     mainAIStatus('loading', 'Downloading ' + model.label + '…', 0);
     modalAIStatus('loading', 'Downloading ' + model.label + '…', 0);
@@ -3134,6 +3045,7 @@ body.edit-mode .edit-hint {
     });
   }
 
+  /** Unload the AI model and free memory */
   function unloadAIModel() {
     if (aiState.engine && aiState.engine.unload) {
       try { aiState.engine.unload(); } catch (error) { /* ignore */ }
@@ -3148,6 +3060,7 @@ body.edit-mode .edit-hint {
     showToast('AI deactivated');
   }
 
+  /** Send a prompt to the AI and get the response */
   function callAI(prompt, maxTokens) {
     if (!aiState.engine) return Promise.reject(new Error('AI not loaded'));
     maxTokens = maxTokens || 300;
@@ -3193,32 +3106,32 @@ body.edit-mode .edit-hint {
     }
   }
 
+  /**
+   * AI prompt for entity extraction.
+   * Works in IT and EN. Simple task: find entities.
+   */
   function buildExtractionPrompt(text, language) {
     if (language === 'en') {
-      return 'Read this text and extract facts. For each fact write ' +
-        'a JSON object with 3 fields: entity, type, subject.\n\n' +
-        'Allowed types: year, date, percentage, number, name.\n' +
-        'Rules: entity must be short (1-8 words). ' +
-        'subject is the part of the sentence before the entity.\n\n' +
+      return 'Read the text and extract factual entities. For each entity, output a JSON object.\n\n' +
+        'Allowed types: date, year, percentage, number, person, organization, term.\n' +
+        'Rules: entity must be 1-8 words. Keep it short.\n\n' +
         'Text:\n' + text + '\n\n' +
-        'Example valid response:\n' +
-        '[{"entity":"1945","type":"year","subject":"World War II ended in"},' +
-        '{"entity":"4 July 1776","type":"date","subject":"The Declaration was signed on"}]\n\n' +
-        'Reply ONLY with a JSON array, no text before or after:';
+        'Example: [{"entity":"July 4, 1776","type":"date"},' +
+        '{"entity":"Thomas Jefferson","type":"person"},' +
+        '{"entity":"United Nations","type":"organization"}]\n\n' +
+        'Reply ONLY with a JSON array:';
     }
-
-    return 'Leggi questo testo ed estrai i fatti. Per ogni fatto scrivi ' +
-      'un oggetto JSON con 3 campi: entity, type, subject.\n\n' +
-      'Tipi ammessi: year, date, percentage, number, name.\n' +
-      'Regole: entity deve essere breve (1-8 parole). ' +
-      'subject è la parte di frase prima dell\'entità.\n\n' +
+    return 'Leggi il testo ed estrai entità fattuali. Per ogni entità, scrivi un oggetto JSON.\n\n' +
+      'Tipi ammessi: date, year, percentage, number, person, organization, term.\n' +
+      'Regole: entity deve essere 1-8 parole. Breve.\n\n' +
       'Testo:\n' + text + '\n\n' +
-      'Esempio di risposta valida:\n' +
-      '[{"entity":"1948","type":"year","subject":"La Costituzione entrò in vigore il"},' +
-      '{"entity":"1 gennaio 1948","type":"date","subject":"entrò in vigore il"}]\n\n' +
-      'Rispondi SOLO con array JSON, nessun testo prima o dopo:';
+      'Esempio: [{"entity":"4 luglio 1776","type":"date"},' +
+      '{"entity":"Thomas Jefferson","type":"person"},' +
+      '{"entity":"Nazioni Unite","type":"organization"}]\n\n' +
+      'Rispondi SOLO con array JSON:';
   }
 
+  /** Tolerant JSON parser for AI responses */
   function parseExtraction(raw) {
     if (!raw || typeof raw !== 'string') return [];
 
@@ -3249,6 +3162,7 @@ body.edit-mode .edit-hint {
     return objects;
   }
 
+  /** Split text into chunks of ~100 words for AI processing */
   function splitIntoChunks(text, maxWords) {
     maxWords = maxWords || 100;
     var sentences = splitIntoSentences(text);
@@ -3276,6 +3190,7 @@ body.edit-mode .edit-hint {
     return chunks.filter(function (c) { return c.length > 40; });
   }
 
+  /** Use the AI to propose additional questions */
   function proposeFromAI(doc, onProgress) {
     var chunks = splitIntoChunks(doc.text, 100);
     if (!chunks.length) return Promise.resolve([]);
@@ -3304,14 +3219,15 @@ body.edit-mode .edit-hint {
           var entity = String(item.entity).trim();
           var type = String(item.type).trim().toLowerCase();
 
-          if (type === 'cifra' || type === 'cifre') type = 'number';
-          if (type === 'nome' || type === 'persona' || type === 'name') type = 'proper_noun';
+          // Normalize
+          if (type === 'cifra' || type === 'number') type = 'number';
+          if (type === 'nome' || type === 'person') type = 'person';
 
-          if (['year', 'date', 'percentage', 'number', 'proper_noun']
-              .indexOf(type) === -1) continue;
-
-          var verified = classifyEntity(entity);
-          if (verified !== 'unknown') type = verified;
+          if (['date', 'year', 'percentage', 'number', 'person', 'organization', 'term']
+              .indexOf(type) === -1) {
+            type = classifyEntity(entity);
+            if (type === 'unknown') continue;
+          }
 
           var index = doc.text.indexOf(entity);
           if (index < 0) continue;
@@ -3328,10 +3244,10 @@ body.edit-mode .edit-hint {
           var sentenceText = doc.text.slice(containerSentence.start, containerSentence.end);
           if (sentenceText.length < 20 || sentenceText.length > 400) continue;
 
-          var question = null;
+          var question = buildUniversalQuestion(type, entity, sentenceText, language);
           var cardType = type;
 
-          if (type === 'proper_noun') {
+          if (!question) {
             var relative = index - containerSentence.start;
             var cloze = sentenceText.slice(0, relative) + '____' +
                         sentenceText.slice(relative + entity.length);
@@ -3340,37 +3256,10 @@ body.edit-mode .edit-hint {
               question = cloze;
               cardType = 'cloze';
             }
-          } else {
-            question = buildQuestion(type, entity, sentenceText, language);
           }
-
           if (!question || question.length < 10 || question.length > 220) continue;
 
-          var distractors = null;
-          if (cardType !== 'cloze') {
-            distractors = dictionaryDistractors(cardType, entity, 3);
-            if (!distractors || distractors.length < 3) {
-              distractors = perturbationDistractors(cardType, entity, 3);
-            }
-          }
-
-          if (!distractors || distractors.length < 3) {
-            var others = [];
-            var otherHighlights = highlightsForDocument(doc.id);
-            for (var o = 0; o < otherHighlights.length && others.length < 3; o++) {
-              var otherText = doc.text.slice(
-                otherHighlights[o].start,
-                otherHighlights[o].end
-              ).trim();
-              if (otherText &&
-                  otherText.toLowerCase() !== entity.toLowerCase() &&
-                  others.indexOf(otherText) === -1) {
-                others.push(otherText);
-              }
-            }
-            if (others.length >= 3) distractors = others.slice(0, 3);
-          }
-
+          var distractors = buildUniversalDistractors(type, entity, doc, 3);
           if (!distractors || distractors.length < 3) continue;
 
           var contentId = hashQuestion('ai|' + cardType + '|' + question + '|' + entity);
@@ -3384,8 +3273,7 @@ body.edit-mode .edit-hint {
             distractors: distractors.slice(0, 3),
             highlightId: null,
             sourceCat: (cardType === 'year' || cardType === 'date' ||
-                        cardType === 'percentage' || cardType === 'number')
-                       ? 'num' : 'name',
+                        cardType === 'percentage' || cardType === 'number') ? 'num' : 'name',
             contentId: contentId,
             origin: 'ai'
           });
@@ -3403,6 +3291,7 @@ body.edit-mode .edit-hint {
     return next();
   }
 
+  /** Validate a proposal before showing it */
   function validateProposal(proposal) {
     var question = proposal.front.trim();
     var correct = proposal.back.trim();
@@ -3433,81 +3322,74 @@ body.edit-mode .edit-hint {
 
   function openCardPreview() {
     var doc = getActiveDocument();
-    if (!doc) {
-      showToast('No text');
-      return;
-    }
+    if (!doc) { showToast('No text'); return; }
 
     var highlights = highlightsForDocument(doc.id).filter(function (h) {
       return h.start >= 0;
     });
-    if (!highlights.length) {
-      showToast('Highlight something first');
-      return;
-    }
+    if (!highlights.length) { showToast('Highlight something first'); return; }
 
-    var dictionaryProposals = proposeFromDictionary(doc).filter(validateProposal);
-    var dictionaryCount = dictionaryProposals.length;
-    var dictionaryContentIds = {};
-    for (var i = 0; i < dictionaryProposals.length; i++) {
-      dictionaryContentIds[dictionaryProposals[i].contentId] = true;
+    // Step 1: analyzer proposals (works without AI)
+    var templateProposals = proposeFromAnalyzer(doc).filter(validateProposal);
+    var templateCount = templateProposals.length;
+    var templateIds = {};
+    for (var i = 0; i < templateProposals.length; i++) {
+      templateIds[templateProposals[i].contentId] = true;
     }
 
     if (!aiState.ready || !hasWebGPU()) {
-      if (!dictionaryProposals.length) {
+      if (!templateProposals.length) {
         showToast('No questions available');
         return;
       }
-      showPreview(dictionaryProposals, 0);
+      showPreview(templateProposals, 0);
       return;
     }
 
-    mainAIStatus('working', 'Dictionary: ' + dictionaryCount + ' questions · preparing AI…');
+    // Step 2: AI proposals
+    mainAIStatus('working', 'Analyzer: ' + templateCount + ' questions · preparing AI…');
 
     proposeFromAI(doc, function (current, total) {
       mainAIStatus('working', 'AI extraction ' + current + '/' + total + '…');
     }).then(function (aiProposals) {
-      var validAIProposals = aiProposals.filter(validateProposal).filter(function (p) {
-        return !dictionaryContentIds[p.contentId];
+      var validAI = aiProposals.filter(validateProposal).filter(function (p) {
+        return !templateIds[p.contentId];
       });
-
-      var all = dictionaryProposals.concat(validAIProposals);
+      var all = templateProposals.concat(validAI);
       mainAIStatus('hidden');
-
-      if (!all.length) {
-        showToast('No questions generated');
-        return;
-      }
-      showPreview(all, dictionaryCount);
+      if (!all.length) { showToast('No questions generated'); return; }
+      showPreview(all, templateCount);
     }).catch(function (error) {
       console.error(error);
-      mainAIStatus('error', 'AI error · using dictionary only');
+      mainAIStatus('error', 'AI error · using analyzer only');
       setTimeout(function () { mainAIStatus('hidden'); }, 2000);
-      showPreview(dictionaryProposals, 0);
+      showPreview(templateProposals, 0);
     });
   }
 
-  function showPreview(proposals, dictionaryCount) {
+  function showPreview(proposals, templateCount) {
     var existing = {};
     for (var id in DATA.cards) {
       existing[DATA.cards[id].contentId] = true;
     }
-
     for (var i = 0; i < proposals.length; i++) {
       proposals[i].alreadyExists = !!existing[proposals[i].contentId];
     }
-
     previewProposals = proposals;
     renderPreview();
 
-    var aiCount = proposals.length - dictionaryCount;
-    var summary = dictionaryCount + ' from dictionary';
+    var aiCount = proposals.length - templateCount;
+    var summary = templateCount + ' from text';
     if (aiCount > 0) summary += ' · ' + aiCount + ' from AI';
     $('card-preview-count').textContent = summary;
-
     $('modal-card-preview').classList.add('open');
   }
 
+  /**
+   * Render the preview list.
+   * IMPORTANT: does NOT show the correct answer — only the question
+   * and the 3 distractors.
+   */
   function renderPreview() {
     var box = $('card-preview-list');
     box.innerHTML = '';
@@ -3520,7 +3402,7 @@ body.edit-mode .edit-hint {
       var type = p.type.replace('fact-', '').replace('concept-', '');
       var origin = p.origin === 'ai'
         ? '<span class="badge ai">AI</span>'
-        : '<span class="badge tpl">Template</span>';
+        : '<span class="badge tpl">Text</span>';
 
       element.innerHTML =
         '<div class="card-head">' +
@@ -3614,7 +3496,8 @@ body.edit-mode .edit-hint {
         element.className = 'lib-item';
 
         var date = new Date(d.updatedAt).toLocaleDateString('en-US', {
-          day: '2-digit', month: 'short'
+          day: '2-digit',
+          month: 'short'
         });
         var highlights = highlightsForDocument(d.id).filter(function (h) {
           return h.start >= 0;
@@ -3634,9 +3517,7 @@ body.edit-mode .edit-hint {
             '<span>' + date + '</span>' +
           '</div>';
 
-        element.addEventListener('click', function () {
-          openDocument(d.id);
-        });
+        element.addEventListener('click', function () { openDocument(d.id); });
 
         var timer;
         element.addEventListener('touchstart', function () {
@@ -3709,18 +3590,14 @@ body.edit-mode .edit-hint {
     var distractors = (card.distractors || []).filter(function (x) {
       return x && x.trim() && x.trim() !== correct.trim();
     });
-
     var final = distractors.slice(0, 3);
     if (final.length < 3) return null;
-
     var options = shuffle([correct].concat(final));
     return { options: options, correctIndex: options.indexOf(correct) };
   }
 
   function startReview() {
-    var due = cardsDue(null).filter(function (c) {
-      return buildMCQ(c);
-    });
+    var due = cardsDue(null).filter(function (c) { return buildMCQ(c); });
 
     if (!due.length) {
       $('review-content').innerHTML =
@@ -3733,7 +3610,6 @@ body.edit-mode .edit-hint {
     }
 
     due.sort(function () { return Math.random() - 0.5; });
-
     reviewState.queue = due.slice();
     reviewState.idx = 0;
     reviewState.done = 0;
@@ -3748,7 +3624,8 @@ body.edit-mode .edit-hint {
 
     if (reviewState.idx >= reviewState.queue.length) {
       var accuracy = reviewState.done > 0
-        ? Math.round(100 * reviewState.correct / reviewState.done) : 0;
+        ? Math.round(100 * reviewState.correct / reviewState.done)
+        : 0;
       box.innerHTML =
         '<div class="empty">' +
           '<div class="title">Session complete</div>' +
@@ -3768,7 +3645,6 @@ body.edit-mode .edit-hint {
       reviewState.forIdx = reviewState.idx;
       reviewState.selected = -1;
     }
-
     if (!reviewState.mcq) {
       reviewState.idx++;
       renderReviewCard();
@@ -3781,10 +3657,10 @@ body.edit-mode .edit-hint {
     var letters = ['A', 'B', 'C', 'D'];
 
     var doc = DATA.docs[card.docId];
-    var highlight = card.highlightId
-      ? DATA.highlights[card.highlightId] : null;
+    var highlight = card.highlightId ? DATA.highlights[card.highlightId] : null;
     var context = (highlight && highlight.start >= 0 && doc)
-      ? doc.text.slice(highlight.start, highlight.end) : '';
+      ? doc.text.slice(highlight.start, highlight.end)
+      : '';
 
     var frontHtml = escapeHtml(card.front).replace(/____/g, '<span class="blank">?</span>');
 
@@ -3796,12 +3672,11 @@ body.edit-mode .edit-hint {
         else if (i === reviewState.selected) cls += ' wrong';
         else cls += ' dim';
       }
-      optionsHtml +=
-        '<button class="' + cls + '" data-i="' + i + '" ' +
-          (answered ? 'disabled' : '') + '>' +
-          '<span class="mcq-label">' + letters[i] + '</span>' +
-          '<span class="mcq-text">' + escapeHtml(options[i]) + '</span>' +
-        '</button>';
+      optionsHtml += '<button class="' + cls + '" data-i="' + i + '" ' +
+        (answered ? 'disabled' : '') + '>' +
+        '<span class="mcq-label">' + letters[i] + '</span>' +
+        '<span class="mcq-text">' + escapeHtml(options[i]) + '</span>' +
+      '</button>';
     }
 
     var feedbackHtml = '';
@@ -3827,8 +3702,7 @@ body.edit-mode .edit-hint {
             '</div>'
           : '') +
       '</div>' +
-      '<div>' + optionsHtml + '</div>' +
-      feedbackHtml;
+      '<div>' + optionsHtml + '</div>' + feedbackHtml;
 
     if (!answered) {
       var buttons = box.querySelectorAll('.mcq-option');
@@ -3858,10 +3732,7 @@ body.edit-mode .edit-hint {
   }
 
   function updateReviewBadge() {
-    var count = cardsDue(null).filter(function (c) {
-      return buildMCQ(c);
-    }).length;
-
+    var count = cardsDue(null).filter(function (c) { return buildMCQ(c); }).length;
     var badge = $('review-badge');
     if (count > 0) {
       badge.style.display = 'inline-block';
@@ -3880,12 +3751,10 @@ body.edit-mode .edit-hint {
     for (var i = 0; i < views.length; i++) {
       views[i].classList.toggle('active', views[i].id === 'view-' + name);
     }
-
     var tabs = document.querySelectorAll('.tabbar .tab');
     for (var j = 0; j < tabs.length; j++) {
       tabs[j].classList.toggle('active', tabs[j].dataset.view === name);
     }
-
     if (name === 'library') renderLibrary($('library-search').value);
     if (name === 'review') startReview();
   }
@@ -3894,6 +3763,7 @@ body.edit-mode .edit-hint {
   // TITLE AND THEME
   // ============================================================
 
+  /** Build the HIGHLIGHT AI title letter-by-letter with colors */
   function buildTitle() {
     var element = $('brand-title');
     var text = 'HIGHLIGHT AI';
@@ -3911,13 +3781,10 @@ body.edit-mode .edit-hint {
       } else {
         var span = document.createElement('span');
         var colorName = colorClasses[colorIndex % colorClasses.length];
-        var cssVar = '--color-' +
-          colorName.replace('num', 'number')
-            .replace('name', 'name')
-            .replace('key', 'concept')
-            .replace('def', 'definition')
-            .replace('quote', 'quote')
-            .replace('list', 'list');
+        var cssVar = '--color-' + colorName.replace('num', 'number')
+          .replace('name', 'name').replace('key', 'concept')
+          .replace('def', 'definition').replace('quote', 'quote')
+          .replace('list', 'list');
         span.style.background = 'var(' + cssVar + ')';
         span.textContent = character;
         element.appendChild(span);
@@ -3926,6 +3793,7 @@ body.edit-mode .edit-hint {
     }
   }
 
+  /** Apply the system theme (light or dark) */
   function applyTheme() {
     function apply() {
       var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -3939,6 +3807,7 @@ body.edit-mode .edit-hint {
   // AUTO ANALYSIS
   // ============================================================
 
+  /** Analyze the current document and replace auto highlights */
   function analyzeCurrentDocument() {
     var doc = getActiveDocument();
     if (!doc || !doc.text.trim()) return;
@@ -3949,18 +3818,17 @@ body.edit-mode .edit-hint {
     var spans = analyzeText(doc.text);
     var highlights = highlightsForDocument(doc.id);
 
+    // Remove previous auto highlights
     for (var i = 0; i < highlights.length; i++) {
       if (highlights[i].source === 'auto') {
         delete DATA.highlights[highlights[i].id];
       }
     }
 
+    // Add new ones
     for (var j = 0; j < spans.length; j++) {
       var span = spans[j];
-      var before = doc.text.slice(Math.max(0, span.start - 30), span.start);
-      var after = doc.text.slice(span.end, span.end + 30);
       var id = generateId();
-
       DATA.highlights[id] = {
         id: id,
         docId: doc.id,
@@ -3968,8 +3836,8 @@ body.edit-mode .edit-hint {
         end: span.end,
         cat: span.cat,
         source: 'auto',
-        before: before,
-        after: after,
+        before: doc.text.slice(Math.max(0, span.start - 30), span.start),
+        after: doc.text.slice(span.end, span.end + 30),
         note: '',
         createdAt: Date.now()
       };
@@ -4000,7 +3868,7 @@ body.edit-mode .edit-hint {
         element.addEventListener('click', function () {
           if (aiState.loading) return;
           aiState.modelKey = k;
-          localStorage.setItem('highlight-ai.v90.model', k);
+          localStorage.setItem('highlight-ai.v110.model', k);
           renderModelList();
           vibrate(4);
         });
@@ -4010,14 +3878,13 @@ body.edit-mode .edit-hint {
     }
   }
 
+  // Debounced auto-analysis
   var autoAnalysisTimer = null;
-
   function scheduleAutoAnalysis(delay) {
     clearTimeout(autoAnalysisTimer);
     autoAnalysisTimer = setTimeout(function () {
       var doc = getActiveDocument();
       if (!doc) return;
-
       var newText = $('input').value;
       if (newText === doc.text) return;
 
@@ -4046,10 +3913,12 @@ body.edit-mode .edit-hint {
       })(tabs[i]);
     }
 
+    // Input: schedule auto-analysis
     $('input').addEventListener('input', function () {
       scheduleAutoAnalysis(400);
     });
 
+    // Edit mode toggle
     $('btn-edit').addEventListener('click', function () {
       document.body.classList.toggle('edit-mode');
       $('btn-edit').classList.toggle('on', document.body.classList.contains('edit-mode'));
@@ -4057,8 +3926,10 @@ body.edit-mode .edit-hint {
       vibrate(6);
     });
 
+    // Generate questions
     $('btn-generate-cards').addEventListener('click', openCardPreview);
 
+    // Save
     $('btn-save').addEventListener('click', function () {
       var doc = getActiveDocument();
       if (!doc) { showToast('No text'); return; }
@@ -4081,6 +3952,7 @@ body.edit-mode .edit-hint {
       showToast('Saved');
     });
 
+    // New document
     $('btn-new').addEventListener('click', function () {
       createDocument('', 'Untitled');
       $('input').value = '';
@@ -4091,6 +3963,7 @@ body.edit-mode .edit-hint {
       showToast('New document');
     });
 
+    // Clear
     $('btn-clear').addEventListener('click', function () {
       var doc = getActiveDocument();
       if (!doc) return;
@@ -4123,6 +3996,7 @@ body.edit-mode .edit-hint {
       $('modal-confirm').classList.remove('open');
     });
 
+    // Notes
     $('btn-save-note').addEventListener('click', function () {
       if (!highlightInNote) return;
       updateHighlight(highlightInNote.id, {
@@ -4141,11 +4015,13 @@ body.edit-mode .edit-hint {
       showToast('Removed');
     });
 
+    // Card preview
     $('btn-cancel-cards').addEventListener('click', function () {
       $('modal-card-preview').classList.remove('open');
     });
     $('btn-confirm-cards').addEventListener('click', confirmCardAdd);
 
+    // AI modal
     $('btn-ai-status').addEventListener('click', function () {
       renderModelList();
       updateAIModalButtons();
@@ -4166,10 +4042,12 @@ body.edit-mode .edit-hint {
       $('modal-ai-setup').classList.remove('open');
     });
 
+    // Library search
     $('library-search').addEventListener('input', function (e) {
       renderLibrary(e.target.value);
     });
 
+    // Output click: either edit-mode tap or note opening
     var output = $('output');
     output.addEventListener('click', function (e) {
       if (document.body.classList.contains('edit-mode')) {
@@ -4194,6 +4072,7 @@ body.edit-mode .edit-hint {
       }
     });
 
+    // Close modals on backdrop click
     var modals = document.querySelectorAll('.modal-bg');
     for (var m = 0; m < modals.length; m++) {
       (function (modal) {
@@ -4203,7 +4082,7 @@ body.edit-mode .edit-hint {
       })(modals[m]);
     }
 
-    // Language badge — tap to force IT or EN
+    // Language badge: tap to force IT or EN
     $('btn-language').addEventListener('click', function () {
       var doc = getActiveDocument();
       if (!doc) return;
@@ -4232,31 +4111,29 @@ body.edit-mode .edit-hint {
 
       var doc = getActiveDocument();
 
+      // If no document exists, create a sample text
       if (!doc) {
         var sampleText =
-          "The United States Declaration of Independence was adopted on " +
-          "July 4, 1776, by the Second Continental Congress. The document, " +
-          "primarily drafted by Thomas Jefferson, announced that the thirteen " +
-          "American colonies regarded themselves as independent sovereign " +
-          "states, no longer under British rule.\n\n" +
-          "George Washington was elected the first President of the United " +
-          "States in 1789. He served two terms and was succeeded by John Adams " +
-          "in 1797. Thomas Jefferson became the third President in 1801, and " +
-          "during his presidency the Louisiana Purchase of 1803 doubled the " +
-          "size of the country.\n\n" +
-          "The American Civil War began in 1861 and ended in 1865. President " +
-          "Abraham Lincoln issued the Emancipation Proclamation in 1863, " +
-          "declaring that all slaves in Confederate territory were to be " +
-          "set free.";
+          "Photosynthesis is the process by which green plants convert light " +
+          "energy into chemical energy. The reaction uses six molecules of " +
+          "carbon dioxide and six molecules of water to produce one molecule of " +
+          "glucose and six molecules of oxygen.\n\n" +
+          "The process occurs in the chloroplasts. Chlorophyll absorbs light " +
+          "most strongly in the blue and red portions of the spectrum. The " +
+          "wavelength of visible light ranges from approximately 380 to 750 " +
+          "nanometers.\n\n" +
+          "Photosynthesis produces approximately 130 billion metric tons of " +
+          "organic matter each year worldwide. Without this process, the oxygen " +
+          "content of Earth's atmosphere would be a small fraction of its " +
+          "current 21 percent.";
 
-        doc = createDocument(sampleText, 'Sample · American History');
+        doc = createDocument(sampleText, 'Sample · Photosynthesis');
         analyzeCurrentDocument();
       }
 
       $('input').value = doc.text;
       redraw();
       updateReviewBadge();
-
     } catch (error) {
       console.error('Initialization error:', error);
       errorBanner.style.display = 'block';
