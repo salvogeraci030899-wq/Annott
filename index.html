@@ -11,18 +11,28 @@
 <style>
 /* ============================================================
    CSS VARIABLES
+   Change these to modify the global look of the app.
+   Light theme is default; dark theme overrides below.
    ============================================================ */
 :root {
   color-scheme: light;
+
+  /* Backgrounds */
   --bg: #f6f3ee;
   --surface: #ffffff;
   --surface-2: #fbf9f5;
   --surface-3: #f1ede6;
+
+  /* Text colors */
   --ink: #1b1815;
   --ink-2: #57534e;
   --ink-3: #a8a29e;
+
+  /* Borders */
   --border: #e6e0d6;
   --border-2: #d9d2c5;
+
+  /* Accents */
   --accent: #b8893d;
   --accent-soft: #f3e6cf;
   --danger: #c0392b;
@@ -30,6 +40,8 @@
   --ai-soft: #ece5ff;
   --ok: #3b8f4b;
   --ok-soft: #dff0e2;
+
+  /* Highlight category colors */
   --c-number: #ffe680;
   --c-name: #d9b8ff;
   --c-concept: #b6e6b6;
@@ -41,15 +53,19 @@
 
 [data-theme="dark"] {
   color-scheme: dark;
+
   --bg: #14110f;
   --surface: #1e1a18;
   --surface-2: #262120;
   --surface-3: #2e2826;
+
   --ink: #f3efe9;
   --ink-2: #b6ada3;
   --ink-3: #6a635c;
+
   --border: #302a27;
   --border-2: #3d3632;
+
   --accent: #d4b478;
   --accent-soft: #3a2f1c;
   --danger: #e57373;
@@ -57,6 +73,7 @@
   --ai-soft: #2a1f4d;
   --ok: #7bd88f;
   --ok-soft: #1c3322;
+
   --c-number: rgba(255, 205, 50, 0.42);
   --c-name: rgba(200, 140, 255, 0.42);
   --c-concept: rgba(100, 220, 110, 0.36);
@@ -66,12 +83,16 @@
   --c-sentence: rgba(255, 165, 90, 0.20);
 }
 
+/* ============================================================
+   RESET AND BASE STYLES
+   ============================================================ */
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
 }
@@ -85,7 +106,9 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-button, input, textarea {
+button,
+input,
+textarea {
   font-family: inherit;
   font-size: inherit;
   color: inherit;
@@ -98,6 +121,9 @@ button {
   padding: 0;
 }
 
+/* ============================================================
+   APP SHELL
+   ============================================================ */
 .app {
   display: flex;
   flex-direction: column;
@@ -114,6 +140,10 @@ button {
   flex: 0 0 auto;
 }
 
+/* ============================================================
+   ANIMATED BRAND TITLE
+   Each letter cycles through the 7 highlight colors.
+   ============================================================ */
 .brand-title {
   font-weight: 800;
   font-size: 1.02rem;
@@ -154,6 +184,9 @@ button {
   }
 }
 
+/* ============================================================
+   ICON BUTTONS
+   ============================================================ */
 .iconbtn {
   width: 38px;
   height: 38px;
@@ -164,11 +197,27 @@ button {
   transition: color 0.2s;
 }
 
-.iconbtn:active { background: var(--surface-3); }
-.iconbtn svg { width: 20px; height: 20px; }
-.iconbtn.ai-active { color: var(--ai); }
-.spacer { flex: 1; }
+.iconbtn:active {
+  background: var(--surface-3);
+}
 
+.iconbtn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* AI icon turns purple when the model is active */
+.iconbtn.ai-active {
+  color: var(--ai);
+}
+
+.spacer {
+  flex: 1;
+}
+
+/* ============================================================
+   VIEWS (tab containers)
+   ============================================================ */
 .view {
   display: none;
   flex: 1;
@@ -176,7 +225,9 @@ button {
   min-height: 0;
 }
 
-.view.active { display: flex; }
+.view.active {
+  display: flex;
+}
 
 .scroll {
   flex: 1;
@@ -191,6 +242,10 @@ button {
   margin: 0 auto;
 }
 
+/* ============================================================
+   TEXT INPUT
+   Fixed height of 6 lines; scrolls internally if content overflows.
+   ============================================================ */
 .input-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -213,8 +268,13 @@ button {
   overflow-y: auto;
 }
 
-.input-card textarea::placeholder { color: var(--ink-3); }
+.input-card textarea::placeholder {
+  color: var(--ink-3);
+}
 
+/* ============================================================
+   TOOLBAR
+   ============================================================ */
 .actions {
   display: flex;
   gap: 6px;
@@ -224,7 +284,9 @@ button {
   scrollbar-width: none;
 }
 
-.actions::-webkit-scrollbar { display: none; }
+.actions::-webkit-scrollbar {
+  display: none;
+}
 
 .tbtn {
   flex: 0 0 auto;
@@ -241,7 +303,9 @@ button {
   white-space: nowrap;
 }
 
-.tbtn:active { background: var(--surface-3); }
+.tbtn:active {
+  background: var(--surface-3);
+}
 
 .tbtn.on {
   background: var(--ai-soft);
@@ -249,8 +313,14 @@ button {
   border-color: color-mix(in srgb, var(--ai) 30%, transparent);
 }
 
-.tbtn svg { width: 15px; height: 15px; }
-.tbtn.danger { color: var(--danger); }
+.tbtn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.tbtn.danger {
+  color: var(--danger);
+}
 
 .tbtn.primary {
   background: var(--ink);
@@ -259,8 +329,13 @@ button {
   font-weight: 600;
 }
 
-.tbtn.primary:active { background: var(--ink); }
+.tbtn.primary:active {
+  background: var(--ink);
+}
 
+/* ============================================================
+   CATEGORY LEGEND
+   ============================================================ */
 .cats-row {
   display: flex;
   gap: 6px;
@@ -269,7 +344,9 @@ button {
   scrollbar-width: none;
 }
 
-.cats-row::-webkit-scrollbar { display: none; }
+.cats-row::-webkit-scrollbar {
+  display: none;
+}
 
 .cat-pill {
   flex: 0 0 auto;
@@ -287,7 +364,9 @@ button {
   line-height: 1;
 }
 
-.cat-pill:active { transform: scale(0.96); }
+.cat-pill:active {
+  transform: scale(0.96);
+}
 
 .cat-pill .dot {
   width: 8px;
@@ -308,6 +387,13 @@ button {
   font-weight: 600;
 }
 
+/* ============================================================
+   ANNOTATED OUTPUT
+   The output is composed of many inline <span class="seg">
+   segments, one per line plus one per newline character.
+   The redraw logic reuses existing spans and only rewrites
+   the ones whose content or highlight structure changed.
+   ============================================================ */
 .output-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -321,8 +407,13 @@ button {
   min-height: 100px;
 }
 
-.output-card:empty { display: none; }
-.output-card > span.seg { display: inline; }
+.output-card:empty {
+  display: none;
+}
+
+.output-card > span.seg {
+  display: inline;
+}
 
 mark {
   background: transparent;
@@ -346,6 +437,9 @@ mark.has-note {
   box-shadow: inset 0 -3px 0 0 var(--ai);
 }
 
+/* ============================================================
+   EMPTY STATES
+   ============================================================ */
 .empty {
   text-align: center;
   padding: 60px 24px;
@@ -364,6 +458,9 @@ mark.has-note {
   line-height: 1.5;
 }
 
+/* ============================================================
+   LIBRARY LIST
+   ============================================================ */
 .lib-list {
   display: flex;
   flex-direction: column;
@@ -378,7 +475,9 @@ mark.has-note {
   cursor: pointer;
 }
 
-.lib-item:active { background: var(--surface-2); }
+.lib-item:active {
+  background: var(--surface-2);
+}
 
 .lib-item .title {
   font-weight: 600;
@@ -408,6 +507,9 @@ mark.has-note {
   flex-wrap: wrap;
 }
 
+/* ============================================================
+   BADGES
+   ============================================================ */
 .badge {
   display: inline-block;
   font-size: 0.66rem;
@@ -427,6 +529,9 @@ mark.has-note {
 .badge.sched   { background: var(--surface-3); color: var(--ink-2); }
 .badge.new     { background: var(--accent-soft); color: var(--accent); }
 
+/* ============================================================
+   CARDS
+   ============================================================ */
 .card-item {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -485,6 +590,9 @@ mark.has-note {
   gap: 10px;
 }
 
+/* ============================================================
+   SECTION TITLES
+   ============================================================ */
 .section-title {
   font-size: 0.7rem;
   font-weight: 700;
@@ -497,7 +605,9 @@ mark.has-note {
   justify-content: space-between;
 }
 
-.section-title:first-child { margin-top: 0; }
+.section-title:first-child {
+  margin-top: 0;
+}
 
 .section-title button {
   font-size: 0.72rem;
@@ -507,6 +617,9 @@ mark.has-note {
   letter-spacing: 0;
 }
 
+/* ============================================================
+   REVIEW
+   ============================================================ */
 .review-progress {
   text-align: center;
   font-size: 0.82rem;
@@ -542,6 +655,9 @@ mark.has-note {
   padding: 0 4px;
 }
 
+/* ============================================================
+   MCQ OPTIONS
+   ============================================================ */
 .mcq-option {
   display: flex;
   align-items: flex-start;
@@ -557,7 +673,9 @@ mark.has-note {
   line-height: 1.5;
 }
 
-.mcq-option:not(:disabled):active { transform: scale(0.995); }
+.mcq-option:not(:disabled):active {
+  transform: scale(0.995);
+}
 
 .mcq-label {
   flex: 0 0 auto;
@@ -603,7 +721,9 @@ mark.has-note {
   color: white;
 }
 
-.mcq-option.dim { opacity: 0.4; }
+.mcq-option.dim {
+  opacity: 0.4;
+}
 
 .mcq-feedback {
   padding: 12px 16px;
@@ -624,6 +744,9 @@ mark.has-note {
   color: var(--danger);
 }
 
+/* ============================================================
+   SELECTION BAR
+   ============================================================ */
 .sel-bar {
   position: fixed;
   bottom: calc(96px + env(safe-area-inset-bottom));
@@ -641,8 +764,13 @@ mark.has-note {
   scrollbar-width: none;
 }
 
-.sel-bar::-webkit-scrollbar { display: none; }
-.sel-bar.show { display: flex; }
+.sel-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.sel-bar.show {
+  display: flex;
+}
 
 .sel-bar .cat-btn {
   width: 36px;
@@ -653,7 +781,9 @@ mark.has-note {
   flex: 0 0 auto;
 }
 
-.sel-bar .cat-btn:active { transform: scale(0.9); }
+.sel-bar .cat-btn:active {
+  transform: scale(0.9);
+}
 
 .sel-bar .cat-btn .dot {
   width: 22px;
@@ -675,6 +805,9 @@ mark.has-note {
   color: white;
 }
 
+/* ============================================================
+   EDIT PANEL
+   ============================================================ */
 .edit-panel {
   position: fixed;
   left: 0;
@@ -687,7 +820,9 @@ mark.has-note {
   box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.2);
 }
 
-.edit-panel.show { display: block; }
+.edit-panel.show {
+  display: block;
+}
 
 .edit-panel-inner {
   display: flex;
@@ -699,7 +834,9 @@ mark.has-note {
   margin: 0 auto;
 }
 
-.edit-panel-inner::-webkit-scrollbar { display: none; }
+.edit-panel-inner::-webkit-scrollbar {
+  display: none;
+}
 
 .edit-panel .hint {
   color: rgba(255, 255, 255, 0.6);
@@ -720,7 +857,9 @@ mark.has-note {
   flex: 0 0 auto;
 }
 
-.edit-panel .color-btn:active { transform: scale(0.9); }
+.edit-panel .color-btn:active {
+  transform: scale(0.9);
+}
 
 .edit-panel .color-btn .dot {
   width: 28px;
@@ -738,6 +877,9 @@ mark.has-note {
   line-height: 1;
 }
 
+/* ============================================================
+   TAB BAR
+   ============================================================ */
 .tabbar {
   display: flex;
   background: var(--bg);
@@ -759,8 +901,14 @@ mark.has-note {
   position: relative;
 }
 
-.tabbar .tab svg { width: 22px; height: 22px; }
-.tabbar .tab.active { color: var(--ai); }
+.tabbar .tab svg {
+  width: 22px;
+  height: 22px;
+}
+
+.tabbar .tab.active {
+  color: var(--ai);
+}
 
 .tabbar .badge-dot {
   position: absolute;
@@ -778,6 +926,9 @@ mark.has-note {
   font-weight: 700;
 }
 
+/* ============================================================
+   MODALS
+   ============================================================ */
 .modal-bg {
   position: fixed;
   inset: 0;
@@ -788,7 +939,9 @@ mark.has-note {
   justify-content: center;
 }
 
-.modal-bg.open { display: flex; }
+.modal-bg.open {
+  display: flex;
+}
 
 .modal {
   background: var(--surface);
@@ -861,8 +1014,13 @@ mark.has-note {
 .btn.danger   { background: var(--danger); color: white; }
 .btn.ai       { background: var(--ai); color: white; }
 
-[data-theme="dark"] .btn.ai { color: #1a0f3d; }
+[data-theme="dark"] .btn.ai {
+  color: #1a0f3d;
+}
 
+/* ============================================================
+   MODEL OPTIONS
+   ============================================================ */
 .model-option {
   display: flex;
   align-items: center;
@@ -880,7 +1038,10 @@ mark.has-note {
   background: var(--ai-soft);
 }
 
-.model-option .info { flex: 1; min-width: 0; }
+.model-option .info {
+  flex: 1;
+  min-width: 0;
+}
 
 .model-option .name {
   font-weight: 600;
@@ -900,6 +1061,9 @@ mark.has-note {
   margin-top: 2px;
 }
 
+/* ============================================================
+   TOAST
+   ============================================================ */
 .toast {
   position: fixed;
   left: 50%;
@@ -919,8 +1083,13 @@ mark.has-note {
   text-align: center;
 }
 
-.toast.show { opacity: 1; }
+.toast.show {
+  opacity: 1;
+}
 
+/* ============================================================
+   AI STATUS BAR
+   ============================================================ */
 .ai-bar {
   display: none;
   align-items: center;
@@ -935,7 +1104,9 @@ mark.has-note {
   font-weight: 500;
 }
 
-.ai-bar.show { display: flex; }
+.ai-bar.show {
+  display: flex;
+}
 
 .ai-bar .spinner {
   width: 14px;
@@ -947,7 +1118,9 @@ mark.has-note {
   flex: 0 0 auto;
 }
 
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 
 .ai-bar .msg {
   flex: 1;
@@ -973,6 +1146,9 @@ mark.has-note {
   color: var(--danger);
 }
 
+/* ============================================================
+   STATS ROW
+   ============================================================ */
 .stats-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1001,6 +1177,9 @@ mark.has-note {
   margin-top: 2px;
 }
 
+/* ============================================================
+   ERROR BANNER
+   ============================================================ */
 #error-banner {
   position: fixed;
   top: 0;
@@ -1209,6 +1388,11 @@ mark.has-note {
 (function () {
   'use strict';
 
+  // ============================================================
+  // GLOBAL ERROR HANDLER
+  // Catches uncaught errors and displays them in the top banner.
+  // This is our only debugging aid — useful when running offline.
+  // ============================================================
   var errorBanner = document.getElementById('error-banner');
   window.addEventListener('error', function (event) {
     errorBanner.style.display = 'block';
@@ -1219,8 +1403,20 @@ mark.has-note {
   // UTILITIES
   // ============================================================
 
-  function $(id) { return document.getElementById(id); }
+  /**
+   * Shortcut for document.getElementById.
+   * @param {string} id - Element ID.
+   * @returns {HTMLElement|null}
+   */
+  function $(id) {
+    return document.getElementById(id);
+  }
 
+  /**
+   * Escape HTML special characters to prevent XSS in templates.
+   * @param {string} text - Raw text.
+   * @returns {string} Escaped text.
+   */
   function escapeHtml(text) {
     return String(text).replace(/[&<>"']/g, function (character) {
       return {
@@ -1233,18 +1429,42 @@ mark.has-note {
     });
   }
 
+  /**
+   * Generate a unique ID (timestamp + randomness).
+   * @returns {string}
+   */
   function generateId() {
     return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   }
 
+  /**
+   * Vibrate the device if supported (mobile only).
+   * @param {number} ms - Duration in milliseconds.
+   */
   function vibrate(ms) {
-    try { if (navigator.vibrate) navigator.vibrate(ms); } catch (error) {}
+    try {
+      if (navigator.vibrate) navigator.vibrate(ms);
+    } catch (error) {
+      // Silently ignore — not all browsers support vibration
+    }
   }
 
+  /**
+   * Clamp a value between a minimum and a maximum.
+   * @param {number} value
+   * @param {number} min
+   * @param {number} max
+   * @returns {number}
+   */
   function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
   }
 
+  /**
+   * Fisher-Yates shuffle. Returns a new array.
+   * @param {Array} array
+   * @returns {Array}
+   */
   function shuffle(array) {
     var copy = array.slice();
     for (var i = copy.length - 1; i > 0; i--) {
@@ -1262,6 +1482,8 @@ mark.has-note {
    * analysis cache. Collisions are astronomically unlikely
    * for the sizes involved, and the length is appended as a
    * secondary discriminator.
+   * @param {string} str
+   * @returns {string}
    */
   function hashString(str) {
     var h = 2166136261;
@@ -1272,8 +1494,14 @@ mark.has-note {
     return (h >>> 0).toString(36) + '_' + str.length;
   }
 
+  // Toast notification timer
   var toastTimer = null;
 
+  /**
+   * Show a temporary toast message at the bottom of the screen.
+   * @param {string} message
+   * @param {number} [duration] - Duration in ms (default 2200).
+   */
   function showToast(message, duration) {
     duration = duration || 2200;
     var toast = $('toast');
@@ -1289,6 +1517,7 @@ mark.has-note {
   // CONSTANTS
   // ============================================================
 
+  // The 7 highlight categories.
   var CATEGORIES = [
     { id: 'num',      label: 'Numbers',     cssClass: 'c-num' },
     { id: 'name',     label: 'Names',       cssClass: 'c-name' },
@@ -1299,6 +1528,9 @@ mark.has-note {
     { id: 'sentence', label: 'Sentences',   cssClass: 'c-sentence' }
   ];
 
+  // Priority when two highlights overlap.
+  // Higher number wins. User highlights always beat auto ones
+  // (see buildRuns / renderSegment for the source-based bonus).
   var CATEGORY_PRIORITY = {
     quote: 10,
     num: 9,
@@ -1311,6 +1543,8 @@ mark.has-note {
 
   // ============================================================
   // SAMPLE TEXTS
+  // Five different domains: science, history, nature, biography,
+  // technology. One is picked at random for new documents.
   // ============================================================
   var SAMPLE_TEXTS = [
     {
@@ -1337,6 +1571,10 @@ mark.has-note {
 
   // ============================================================
   // DICTIONARY
+  // Optional enhancement layer. When the analyzer recognizes an
+  // entity (e.g. a US president), the dictionary provides high-
+  // quality distractors. When it doesn't, the engine falls back
+  // to extracting distractors from the text itself.
   // ============================================================
   var DICTIONARY = {
     commonYears: [
@@ -1377,6 +1615,12 @@ mark.has-note {
     ]
   };
 
+  /**
+   * Build a lowercase lookup Set from an array.
+   * Used for fast membership tests in classifyEntity.
+   * @param {Array<string>} array
+   * @returns {Object}
+   */
   function buildLookupSet(array) {
     var set = {};
     for (var i = 0; i < array.length; i++) {
@@ -1392,11 +1636,16 @@ mark.has-note {
     organizations: buildLookupSet(DICTIONARY.organizations)
   };
 
+  // Bilingual month regex (IT + EN + FR)
   var MONTH_REGEX =
     '(?:january|february|march|april|may|june|july|august|september|' +
     'october|november|december|gennaio|febbraio|marzo|aprile|maggio|' +
     'giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)';
 
+  // English stopwords — common words that are never proper nouns.
+  // The list now includes a large set of sentence-starter adverbs,
+  // discourse markers, and adjectives that used to be false
+  // positives for "Names".
   var STOPWORDS_EN = (
     'the a an and or but of in on at to for from by with as is are was were ' +
     'be been being this that these those it its he she they them him her his ' +
@@ -1407,6 +1656,7 @@ mark.has-note {
     'should may might must do does did done have has had having ' +
     'about after before during between into through over under above ' +
     'below again further once here there ' +
+    // Sentence starters and discourse markers
     'however meanwhile therefore although though because whether despite ' +
     'according furthermore moreover nevertheless nonetheless otherwise ' +
     'consequently additionally specifically particularly similarly ' +
@@ -1417,9 +1667,11 @@ mark.has-note {
     'actually basically essentially generally typically usually often ' +
     'sometimes always never still yet already even too very quite rather ' +
     'somewhat almost nearly approximately ' +
+    // Common adverbs in -ly not covered above
     'recently significantly strongly suddenly properly quickly rapidly ' +
     'really seriously simply slightly possibly probably officially ' +
     'initially likely mainly mostly hopefully exactly definitely ' +
+    // Common adjectives / function words often at sentence start
     'additional alternative average common complex considerable critical ' +
     'current detailed different effective entire essential evident exact ' +
     'external extreme federal final financial following formal full ' +
@@ -1435,6 +1687,7 @@ mark.has-note {
     'traditional unique universal unusual useful various visible vital western'
   ).split(/\s+/);
 
+  // Italian stopwords
   var STOPWORDS_IT = (
     'il lo la i gli le un uno una e ed o od ma però perciò ' +
     'in con su per tra fra da di al allo alla ai agli alle ' +
@@ -1448,6 +1701,7 @@ mark.has-note {
     'secondo durante circa quasi sempre spesso talvolta'
   ).split(/\s+/);
 
+  // Unified stopword set
   var STOPWORD_SET = {};
   (function () {
     for (var i = 0; i < STOPWORDS_EN.length; i++) STOPWORD_SET[STOPWORDS_EN[i]] = true;
@@ -1457,13 +1711,22 @@ mark.has-note {
   // ============================================================
   // LANGUAGE DETECTION
   // ============================================================
+
+  /**
+   * Detects the language of a text: "it" or "en".
+   * Uses signal words plus accent counts.
+   * @param {string} text
+   * @returns {string} "it" or "en"
+   */
   function detectLanguage(text) {
     if (!text || text.length < 10) return 'en';
     var words = text.toLowerCase().match(/\p{L}+/gu) || [];
     if (words.length < 3) return 'en';
 
     var sample = {};
-    for (var i = 0; i < Math.min(200, words.length); i++) sample[words[i]] = true;
+    for (var i = 0; i < Math.min(200, words.length); i++) {
+      sample[words[i]] = true;
+    }
 
     var itSignals = ['il', 'lo', 'la', 'gli', 'della', 'nella', 'perché',
       'quindi', 'sono', 'questo', 'questa', 'anche', 'però', 'molto',
@@ -1485,6 +1748,12 @@ mark.has-note {
   // ============================================================
   // FSRS — Free Spaced Repetition Scheduler 4.5
   // ============================================================
+  // Faithful implementation. Three regimes are modeled:
+  //  - initialization (new card, first grade)
+  //  - short-term (learning / relearning / same-day review)
+  //  - long-term (review state with elapsed >= 1 day)
+  // Parameters w[0..18] are the FSRS-4.5 default weights.
+
   var FSRS_PARAMS = [
     0.4072, 1.1829, 3.1262, 15.4722, 7.2102, 0.5316, 1.0651,
     0.0234, 1.616, 0.1544, 1.0824, 1.9813, 0.0953, 0.2975,
@@ -1494,11 +1763,17 @@ mark.has-note {
   var FSRS_FACTOR = 19 / 81;
   var FSRS_TARGET = 0.9;
 
+  /**
+   * Initialize FSRS state for a brand new card (first grade).
+   * @param {number} rating - 1..4
+   * @returns {Object} FSRS state.
+   */
   function fsrsInitialize(rating) {
     var S = Math.max(0.1, FSRS_PARAMS[rating - 1]);
     var D = clamp(
       FSRS_PARAMS[4] - Math.exp(FSRS_PARAMS[5] * (rating - 1)) + 1,
-      1, 10
+      1,
+      10
     );
     return {
       stability: S,
@@ -1511,10 +1786,22 @@ mark.has-note {
     };
   }
 
+  /**
+   * Compute the next FSRS state given a rating.
+   * Short-term formula used when in learning/relearning OR when
+   * elapsed time since last review is less than one day.
+   * Long-term formula used in review state with elapsed >= 1 day.
+   * @param {Object} card - Current FSRS state.
+   * @param {number} rating - 1..4
+   * @param {number} now - Current timestamp in ms.
+   * @returns {Object} Next FSRS state.
+   */
   function fsrsNext(card, rating, now) {
     var S = Math.max(0.1, card.stability);
     var D = clamp(card.difficulty, 1, 10);
     var elapsedDays = Math.max(0, (now - (card.lastReview || now)) / 86400000);
+
+    // Retrievability for the long-term path
     var R = Math.exp(Math.log(FSRS_TARGET) * elapsedDays / S);
 
     var newD = clamp(D - FSRS_PARAMS[6] * (rating - 3), 1, 10);
@@ -1528,8 +1815,10 @@ mark.has-note {
       elapsedDays < 1;
 
     if (useShortTerm) {
+      // Short-term stability update
       newS = S * Math.exp(FSRS_PARAMS[17] * (rating - 3 + FSRS_PARAMS[18]));
       newS = Math.max(0.1, newS);
+
       if (rating === 1) {
         newLapses++;
         newState = 'relearning';
@@ -1540,6 +1829,7 @@ mark.has-note {
       }
     } else {
       if (rating === 1) {
+        // Lapse path (post-lapse stability)
         newS = FSRS_PARAMS[11]
           * Math.pow(newD, -FSRS_PARAMS[12])
           * (Math.pow(S + 1, FSRS_PARAMS[13]) - 1)
@@ -1573,6 +1863,11 @@ mark.has-note {
     };
   }
 
+  /**
+   * Convert stability into an interval in days.
+   * @param {number} stability
+   * @returns {number} Days until next review.
+   */
   function fsrsInterval(stability) {
     var days = (stability / FSRS_FACTOR)
       * (Math.pow(FSRS_TARGET, 1 / FSRS_DECAY) - 1);
@@ -1580,8 +1875,15 @@ mark.has-note {
   }
 
   // ============================================================
-  // STORE — data persistence, per-document
+  // STORE — data persistence with localStorage
   // ============================================================
+  // Storage layout (v131):
+  //   highlight-ai.v131.index          → { version, activeDocId, docIds, settings }
+  //   highlight-ai.v131.doc.<docId>    → { id, title, text, lang, createdAt,
+  //                                        updatedAt, highlights, cards, review }
+  // Migration: on first run after upgrade, the legacy single-key blob
+  // (highlight-ai.v130.data) is split into per-document keys and removed.
+
   var STORAGE_INDEX_KEY = 'highlight-ai.v131.index';
   var STORAGE_DOC_PREFIX = 'highlight-ai.v131.doc.';
   var STORAGE_OLD_KEY = 'highlight-ai.v130.data';
@@ -1600,31 +1902,50 @@ mark.has-note {
     }
   };
 
+  // Dirty tracking: we only persist documents that actually changed.
   var pendingDocSaves = {};
   var pendingIndexSave = false;
   var saveTimer = null;
 
+  /**
+   * Mark a document as needing persistence.
+   * @param {string} docId
+   */
   function markDocDirty(docId) {
     if (!docId) return;
     pendingDocSaves[docId] = true;
     scheduleFlush();
   }
 
+  /**
+   * Mark the index as needing persistence.
+   */
   function markIndexDirty() {
     pendingIndexSave = true;
     scheduleFlush();
   }
 
+  /**
+   * Mark every document plus the index as dirty. Used after a
+   * migration or a global reset.
+   */
   function markAllDocsDirty() {
     for (var id in DATA.docs) pendingDocSaves[id] = true;
     pendingIndexSave = true;
   }
 
+  /**
+   * Debounced flush (250ms). Rapid successive calls collapse
+   * into a single write.
+   */
   function scheduleFlush() {
     clearTimeout(saveTimer);
     saveTimer = setTimeout(flushSaves, 250);
   }
 
+  /**
+   * Persist all pending changes immediately.
+   */
   function flushSaves() {
     clearTimeout(saveTimer);
     try {
@@ -1680,12 +2001,30 @@ mark.has-note {
     }
   }
 
-  function saveData() { scheduleFlush(); }
-  function saveDataNow() { flushSaves(); }
+  /**
+   * Debounced save (kept as a public entry point for existing code).
+   */
+  function saveData() {
+    scheduleFlush();
+  }
 
+  /**
+   * Immediate save (used after deletes and destructive actions).
+   */
+  function saveDataNow() {
+    flushSaves();
+  }
+
+  /**
+   * Load the entire dataset from localStorage.
+   * Handles both the new per-document layout and migration from
+   * the legacy single-key blob.
+   */
   function loadData() {
     var indexRaw = null;
-    try { indexRaw = localStorage.getItem(STORAGE_INDEX_KEY); } catch (e) {}
+    try {
+      indexRaw = localStorage.getItem(STORAGE_INDEX_KEY);
+    } catch (e) {}
 
     if (indexRaw) {
       try {
@@ -1718,11 +2057,15 @@ mark.has-note {
         console.warn('Index parse error:', error);
       }
     } else {
+      // Attempt migration from v130 legacy blob
       var oldRaw = null;
       try { oldRaw = localStorage.getItem(STORAGE_OLD_KEY); } catch (e) {}
-      if (oldRaw) migrateFromLegacy(oldRaw);
+      if (oldRaw) {
+        migrateFromLegacy(oldRaw);
+      }
     }
 
+    // Ensure settings are initialized
     if (!DATA.settings) {
       DATA.settings = { activeCategories: [], editMode: false };
     }
@@ -1730,12 +2073,18 @@ mark.has-note {
       DATA.settings.activeCategories = CATEGORIES.map(function (c) { return c.id; });
     }
 
+    // Recover if activeDocId points to a missing document
     if (DATA.activeDocId && !DATA.docs[DATA.activeDocId]) {
       DATA.activeDocId = null;
       markIndexDirty();
     }
   }
 
+  /**
+   * Split the legacy single-key blob into per-document keys,
+   * then remove the old key. All data is preserved.
+   * @param {string} raw - Raw JSON string from the legacy key.
+   */
   function migrateFromLegacy(raw) {
     try {
       var parsed = JSON.parse(raw);
@@ -1748,9 +2097,11 @@ mark.has-note {
       DATA.activeDocId = parsed.activeDocId || null;
       DATA.settings = parsed.settings || { activeCategories: [], editMode: false };
 
+      // Persist in the new layout
       markAllDocsDirty();
       flushSaves();
 
+      // Drop the legacy key
       try { localStorage.removeItem(STORAGE_OLD_KEY); } catch (e) {}
 
       console.info('Migrated legacy data (' +
@@ -1764,10 +2115,18 @@ mark.has-note {
   // DATA ACCESS
   // ------------------------------------------------------------
 
+  /**
+   * Return the currently active document, or null.
+   */
   function getActiveDocument() {
     return DATA.activeDocId ? DATA.docs[DATA.activeDocId] : null;
   }
 
+  /**
+   * Create a new document and make it active.
+   * @param {string} text
+   * @param {string} [title]
+   */
   function createDocument(text, title) {
     var id = generateId();
     DATA.docs[id] = {
@@ -1784,14 +2143,26 @@ mark.has-note {
     return DATA.docs[id];
   }
 
+  /**
+   * Update an existing document with a patch object.
+   * @param {string} id
+   * @param {Object} changes
+   */
   function updateDocument(id, changes) {
     var doc = DATA.docs[id];
     if (!doc) return;
-    for (var key in changes) doc[key] = changes[key];
+    for (var key in changes) {
+      doc[key] = changes[key];
+    }
     doc.updatedAt = Date.now();
     markDocDirty(id);
   }
 
+  /**
+   * Add a new highlight to a document.
+   * @param {Object} options
+   * @returns {Object} The new highlight.
+   */
   function addHighlight(options) {
     var id = generateId();
     DATA.highlights[id] = {
@@ -1810,6 +2181,10 @@ mark.has-note {
     return DATA.highlights[id];
   }
 
+  /**
+   * Remove a highlight and any cards created from it.
+   * @param {string} id
+   */
   function removeHighlight(id) {
     var hl = DATA.highlights[id];
     if (!hl) return;
@@ -1824,35 +2199,66 @@ mark.has-note {
     markDocDirty(docId);
   }
 
+  /**
+   * Update a highlight with a patch object.
+   * @param {string} id
+   * @param {Object} changes
+   */
   function updateHighlight(id, changes) {
     var highlight = DATA.highlights[id];
     if (!highlight) return;
-    for (var key in changes) highlight[key] = changes[key];
+    for (var key in changes) {
+      highlight[key] = changes[key];
+    }
     markDocDirty(highlight.docId);
   }
 
+  /**
+   * Get all highlights for a document.
+   * @param {string} docId
+   * @returns {Array<Object>}
+   */
   function highlightsForDocument(docId) {
     var result = [];
     for (var id in DATA.highlights) {
-      if (DATA.highlights[id].docId === docId) result.push(DATA.highlights[id]);
+      if (DATA.highlights[id].docId === docId) {
+        result.push(DATA.highlights[id]);
+      }
     }
     return result;
   }
 
+  /**
+   * Get all cards for a document.
+   * @param {string} docId
+   * @returns {Array<Object>}
+   */
   function cardsForDocument(docId) {
     var result = [];
     for (var id in DATA.cards) {
-      if (DATA.cards[id].docId === docId) result.push(DATA.cards[id]);
+      if (DATA.cards[id].docId === docId) {
+        result.push(DATA.cards[id]);
+      }
     }
     return result;
   }
 
+  /**
+   * Get all cards across all documents.
+   */
   function allCards() {
     var result = [];
-    for (var id in DATA.cards) result.push(DATA.cards[id]);
+    for (var id in DATA.cards) {
+      result.push(DATA.cards[id]);
+    }
     return result;
   }
 
+  /**
+   * Add a new card.
+   * @param {Object} card
+   * @returns {Object}
+   */
   function addCard(card) {
     card.id = generateId();
     card.createdAt = Date.now();
@@ -1861,13 +2267,24 @@ mark.has-note {
     return card;
   }
 
+  /**
+   * Update an existing card with a patch object.
+   * @param {string} id
+   * @param {Object} changes
+   */
   function updateCard(id, changes) {
     var card = DATA.cards[id];
     if (!card) return;
-    for (var key in changes) card[key] = changes[key];
+    for (var key in changes) {
+      card[key] = changes[key];
+    }
     markDocDirty(card.docId);
   }
 
+  /**
+   * Remove a card and its review state.
+   * @param {string} id
+   */
   function removeCard(id) {
     var card = DATA.cards[id];
     if (!card) return;
@@ -1877,6 +2294,11 @@ mark.has-note {
     markDocDirty(docId);
   }
 
+  /**
+   * Grade a card (1-4) and update its FSRS state.
+   * @param {string} cardId
+   * @param {number} rating
+   */
   function gradeCard(cardId, rating) {
     var card = DATA.cards[cardId];
     if (!card) return;
@@ -1895,6 +2317,11 @@ mark.has-note {
     markDocDirty(card.docId);
   }
 
+  /**
+   * Get all cards currently due for review.
+   * @param {string} [docId] - Optional document filter.
+   * @returns {Array<Object>}
+   */
   function cardsDue(docId) {
     var now = Date.now();
     var result = [];
@@ -1902,7 +2329,9 @@ mark.has-note {
       var card = DATA.cards[id];
       if (docId && card.docId !== docId) continue;
       var state = DATA.review[id];
-      if (!state || !state.due || state.due <= now) result.push(card);
+      if (!state || !state.due || state.due <= now) {
+        result.push(card);
+      }
     }
     return result;
   }
@@ -1910,69 +2339,15 @@ mark.has-note {
   // ============================================================
   // ANALYZER — universal entity detection
   // ============================================================
+  // All analyzer functions below are pure: they take a string
+  // and return span arrays. This property is what allows the
+  // Web Worker to reuse the exact same code via toString().
 
-  function findNumbers(text) {
-    var spans = [];
-    var match;
-    var used = {};
-
-    var dateRegex = new RegExp(
-      '\\b\\d{1,2}\\s+' + MONTH_REGEX + '\\s+\\d{3,4}\\b|' +
-      '\\b' + MONTH_REGEX + '\\s+\\d{1,2},?\\s+\\d{3,4}\\b',
-      'gi'
-    );
-    while ((match = dateRegex.exec(text)) !== null) {
-      spans.push({ start: match.index, end: match.index + match[0].length, cat: 'num', w: 5 });
-      for (var i = match.index; i < match.index + match[0].length; i++) used[i] = true;
-    }
-
-    var numberRegex = /(?<![\p{L}\p{M}])\d+(?:[.,]\d+)?(?:\s*%|\s*‰)?(?![\p{L}\p{M}])/gu;
-    while ((match = numberRegex.exec(text)) !== null) {
-      if (used[match.index]) continue;
-      spans.push({ start: match.index, end: match.index + match[0].length, cat: 'num', w: 5 });
-    }
-
-    return spans;
-  }
-
-  function findQuotes(text) {
-    var spans = [];
-    var pairs = [['«', '»'], ['"', '"'], ['"', '"'], ['「', '」']];
-
-    for (var p = 0; p < pairs.length; p++) {
-      var opening = pairs[p][0];
-      var closing = pairs[p][1];
-
-      if (opening === closing) {
-        var i = 0;
-        var openIdx = -1;
-        while (i < text.length) {
-          if (text[i] === opening) {
-            if (openIdx < 0) {
-              openIdx = i;
-            } else {
-              if (i - openIdx >= 10) spans.push({ start: openIdx, end: i + 1, cat: 'quote', w: 5 });
-              openIdx = -1;
-            }
-          }
-          i++;
-        }
-      } else {
-        var idx = 0;
-        while ((idx = text.indexOf(opening, idx)) !== -1) {
-          var closingIdx = text.indexOf(closing, idx + 1);
-          if (closingIdx === -1) break;
-          var len = closingIdx - idx - 1;
-          if (len >= 10 && len < 500) {
-            spans.push({ start: idx, end: closingIdx + 1, cat: 'quote', w: 5 });
-          }
-          idx = closingIdx + 1;
-        }
-      }
-    }
-    return spans;
-  }
-
+  /**
+   * Tokenize a text into word tokens with start/end positions.
+   * @param {string} text
+   * @returns {Array<{word, lower, start, end}>}
+   */
   function tokenize(text) {
     var tokens = [];
     var match;
@@ -1988,6 +2363,125 @@ mark.has-note {
     return tokens;
   }
 
+  /**
+   * Find all numbers, dates, and percentages in the text.
+   * Handles date formats like "July 4, 1776" and "14 luglio 1789".
+   * @param {string} text
+   * @returns {Array}
+   */
+  function findNumbers(text) {
+    var spans = [];
+    var match;
+    var used = {};
+
+    // Full dates
+    var dateRegex = new RegExp(
+      '\\b\\d{1,2}\\s+' + MONTH_REGEX + '\\s+\\d{3,4}\\b|' +
+      '\\b' + MONTH_REGEX + '\\s+\\d{1,2},?\\s+\\d{3,4}\\b',
+      'gi'
+    );
+    while ((match = dateRegex.exec(text)) !== null) {
+      spans.push({
+        start: match.index,
+        end: match.index + match[0].length,
+        cat: 'num',
+        w: 5
+      });
+      for (var i = match.index; i < match.index + match[0].length; i++) {
+        used[i] = true;
+      }
+    }
+
+    // Simple numbers, percentages, years
+    var numberRegex = /(?<![\p{L}\p{M}])\d+(?:[.,]\d+)?(?:\s*%|\s*‰)?(?![\p{L}\p{M}])/gu;
+    while ((match = numberRegex.exec(text)) !== null) {
+      if (used[match.index]) continue;
+      spans.push({
+        start: match.index,
+        end: match.index + match[0].length,
+        cat: 'num',
+        w: 5
+      });
+    }
+
+    return spans;
+  }
+
+  /**
+   * Find quoted text between various quote pairs:
+   * «», "", "", 「」
+   * @param {string} text
+   * @returns {Array}
+   */
+  function findQuotes(text) {
+    var spans = [];
+    var pairs = [
+      ['«', '»'],
+      ['"', '"'],
+      ['"', '"'],
+      ['「', '」']
+    ];
+
+    for (var p = 0; p < pairs.length; p++) {
+      var opening = pairs[p][0];
+      var closing = pairs[p][1];
+
+      if (opening === closing) {
+        // Same character opens and closes
+        var i = 0;
+        var openIdx = -1;
+        while (i < text.length) {
+          if (text[i] === opening) {
+            if (openIdx < 0) {
+              openIdx = i;
+            } else {
+              if (i - openIdx >= 10) {
+                spans.push({
+                  start: openIdx,
+                  end: i + 1,
+                  cat: 'quote',
+                  w: 5
+                });
+              }
+              openIdx = -1;
+            }
+          }
+          i++;
+        }
+      } else {
+        var idx = 0;
+        while ((idx = text.indexOf(opening, idx)) !== -1) {
+          var closingIdx = text.indexOf(closing, idx + 1);
+          if (closingIdx === -1) break;
+          var len = closingIdx - idx - 1;
+          if (len >= 10 && len < 500) {
+            spans.push({
+              start: idx,
+              end: closingIdx + 1,
+              cat: 'quote',
+              w: 5
+            });
+          }
+          idx = closingIdx + 1;
+        }
+      }
+    }
+
+    return spans;
+  }
+
+  /**
+   * Find proper nouns — capitalized words not at sentence start.
+   * Handles multi-word names like "De Gasperi" and "New York".
+   *
+   * Single capitalized words at sentence start are accepted only
+   * when they are long (≥8) AND not in the (extended) stopword
+   * set. This prevents false positives like "However", "Meanwhile",
+   * "Therefore", "Although", "According".
+   *
+   * @param {string} text
+   * @returns {Array}
+   */
   function findProperNouns(text) {
     var spans = [];
     var tokens = tokenize(text);
@@ -1995,9 +2489,12 @@ mark.has-note {
     for (var i = 0; i < tokens.length; i++) {
       var token = tokens[i];
       var first = token.word[0];
+
+      // Must start with uppercase
       if (first !== first.toUpperCase() || first === first.toLowerCase()) continue;
       if (token.word.length < 3) continue;
 
+      // Merge consecutive capitalized words
       var j = i;
       while (j + 1 < tokens.length) {
         var next = tokens[j + 1];
@@ -2016,23 +2513,45 @@ mark.has-note {
       var multi = j > i;
       var stop = STOPWORD_SET[token.lower];
 
+      // Heuristics for acceptance
       var accept = false;
       if (multi) {
         accept = true;
       } else if (!atStart && !stop) {
         accept = true;
       } else if (atStart && !stop && token.word.length >= 8) {
+        // Require a longer word to reduce false positives.
+        // Reject if the following token is a common verb.
         var following = tokens[j + 1];
         var followingIsCommonVerb = following && /^(is|are|was|were|has|have|had|can|could|will|would|should|may|might|must|does|do|did|said|says|seems|appears|becomes|became|remains|remained|goes|went|came|comes)$/i.test(following.word);
         accept = !followingIsCommonVerb;
       }
 
-      if (accept) spans.push({ start: token.start, end: tokens[j].end, cat: 'name', w: 4 });
+      if (accept) {
+        spans.push({
+          start: token.start,
+          end: tokens[j].end,
+          cat: 'name',
+          w: 4
+        });
+      }
+
       i = j;
     }
+
     return spans;
   }
 
+  /**
+   * Find definitions of the form "Term: long explanation".
+   *
+   * The head group is restricted to a single line (no \n)
+   * and stops at the first colon. This prevents the regex from
+   * swallowing half a sentence or crossing paragraph boundaries.
+   *
+   * @param {string} text
+   * @returns {Array}
+   */
   function findDefinitions(text) {
     var spans = [];
     var match;
@@ -2048,34 +2567,34 @@ mark.has-note {
       if (wordCount > 5 || trimmedHead.length < 3) continue;
       if (/[!?»"']\s*$/.test(trimmedHead)) continue;
 
-      spans.push({ start: headStart, end: headEnd, cat: 'def', w: 4 });
+      spans.push({
+        start: headStart,
+        end: headEnd,
+        cat: 'def',
+        w: 4
+      });
 
       var defStart = headEnd;
       var after = match[0].slice(head.length);
       var separator = after.match(/^\s*[:：]\s*/);
       if (separator) defStart += separator[0].length;
 
-      spans.push({ start: defStart, end: defStart + match[2].length, cat: 'def', w: 2 });
+      spans.push({
+        start: defStart,
+        end: defStart + match[2].length,
+        cat: 'def',
+        w: 2
+      });
     }
+
     return spans;
   }
 
-  // ============================================================
-  // INCREMENTAL ANALYZER
-  // ============================================================
-  // The text is split into paragraphs (split on \n). Each paragraph
-  // is hashed. The results of the four expensive regex passes
-  // (numbers, quotes, definitions, proper nouns) are cached per
-  // paragraph hash. Only paragraphs whose text actually changed
-  // re-run those passes.
-  //
-  // Concepts are always recomputed because their inclusion depends
-  // on the global word frequency across the whole document. The
-  // cost is a single tokenization pass per paragraph, which is
-  // much cheaper than the four regex passes combined.
-
-  var paragraphCache = {};
-
+  /**
+   * Split text into paragraphs (split on \n, collapse runs).
+   * @param {string} text
+   * @returns {Array<{start, end, text}>}
+   */
   function splitIntoParagraphs(text) {
     var parts = [];
     var n = text.length;
@@ -2100,6 +2619,13 @@ mark.has-note {
     return parts;
   }
 
+  /**
+   * Compute global word frequencies for the whole document.
+   * Used by the concept detector, which needs to know how often
+   * a word appears across all paragraphs.
+   * @param {Array} paragraphs
+   * @returns {Object<string, number>}
+   */
   function computeGlobalWordCounts(paragraphs) {
     var counts = {};
     for (var i = 0; i < paragraphs.length; i++) {
@@ -2113,6 +2639,13 @@ mark.has-note {
     return counts;
   }
 
+  /**
+   * Find concept spans within a single paragraph using the
+   * global word frequency table.
+   * @param {string} text - Paragraph text (local coordinates).
+   * @param {Object} globalCounts
+   * @returns {Array}
+   */
   function findConceptsFromGlobal(text, globalCounts) {
     var spans = [];
     var tokens = tokenize(text);
@@ -2125,9 +2658,22 @@ mark.has-note {
     return spans;
   }
 
+  // ============================================================
+  // INCREMENTAL ANALYZER
+  // ============================================================
+  // The text is split into paragraphs. Each paragraph is hashed.
+  // The results of the four expensive regex passes
+  // (numbers, quotes, definitions, proper nouns) are cached per
+  // paragraph hash. Only paragraphs whose text actually changed
+  // re-run those passes.
+  //
+  // Concepts are always recomputed because their inclusion
+  // depends on global word frequency across the whole document.
+
+  var paragraphCache = {};
+
   /**
    * Analyze a text with per-paragraph caching.
-   *
    * @param {string} text
    * @returns {Array} spans with absolute positions in `text`.
    */
@@ -2168,8 +2714,7 @@ mark.has-note {
       }
 
       // Concepts are recomputed every time using the current
-      // global word counts. This keeps them accurate when other
-      // paragraphs change the frequency of a term.
+      // global word counts.
       var conceptSpans = findConceptsFromGlobal(para.text, globalCounts);
       for (var k = 0; k < conceptSpans.length; k++) {
         spans.push({
@@ -2185,24 +2730,204 @@ mark.has-note {
     return spans;
   }
 
+  // ============================================================
+  // WEB WORKER — off-thread analysis
+  // ============================================================
+  // The worker runs the same pure analyzer functions. The source
+  // is assembled at runtime from Function.prototype.toString() so
+  // there is no code duplication: edit the functions above and
+  // the worker picks up the changes automatically.
+  //
+  // Only used when the text is large enough that the postMessage
+  // overhead is worth it. Small texts run synchronously on the
+  // main thread.
+
+  var WORKER_TEXT_THRESHOLD = 2000;
+
+  var WORKER_SOURCE = (function () {
+    var parts = [];
+    parts.push("'use strict';");
+    parts.push('var MONTH_REGEX = ' + JSON.stringify(MONTH_REGEX) + ';');
+    parts.push('var STOPWORDS_EN = ' + JSON.stringify(STOPWORDS_EN) + ';');
+    parts.push('var STOPWORDS_IT = ' + JSON.stringify(STOPWORDS_IT) + ';');
+    parts.push('var STOPWORD_SET = {};');
+    parts.push('for (var i = 0; i < STOPWORDS_EN.length; i++) STOPWORD_SET[STOPWORDS_EN[i]] = true;');
+    parts.push('for (var j = 0; j < STOPWORDS_IT.length; j++) STOPWORD_SET[STOPWORDS_IT[j]] = true;');
+    parts.push(hashString.toString());
+    parts.push(tokenize.toString());
+    parts.push(findNumbers.toString());
+    parts.push(findQuotes.toString());
+    parts.push(findProperNouns.toString());
+    parts.push(findDefinitions.toString());
+    parts.push(splitIntoParagraphs.toString());
+    parts.push(computeGlobalWordCounts.toString());
+    parts.push(findConceptsFromGlobal.toString());
+    parts.push('var paragraphCache = {};');
+    parts.push(analyzeTextIncremental.toString());
+    parts.push('self.onmessage = function (e) {');
+    parts.push('  var msg = e.data;');
+    parts.push('  if (!msg || msg.type !== "analyze") return;');
+    parts.push('  try {');
+    parts.push('    var spans = analyzeTextIncremental(msg.text);');
+    parts.push('    self.postMessage({ type: "result", requestId: msg.requestId, spans: spans });');
+    parts.push('  } catch (err) {');
+    parts.push('    self.postMessage({ type: "error", requestId: msg.requestId, error: String((err && err.message) || err) });');
+    parts.push('  }');
+    parts.push('};');
+    return parts.join('\n');
+  })();
+
+  var analyzerWorker = null;
+  var pendingWorkerRequests = {};
+  var workerRequestCounter = 0;
+  var analysisGeneration = 0;
+
   /**
-   * Legacy single-pass analyzer, kept for reference and use by
-   * code paths that do not benefit from caching (e.g. tiny texts).
+   * Initialize the analyzer Web Worker from a Blob URL.
+   * If the environment does not support it, analyzerWorker
+   * stays null and analyzeTextAsync falls back to sync.
    */
-  function analyzeText(text) {
-    if (!text.trim()) return [];
-    return [].concat(
-      findNumbers(text),
-      findQuotes(text),
-      findDefinitions(text),
-      findProperNouns(text),
-      findConceptsFromGlobal(text, computeGlobalWordCounts(splitIntoParagraphs(text)))
-    );
+  function initAnalyzerWorker() {
+    if (typeof Worker === 'undefined' || typeof Blob === 'undefined' || typeof URL === 'undefined') return;
+    try {
+      var blob = new Blob([WORKER_SOURCE], { type: 'application/javascript' });
+      var url = URL.createObjectURL(blob);
+      var w = new Worker(url);
+      w.onmessage = function (e) {
+        var msg = e.data;
+        if (!msg || !msg.requestId) return;
+        var pending = pendingWorkerRequests[msg.requestId];
+        if (!pending) return;
+        delete pendingWorkerRequests[msg.requestId];
+        if (msg.type === 'result') pending.resolve(msg.spans);
+        else pending.reject(new Error(msg.error || 'worker error'));
+      };
+      w.onerror = function (err) {
+        console.warn('Analyzer worker error:', err);
+        for (var id in pendingWorkerRequests) pendingWorkerRequests[id].reject(new Error('worker crashed'));
+        pendingWorkerRequests = {};
+        analyzerWorker = null;
+      };
+      analyzerWorker = w;
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      console.warn('Worker init failed, using sync analyzer:', e);
+      analyzerWorker = null;
+    }
+  }
+
+  /**
+   * Analyze text asynchronously. Uses the worker if the text
+   * is large enough, otherwise runs synchronously. Returns a
+   * Promise in both cases.
+   * @param {string} text
+   * @returns {Promise<Array>}
+   */
+  function analyzeTextAsync(text) {
+    if (analyzerWorker && text.length >= WORKER_TEXT_THRESHOLD) {
+      var requestId = ++workerRequestCounter;
+      return new Promise(function (resolve, reject) {
+        pendingWorkerRequests[requestId] = { resolve: resolve, reject: reject };
+        try {
+          analyzerWorker.postMessage({ type: 'analyze', requestId: requestId, text: text });
+        } catch (e) {
+          delete pendingWorkerRequests[requestId];
+          reject(e);
+          return;
+        }
+        // Safety net: if the worker never replies, fall back after 10s
+        setTimeout(function () {
+          if (pendingWorkerRequests[requestId]) {
+            delete pendingWorkerRequests[requestId];
+            try { resolve(analyzeTextIncremental(text)); }
+            catch (e) { reject(e); }
+          }
+        }, 10000);
+      });
+    }
+    return new Promise(function (resolve, reject) {
+      try { resolve(analyzeTextIncremental(text)); }
+      catch (e) { reject(e); }
+    });
+  }
+
+  /**
+   * Replace the auto highlights of a document with the given
+   * span array. User-created highlights are preserved.
+   * @param {Object} doc
+   * @param {Array} spans
+   */
+  function applyAnalysisSpans(doc, spans) {
+    var highlights = highlightsForDocument(doc.id);
+    for (var i = 0; i < highlights.length; i++) {
+      if (highlights[i].source === 'auto') {
+        delete DATA.highlights[highlights[i].id];
+      }
+    }
+
+    for (var j = 0; j < spans.length; j++) {
+      var span = spans[j];
+      var id = generateId();
+      DATA.highlights[id] = {
+        id: id,
+        docId: doc.id,
+        start: span.start,
+        end: span.end,
+        cat: span.cat,
+        source: 'auto',
+        before: doc.text.slice(Math.max(0, span.start - 30), span.start),
+        after: doc.text.slice(span.end, span.end + 30),
+        note: '',
+        createdAt: Date.now()
+      };
+    }
+
+    markDocDirty(doc.id);
+  }
+
+  /**
+   * Analyze the current document asynchronously and call the
+   * optional callback when done. The generation counter ensures
+   * that stale results are discarded if the user keeps typing.
+   * @param {Function} [callback]
+   */
+  function analyzeCurrentDocument(callback) {
+    var doc = getActiveDocument();
+    if (!doc || !doc.text.trim()) {
+      if (callback) callback();
+      return;
+    }
+
+    var gen = ++analysisGeneration;
+    doc.lang = detectLanguage(doc.text);
+    var textSnapshot = doc.text;
+
+    analyzeTextAsync(textSnapshot).then(function (spans) {
+      if (gen !== analysisGeneration) return;
+      if (doc.text !== textSnapshot) return;
+      applyAnalysisSpans(doc, spans);
+      if (callback) callback();
+    }).catch(function (err) {
+      console.warn('Analysis error:', err);
+      if (callback) callback();
+    });
   }
 
   // ============================================================
   // INCREMENTAL RENDER
   // ============================================================
+  // The output card is built from inline <span class="seg"> nodes.
+  // Each segment holds either a run of characters between newlines
+  // or a single newline. On redraw, we compute a per-segment hash
+  // (segment text + intersecting highlight IDs + their categories
+  // + their visibility) and skip re-rendering segments whose hash
+  // did not change.
+
+  /**
+   * Split text into segments, one per line plus one per newline.
+   * @param {string} text
+   * @returns {Array}
+   */
   function splitSegments(text) {
     var segs = [];
     var last = 0;
@@ -2221,6 +2946,15 @@ mark.has-note {
     return segs;
   }
 
+  /**
+   * Compute a hash string describing a segment and the highlights
+   * that intersect it. If the hash matches the previous render,
+   * the segment can be skipped.
+   * @param {Object} seg
+   * @param {Array} allHl
+   * @param {Object} activeCats
+   * @returns {string}
+   */
   function segHash(seg, allHl, activeCats) {
     var h = seg.text;
     for (var i = 0; i < allHl.length; i++) {
@@ -2233,6 +2967,12 @@ mark.has-note {
     return h;
   }
 
+  /**
+   * Reverse lookup: numeric index → category ID.
+   * @param {Object} categoryIndex
+   * @param {number} index
+   * @returns {string|null}
+   */
   function categoryFromIndex(categoryIndex, index) {
     for (var key in categoryIndex) {
       if (categoryIndex[key] === index) return key;
@@ -2240,12 +2980,22 @@ mark.has-note {
     return null;
   }
 
+  /**
+   * Render a single segment into the given container. Uses a
+   * priority map to resolve overlapping highlights. User
+   * highlights always win over auto highlights.
+   * @param {HTMLElement} container
+   * @param {Object} seg
+   * @param {Array} allHl
+   * @param {Object} activeCats
+   */
   function renderSegment(container, seg, allHl, activeCats) {
     var segText = seg.text;
     var segStart = seg.start;
     var segEnd = seg.end;
     var length = segText.length;
 
+    // Fast path: no intersecting highlights
     var any = false;
     for (var q = 0; q < allHl.length; q++) {
       var h0 = allHl[q];
@@ -2256,6 +3006,7 @@ mark.has-note {
       return;
     }
 
+    // Build ownership map
     var owner = new Array(length);
     var hlId = new Array(length);
     var weight = new Array(length);
@@ -2283,6 +3034,7 @@ mark.has-note {
       }
     }
 
+    // Build DOM fragment
     var frag = document.createDocumentFragment();
     var idx = 0;
     var pending = '';
@@ -2328,6 +3080,11 @@ mark.has-note {
     container.appendChild(frag);
   }
 
+  /**
+   * Redraw the output card. Only segments whose hash changed
+   * are re-rendered.
+   * @param {Object} doc
+   */
   function redrawOutput(doc) {
     var output = $('output');
     if (!doc) {
@@ -2347,10 +3104,12 @@ mark.has-note {
 
     var segments = splitSegments(text);
 
+    // Trim extra children first
     while (output.children.length > segments.length) {
       output.removeChild(output.lastChild);
     }
 
+    // Update or create segments
     for (var i = 0; i < segments.length; i++) {
       var seg = segments[i];
       var child = output.children[i];
@@ -2368,6 +3127,9 @@ mark.has-note {
     }
   }
 
+  /**
+   * Full redraw — output (incremental), stats and legend.
+   */
   function redraw() {
     var doc = getActiveDocument();
     if (!doc) {
@@ -2381,6 +3143,12 @@ mark.has-note {
     renderLegend();
   }
 
+  /**
+   * Render the stats row.
+   * Note: the "Due here" figure counts only cards that belong to
+   * the current document. The tab-bar badge counts cards globally.
+   * Labels make this distinction explicit.
+   */
   function renderStats(doc) {
     var highlights = highlightsForDocument(doc.id).filter(function (h) { return h.start >= 0; });
     var cardCount = cardsForDocument(doc.id).length;
@@ -2394,6 +3162,9 @@ mark.has-note {
       '<div class="stat"><div class="k">Due here</div><div class="v">' + dueCount + '</div></div>';
   }
 
+  /**
+   * Render the category legend (pill toggles).
+   */
   function renderLegend() {
     var doc = getActiveDocument();
     var box = $('legend');
@@ -2449,7 +3220,7 @@ mark.has-note {
   }
 
   // ============================================================
-  // EDIT PANEL
+  // EDIT PANEL (fixed bottom)
   // ============================================================
   function buildEditPanel() {
     var inner = $('edit-panel-inner');
@@ -2495,6 +3266,9 @@ mark.has-note {
     inner.appendChild(closeBtn);
   }
 
+  /**
+   * Toggle the edit panel. Pass a boolean to force state.
+   */
   function toggleEditPanel(force) {
     var isOn = typeof force === 'boolean'
       ? force
@@ -2507,6 +3281,9 @@ mark.has-note {
     vibrate(6);
   }
 
+  /**
+   * Apply the selected color to the current text selection.
+   */
   function applyColorToSelection(categoryId) {
     var offset = currentSelectionOffset();
     if (!offset || offset.end - offset.start < 2) {
@@ -2517,6 +3294,10 @@ mark.has-note {
     if (window.getSelection) window.getSelection().removeAllRanges();
   }
 
+  /**
+   * Compute the offset of the current selection in the output text.
+   * @returns {Object|null}
+   */
   function currentSelectionOffset() {
     var sel = window.getSelection();
     if (!sel || sel.rangeCount === 0 || sel.isCollapsed) return null;
@@ -2542,7 +3323,7 @@ mark.has-note {
   }
 
   // ============================================================
-  // SELECTION BAR
+  // SELECTION BAR (floating, appears on text selection)
   // ============================================================
   var selectionDebounce = null;
 
@@ -2646,6 +3427,12 @@ mark.has-note {
     bar.classList.add('show');
   }
 
+  /**
+   * Apply a highlight to a range. If the range already has a
+   * highlight, update its category. Otherwise create a new one.
+   * User highlights always win over auto highlights (see
+   * renderSegment priority computation).
+   */
   function applyHighlight(start, end, categoryId, silent) {
     var doc = getActiveDocument();
     if (!doc || end - start < 2) return null;
@@ -2665,6 +3452,7 @@ mark.has-note {
       updateHighlight(existing.id, { cat: categoryId, source: 'user' });
       highlight = existing;
     } else {
+      // Remove highlights fully contained in the new one
       var toRemove = [];
       for (var j = 0; j < all.length; j++) {
         var other = all[j];
@@ -2731,6 +3519,10 @@ mark.has-note {
   // ============================================================
   // QUESTION GENERATION
   // ============================================================
+
+  /**
+   * Simple string hash used to deduplicate questions.
+   */
   function hashQuestion(string) {
     var hash = 5381;
     var limited = string.slice(0, 1000);
@@ -2740,6 +3532,11 @@ mark.has-note {
     return 'm' + Math.abs(hash).toString(36);
   }
 
+  /**
+   * Classify an entity into a universal type.
+   * @param {string} surface
+   * @returns {string}
+   */
   function classifyEntity(surface) {
     var s = surface.toLowerCase().trim();
 
@@ -2764,6 +3561,10 @@ mark.has-note {
     return 'unknown';
   }
 
+  /**
+   * Build a question using universal templates based on entity
+   * type. Returns null if no good template applies.
+   */
   function buildUniversalQuestion(type, entity, sentence, language) {
     var index = sentence.toLowerCase().indexOf(entity.toLowerCase());
     if (index < 0) return null;
@@ -2816,7 +3617,17 @@ mark.has-note {
     return null;
   }
 
+  /**
+   * Build distractors using three strategies in order:
+   * 1. Perturbation (numbers, percentages, years)
+   * 2. Dictionary
+   * 3. From the text itself
+   *
+   * Numeric distractors preserve the original number of decimal
+   * places, so "5.5 million" yields "4.5 million", etc.
+   */
   function buildUniversalDistractors(type, correct, doc, count) {
+    // STRATEGY 1: Perturbation
     if (type === 'year') {
       var year = parseInt(correct, 10);
       if (!isNaN(year)) {
@@ -2867,6 +3678,7 @@ mark.has-note {
       }
     }
 
+    // STRATEGY 2: Dictionary
     if (type === 'person' && DICT_SETS.usPresidents[correct.toLowerCase()]) {
       var usPool = shuffle(DICTIONARY.usPresidents.filter(function (n) {
         return n.toLowerCase() !== correct.toLowerCase();
@@ -2892,6 +3704,7 @@ mark.has-note {
       if (treatyPool.length >= count) return treatyPool;
     }
 
+    // STRATEGY 3: From the text itself
     var candidates = [];
 
     if (type === 'person' || type === 'organization' || type === 'treaty') {
@@ -2922,6 +3735,9 @@ mark.has-note {
     return null;
   }
 
+  /**
+   * Split a text into sentences with start/end positions.
+   */
   function splitIntoSentences(text) {
     var sentences = [];
     var start = 0;
@@ -2938,6 +3754,10 @@ mark.has-note {
     return sentences;
   }
 
+  /**
+   * Main proposal generator using the local analyzer only.
+   * Works without AI.
+   */
   function proposeFromAnalyzer(doc) {
     var highlights = highlightsForDocument(doc.id).filter(function (h) { return h.start >= 0; });
     var sentences = splitIntoSentences(doc.text);
@@ -2953,6 +3773,7 @@ mark.has-note {
       var type = classifyEntity(surface);
       if (type === 'unknown') continue;
 
+      // Find the containing sentence
       var containerSentence = null;
       for (var s = 0; s < sentences.length; s++) {
         if (highlight.start >= sentences[s].start &&
@@ -2966,11 +3787,10 @@ mark.has-note {
       var sentenceText = doc.text.slice(containerSentence.start, containerSentence.end);
       if (sentenceText.length < 20 || sentenceText.length > 400) continue;
 
-      var question = null;
+      var question = buildUniversalQuestion(type, surface, sentenceText, language);
       var cardType = type;
 
-      question = buildUniversalQuestion(type, surface, sentenceText, language);
-
+      // Fallback: cloze
       if (!question) {
         var relative = highlight.start - containerSentence.start;
         var cloze = sentenceText.slice(0, relative) + '____' +
@@ -3180,23 +4000,15 @@ mark.has-note {
   function updateAIIcon() {
     var button = $('btn-ai-status');
     if (!button) return;
-    if (aiState.ready) {
-      button.classList.add('ai-active');
-    } else {
-      button.classList.remove('ai-active');
-    }
+    if (aiState.ready) button.classList.add('ai-active');
+    else button.classList.remove('ai-active');
   }
 
   function updateAIModalButtons() {
     var idle = $('ai-actions-idle');
     var ready = $('ai-actions-ready');
-    if (aiState.ready) {
-      idle.style.display = 'none';
-      ready.style.display = 'flex';
-    } else {
-      idle.style.display = 'flex';
-      ready.style.display = 'none';
-    }
+    if (aiState.ready) { idle.style.display = 'none'; ready.style.display = 'flex'; }
+    else { idle.style.display = 'flex'; ready.style.display = 'none'; }
   }
 
   function buildExtractionPrompt(text, language) {
@@ -3266,9 +4078,7 @@ mark.has-note {
         currentWords += words;
       }
     }
-    if (currentStart < text.length) {
-      chunks.push(text.slice(currentStart).trim());
-    }
+    if (currentStart < text.length) chunks.push(text.slice(currentStart).trim());
     return chunks.filter(function (c) { return c.length > 40; });
   }
 
@@ -3283,9 +4093,7 @@ mark.has-note {
     var language = doc.lang || detectLanguage(doc.text);
 
     function next() {
-      if (currentIndex >= chunks.length) {
-        return Promise.resolve(proposals);
-      }
+      if (currentIndex >= chunks.length) return Promise.resolve(proposals);
       if (onProgress) onProgress(currentIndex + 1, chunks.length);
 
       var chunk = chunks[currentIndex];
@@ -3303,8 +4111,7 @@ mark.has-note {
           if (type === 'cifra' || type === 'number') type = 'number';
           if (type === 'nome' || type === 'person') type = 'person';
 
-          if (['date', 'year', 'percentage', 'number', 'person', 'organization', 'term']
-              .indexOf(type) === -1) {
+          if (['date', 'year', 'percentage', 'number', 'person', 'organization', 'term'].indexOf(type) === -1) {
             type = classifyEntity(entity);
             if (type === 'unknown') continue;
           }
@@ -3329,8 +4136,7 @@ mark.has-note {
 
           if (!question) {
             var relative = index - containerSentence.start;
-            var cloze = sentenceText.slice(0, relative) + '____' +
-                        sentenceText.slice(relative + entity.length);
+            var cloze = sentenceText.slice(0, relative) + '____' + sentenceText.slice(relative + entity.length);
             cloze = cloze.replace(/\s+/g, ' ').trim();
             if (cloze.length >= 20 && cloze.length <= 300) {
               question = cloze;
@@ -3413,10 +4219,7 @@ mark.has-note {
     }
 
     if (!aiState.ready || !hasWebGPU()) {
-      if (!templateProposals.length) {
-        showToast('No questions available');
-        return;
-      }
+      if (!templateProposals.length) { showToast('No questions available'); return; }
       showPreview(templateProposals, 0);
       return;
     }
@@ -3444,9 +4247,7 @@ mark.has-note {
 
   function showPreview(proposals, templateCount) {
     var existing = {};
-    for (var id in DATA.cards) {
-      existing[DATA.cards[id].contentId] = true;
-    }
+    for (var id in DATA.cards) existing[DATA.cards[id].contentId] = true;
     for (var i = 0; i < proposals.length; i++) {
       proposals[i].alreadyExists = !!existing[proposals[i].contentId];
     }
@@ -3548,8 +4349,7 @@ mark.has-note {
 
     if (!documents.length) {
       empty.style.display = 'block';
-      empty.querySelector('.title').textContent =
-        filter ? 'No results' : 'Library is empty';
+      empty.querySelector('.title').textContent = filter ? 'No results' : 'Library is empty';
       return;
     }
 
@@ -3559,25 +4359,14 @@ mark.has-note {
       (function (d) {
         var element = document.createElement('div');
         element.className = 'lib-item';
-        var date = new Date(d.updatedAt).toLocaleDateString('en-US', {
-          day: '2-digit',
-          month: 'short'
-        });
-        var highlights = highlightsForDocument(d.id).filter(function (h) {
-          return h.start >= 0;
-        }).length;
+        var date = new Date(d.updatedAt).toLocaleDateString('en-US', { day: '2-digit', month: 'short' });
+        var highlights = highlightsForDocument(d.id).filter(function (h) { return h.start >= 0; }).length;
         var cardCount = cardsForDocument(d.id).length;
 
         element.innerHTML =
           '<div class="title">' + escapeHtml(d.title) + '</div>' +
-          '<div class="snippet">' +
-            escapeHtml(d.text.slice(0, 160).replace(/\s+/g, ' ')) + '…' +
-          '</div>' +
-          '<div class="meta">' +
-            '<span>' + highlights + ' highlights</span>' +
-            '<span>' + cardCount + ' questions</span>' +
-            '<span>' + date + '</span>' +
-          '</div>';
+          '<div class="snippet">' + escapeHtml(d.text.slice(0, 160).replace(/\s+/g, ' ')) + '…</div>' +
+          '<div class="meta"><span>' + highlights + ' highlights</span><span>' + cardCount + ' questions</span><span>' + date + '</span></div>';
 
         element.addEventListener('click', function () { openDocument(d.id); });
 
@@ -3610,27 +4399,19 @@ mark.has-note {
     if (!d) return;
 
     $('confirm-title').textContent = 'Delete this text?';
-    $('confirm-text').textContent =
-      '"' + d.title + '" and all its highlights and questions will be removed.';
+    $('confirm-text').textContent = '"' + d.title + '" and all its highlights and questions will be removed.';
     $('modal-confirm').classList.add('open');
 
     $('btn-ok-confirm').onclick = function () {
       delete DATA.docs[id];
-      for (var hid in DATA.highlights) {
-        if (DATA.highlights[hid].docId === id) delete DATA.highlights[hid];
-      }
+      for (var hid in DATA.highlights) if (DATA.highlights[hid].docId === id) delete DATA.highlights[hid];
       for (var cid in DATA.cards) {
-        if (DATA.cards[cid].docId === id) {
-          delete DATA.cards[cid];
-          delete DATA.review[cid];
-        }
+        if (DATA.cards[cid].docId === id) { delete DATA.cards[cid]; delete DATA.review[cid]; }
       }
       if (DATA.activeDocId === id) DATA.activeDocId = null;
-
       pendingDocSaves[id] = true;
       markIndexDirty();
       flushSaves();
-
       renderLibrary();
       $('modal-confirm').classList.remove('open');
       showToast('Deleted');
@@ -3641,16 +4422,16 @@ mark.has-note {
   // REVIEW
   // ============================================================
   var reviewState = {
-    queue: [],
-    idx: 0,
-    done: 0,
-    correct: 0,
-    mcq: null,
-    forIdx: -1,
-    selected: -1,
-    active: false
+    queue: [], idx: 0, done: 0, correct: 0,
+    mcq: null, forIdx: -1, selected: -1, active: false
   };
 
+  /**
+   * Build the multiple-choice question for a card.
+   * If the card has fewer than 3 valid distractors, borrow them
+   * from other cards in the same document. Legacy cards stay
+   * playable instead of silently disappearing.
+   */
   function buildMCQ(card) {
     var correct = card.back;
     var distractors = (card.distractors || []).filter(function (x) {
@@ -3675,17 +4456,12 @@ mark.has-note {
         seen[other.back] = true;
       }
       pool = shuffle(pool);
-      while (final.length < 3 && pool.length) {
-        final.push(pool.shift());
-      }
+      while (final.length < 3 && pool.length) final.push(pool.shift());
     }
 
     if (final.length < 3) return null;
     var options = shuffle([correct].concat(final));
-    return {
-      options: options,
-      correctIndex: options.indexOf(correct)
-    };
+    return { options: options, correctIndex: options.indexOf(correct) };
   }
 
   function renderReviewOverview() {
@@ -3695,44 +4471,29 @@ mark.has-note {
     var all = doc ? cardsForDocument(doc.id) : allCards();
 
     var html = '';
-
     html += '<div class="section-title">Review session</div>';
 
     if (due.length > 0) {
       html += '<div class="card-item" style="display:flex;align-items:center;gap:12px;padding:16px">' +
-        '<div style="flex:1">' +
-          '<div style="font-weight:700;font-size:1rem">' + due.length + ' card' +
-            (due.length === 1 ? '' : 's') + ' due</div>' +
-          '<div style="font-size:.82rem;color:var(--ink-3);margin-top:2px">Ready to practice</div>' +
-        '</div>' +
-        '<button class="tbtn primary" id="btn-start-session" style="flex:0 0 auto;padding:10px 18px">Start</button>' +
-      '</div>';
+        '<div style="flex:1"><div style="font-weight:700;font-size:1rem">' + due.length + ' card' + (due.length === 1 ? '' : 's') + ' due</div>' +
+        '<div style="font-size:.82rem;color:var(--ink-3);margin-top:2px">Ready to practice</div></div>' +
+        '<button class="tbtn primary" id="btn-start-session" style="flex:0 0 auto;padding:10px 18px">Start</button></div>';
     } else if (all.length > 0) {
       html += '<div class="card-item" style="display:flex;align-items:center;gap:12px;padding:16px">' +
-        '<div style="flex:1">' +
-          '<div style="font-weight:600;color:var(--ink-2)">All caught up</div>' +
-          '<div style="font-size:.82rem;color:var(--ink-3);margin-top:2px">No cards due · ' +
-            all.length + ' total</div>' +
-        '</div>' +
-        '<button class="tbtn" id="btn-start-anyway" style="flex:0 0 auto;padding:10px 18px">Practice anyway</button>' +
-      '</div>';
+        '<div style="flex:1"><div style="font-weight:600;color:var(--ink-2)">All caught up</div>' +
+        '<div style="font-size:.82rem;color:var(--ink-3);margin-top:2px">No cards due · ' + all.length + ' total</div></div>' +
+        '<button class="tbtn" id="btn-start-anyway" style="flex:0 0 auto;padding:10px 18px">Practice anyway</button></div>';
     } else {
       html += '<div class="card-item" style="text-align:center;padding:24px">' +
         '<div style="font-weight:600;color:var(--ink-2);margin-bottom:4px">No questions yet</div>' +
-        '<div style="font-size:.85rem;color:var(--ink-3)">Generate some from the Text tab first</div>' +
-      '</div>';
+        '<div style="font-size:.85rem;color:var(--ink-3)">Generate some from the Text tab first</div></div>';
     }
 
-    html += '<div class="section-title">' +
-      '<span>All questions (' + all.length + ')</span>' +
-      '<button id="btn-new-question">+ New question</button>' +
-    '</div>';
+    html += '<div class="section-title"><span>All questions (' + all.length + ')</span><button id="btn-new-question">+ New question</button></div>';
 
     if (!all.length) {
-      html += '<div class="empty" style="padding:40px 24px">' +
-        '<div class="title">No questions yet</div>' +
-        '<div class="sub">Highlight some text and tap "Questions", or create one manually.</div>' +
-      '</div>';
+      html += '<div class="empty" style="padding:40px 24px"><div class="title">No questions yet</div>' +
+        '<div class="sub">Highlight some text and tap "Questions", or create one manually.</div></div>';
     } else {
       html += '<div id="all-questions-list"></div>';
     }
@@ -3740,33 +4501,21 @@ mark.has-note {
     box.innerHTML = html;
 
     var startBtn = $('btn-start-session');
-    if (startBtn) startBtn.addEventListener('click', function () {
-      startReviewSession(due);
-    });
-
+    if (startBtn) startBtn.addEventListener('click', function () { startReviewSession(due); });
     var startAnywayBtn = $('btn-start-anyway');
-    if (startAnywayBtn) startAnywayBtn.addEventListener('click', function () {
-      startReviewSession(all);
-    });
-
+    if (startAnywayBtn) startAnywayBtn.addEventListener('click', function () { startReviewSession(all); });
     var newBtn = $('btn-new-question');
-    if (newBtn) newBtn.addEventListener('click', function () {
-      openCardEditor(null);
-    });
+    if (newBtn) newBtn.addEventListener('click', function () { openCardEditor(null); });
 
     if (all.length) {
       var listBox = $('all-questions-list');
-
       for (var i = 0; i < all.length; i++) {
         (function (card) {
           var status = cardStatus(card);
           var element = document.createElement('div');
           element.className = 'card-item';
-
           element.innerHTML =
-            '<div class="card-head">' +
-              '<span class="badge ' + status.cls + '">' + status.label + '</span>' +
-            '</div>' +
+            '<div class="card-head"><span class="badge ' + status.cls + '">' + status.label + '</span></div>' +
             '<div class="card-front">' + escapeHtml(card.front) + '</div>' +
             '<div class="card-back">' + escapeHtml(card.back) + '</div>' +
             '<div class="card-actions">' +
@@ -3774,7 +4523,6 @@ mark.has-note {
               '<button class="tbtn btn-edit-card" data-id="' + card.id + '">Edit</button>' +
               '<button class="tbtn danger btn-delete-card" data-id="' + card.id + '" style="margin-left:auto">Delete</button>' +
             '</div>';
-
           listBox.appendChild(element);
         })(all[i]);
       }
@@ -3846,40 +4594,24 @@ mark.has-note {
 
     if (reviewState.idx >= reviewState.queue.length) {
       reviewState.active = false;
-      var accuracy = reviewState.done > 0
-        ? Math.round(100 * reviewState.correct / reviewState.done)
-        : 0;
-
+      var accuracy = reviewState.done > 0 ? Math.round(100 * reviewState.correct / reviewState.done) : 0;
       box.innerHTML =
-        '<div class="empty">' +
-          '<div class="title">Session complete</div>' +
-          '<div class="sub">' +
-            reviewState.done + ' questions · ' +
-            reviewState.correct + ' correct (' + accuracy + '%)' +
-          '</div>' +
-          '<div class="row-actions" style="justify-content:center;margin-top:20px;flex-wrap:wrap;gap:8px">' +
-            '<button class="btn ghost" id="btn-restart-session" style="max-width:200px">Practice again</button>' +
-            '<button class="btn primary" id="btn-back-overview" style="max-width:200px">All questions</button>' +
-          '</div>' +
-        '</div>';
-
+        '<div class="empty"><div class="title">Session complete</div>' +
+        '<div class="sub">' + reviewState.done + ' questions · ' + reviewState.correct + ' correct (' + accuracy + '%)</div>' +
+        '<div class="row-actions" style="justify-content:center;margin-top:20px;flex-wrap:wrap;gap:8px">' +
+          '<button class="btn ghost" id="btn-restart-session" style="max-width:200px">Practice again</button>' +
+          '<button class="btn primary" id="btn-back-overview" style="max-width:200px">All questions</button>' +
+        '</div></div>';
       var restartBtn = $('btn-restart-session');
       if (restartBtn) restartBtn.addEventListener('click', function () {
-        reviewState.idx = 0;
-        reviewState.done = 0;
-        reviewState.correct = 0;
-        reviewState.forIdx = -1;
-        reviewState.selected = -1;
+        reviewState.idx = 0; reviewState.done = 0; reviewState.correct = 0;
+        reviewState.forIdx = -1; reviewState.selected = -1;
         reviewState.queue = shuffle(reviewState.queue.slice());
         reviewState.active = true;
         renderReviewCard();
       });
-
       var backBtn = $('btn-back-overview');
-      if (backBtn) backBtn.addEventListener('click', function () {
-        renderReviewOverview();
-      });
-
+      if (backBtn) backBtn.addEventListener('click', function () { renderReviewOverview(); });
       updateReviewBadge();
       return;
     }
@@ -3897,7 +4629,6 @@ mark.has-note {
     var correctIndex = reviewState.mcq.correctIndex;
     var answered = reviewState.selected >= 0;
     var letters = ['A', 'B', 'C', 'D'];
-
     var frontHtml = escapeHtml(card.front).replace(/____/g, '<span class="blank">?</span>');
 
     var optionsHtml = '';
@@ -3908,11 +4639,9 @@ mark.has-note {
         else if (i === reviewState.selected) cls += ' wrong';
         else cls += ' dim';
       }
-      optionsHtml += '<button class="' + cls + '" data-i="' + i + '" ' +
-        (answered ? 'disabled' : '') + '>' +
+      optionsHtml += '<button class="' + cls + '" data-i="' + i + '" ' + (answered ? 'disabled' : '') + '>' +
         '<span class="mcq-label">' + letters[i] + '</span>' +
-        '<span class="mcq-text">' + escapeHtml(options[i]) + '</span>' +
-      '</button>';
+        '<span class="mcq-text">' + escapeHtml(options[i]) + '</span></button>';
     }
 
     var progressLabel = reviewState.queue.length === 1
@@ -3922,10 +4651,8 @@ mark.has-note {
     var feedbackHtml = '';
     if (answered) {
       var isCorrect = reviewState.selected === correctIndex;
-      feedbackHtml =
-        '<div class="mcq-feedback ' + (isCorrect ? 'ok' : 'ko') + '">' +
-          (isCorrect ? '✓ Correct' : '✗ Wrong') +
-        '</div>' +
+      feedbackHtml = '<div class="mcq-feedback ' + (isCorrect ? 'ok' : 'ko') + '">' +
+        (isCorrect ? '✓ Correct' : '✗ Wrong') + '</div>' +
         '<button class="btn primary" id="btn-continue" style="width:100%">Continue</button>';
     }
 
@@ -3979,15 +4706,9 @@ mark.has-note {
   function openCardEditor(card) {
     isCreatingCard = !card;
     cardBeingEdited = card || {
-      front: '',
-      back: '',
-      distractors: ['', '', ''],
-      type: 'manual',
-      docId: DATA.activeDocId,
-      highlightId: null,
-      sourceCat: 'key',
-      origin: 'manual',
-      contentId: 'manual-' + generateId()
+      front: '', back: '', distractors: ['', '', ''],
+      type: 'manual', docId: DATA.activeDocId, highlightId: null,
+      sourceCat: 'key', origin: 'manual', contentId: 'manual-' + generateId()
     };
 
     $('card-edit-title').textContent = isCreatingCard ? 'New question' : 'Edit question';
@@ -4009,18 +4730,10 @@ mark.has-note {
     var d2 = $('card-edit-d2').value.trim();
     var d3 = $('card-edit-d3').value.trim();
 
-    if (!front || !back) {
-      showToast('Question and answer are required');
-      return;
-    }
+    if (!front || !back) { showToast('Question and answer are required'); return; }
 
-    var distractors = [d1, d2, d3].filter(function (x) {
-      return x && x !== back;
-    });
-    if (distractors.length < 3) {
-      showToast('Need 3 wrong answers');
-      return;
-    }
+    var distractors = [d1, d2, d3].filter(function (x) { return x && x !== back; });
+    if (distractors.length < 3) { showToast('Need 3 wrong answers'); return; }
 
     if (isCreatingCard) {
       addCard({
@@ -4028,19 +4741,13 @@ mark.has-note {
         highlightId: cardBeingEdited.highlightId,
         contentId: cardBeingEdited.contentId,
         type: 'manual',
-        front: front,
-        back: back,
+        front: front, back: back,
         distractors: distractors.slice(0, 3),
-        sourceCat: 'key',
-        origin: 'manual'
+        sourceCat: 'key', origin: 'manual'
       });
       showToast('Question created');
     } else {
-      updateCard(cardBeingEdited.id, {
-        front: front,
-        back: back,
-        distractors: distractors.slice(0, 3)
-      });
+      updateCard(cardBeingEdited.id, { front: front, back: back, distractors: distractors.slice(0, 3) });
       showToast('Question updated');
     }
 
@@ -4077,7 +4784,7 @@ mark.has-note {
   }
 
   // ============================================================
-  // TITLE
+  // TITLE (animated letter-by-letter)
   // ============================================================
   function buildTitle() {
     var element = $('brand-title');
@@ -4111,43 +4818,6 @@ mark.has-note {
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', apply);
   }
 
-  // ============================================================
-  // AUTO ANALYSIS (incremental)
-  // ============================================================
-  function analyzeCurrentDocument() {
-    var doc = getActiveDocument();
-    if (!doc || !doc.text.trim()) return;
-
-    doc.lang = detectLanguage(doc.text);
-    var spans = analyzeTextIncremental(doc.text);
-    var highlights = highlightsForDocument(doc.id);
-
-    for (var i = 0; i < highlights.length; i++) {
-      if (highlights[i].source === 'auto') {
-        delete DATA.highlights[highlights[i].id];
-      }
-    }
-
-    for (var j = 0; j < spans.length; j++) {
-      var span = spans[j];
-      var id = generateId();
-      DATA.highlights[id] = {
-        id: id,
-        docId: doc.id,
-        start: span.start,
-        end: span.end,
-        cat: span.cat,
-        source: 'auto',
-        before: doc.text.slice(Math.max(0, span.start - 30), span.start),
-        after: doc.text.slice(span.end, span.end + 30),
-        note: '',
-        createdAt: Date.now()
-      };
-    }
-
-    markDocDirty(doc.id);
-  }
-
   function renderModelList() {
     var box = $('model-list');
     box.innerHTML = '';
@@ -4157,12 +4827,9 @@ mark.has-note {
       var element = document.createElement('div');
       element.className = 'model-option' + (key === aiState.modelKey ? ' selected' : '');
       element.innerHTML =
-        '<div class="info">' +
-          '<div class="name">' + model.label +
-            '<span class="sz">' + model.size + '</span>' +
-          '</div>' +
-          '<div class="desc">' + model.desc + '</div>' +
-        '</div>';
+        '<div class="info"><div class="name">' + model.label +
+        '<span class="sz">' + model.size + '</span></div>' +
+        '<div class="desc">' + model.desc + '</div></div>';
 
       (function (k) {
         element.addEventListener('click', function () {
@@ -4178,6 +4845,7 @@ mark.has-note {
     }
   }
 
+  // Debounced auto-analysis timer
   var autoAnalysisTimer = null;
 
   function scheduleAutoAnalysis(delay) {
@@ -4191,8 +4859,7 @@ mark.has-note {
       doc.lang = detectLanguage(newText);
       doc.updatedAt = Date.now();
       markDocDirty(doc.id);
-      analyzeCurrentDocument();
-      redraw();
+      analyzeCurrentDocument(function () { redraw(); });
     }, delay || 700);
   }
 
@@ -4203,21 +4870,12 @@ mark.has-note {
     var tabs = document.querySelectorAll('.tabbar .tab');
     for (var i = 0; i < tabs.length; i++) {
       (function (t) {
-        t.addEventListener('click', function () {
-          switchView(t.dataset.view);
-          vibrate(4);
-        });
+        t.addEventListener('click', function () { switchView(t.dataset.view); vibrate(4); });
       })(tabs[i]);
     }
 
-    $('input').addEventListener('input', function () {
-      scheduleAutoAnalysis(700);
-    });
-
-    $('btn-edit').addEventListener('click', function () {
-      toggleEditPanel();
-    });
-
+    $('input').addEventListener('input', function () { scheduleAutoAnalysis(700); });
+    $('btn-edit').addEventListener('click', function () { toggleEditPanel(); });
     $('btn-generate-cards').addEventListener('click', openCardPreview);
 
     $('btn-save').addEventListener('click', function () {
@@ -4228,9 +4886,7 @@ mark.has-note {
       setTimeout(function () { $('save-title').focus(); }, 100);
     });
 
-    $('btn-cancel-save').addEventListener('click', function () {
-      $('modal-save').classList.remove('open');
-    });
+    $('btn-cancel-save').addEventListener('click', function () { $('modal-save').classList.remove('open'); });
 
     $('btn-confirm-save').addEventListener('click', function () {
       var doc = getActiveDocument();
@@ -4244,10 +4900,13 @@ mark.has-note {
 
     $('btn-new').addEventListener('click', function () {
       var sample = SAMPLE_TEXTS[Math.floor(Math.random() * SAMPLE_TEXTS.length)];
-      createDocument(sample.text, sample.title);
+      var newDoc = createDocument(sample.text, sample.title);
+      newDoc.lang = detectLanguage(newDoc.text);
+      // Compute spans synchronously for a brand new document
+      applyAnalysisSpans(newDoc, analyzeTextIncremental(newDoc.text));
       $('input').value = sample.text;
-      analyzeCurrentDocument();
       redraw();
+      updateReviewBadge();
       switchView('text');
       $('scroll-text').scrollTop = 0;
       showToast('New document');
@@ -4261,14 +4920,9 @@ mark.has-note {
       $('modal-confirm').classList.add('open');
 
       $('btn-ok-confirm').onclick = function () {
-        for (var hid in DATA.highlights) {
-          if (DATA.highlights[hid].docId === doc.id) delete DATA.highlights[hid];
-        }
+        for (var hid in DATA.highlights) if (DATA.highlights[hid].docId === doc.id) delete DATA.highlights[hid];
         for (var cid in DATA.cards) {
-          if (DATA.cards[cid].docId === doc.id) {
-            delete DATA.cards[cid];
-            delete DATA.review[cid];
-          }
+          if (DATA.cards[cid].docId === doc.id) { delete DATA.cards[cid]; delete DATA.review[cid]; }
         }
         doc.text = '';
         $('input').value = '';
@@ -4281,15 +4935,11 @@ mark.has-note {
       };
     });
 
-    $('btn-cancel-confirm').addEventListener('click', function () {
-      $('modal-confirm').classList.remove('open');
-    });
+    $('btn-cancel-confirm').addEventListener('click', function () { $('modal-confirm').classList.remove('open'); });
 
     $('btn-save-note').addEventListener('click', function () {
       if (!highlightInNote) return;
-      updateHighlight(highlightInNote.id, {
-        note: $('note-text').value.trim()
-      });
+      updateHighlight(highlightInNote.id, { note: $('note-text').value.trim() });
       $('modal-note').classList.remove('open');
       redraw();
       showToast('Note saved');
@@ -4303,14 +4953,9 @@ mark.has-note {
       showToast('Removed');
     });
 
-    $('btn-cancel-cards').addEventListener('click', function () {
-      $('modal-card-preview').classList.remove('open');
-    });
+    $('btn-cancel-cards').addEventListener('click', function () { $('modal-card-preview').classList.remove('open'); });
     $('btn-confirm-cards').addEventListener('click', confirmCardAdd);
-
-    $('btn-cancel-card-edit').addEventListener('click', function () {
-      $('modal-card-edit').classList.remove('open');
-    });
+    $('btn-cancel-card-edit').addEventListener('click', function () { $('modal-card-edit').classList.remove('open'); });
     $('btn-save-card-edit').addEventListener('click', saveCardEditor);
 
     $('btn-ai-status').addEventListener('click', function () {
@@ -4318,21 +4963,12 @@ mark.has-note {
       updateAIModalButtons();
       $('modal-ai-setup').classList.add('open');
     });
-
-    $('btn-cancel-ai').addEventListener('click', function () {
-      $('modal-ai-setup').classList.remove('open');
-    });
-    $('btn-load-ai').addEventListener('click', function () {
-      loadAIModel(aiState.modelKey);
-    });
+    $('btn-cancel-ai').addEventListener('click', function () { $('modal-ai-setup').classList.remove('open'); });
+    $('btn-load-ai').addEventListener('click', function () { loadAIModel(aiState.modelKey); });
     $('btn-unload-ai').addEventListener('click', unloadAIModel);
-    $('btn-close-ai-ready').addEventListener('click', function () {
-      $('modal-ai-setup').classList.remove('open');
-    });
+    $('btn-close-ai-ready').addEventListener('click', function () { $('modal-ai-setup').classList.remove('open'); });
 
-    $('library-search').addEventListener('input', function (e) {
-      renderLibrary(e.target.value);
-    });
+    $('library-search').addEventListener('input', function (e) { renderLibrary(e.target.value); });
 
     var output = $('output');
     output.addEventListener('click', function (e) {
@@ -4364,6 +5000,185 @@ mark.has-note {
   }
 
   // ============================================================
+  // TESTS
+  // ============================================================
+  // Runs a small suite against the critical pure functions.
+  // Accessible from the console via HIGHLIGHT_TESTS.run() or by
+  // opening the app with ?test=1 appended to the URL.
+
+  function runTests() {
+    var results = [];
+
+    function test(name, fn) {
+      var result = { name: name, pass: true, message: '' };
+      try { fn(); }
+      catch (e) { result.pass = false; result.message = (e && e.message) || String(e); }
+      results.push(result);
+    }
+
+    function assert(cond, msg) {
+      if (!cond) throw new Error(msg || 'assertion failed');
+    }
+
+    function assertEqual(actual, expected, msg) {
+      if (actual !== expected) {
+        throw new Error((msg || '') + ' expected ' + JSON.stringify(expected) + ', got ' + JSON.stringify(actual));
+      }
+    }
+
+    function textsOf(text, spans) {
+      return spans.map(function (s) { return text.slice(s.start, s.end); });
+    }
+
+    // ----- findProperNouns -----
+    test('findProperNouns rejects "However" at sentence start', function () {
+      var text = 'However, the situation changed.';
+      var texts = textsOf(text, findProperNouns(text));
+      assert(texts.indexOf('However') === -1, 'should not match "However", got ' + JSON.stringify(texts));
+    });
+
+    test('findProperNouns rejects discourse markers', function () {
+      var text = 'Meanwhile, things moved. Therefore, we left. According to reports, it rained.';
+      var texts = textsOf(text, findProperNouns(text));
+      ['Meanwhile', 'Therefore', 'According'].forEach(function (w) {
+        assert(texts.indexOf(w) === -1, 'should not match "' + w + '", got ' + JSON.stringify(texts));
+      });
+    });
+
+    test('findProperNouns matches multi-word name', function () {
+      var text = 'Thomas Jefferson wrote the declaration.';
+      var texts = textsOf(text, findProperNouns(text));
+      assert(texts.indexOf('Thomas Jefferson') !== -1, 'got ' + JSON.stringify(texts));
+    });
+
+    test('findProperNouns matches name mid-sentence', function () {
+      var text = 'The scientist Marie Curie won two Nobel Prizes.';
+      var texts = textsOf(text, findProperNouns(text));
+      assert(texts.indexOf('Marie Curie') !== -1, 'got ' + JSON.stringify(texts));
+    });
+
+    // ----- findNumbers -----
+    test('findNumbers matches "July 4, 1776"', function () {
+      var text = 'It was adopted on July 4, 1776, by the Congress.';
+      var texts = textsOf(text, findNumbers(text));
+      assert(texts.indexOf('July 4, 1776') !== -1, 'got ' + JSON.stringify(texts));
+    });
+
+    test('findNumbers matches percentage', function () {
+      var text = 'The oxygen content is 21% of the atmosphere.';
+      var texts = textsOf(text, findNumbers(text));
+      assert(texts.indexOf('21%') !== -1, 'got ' + JSON.stringify(texts));
+    });
+
+    test('findNumbers matches bare numbers', function () {
+      var text = 'There were 42 participants in the study.';
+      var texts = textsOf(text, findNumbers(text));
+      assert(texts.indexOf('42') !== -1, 'got ' + JSON.stringify(texts));
+    });
+
+    // ----- findDefinitions -----
+    test('findDefinitions matches "Term: explanation"', function () {
+      var text = 'Photosynthesis: the process by which plants convert light into sugar.';
+      var spans = findDefinitions(text);
+      assert(spans.length >= 1, 'should match at least one definition');
+    });
+
+    test('findDefinitions does not cross newline', function () {
+      var text = 'Some long line of text that mentions things.\nResults: the experiment succeeded completely.';
+      var spans = findDefinitions(text);
+      for (var i = 0; i < spans.length; i++) {
+        var head = text.slice(spans[i].start, spans[i].end);
+        assert(head.indexOf('\n') === -1, 'head should not contain newline: ' + JSON.stringify(head));
+      }
+    });
+
+    // ----- analyzeTextIncremental cache -----
+    test('analyzeTextIncremental stable text yields same spans', function () {
+      paragraphCache = {};
+      var text = 'Albert Einstein was born in 1879 in Germany.';
+      var s1 = analyzeTextIncremental(text);
+      var s2 = analyzeTextIncremental(text);
+      assertEqual(s2.length, s1.length, 'span count should match');
+    });
+
+    test('analyzeTextIncremental caches each paragraph once', function () {
+      paragraphCache = {};
+      var text = 'Albert Einstein was born in 1879 in Germany.\n\nMarie Curie won Nobel Prizes in 1903 and 1911.';
+      analyzeTextIncremental(text);
+      assertEqual(Object.keys(paragraphCache).length, 2, 'cache should hold 2 paragraphs');
+    });
+
+    test('analyzeTextIncremental reuses cache on unchanged paragraph', function () {
+      paragraphCache = {};
+      var text = 'Albert Einstein was born in 1879 in Germany.\n\nMarie Curie won Nobel Prizes in 1903 and 1911.';
+      var s1 = analyzeTextIncremental(text);
+      var text2 = 'Albert Einstein was born in 1879 in Ulm.\n\nMarie Curie won Nobel Prizes in 1903 and 1911.';
+      var s2 = analyzeTextIncremental(text2);
+      var second1 = s1.filter(function (s) { return s.start > 50; });
+      var second2 = s2.filter(function (s) { return s.start > 50; });
+      assertEqual(second2.length, second1.length, 'unchanged paragraph spans should match');
+    });
+
+    // ----- FSRS -----
+    test('fsrsNext rating 4 gives larger stability than rating 2', function () {
+      var card = { stability: 5, difficulty: 5, state: 'review', lastReview: Date.now() - 10 * 86400000 };
+      var now = Date.now();
+      var n4 = fsrsNext(card, 4, now);
+      var n2 = fsrsNext(card, 2, now);
+      assert(n4.stability > n2.stability, 'rating 4 stability should exceed rating 2');
+    });
+
+    test('fsrsNext rating 1 sets relearning state', function () {
+      var card = { stability: 5, difficulty: 5, state: 'review', lastReview: Date.now() - 10 * 86400000 };
+      var next = fsrsNext(card, 1, Date.now());
+      assertEqual(next.state, 'relearning', 'rating 1 should set relearning');
+      assert(next.lapses > 0, 'lapses should increase');
+    });
+
+    test('fsrsNext learning to review transition on rating 3', function () {
+      var card = { stability: 1, difficulty: 5, state: 'learning', lastReview: Date.now() - 1000 };
+      var next = fsrsNext(card, 3, Date.now());
+      assertEqual(next.state, 'review', 'learning + rating 3 should become review');
+    });
+
+    test('fsrsInterval grows with stability', function () {
+      var small = fsrsInterval(1);
+      var big = fsrsInterval(100);
+      assert(big > small, 'larger stability should produce longer interval');
+    });
+
+    // ----- hashString -----
+    test('hashString stable for identical input', function () {
+      assertEqual(hashString('hello world'), hashString('hello world'));
+    });
+
+    test('hashString differs for different input', function () {
+      assert(hashString('hello') !== hashString('world'), 'different texts should hash differently');
+    });
+
+    // ----- Report -----
+    var passed = 0, failed = 0;
+    var messages = [];
+    for (var i = 0; i < results.length; i++) {
+      if (results[i].pass) passed++;
+      else { failed++; messages.push('✗ ' + results[i].name + '\n  ' + results[i].message); }
+    }
+
+    var summary = passed + '/' + results.length + ' tests passed';
+    if (failed > 0) {
+      console.group('%c' + summary, 'color: #c0392b; font-weight: bold');
+      for (var m = 0; m < messages.length; m++) console.log(messages[m]);
+      console.groupEnd();
+    } else {
+      console.log('%c' + summary, 'color: #3b8f4b; font-weight: bold');
+    }
+
+    return { passed: passed, failed: failed, total: results.length, results: results };
+  }
+
+  window.HIGHLIGHT_TESTS = { run: runTests };
+
+  // ============================================================
   // INITIALIZATION
   // ============================================================
   function initialize() {
@@ -4384,7 +5199,8 @@ mark.has-note {
       if (!doc) {
         var sample = SAMPLE_TEXTS[Math.floor(Math.random() * SAMPLE_TEXTS.length)];
         doc = createDocument(sample.text, sample.title);
-        analyzeCurrentDocument();
+        doc.lang = detectLanguage(doc.text);
+        applyAnalysisSpans(doc, analyzeTextIncremental(doc.text));
       }
 
       $('input').value = doc.text;
@@ -4393,15 +5209,39 @@ mark.has-note {
     } catch (error) {
       console.error('Init error:', error);
       errorBanner.style.display = 'block';
-      errorBanner.textContent += '❌ init: ' + (error.message || error) + '\n' +
-        (error.stack || '').slice(0, 500);
+      errorBanner.textContent += '❌ init: ' + (error.message || error) + '\n' + (error.stack || '').slice(0, 500);
+    }
+  }
+
+  function bootstrap() {
+    initialize();
+
+    // Worker initialization must come after all function declarations
+    initAnalyzerWorker();
+
+    // Auto-run the test suite if the URL contains ?test=1
+    if (typeof location !== 'undefined' && location.search.indexOf('test=1') !== -1) {
+      setTimeout(function () {
+        var r = runTests();
+        if (r.failed > 0) {
+          errorBanner.style.display = 'block';
+          errorBanner.textContent = '❌ Tests: ' + r.passed + '/' + r.total + ' passed\n';
+          for (var i = 0; i < r.results.length; i++) {
+            if (!r.results[i].pass) {
+              errorBanner.textContent += '  ✗ ' + r.results[i].name + ': ' + r.results[i].message + '\n';
+            }
+          }
+        } else {
+          showToast('Tests: ' + r.passed + '/' + r.total + ' passed', 3000);
+        }
+      }, 200);
     }
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initialize);
+    document.addEventListener('DOMContentLoaded', bootstrap);
   } else {
-    initialize();
+    bootstrap();
   }
 
 })();
