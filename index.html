@@ -1506,6 +1506,8 @@ mark.has-note {
   ];
 
   // Priority when two highlights overlap.
+  // Higher number wins. User highlights always beat auto ones
+  // (see buildRuns for the source-based bonus).
   var CATEGORY_PRIORITY = {
     quote: 10,
     num: 9,
@@ -1615,7 +1617,10 @@ mark.has-note {
     'october|november|december|gennaio|febbraio|marzo|aprile|maggio|' +
     'giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)';
 
-  // English stopwords — common words that are never proper nouns
+  // English stopwords — common words that are never proper nouns.
+  // The list now includes a large set of sentence-starter adverbs,
+  // discourse markers, and adjectives that used to be false
+  // positives for "Names".
   var STOPWORDS_EN = (
     'the a an and or but of in on at to for from by with as is are was were ' +
     'be been being this that these those it its he she they them him her his ' +
@@ -1625,7 +1630,36 @@ mark.has-note {
     'how if then else than too also just only can could will would shall ' +
     'should may might must do does did done have has had having ' +
     'about after before during between into through over under above ' +
-    'below again further once here there'
+    'below again further once here there ' +
+    // Sentence starters and discourse markers
+    'however meanwhile therefore although though because whether despite ' +
+    'according furthermore moreover nevertheless nonetheless otherwise ' +
+    'consequently additionally specifically particularly similarly ' +
+    'alternatively finally firstly secondly thirdly thus hence indeed ' +
+    'instead likewise namely overall regardless subsequently conversely ' +
+    'importantly interestingly surprisingly unfortunately fortunately ' +
+    'luckily sadly happily clearly obviously naturally certainly surely ' +
+    'actually basically essentially generally typically usually often ' +
+    'sometimes always never still yet already even too very quite rather ' +
+    'somewhat almost nearly approximately ' +
+    // Common adverbs in -ly not covered above
+    'recently significantly strongly suddenly properly quickly rapidly ' +
+    'really seriously simply slightly possibly probably officially ' +
+    'initially likely mainly mostly hopefully exactly definitely ' +
+    // Common adjectives / function words often at sentence start
+    'additional alternative average common complex considerable critical ' +
+    'current detailed different effective entire essential evident exact ' +
+    'external extreme federal final financial following formal full ' +
+    'fundamental future general global historical important individual ' +
+    'industrial initial internal international large limited local major ' +
+    'medical military minor modern multiple national natural necessary ' +
+    'negative normal nuclear official original personal physical political ' +
+    'popular positive possible potential practical present previous primary ' +
+    'private probable professional public recent regular relevant religious ' +
+    'remarkable responsible scientific secondary separate serious ' +
+    'significant similar simple single social special specific standard ' +
+    'strong successful sufficient suitable technical total typical ' +
+    'traditional unique universal unusual useful various visible vital western'
   ).split(/\s+/);
 
   // Italian stopwords
@@ -1637,7 +1671,9 @@ mark.has-note {
     'questo questa questi queste quello quella quelli quelle ' +
     'che chi cui non più anche solo come dove quando perché ' +
     'essere avere sono è era fu sia stata stato stati state ' +
-    'viene venga fatto fare può devono deve loro lei lui noi voi'
+    'viene venga fatto fare può devono deve loro lei lui noi voi ' +
+    'tuttavia inoltre quindi perciò comunque invece inoltre ' +
+    'secondo durante secondo circa quasi sempre spesso talvolta'
   ).split(/\s+/);
 
   // Unified stopword set
@@ -1689,6 +1725,10 @@ mark.has-note {
   // ============================================================
   // Pre-trained weights. Do not change unless you know what
   // you're doing — these come from the FSRS-4.5 optimizer.
+  // Note: this is a simplified implementation. It treats every
+  // rating as a "review" state transition. A fully faithful
+  // implementation would use separate short-term formulas for
+  // learning/relearning states.
 
   var FSRS_PARAMS = [
     0.4072, 1.1829, 3.1262, 15.4722, 7.2102, 0.5316, 1.0651,
@@ -1780,10 +1820,14 @@ mark.has-note {
   // STORE — data persistence with localStorage
   // ============================================================
 
+  // NOTE: the storage key still says "v130" for backward compatibility.
+  // The internal DATA.version is what drives migration logic.
+  // Bump DATA.version when the schema changes; migrateData() below
+  // is where you write the fix-up code.
   var STORAGE_KEY = 'highlight-ai.v130.data';
 
   var DATA = {
-    version: 130,
+    version: 131,
     docs: {},
     highlights: {},
     cards: {},
@@ -1796,6 +1840,36 @@ mark.has-note {
   };
 
   /**
+   * Apply schema migrations to data loaded from an older version.
+   * For now it only preserves the known fields; add explicit steps
+   * here as the schema evolves.
+   * @param {Object} parsed - Raw parsed object from localStorage.
+   * @returns {Object} Migrated object with the current version tag.
+   */
+  function migrateData(parsed) {
+    if (!parsed || typeof parsed !== 'object') return null;
+    var fromVersion = parsed.version || 0;
+
+    // Future migration steps go here, e.g.:
+    // if (fromVersion < 132) { /* rename a field, split a key, etc. */ }
+
+    if (fromVersion !== DATA.version) {
+      console.warn('Migrating data from v' + fromVersion + ' to v' + DATA.version);
+    }
+
+    var migrated = {
+      version: DATA.version,
+      docs: parsed.docs || {},
+      highlights: parsed.highlights || {},
+      cards: parsed.cards || {},
+      review: parsed.review || {},
+      activeDocId: parsed.activeDocId || null,
+      settings: parsed.settings || { activeCategories: [], editMode: false }
+    };
+    return migrated;
+  }
+
+  /**
    * Load all data from localStorage into the DATA object.
    * Falls back to defaults if nothing is saved.
    */
@@ -1804,8 +1878,13 @@ mark.has-note {
       var saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         var parsed = JSON.parse(saved);
-        for (var key in parsed) {
-          DATA[key] = parsed[key];
+        if (parsed.version !== DATA.version) {
+          parsed = migrateData(parsed);
+        }
+        if (parsed) {
+          for (var key in parsed) {
+            if (key !== 'version') DATA[key] = parsed[key];
+          }
         }
       }
     } catch (error) {
@@ -2173,6 +2252,12 @@ mark.has-note {
   /**
    * Find proper nouns — capitalized words not at sentence start.
    * Handles multi-word names like "De Gasperi" and "New York".
+   *
+   * Single capitalized words at sentence start are accepted only
+   * when they are long (≥8) AND not in the (extended) stopword
+   * set. This prevents false positives like "However", "Meanwhile",
+   * "Therefore", "Although", "According", which used to slip
+   * through when the stopword list was shorter.
    */
   function findProperNouns(text) {
     var spans = [];
@@ -2207,9 +2292,18 @@ mark.has-note {
 
       // Heuristics for acceptance
       var accept = false;
-      if (multi) accept = true;
-      else if (!atStart && !stop) accept = true;
-      else if (atStart && !stop && token.word.length >= 7) accept = true;
+      if (multi) {
+        accept = true;
+      } else if (!atStart && !stop) {
+        accept = true;
+      } else if (atStart && !stop && token.word.length >= 8) {
+        // Require a longer word to reduce false positives.
+        // Reject if the following token is a common verb or
+        // a very common lowercase continuation word.
+        var following = tokens[j + 1];
+        var followingIsCommonVerb = following && /^(is|are|was|were|has|have|had|can|could|will|would|should|may|might|must|does|do|did|said|says|seems|appears|becomes|became|remains|remained|goes|went|came|comes)$/i.test(following.word);
+        accept = !followingIsCommonVerb;
+      }
 
       if (accept) {
         spans.push({
@@ -2258,18 +2352,28 @@ mark.has-note {
 
   /**
    * Find definitions of the form "Term: long explanation".
+   *
+   * The head group is now restricted to a single line (no \n)
+   * and stops at the first colon. This prevents the regex from
+   * swallowing half a sentence or crossing paragraph boundaries.
    */
   function findDefinitions(text) {
     var spans = [];
     var match;
-    var regex = /([\p{L}\p{M}][\p{L}\p{M}\s'\-]{1,40})\s*[:：]\s*([^\n.;]{20,300})/gu;
+    var regex = /([^\n:：]{2,60}?)\s*[:：]\s*([^\n.;]{20,300})/gu;
 
     while ((match = regex.exec(text)) !== null) {
+      var head = match[1];
       var headStart = match.index;
-      var headEnd = headStart + match[1].length;
-      var wordCount = match[1].trim().split(/\s+/).length;
+      var headEnd = headStart + head.length;
+      var trimmedHead = head.trim();
+      var wordCount = trimmedHead.split(/\s+/).length;
 
-      if (wordCount > 5 || match[1].trim().length < 3) continue;
+      // Reject if the head is too long, too short, or spans
+      // through punctuation that indicates it's not a term.
+      if (wordCount > 5 || trimmedHead.length < 3) continue;
+      if (/[!?»"']\s*$/.test(trimmedHead)) continue;
+      if (/^\s/.test(head) && trimmedHead.length < 3) continue;
 
       spans.push({
         start: headStart,
@@ -2279,7 +2383,7 @@ mark.has-note {
       });
 
       var defStart = headEnd;
-      var after = match[0].slice(match[1].length);
+      var after = match[0].slice(head.length);
       var separator = after.match(/^\s*[:：]\s*/);
       if (separator) defStart += separator[0].length;
 
@@ -2315,6 +2419,9 @@ mark.has-note {
   /**
    * Convert overlapping highlights into non-overlapping "runs".
    * Uses priority to resolve overlaps.
+   *
+   * PATCH: user highlights get a large bonus so that a manual
+   * highlight always beats any auto highlight it overlaps.
    */
   function buildRuns(text, highlights) {
     var length = text.length;
@@ -2326,7 +2433,12 @@ mark.has-note {
     for (var i = 0; i < highlights.length; i++) {
       var h = highlights[i];
       if (h.start < 0 || h.end > length || h.start >= h.end) continue;
-      var priority = (CATEGORY_PRIORITY[h.cat] || 1) * 10 + 1;
+
+      // Base priority from category, plus a huge bonus for
+      // user-created highlights so they always win.
+      var base = (CATEGORY_PRIORITY[h.cat] || 1) * 10;
+      var sourceBonus = (h.source === 'user') ? 10000 : 0;
+      var priority = base + sourceBonus + 1;
 
       for (var p = h.start; p < h.end; p++) {
         if (!weight[p] || priority >= weight[p]) {
@@ -2441,6 +2553,9 @@ mark.has-note {
 
   /**
    * Render the stats row (highlights count, questions count, due count).
+   * Note: the "Due" figure counts only cards that belong to the
+   * current document. The tab-bar badge counts cards globally.
+   * Labels make this distinction explicit.
    */
   function renderStats(doc) {
     var highlights = highlightsForDocument(doc.id).filter(function (h) {
@@ -2454,7 +2569,7 @@ mark.has-note {
     box.innerHTML =
       '<div class="stat"><div class="k">Highlights</div><div class="v">' + highlights.length + '</div></div>' +
       '<div class="stat"><div class="k">Questions</div><div class="v">' + cardCount + '</div></div>' +
-      '<div class="stat"><div class="k">Due</div><div class="v">' + dueCount + '</div></div>';
+      '<div class="stat"><div class="k">Due here</div><div class="v">' + dueCount + '</div></div>';
   }
 
   /**
@@ -2621,39 +2736,13 @@ mark.has-note {
   // ============================================================
   // SELECTION BAR (floating, appears on text selection)
   // ============================================================
+  var selectionDebounce = null;
+
   function initSelection() {
     document.addEventListener('selectionchange', function () {
-      var active = document.activeElement;
-      if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;
-
-      // If edit panel is open, don't show the floating bar
-      if ($('edit-panel').classList.contains('show')) {
-        $('selection-bar').classList.remove('show');
-        return;
-      }
-
-      var sel = window.getSelection();
-      if (!sel || sel.isCollapsed || sel.rangeCount === 0) {
-        $('selection-bar').classList.remove('show');
-        return;
-      }
-
-      var output = $('output');
-      if (!output) return;
-
-      var range = sel.getRangeAt(0);
-      if (!output.contains(range.startContainer) || !output.contains(range.endContainer)) {
-        $('selection-bar').classList.remove('show');
-        return;
-      }
-
-      var offset = currentSelectionOffset();
-      if (!offset || offset.end - offset.start < 2) {
-        $('selection-bar').classList.remove('show');
-        return;
-      }
-
-      showSelectionBar();
+      // Debounce: 'selectionchange' fires many times per gesture.
+      clearTimeout(selectionDebounce);
+      selectionDebounce = setTimeout(handleSelectionChange, 50);
     });
 
     window.addEventListener('scroll', function () {
@@ -2661,11 +2750,49 @@ mark.has-note {
     }, { passive: true });
   }
 
+  function handleSelectionChange() {
+    var active = document.activeElement;
+    if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return;
+
+    // If edit panel is open, don't show the floating bar
+    if ($('edit-panel').classList.contains('show')) {
+      $('selection-bar').classList.remove('show');
+      return;
+    }
+
+    var sel = window.getSelection();
+    if (!sel || sel.isCollapsed || sel.rangeCount === 0) {
+      $('selection-bar').classList.remove('show');
+      return;
+    }
+
+    var output = $('output');
+    if (!output) return;
+
+    var range = sel.getRangeAt(0);
+    if (!output.contains(range.startContainer) || !output.contains(range.endContainer)) {
+      $('selection-bar').classList.remove('show');
+      return;
+    }
+
+    var offset = currentSelectionOffset();
+    if (!offset || offset.end - offset.start < 2) {
+      $('selection-bar').classList.remove('show');
+      return;
+    }
+
+    showSelectionBar();
+  }
+
   /**
    * Show the floating selection bar with category buttons.
    */
   function showSelectionBar() {
     var bar = $('selection-bar');
+    // Avoid rebuilding the bar if it's already visible and
+    // shows the same structure — cheap guard against flicker.
+    if (bar.classList.contains('show') && bar.children.length) return;
+
     bar.innerHTML = '';
 
     for (var i = 0; i < CATEGORIES.length; i++) {
@@ -2914,6 +3041,10 @@ mark.has-note {
    * 1. Perturbation (numbers, percentages, years) — always works
    * 2. Dictionary — excellent when entity is recognized
    * 3. From the text itself — universal fallback
+   *
+   * PATCH: numeric distractors now preserve the original number of
+   * decimal places, so "5.5 million" yields "4.5 million",
+   * "6.5 million", etc., instead of rounding away the decimals.
    */
   function buildUniversalDistractors(type, correct, doc, count) {
     // STRATEGY 1: Perturbation
@@ -2945,16 +3076,23 @@ mark.has-note {
     }
 
     if (type === 'number') {
-      var number = parseFloat(String(correct).replace(',', '.'));
+      var numberStr = String(correct);
+      var decimalMatch = numberStr.match(/[.,](\d+)/);
+      var decimals = decimalMatch ? decimalMatch[1].length : 0;
+      var number = parseFloat(numberStr.replace(',', '.'));
       if (!isNaN(number)) {
-        var unit = String(correct).replace(/[\d.,\s]+/g, '').trim();
+        // Keep the unit but strip the numeric part carefully.
+        var unit = numberStr.replace(/[\d.,\s-]+/g, '').trim();
         var numberOffsets = [-1, 1, -2, 2, -5, 5, -10, 10];
         var numberCandidates = [];
         for (var k = 0; k < numberOffsets.length; k++) {
           var vn = number + numberOffsets[k];
           if (vn > 0) {
-            var str = String(Math.round(vn));
-            numberCandidates.push(unit ? str + ' ' + unit : str);
+            var str = decimals > 0
+              ? vn.toFixed(decimals).replace('.', ',')
+              : String(Math.round(vn));
+            var cand = unit ? str + ' ' + unit : str;
+            if (cand !== correct) numberCandidates.push(cand);
           }
         }
         if (numberCandidates.length >= count) return shuffle(numberCandidates).slice(0, count);
@@ -3320,7 +3458,6 @@ mark.has-note {
 
   /**
    * AI prompt for entity extraction. Works in IT and EN.
-   * Simple task: find entities.
    */
   function buildExtractionPrompt(text, language) {
     if (language === 'en') {
@@ -3340,7 +3477,6 @@ mark.has-note {
 
   /**
    * Tolerant JSON parser for AI responses.
-   * Handles markdown fences, trailing commas, partial arrays.
    */
   function parseExtraction(raw) {
     if (!raw || typeof raw !== 'string') return [];
@@ -3506,7 +3642,6 @@ mark.has-note {
 
   /**
    * Validate a proposal before showing it to the user.
-   * Rejects obvious garbage and formatting mistakes.
    */
   function validateProposal(proposal) {
     var question = proposal.front.trim();
@@ -3537,7 +3672,6 @@ mark.has-note {
 
   /**
    * Open the preview modal for generated questions.
-   * Combines analyzer proposals (always) with AI proposals (if active).
    */
   function openCardPreview() {
     var doc = getActiveDocument();
@@ -3610,8 +3744,7 @@ mark.has-note {
 
   /**
    * Render the preview list.
-   * IMPORTANT: shows ONLY the question, no distractors, no answer.
-   * The user reviews the question quality without seeing the solution.
+   * Only the question is shown — no distractors, no answer.
    */
   function renderPreview() {
     var box = $('card-preview-list');
@@ -3803,7 +3936,11 @@ mark.has-note {
 
   /**
    * Build the multiple-choice question for a card.
-   * Returns null if there aren't enough distractors.
+   *
+   * PATCH: if the card has fewer than 3 valid distractors, we now
+   * try to borrow distractors from other cards in the same document
+   * before giving up. This makes legacy cards playable instead of
+   * silently disappearing from Review.
    */
   function buildMCQ(card) {
     var correct = card.back;
@@ -3811,6 +3948,29 @@ mark.has-note {
       return x && x.trim() && x.trim() !== correct.trim();
     });
     var final = distractors.slice(0, 3);
+
+    if (final.length < 3) {
+      var pool = [];
+      var seen = {};
+      for (var i = 0; i < final.length; i++) seen[final[i]] = true;
+      seen[correct] = true;
+
+      for (var id in DATA.cards) {
+        if (id === card.id) continue;
+        var other = DATA.cards[id];
+        if (other.docId !== card.docId) continue;
+        if (!other.back) continue;
+        if (seen[other.back]) continue;
+        if (other.back.length < 2) continue;
+        pool.push(other.back);
+        seen[other.back] = true;
+      }
+      pool = shuffle(pool);
+      while (final.length < 3 && pool.length) {
+        final.push(pool.shift());
+      }
+    }
+
     if (final.length < 3) return null;
     var options = shuffle([correct].concat(final));
     return {
@@ -3821,9 +3981,6 @@ mark.has-note {
 
   /**
    * Render the Review overview (default state of the Review tab).
-   * Shows:
-   * - Start button (always present, regardless of session state)
-   * - All questions list with status badges
    */
   function renderReviewOverview() {
     var doc = getActiveDocument();
@@ -4352,6 +4509,11 @@ mark.has-note {
   /**
    * Schedule the auto-analysis after a short delay.
    * Called on every input event; the delay collapses rapid keystrokes.
+   *
+   * PATCH: the delay is now 700ms (was 200ms). This dramatically
+   * reduces work on mobile while typing long texts, since each
+   * analysis run re-executes 5 regexes over the whole document
+   * and rebuilds the entire output DOM.
    */
   function scheduleAutoAnalysis(delay) {
     clearTimeout(autoAnalysisTimer);
@@ -4366,7 +4528,7 @@ mark.has-note {
       saveData();
       analyzeCurrentDocument();
       redraw();
-    }, delay || 200);
+    }, delay || 700);
   }
 
   // ============================================================
@@ -4384,9 +4546,9 @@ mark.has-note {
       })(tabs[i]);
     }
 
-    // Input: auto-analysis on every keystroke
+    // Input: auto-analysis on every keystroke (debounced at 700ms)
     $('input').addEventListener('input', function () {
-      scheduleAutoAnalysis(200);
+      scheduleAutoAnalysis(700);
     });
 
     // Edit mode toggle
